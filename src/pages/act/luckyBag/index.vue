@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-11-08 15:32:21
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-15 16:05:33
+ * @LastEditTime: 2023-11-16 15:02:53
  * @FilePath: \card-world\src\pages\act\luckyBag\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -175,13 +175,13 @@
             <view class="rewardPop">
                 <view class="title" :class="{ title_more: rewardList.length > 1 }">恭喜您获得以下奖品</view>
                 <view class="rewardWrap" v-if="rewardList.length == 1">
-                    <image :src="$parsePic(rewardList[0].pic)" mode="heightFix" class="pic"></image>
+                    <image :src="$parsePic(rewardList[0].pic)" mode="aspectFit" class="pic"></image>
                     <view class="name">{{ rewardList[0].name }}</view>
                 </view>
                 <scroll-view class="rewardWrap_more" :scroll-y="true" v-else>
                     <view class="rewardGrid">
                         <view class="rewardMore_item" v-for="(item, index) in rewardList" :key="'rewardMore_item' + index">
-                            <muqian-lazyLoad :src="$parsePic(item.pic)" mode="heightFix" borderRadius="3rpx"
+                            <muqian-lazyLoad :src="$parsePic(item.pic)" mode="aspectFit" borderRadius="3rpx"
                                 class="pic"></muqian-lazyLoad>
                             <view class="name u-line-1">{{ item.name }}</view>
                         </view>

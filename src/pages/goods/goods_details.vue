@@ -74,7 +74,7 @@
 				<!-- <view class="flex1"></view> -->
 				<view class="flex1" v-if="luckyData.luckyList" style="position: relative;height: 64rpx;justify-content: flex-end;display: flex;">
 					<view v-for="(item,index) in luckyData.luckyList" style="position: absolute;height: 64rpx;justify-content: flex-end;flex-wrap: nowrap;">
-						<image mode="heightFix" :class="{hide:index!=nowShowLuckyIndex,show:index===nowShowLuckyIndex}" :src="parsePic(pic.pic)" class="pic" v-for="(pic) in item"></image>
+						<image mode="aspectFit" :class="{hide:index!=nowShowLuckyIndex,show:index===nowShowLuckyIndex}" :src="parsePic(pic.pic)" class="pic" v-for="(pic) in item"></image>
 					</view>
 					
 				</view>
@@ -1901,15 +1901,17 @@
 		}
 	}
 	.luckyBar{
-		width: 713rpx;
-		height:100rpx;
+		width: 710rpx;
+		height:93rpx;
 		background-size: 100% 100%;
 		background-image: url("/static/act/luckyBag/goodsLucky.png");
-		margin-bottom: 6rpx;
+		// margin-bottom: 6rpx;
 		display: flex;
 		align-items: center;
 		position: relative;
-		
+		margin-top: -8rpx;
+		box-sizing: border-box;
+		padding-top: 7rpx;
 		.text{
 			font-size: 26rpx;
 			font-family: PingFang SC;
