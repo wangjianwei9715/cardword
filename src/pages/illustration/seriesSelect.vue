@@ -55,6 +55,8 @@
 		getYearList(cb?:Function){
 			app.http.Get('dataApi/cardIllustration/list/year',{},({list}:any)=>{
 				this.sideTab = list || [];
+				const currentInit = list.findIndex((x:any) => x.name=="22-23");
+				this.current = currentInit >= 0 ? currentInit : 0;
 				cb?.()
 			})
 		}
