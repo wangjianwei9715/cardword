@@ -17,7 +17,7 @@
 					</view>
 					<view class="drawer-item-operate">
 						<view class="operate-btn" @click="onClickReduceNum(item)"><image class="icon-reduce" src="@/static/merchant/icon_reduce.png" /></view>
-						<input type="number" class="drawer-item-input" disabled v-model.number="item.num" @blur="onChangeNumber"/>
+						<input type="number" class="drawer-item-input" v-model.number="item.num" @blur="onBlurNum($event,item)"/>
 						<view class="operate-btn" @click="onClickAddNum(item)"><image  class="icon-add" src="@/static/merchant/icon_add.png" /></view>
 					</view>
 				</view>
@@ -115,6 +115,11 @@
 		onClickAddNum(item:any){
 			if(item.num>=item.remaining_quantity) return;
 			item.num++;
+			this.onChangeNumber()
+		}
+		onBlurNum(event:any,item:any){
+			if(item.num<=0) item.num = 0;
+			if(item.num>=item.remaining_quantity) item.num = item.remaining_quantity;
 			this.onChangeNumber()
 		}
 		onChangeNumber(){
