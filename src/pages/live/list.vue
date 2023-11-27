@@ -99,16 +99,16 @@
 		reqNewLiveList(cb?:Function) {
 			const { q, pageIndex, pageSize, noMoreData, httpUrl, once, liveTabCheck } = this.liveData; 
 			if (noMoreData) return ;
-
 			app.http.Get(httpUrl,{q,pageIndex,pageSize},(data:any)=>{
+				this.liveData.once = false;
 				if(data.totalPage<=pageIndex) this.liveData.noMoreData = true;
 				if(pageIndex==1) this.liveList = []
 				if(data.list) this.liveList = this.liveList.concat(data.list);
+				this.empty = data.total == 0;
 				if(once && liveTabCheck==1 && data.total == 0){
 					this.onClickListTabs(2)
+					return
 				}
-				this.empty = data.total == 0;
-				this.liveData.once = false;
 				this.liveData.pageIndex++;
 				if(cb) cb()
 			})
