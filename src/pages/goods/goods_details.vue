@@ -317,7 +317,7 @@
 		onShow() {
 			if (!this.firstShow) {
 				this.getGoodData();
-				this.onClickteamRandomCancel()
+				// this.onClickteamRandomCancel()
 			}
 		}
 		//   下拉刷新

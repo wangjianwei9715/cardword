@@ -79,7 +79,7 @@
 		calendaList:{[x:string]:any} = [];
 		swiperIndex = 3;
 		yearData = [
-			2019,2020,2021,2022,2023
+			2019,2020,2021,2022,2023,2024
 		]
 		monthIndex = 1;
 		scrollLeft = false;
@@ -89,11 +89,10 @@
 		onLoad(query:any) {
 			this.$nextTick(()=>{
 				let date = new Date();
-				this.yearData.map((x:number,index:number)=>{
-					(x==date.getFullYear()) && (this.swiperIndex = index)
-				})
+				const fullYear = date.getFullYear();
 				this.monthIndex = date.getMonth() +1;
 				this.scrollLeftPx = date.getMonth() * 50;
+				this.swiperIndex = this.yearData.findIndex((x:number) => x==fullYear);
 				this.initEvent()
 				this.againReqNewData()
 
@@ -160,9 +159,7 @@
 			this.reqNewData() 
 		}
 		onClickBack(){
-			uni.navigateBack({
-			    delta: 1
-			});
+			app.navigateTo.navigateBack()
 		}
 		// 点赞
 		onClickLikeCalendar(index:number){
