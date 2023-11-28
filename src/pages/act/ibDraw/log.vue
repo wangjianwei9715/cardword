@@ -92,7 +92,7 @@ export default class ClassName extends BaseNode {
         })
     }
     awardPic(item: any) {
-        if (item.tp === 99) {
+        if (item.state === 4) {
             return '/static/act/ibDraw/thankyou.png'
         } else {
             return parsePic(item.pic)
