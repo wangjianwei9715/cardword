@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-24 17:01:39
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-28 11:58:52
+ * @LastEditTime: 2023-11-28 14:55:58
  * @FilePath: \jichao_app_2\src\pages\act\forumDraw\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -844,42 +844,23 @@ page {
   flex-wrap: wrap;
   grid-template-columns: repeat(3, 164rpx);
   grid-template-rows: repeat(3, 33.33%);
-  // grid-column-gap: 30rpx;
-  // background-color: rgba(0,0,0,.4);
   grid-row-gap: 0rpx;
   justify-content: space-between;
-  // align-content: space-between;
-  // align-content: center;
   align-items: center;
-  // justify-items: ;
   margin-top: 90rpx;
   z-index: 3;
   box-sizing: border-box;
   position: relative;
-
-  // padding: 10rpx 0;
-  // padding-right: 2rpx;
-  .testBlock {
-    position: absolute;
-    width: 162rpx;
-    height: 150rpx;
-    background-color: rgba(255, 0, 0, .3);
-    left: 16rpx;
-    top: 22rpx;
-  }
 }
 
 .drawBlock {
   width: 164rpx;
   height: 148rpx;
-  background-color: #e6e6e6;
   border-radius: 14rpx;
   overflow: hidden;
   position: relative;
   transition: transform 0.2s linear;
   transform: scale(0.92);
-  // box-shadow: 0rpx 0rpx 21rpx 3rpx rgba(146, 146, 146, 0.73);
-
   .innerShaow {
     width: 164rpx;
     height: 148rpx;
