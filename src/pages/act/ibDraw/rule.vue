@@ -2,13 +2,7 @@
     <view class="content">
         <navigationbar title="规则说明" rightText="榜单奖励" rightFont="12" @onClickRightText="onClickAward" />
         <view class="descriptionContainer">
-            <view class="des_title">
-                参与系列：
-            </view>
-            <view class="des_content">
-                <text style="color:red" v-for="(item,index) in bindList" :key="index">{{ item.year+" "+item.name }}；</text>
-            </view>
-            <br />
+
             <view class="des_title">
                 活动时间：
             </view>
@@ -28,7 +22,7 @@
                 抽奖说明:
             </view>
             <view class="des_content">
-                1.用户在补充指定系列图鉴并完成任务即可获取抽奖次数
+                用户在补充指定系列图鉴并完成任务即可获取抽奖次数
                 <br />
             </view>
             <br />
@@ -47,6 +41,14 @@
                 虚拟类奖品将自动发放,实物商品平台将在1-30天内发货，收货地址为用户的默认收货地址，未填写地址的用户在中奖后联系客服安排发货。
                 <br />
             </view>
+            <br />
+            <view class="des_title">
+                参与系列：
+            </view>
+            <view class="des_content">
+                <text style="color:red" v-for="(item, index) in bindList" :key="index">{{ item.year + " " + item.name }}；</text>
+            </view>
+            
         </view>
     </view>
 </template>
@@ -57,16 +59,16 @@ import { Component } from "vue-property-decorator";
 import BaseNode from '../../../base/BaseNode.vue';
 @Component({})
 export default class ClassName extends BaseNode {
-    bindList:any=[]
-    startTime:any=0
-    endTime:any=0
-    actId:number=0
+    bindList: any = []
+    startTime: any = 0
+    endTime: any = 0
+    actId: number = 0
     onLoad(query: any) {
-        this.actId=+query.activityId
-        app.http.Get("dataApi/activity/ibDraw/bindList",{activityId:+query.activityId},(res:any)=>{
-            this.bindList=res.list
-            this.startTime=res.time[0] ||0
-            this.endTime=res.time[1] || 0
+        this.actId = +query.activityId
+        app.http.Get("dataApi/activity/ibDraw/bindList", { activityId: +query.activityId }, (res: any) => {
+            this.bindList = res.list
+            this.startTime = res.time[0] || 0
+            this.endTime = res.time[1] || 0
         })
     }
     onReachBottom() {
@@ -75,9 +77,9 @@ export default class ClassName extends BaseNode {
     onPulldDownRefresh() {
 
     }
-    onClickAward(){
+    onClickAward() {
         uni.navigateTo({
-            url:"/pages/act/ibDraw/rankAward?activityId="+this.actId
+            url: "/pages/act/ibDraw/rankAward?activityId=" + this.actId
         })
     }
 }
@@ -142,6 +144,4 @@ page {
         color: #FA1545;
     }
 }
-
-
 </style>
