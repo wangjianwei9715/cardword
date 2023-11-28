@@ -52,7 +52,7 @@ export default class ClassName extends BaseNode {
         // this.reqRewardList()
         // this.reqRewardListTwo()
         // this.reqRewardListWay()
-        app.http.Get("dataApi/activity/ibDraw/bindList",{activityId:+query.activityId},(res:any)=>{
+        app.http.Get("dataApi/activity/ibDraw/bindList",{activityId:+query.activityId,rankAward:1},(res:any)=>{
             this.awardList = res.rankAwardList
         })
     }
