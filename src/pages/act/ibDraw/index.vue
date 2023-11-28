@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-24 17:01:39
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-24 14:24:28
+ * @LastEditTime: 2023-11-28 11:51:42
  * @FilePath: \jichao_app_2\src\pages\act\forumDraw\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -44,7 +44,7 @@
           `drawBlock${index + 1}`,
           index == nowHeightLight ? `heightLight` : '',
         ]">
-          <image :src="$parsePic(item.pic)" style="width: 100%; height: 100%" mode="aspectFill">
+          <image :src="awardPic(item)" style="width: 100%; height: 100%" mode="aspectFill">
           </image>
           <view class="innerShaow" v-if="index === nowHeightLight"></view>
         </view>
@@ -136,7 +136,7 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from "@/base/BaseNode.vue";
-import { calculate } from "@/tools/util"
+import { calculate,parsePic } from "@/tools/util"
 const ROUND_NUM = 6;
 const navHeight = app.statusBarHeight + uni.upx2px(88);
 const gapTop = uni.upx2px(436) + uni.upx2px(74);
@@ -288,6 +288,13 @@ export default class ClassName extends BaseNode {
       uni.hideLoading()
       this.onDraw = false
     });
+  }
+  awardPic(item:any){
+    if (item.tp===99){
+      return '/static/act/ibDraw/thankyou.png'
+    }else{
+      return parsePic(item.pic)
+    }
   }
   startDraw(id: number, delay: number, slowNum: number) {
     return new Promise((re: any, rj) => {

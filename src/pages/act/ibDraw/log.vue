@@ -15,7 +15,7 @@
         </view>
         <view class="pointCard" v-for="(item, index) in list" :key="index" @click="toGoods(item)">
             <view class="pointCard_goods">
-                <muqian-lazyLoad class="goodsImage" :src="$parsePic(item.pic)" borderRadius="3rpx" />
+                <muqian-lazyLoad class="goodsImage" :src="awardPic(item)" borderRadius="3rpx" />
                 <view class="goodsInfo">
                     <view class="goodsTitle uni-flex">
                         <view class="title" style="flex:1">{{ item.name }}</view>
@@ -37,26 +37,26 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
-import { dateFormatMSHMS } from '@/tools/util'
+import { dateFormatMSHMS, parsePic } from '@/tools/util'
 const navHeight = app.statusBarHeight + uni.upx2px(88)
 // { label: "改名卡", value: 4 }
 const range: any = [{ label: "全部", value: 100 }, { label: "实物奖品", value: 1 }, { label: "优惠券", value: 2 }, { label: "卡币奖品", value: 3 }]
-const stateMap:any={
-    1:'待发货',
-    2:"已发货",
-    3:"已发放",
-    4:"感谢参与"
+const stateMap: any = {
+    1: '待发货',
+    2: "已发货",
+    3: "已发放",
+    4: "感谢参与"
 }
 @Component({})
 export default class ClassName extends BaseNode {
     range = range
-    stateMap=stateMap
+    stateMap = stateMap
     queryParams: any = {
         fetchFrom: 1,
         fetchSize: 20,
         // activityTp: 5,
         tp: 100,
-        activityId:0
+        activityId: 0
     }
     navHeight = navHeight
     dateFormatMSHMS = dateFormatMSHMS
@@ -65,9 +65,9 @@ export default class ClassName extends BaseNode {
     isFetchEnd: boolean = true
     myRank: any = {}
     total: number = 0
-    actId:number=0
+    actId: number = 0
     onLoad(query: any) {
-        this.queryParams.activityId=+query.activityId
+        this.queryParams.activityId = +query.activityId
         this.reqNewData()
     }
     public get nowSelectLabel() {
@@ -90,6 +90,13 @@ export default class ClassName extends BaseNode {
         this.reqNewData(() => {
             uni.stopPullDownRefresh()
         })
+    }
+    awardPic(item: any) {
+        if (item.tp === 99) {
+            return '/static/act/ibDraw/thankyou.png'
+        } else {
+            return parsePic(item.pic)
+        }
     }
     toGoods(item: any) {
         if (item.wlCode) {
