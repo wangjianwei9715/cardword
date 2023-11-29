@@ -43,9 +43,9 @@ const navHeight = app.statusBarHeight + uni.upx2px(88)
 const range: any = [{ label: "全部", value: 100 }, { label: "实物奖品", value: 1 }, { label: "优惠券", value: 2 }, { label: "卡币奖品", value: 3 }]
 const stateMap: any = {
     1: '待发货',
-    2: "已发货",
+    2: "已发货(查看物流)",
     3: "已发放",
-    4: "感谢参与"
+    4: ""
 }
 @Component({})
 export default class ClassName extends BaseNode {

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-24 17:01:39
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-28 14:55:58
+ * @LastEditTime: 2023-11-29 10:03:34
  * @FilePath: \jichao_app_2\src\pages\act\forumDraw\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -402,7 +402,7 @@ export default class ClassName extends BaseNode {
         uni.showToast({
           title: "领取成功"
         })
-        this.myData.num += 1
+        this.myData.num += item.num
       })
     } else if ((item.tp == 1 && !item.canReceive && !item.received) || item.tp == 2) {
       this.goTj()
