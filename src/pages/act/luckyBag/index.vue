@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-11-08 15:32:21
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-21 10:32:47
+ * @LastEditTime: 2023-11-30 09:52:00
  * @FilePath: \card-world\src\pages\act\luckyBag\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -120,7 +120,7 @@
                             <text class="price-text">{{ filterPrice(item.price).integer }}</text>
                             <text class="decimal" v-if="filterPrice(item.price).decimal">{{ filterPrice(item.price).decimal
                             }}</text>
-                            <text>{{ goodsManaager.hasLowestPrice(item) ? '起' : '' }}</text>
+                            <text class="jd">{{ goodsManaager.hasLowestPrice(item) ? '起' : '' }}</text>
                         </view>
                         <view v-if="item.state == 0 || item.state == -1" class="goodslist-priceMsg-right">
                             {{ $u.timeFormat(item.startAt, "mm-dd hh:MM") }}开售
@@ -910,7 +910,7 @@ page {
         font-size: 23rpx;
         font-family: PingFangSC-Regular;
         font-weight: 400;
-        color: #333333;
+        color: #333333; margin-bottom: -2rpx;
     }
 }
 
