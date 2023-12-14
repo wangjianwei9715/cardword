@@ -98,23 +98,20 @@ export function orderSetOperate(data:any):{[x:string]:any} {
 // 订单卡密类型排序 //拼团形式 1 随机卡种 2 随机球队 3 随机球员 4 随机卡盒 5 随机卡包 10 自选买队 11 选队随机
 export function myCardGoodsType(state:any){
     switch(state){
-        case 1:
+        case 1: case 11:
             return {
                 default:{id:1,name:'默认',odType:0},
                 player:{id:2,name:'球员',odType:0},
-                team:{id:3,name:'球队',odType:0},
-                number:{id:4,name:'限编',odType:0},
-                cardset:{id:5,name:'卡种',odType:0}
+                seq:{id:4,name:'限编',odType:0}
             }
         case 2:
             return {
-                default:{id:1,name:'默认',odType:0},
-                team:{id:3,name:'球队',odType:0}
+                default:{id:1,name:'默认',odType:0}
             }
         case 3:
             return {
                 default:{id:1,name:'默认',odType:0},
-                player:{id:2,name:'球员',odType:0}
+                player:{id:2,name:'球员',odType:0},
             }
         default:
             return [];

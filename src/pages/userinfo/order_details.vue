@@ -142,12 +142,13 @@
 		countDownStr = '';
 		orderCode = '';
 		orderData:{[x:string]:any} = [];
-		orderDesc = [
-			{id:1,name:'商品金额',desc:''},
-			{id:2,name:'优惠（阶梯奖励）',desc:''},
-			{id:3,name:'优惠券',desc:''},
-			{id:4,name:'运费',desc:'包邮'},
-		];
+		orderDesc = {
+			price:{id:1,name:'商品金额',desc:''},
+			discount:{id:2,name:'优惠（阶梯奖励）',desc:''},
+			mCoupon:{id:3,name:'商家优惠券',desc:''},
+			oCoupon:{id:4,name:'平台优惠券',desc:''},
+			yunfei:{id:5,name:'运费',desc:'包邮'},
+		}
 		cardList:{[x:string]:any} = [];
 		orderInfo:any = {
 			orderNo:{id:1,title:'订单编号',desc:''},
@@ -332,9 +333,10 @@
 		}
 		
 		getGoodDesc(data:any){
-			this.orderDesc[0].desc ='¥'+this.keepTwoDecimal(data.price+data.discount+(data.coupon?data.coupon:0));
-			this.orderDesc[1].desc ='- ¥'+data.discount;
-			this.orderDesc[2].desc ='- ¥'+(data.coupon?data.coupon:0);
+			this.orderDesc.price.desc ='¥'+this.keepTwoDecimal(data.price+data.discount+(data.coupon?data.coupon:0));
+			this.orderDesc.discount.desc ='- ¥'+data.discount;
+			this.orderDesc.mCoupon.desc ='- ¥'+(data.merchantCoupon?data.merchantCoupon:0);
+			this.orderDesc.oCoupon.desc ='- ¥'+(data.coupon?(data.coupon-data.merchantCoupon):0);
 			if(data.payInfo){
 				for (const key in this.orderInfo) {
 					if (Object.prototype.hasOwnProperty.call(data.payInfo, key)) {
@@ -359,8 +361,9 @@
 			},1)
 		}
 		onClickAllCard(){
+			const { good, num, point } = this.orderData
 			uni.navigateTo({
-				url:'/pages/userinfo/order_myCard?code='+this.orderCode+'&goodCode='+this.orderGoodCode+'&pintuanType='+this.orderData.good.pintuanType
+				url:`/pages/userinfo/order_myCard?code=${this.orderCode}&goodCode=${this.orderGoodCode}&pintuanType=${good.pintuanType}&num=${num}&point=${point}`
 			})
 		}
 		onClickGoodDetail(){

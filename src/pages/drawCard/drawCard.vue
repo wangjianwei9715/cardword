@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-11-15 14:21:03
+ * @LastEditTime: 2023-12-13 14:08:17
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -64,7 +64,9 @@
       
       <!-- 国宝福袋 -->
       <popup :popupShow.sync="showLuckyBox" @noShow="once=0"/>
-
+      <!-- 指定卡密奖励 -->
+      <noAward :popupShow.sync="showNoAward" :award="noAwardData" @noShow="once=0"/>
+      
       <view class="bottom-box" :style="{'top':`${fitPosition.boxTop}rpx`}">
         <view class="cardname"><text class="cardname-clamp">{{this.cardname}}</text></view>
         <view class="cardstep">
@@ -112,8 +114,9 @@
   import animationCard from './components/animationCard/animationCard.vue'
   import cardBox from './components/cardBox/cardBox.vue'
   import popup from './components/popup/popup.vue'
+  import noAward from './components/popup/noAward.vue'
   @Component({
-    components:{music,scene,animationCard,cardBox,popup}
+    components:{music,scene,animationCard,cardBox,popup,noAward}
   })
 	export default class ClassName extends BaseNode {
     parsePic = parsePic;
@@ -161,6 +164,8 @@
       boxTop:1170
     }
     showLuckyBox=false;
+    showNoAward=false;
+    noAwardData:any={};
     once=0;
     cardBit=0;
     /**是否最后一张卡片 */
@@ -350,6 +355,11 @@
       if(this.once==0) return;
       const currentItem = this.codeList[this.cardData.step];
       this.showLuckyBox = currentItem.index==this.nextStep(0)&&!this.animationStart&&currentItem.luckyBagTp>0
+      // 指定卡密奖励
+      if(!uni.$u.test.isEmpty(currentItem.award)){
+        this.noAwardData = currentItem.award;
+        this.showNoAward = true
+      }
     }
     // 解锁卡密排序切换
     onClickDrawerType(index: number){

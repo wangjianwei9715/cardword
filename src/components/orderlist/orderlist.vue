@@ -7,15 +7,17 @@
 					<view class="seller-name">{{item.seller.name}}</view>
 				</view>
 				<view class="header-right">
-					<view :class="['header-right-index','state']">{{item.stateName}}</view>
-					<view v-if="item.state==0" class="header-right-count">{{intervalList[item.code]?intervalList[item.code].coun_down:''}}</view>
+					<view class="header-right-index state">
+						{{item.stateName}}
+						<u-count-down class="count-down" v-if="(item.state==1&&item.leftSec>0)" :time="item.leftSec*1000" format="mm:ss" fontSize="26rpx" @change="onChangeTime($event,item)" @finish="onFinish(item)"></u-count-down>
+						<u-count-down class="count-down" v-if="item.good.liveCountdownSecs>0" :time="item.good.liveCountdownSecs*1000" format="mm:ss" fontSize="26rpx"></u-count-down>
+					</view>
 				</view>
 			</view>
 			<view class="orderlist-index-center" @click="onClickJumpUrl(item.code)">
 				<muqian-lazyLoad class="goods-image" :src="getGoodsImg(decodeURIComponent(item.good.pic))"></muqian-lazyLoad>
 				<view class="goods-content">
 					<view class="title">{{item.good.title}}</view>
-					<view class="state" :class="{'no-bg':item.good.stateName=='未中卡'}">{{item.good.stateName=='未中卡'?'':item.good.stateName}}{{item.good.stateName=='拼团中'?' '+(item.good.currentNum+item.good.lockNum)+'/'+item.good.totalNum:''}}</view>
 					<view class="desc">
 						<view class="price">￥{{item.price}}<text class="total-num">共{{item.num}}件</text></view>
 						<view ></view>
@@ -23,7 +25,7 @@
 				</view>
 			</view>
 			<view class="orderlist-index-bottom">
-				
+				<view v-if="item.hitNum>0" style="width:200rpx">恭喜中卡</view>
 				<view class="operate" v-if="item.operate" >
 					<view :class="['btn','btn-'+btnitem.cmd]" @click="onClickOperate(item,btnitem.cmd)" v-for="btnitem in item.operate" :key="btnitem.cmd">{{btnitem.name}}</view>
 				</view>
@@ -35,34 +37,14 @@
 <script lang="ts">
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
-	import {getCountDownTime} from '@/tools/util';
-	import {
-		getGoodsImg
-	} from "../../tools/util";
+	import { getGoodsImg } from "../../tools/util";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
 		orderList:any;
 		
 		getGoodsImg = getGoodsImg;
-		getCountDownTime = getCountDownTime;
-		intervalList:{[x:string]:any} = {};
-		
-		@Watch('orderList')
-		onGoodsListChanged(val: any, oldVal: any){
-			this.orderList = val;
-			this.getOrderList()
-		}
-		created(){//在实例创建完成后被立即调用
-			
-		}
-		mounted(){//挂载到实例上去之后调用
-		}
-		destroyed(){
-			for(let i in this.intervalList){
-				clearInterval(this.intervalList[i].func)
-			}
-		}
+		countDownData:any = {};
 		onClickJumpMerchant(item:any){
 			this.goMerchantPage(item.seller.alias)
 		}
@@ -70,40 +52,23 @@
 			this.$emit("send", id);
 		}
 		onClickOperate(item:any,cmd:any){
-			this.$emit("operate", item,cmd);
+			this.$emit("operate", item,cmd,this.countDownData[item.code]||0);
 		}
-		getOrderList(){
-			let data = JSON.parse(JSON.stringify(this.orderList))
-			if(!data){
-				return;
-			}
-			for(let i in this.orderList){
-				if(this.orderList[i].state==0&&this.orderList[i].coun_down>0){
-					this.intervalList[this.orderList[i].code] = {code:this.orderList[i].code,coun_down:this.getCountDownTime(this.orderList[i].coun_down),time:this.orderList[i].coun_down,func:function(){}};
-				}
-			}
-			this.countDownTime()
+		onFinish(item:any){
+			this.$emit("onFinish", item);
 		}
-		countDownTime(){
-			for(let i in this.intervalList){
-				this.intervalList[i].func = setInterval(()=>{
-					if(this.intervalList[i].time>0){
-						this.intervalList[i].time--;
-						this.intervalList[i].coun_down= this.getCountDownTime(this.intervalList[i].time);
-						this.$forceUpdate()
-					}else{
-						clearInterval(this.intervalList[i].func)
-					}
-				},1000)
-			}
-			
-			
+		onChangeTime({minutes,seconds}:any,item:any){
+			this.countDownData[item.code] = (minutes*60) + seconds;
 		}
-	
 	}
 </script>
 
 <style lang="scss">
+	.count-down{
+		margin-left: 10rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 600;
+	}
 	.orderlist{
 		&-index{
 			width: 100%;
@@ -242,6 +207,8 @@
 				width: 100%;
 				box-sizing: border-box;
 				padding:15rpx 0 38rpx 20rpx;
+				display: flex;
+				justify-content: space-between;
 				.price{
 					width: 100%;
 					height:40rpx;

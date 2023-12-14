@@ -19,7 +19,7 @@
 
 		<view class="order-list">
 			<statusbar />
-			<orderlist :orderList="orderList" @send="onClickOrder" @operate="onClickOperate" />
+			<orderlist :orderList="orderList" @send="onClickOrder" @operate="onClickOperate" @onFinish="onCodeFinish"/>
 		</view>
 		<empty v-show="showEmpty" />
 		<payment :showPayMent="showPayMent" :payChannel="payChannel" :payPrice="payItem.price"
@@ -149,8 +149,8 @@
 		onClickOrder(code: any) {
 			app.navigateTo.goOrderDetails(code)
 		}
-		onClickOperate(item: any, cmd: any) {
-			const { code:orderCode, zitiWuliuExplain="", good, leftSec, num=0, price=0 } = item;
+		onClickOperate(item: any, cmd: any, leftSec:number) {
+			const { code:orderCode, zitiWuliuExplain="", good, num=0, price=0 } = item;
 			if (cmd == "view") {
 				this.onClickOrder(orderCode)
 			} else if (cmd.indexOf("wuliu") != -1) {
@@ -205,7 +205,13 @@
 			this.orderTabCheck = id;
 			this.againReqNewData();
 		}
-
+		onCodeFinish(item:any){
+			this.listParams.pageIndex = 1;
+			this.listParams.noMoreData = false;
+			this.reqNewData(() => {
+				uni.stopPullDownRefresh();
+			});
+		}
 		// 取消支付
 		onClickCancelPay() {
 			this.showPayMent = false;
