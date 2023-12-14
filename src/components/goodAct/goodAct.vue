@@ -49,11 +49,11 @@
 						<view class="chedui-rank-item-left">
 							<view class="chedui-rank-item-num" :class="`chedui-rank-item-num-${item.index}`">{{item.index}}</view>
 							<view class="chedui-avatar-box" :class="`chedui-avatar-box${item.index}`">
-								<image v-if="item.occupy" class="chedui-rank-avatar" :src="`${item.avatar&&item.avatar!=''?decodeURIComponent(item.avatar):defaultAvatar}`"/>
+								<image v-if="item.occupy" class="chedui-rank-avatar" :src="`${item.avatar&&item.avatar!=''&&!item.anonymous?decodeURIComponent(item.avatar):defaultAvatar}`"/>
 								<image v-else class="chedui-rank-avatar" :src="waitAvatar"/>
 							</view>
 							<view class="chedui-rank-name" v-if="item.occupy">
-								<view class="chedui-rank-n u-line-1">{{item.userName}}</view>
+								<view class="chedui-rank-n u-line-1">{{item.anonymous?"匿名用户":item.userName}}</view>
 								<view class="chedui-rank-jf u-line-1">积分 {{item.amount}}</view>
 							</view>
 						</view>

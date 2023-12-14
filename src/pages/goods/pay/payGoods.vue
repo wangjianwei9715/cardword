@@ -13,17 +13,8 @@
           <text class="item-name">商品金额</text>
           <text class="item-name">¥{{ totalAmount }}</text>
         </view>
-        <view class="yunfei-item">
-          <text class="item-name">优惠券</text>
-          <view class="item-name" v-if="getBitDisableCoupon">
-            {{ couponText }}
-          </view>
-          <view class="item-name" v-else @click="onClickCheckCoupon">
-            <text class="coupon-num">{{ couponText }}</text>
-            {{ checkCouponPrice > 0 ? "" : "张可用"}}
-            <view class="item-name-right"></view>
-          </view>
-        </view>
+        <!-- 优惠券 -->
+        <payCoupon ref="rPayCoupon" :disable="getBitDisableCoupon" :totalAmount="(totalAmount-allDiscount)" :totalPrice="getTotalPrice" @couponConfirm="onClickCouponConfirm"/>
         <view class="yunfei-item" v-show="freeNum > 0">
           <text class="item-name">免单优惠</text>
           <text class="item-name">- ¥{{freeDiscount}}</text>
@@ -40,6 +31,12 @@
           <text class="item-name">合计:</text>
           <view class="item-name">¥<view class="item-totalprice">{{getTotalPrice}}</view></view>
         </view>
+        <view class="yunfei-item">
+          <text class="item-name">匿名购买:</text>
+          <view class="item-name" @click="onClickAnonymity">
+            <view class="btn-anonymity" :class="{ 'btn-anonymityed': anonymity }"></view>
+          </view>
+        </view>
       </view>
 
       <payNeedKnow :check.sync="gmCheck"/>
@@ -47,6 +44,7 @@
       <view v-show="(goodsData.bit&32) == 32" class="kami-title" >
         <view @click="cuokaSet(!cuokaOpne)" class="kami-gx" :class="{ 'kami-check': cuokaOpne}"></view>商家代搓
       </view>
+
       <view class="bottom-content-box">
         <view class="bottom-content">
           <view class="heji-money-pay">
@@ -56,22 +54,10 @@
           <view class="btn-payment2" @click="onClickToPay()">去支付</view>
         </view>
       </view>
+
     </view>
     
-    <payment
-      :showPayMent="showPayMent"
-      :payChannel="payChannel"
-      :payPrice="getTotalPrice"
-      :countTime="countTime"
-      @pay="onClickPayGoods"
-      @cancelPay="onClickCancelPay"
-    />
-    <paymentCoupon
-      :showPayMentCoupon="showPayMentCoupon"
-      :couponList="couponList"
-      @couponConfirm="onClickCouponConfirm"
-      @cancelCoupon="showPayMentCoupon=false"
-    />
+    <payment :showPayMent="showPayMent" :payChannel="payChannel" :payPrice="getTotalPrice" :countTime="0" @pay="onClickPayGoods" @cancelPay="showPayMent=false" />
   </view>
 </template>
 
@@ -82,6 +68,7 @@ import BaseNode from "@/base/BaseNode.vue";
 import payAddress from "./component/payAddress.vue";
 import payInfo from "./component/payInfo.vue";
 import payNeedKnow from "./component/payNeedKnow.vue";
+import payCoupon from "./component/payCoupon.vue"
 //@ts-ignore
 import { KwwConfusion } from "@/net/kwwConfusion.js"
 const parseJSONIfPresent = (value:any) => {
@@ -91,7 +78,8 @@ const parseJSONIfPresent = (value:any) => {
   components:{
     payAddress,
     payInfo,
-    payNeedKnow
+    payNeedKnow,
+    payCoupon
   }
 })
 export default class ClassName extends BaseNode {
@@ -103,7 +91,6 @@ export default class ClassName extends BaseNode {
   gmCheck = false;
   // 支付方式组件相关
   showPayMent = false;
-  countTime = 0;
   maxNum = 0;
 
   // 优惠券组件相关
@@ -131,7 +118,8 @@ export default class ClassName extends BaseNode {
   payRandomTeamData:any = '';
   // 代搓卡
   cuokaOpne = false;
-  AD_id=null
+  AD_id=null;
+  anonymity=false
   onLoad(query: any) {
     if (!query.data) return;
 
@@ -163,6 +151,15 @@ export default class ClassName extends BaseNode {
     }
     this.initEvent();
   }
+  
+  public get goodType() : any {
+    return {
+      baodui:this.baoduiId !== 0,
+      selectCart:this.cartData !== '',
+      selectRan:this.selectRanId !== 0,
+      randomTeam:this.payRandomTeamData !== ''
+    }
+  }
   // 普通随机商品 非自选及选队随机
   public get normalRandomGoods() : boolean {
     return this.cartData == '' && this.payRandomTeamData == ''
@@ -189,15 +186,6 @@ export default class ClassName extends BaseNode {
       amount = (this.payNum - this.freeNum||0) * this.onePrice
     }
     return this.keepTwoDecimal(amount - this.couponTotalPrice);
-  }
-  // 优惠券
-  public get couponText() {
-    if (this.getBitDisableCoupon) {
-      return '此商品优惠券不可用';
-    } else {
-      const couponPrice = this.checkCouponPrice > 0 ? `-¥${this.checkCouponPrice}`  : this.couponNum;
-      return couponPrice;
-    }
   }
   // 优惠金额
   public get freeDiscount() {
@@ -238,6 +226,8 @@ export default class ClassName extends BaseNode {
     this.maxNum =  totalNum -(currentNum+lockNum);
     this.getOnePrice();
     this.getNoRichShow();
+    this.gmCheck = uni.getStorageSync("confirmPurchaseNotes") || false;
+    this.anonymity = uni.getStorageSync("anonymityState") || false;
     app.http.Get("me/delivery", {}, (res: any) => {
       if (res.list) {
         this.addressData = res.list.find((x:any)=>x.default) || res.list[0];
@@ -309,19 +299,19 @@ export default class ClassName extends BaseNode {
     if (this.getBitDisableCoupon || this.couponNumNo) {
       return;
     }
+    const { baodui, selectCart, selectRan, randomTeam } = this.goodType;
     // 获取可用优惠券数量
     let params: any = {
       goodCode: this.goodsData.goodCode,
     };
-    // 普通支付 || 自选球队
-    if (this.baoduiId != 0 ) {
+    if (baodui) {
       params.price = this.goodsData.price;
-    } else if (this.payRandomTeamData != '') {
+    } else if (randomTeam) {
       params.num = 1;
       params.price = this.keepTwoDecimal(this.getRandomTotalPrice)
-    } else if (this.cartData != "") {
+    } else if (selectCart) {
       params.price = this.cartData.amount;
-    } else if(this.selectRanId!=0){
+    } else if(selectRan){
       params.num = 1;
       params.price = this.keepTwoDecimal(this.payNum * this.onePrice)
     } else {
@@ -329,21 +319,9 @@ export default class ClassName extends BaseNode {
       if (Number(this.payNum) <= 0) return;
       params.price = this.keepTwoDecimal(this.payNum * this.onePrice)
     }
-    if(params.price<=0) return;
-    app.http.Get("me/coupon/condition/list", params, (res: any) => {
-      // 可用优惠券发生变化 清空已选择的优惠券
-      if (this.couponNum != 0 && this.couponNum != res.count) {
-        this.checkCouponList = [];
-        this.checkCouponPrice = 0;
-        this.couponTotalPrice = 0;
-      }
-      this.couponNum = res.count;
-      if (res.total == 0) {
-        this.couponNumNo = true;
-      }
-      this.couponList = res.list ?? [];
-      this.getConditionPrice();
-    });
+    this.$nextTick(()=>{
+      this.$refs.rPayCoupon.setData(params);
+    })
   }
   onClickToPay() {
     if (this.addressData == "") {
@@ -356,11 +334,6 @@ export default class ClassName extends BaseNode {
     }
     this.showPayMent = true;
   }
-  // 取消支付
-  onClickCancelPay() {
-    this.showPayMent = false;
-    this.countTime = 0;
-  }
   async onClickPayGoods(data: any) { 
     if (data == '') return; 
     uni.showLoading({ title: '加载中' });
@@ -368,40 +341,35 @@ export default class ClassName extends BaseNode {
     const { goodCode } = this.goodsData; 
     const ts = Math.floor(new Date().getTime()/1000);
     const userId = await app.user.getAppDataUserId();
+    const { baodui, selectCart, selectRan, randomTeam } = this.goodType;
     let snName = "ToPayForGood";
     let params: any = { 
       channelId: data.channelId ?? '', 
       channel: data.channel, 
       delivery: this.addressData.id, 
+      anonymous:this.anonymity,
       ts
     }; 
     let url = `good/topay/${goodCode}`;
-    if(this.baoduiId != 0||this.cartData != ""||this.payRandomPrice>0){
+    if(baodui||selectCart||this.payRandomPrice>0){
       url = `good/topay/${goodCode}/select`;
       snName = "ToPayForSelectGood"
     }
-    switch (true) { 
-      case this.baoduiId !== 0: 
-        // 包队 
-        params.teamId = this.baoduiId; 
-        params.num = 1; 
-        break; 
-      case this.cartData !== '': 
-        // 自选球队 
-        params.id = this.cartData.list.map((x:any) => { if (!x.soldOut && !x.lock) return x.noId; }); 
-        break; 
-      case this.payRandomTeamData !== '': 
-        // 选队随机 
-        params.list = this.payRandomTeamData.map((x:any) => { return { id: x.id, num: Number(x.num) }; });
-        url = `good/topay/${goodCode}/optional`; 
-        snName = "ToPayForOptionGood";
-        break; 
-      default: 
-        // 普通支付 
-        if (this.selectRanId !== 0) params.teamId = this.selectRanId;
-        params.num = Number(this.payNum); 
-        break; 
+
+    if(baodui){  //包队
+      params.teamId = this.baoduiId; 
+      params.num = 1; 
+    }else if(selectCart){  // 自选球队
+      params.id = this.cartData.list.map((x:any) => { if (!x.soldOut && !x.lock) return x.noId; }); 
+    }else if(randomTeam){ // 选队随机 
+      params.list = this.payRandomTeamData.map((x:any) => { return { id: x.id, num: Number(x.num) }; });
+      url = `good/topay/${goodCode}/optional`; 
+      snName = "ToPayForOptionGood";
+    }else{ // 普通支付
+      if (selectRan) params.teamId = this.selectRanId;
+      params.num = Number(this.payNum); 
     }
+
     params.sn = KwwConfusion.confirmOrder(ts,snName,userId,goodCode);
     if (uni.getSystemInfoSync().platform === 'android') { 
       params.nativeSdk = 'qmf_android'; 
@@ -471,43 +439,23 @@ export default class ClassName extends BaseNode {
   redirectToOrder(order:string){
     app.navigateTo.goOrderDetails(order,'&waitPay=true',true)
   }
-  // 选择优惠券
-  onClickCheckCoupon() {
-    if (this.couponNum > 0) {
-      this.showPayMentCoupon = true;
-    }
-  }
   // 确认选择优惠券
   onClickCouponConfirm(data: any) {
-    this.showPayMentCoupon = false;
-    if (data == "") return;
-    
     this.checkCouponList = data.list;
-    this.checkCouponPrice = data.price;
-    this.getConditionPrice();
-  }
-  getConditionPrice() {
-    if (this.checkCouponList == "") {
-      this.checkCouponList = [];
-      this.checkCouponPrice = 0;
-      this.couponTotalPrice = 0;
-      return;
-    }
-    let price = 0;
-    for (let i in this.checkCouponList) {
-      for (let t in this.couponList) {
-        if (this.checkCouponList[i] == this.couponList[t].id) {
-          price += Number(this.couponList[t].amount);
-        }
-      }
-    }
-    this.couponTotalPrice = price;
+    this.couponTotalPrice = data.totalPrice;
+    this.$nextTick(()=>{
+      this.$refs.rPayCoupon.refreshCouponList()
+    })
   }
   // 预测球队
   onClickGuessTeamCheck(index:number){
     if(this.guessCheckTeam!=index){
       this.guessCheckTeam = index;
     }
+  }
+  onClickAnonymity(){
+    uni.setStorageSync("anonymityState",!this.anonymity);
+		this.anonymity = !this.anonymity;
   }
   
 }
@@ -736,5 +684,14 @@ page {
 	background: url(@/static/userinfo/pay_gou.png) no-repeat center;
 	background-size: 100% 100%;
 	margin-right: 10rpx;
+}
+.btn-anonymity {
+  width: 28rpx;
+  height: 28rpx;
+  background: url(@/static/userinfo/weixuan@2x.png) no-repeat center/ 100% 100%;
+  margin-right: 10rpx;
+}
+.btn-anonymityed {
+  background: url(@/static/userinfo/pay_gou.png) no-repeat center/ 100% 100%;
 }
 </style>

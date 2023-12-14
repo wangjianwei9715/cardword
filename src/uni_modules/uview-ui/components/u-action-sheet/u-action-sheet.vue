@@ -66,9 +66,12 @@
 							>
 								<template v-if="!item.loading">
 									<text
-									    class="u-action-sheet__item-wrap__item__name"
-									    :style="[itemStyle(index)]"
-									>{{ item.name }}</text>
+										class="u-action-sheet__item-wrap__item__name"
+										:style="[itemStyle(index)]"
+									>
+									<image v-if="item.icon" style="width:30rpx;height:30rpx;margin-right:10rpx;margin-bottom:-4rpx" :src="item.icon"/>
+									{{ item.name }}
+									</text>
 									<text
 									    v-if="item.subname"
 									    class="u-action-sheet__item-wrap__item__subname"

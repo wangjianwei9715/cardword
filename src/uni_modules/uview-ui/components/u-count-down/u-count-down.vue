@@ -1,7 +1,7 @@
 <template>
 	<view class="u-count-down">
 		<slot>
-			<text class="u-count-down__text">{{ formattedTime }}</text>
+			<text class="u-count-down__text" :style="{fontSize:fontSize}">{{ formattedTime }}</text>
 		</slot>
 	</view>
 </template>

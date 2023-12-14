@@ -55,6 +55,7 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import { getGoodsImg, parsePic } from "../../tools/util";
+	import { anonymousInfo } from "./manager/detailsManager"
 	const Tab = {
 		0:'拼团结果',
 		1:'拆卡报告'
@@ -113,8 +114,8 @@
 			const { cardNoParams } = this;
 			app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/result`,{...cardNoParams,q:this.searchQ},(res:any)=>{
 				if(res.list){
-					const list = res.list.map(({dicKey,...rest}:any)=>{
-						const {userName,avatar} = res.dic[dicKey];
+					const list = res.list.map(({anonymous,dicKey,...rest}:any)=>{
+						const {userName,avatar} = anonymous ? anonymousInfo : res.dic[dicKey];
 						return {...rest,userName,avatar}
 					})
 					this.teamDataList = this.teamDataList.concat(list)
@@ -128,7 +129,10 @@
 			const { listParams } = this;
 			app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/cardNoResult`,{...listParams,q:this.searchQ},(res:any)=>{
 				if(res.list){
-					this.teamDataList = this.teamDataList.concat(res.list)
+					const list = res.list.map(({anonymous,userName,...rest}:any)=>{
+						return {...rest,userName:anonymous?"匿名用户":userName}
+					})
+					this.teamDataList = this.teamDataList.concat(list)
 				}
 				if(listParams.pageIndex>=res.totalPage){
 					this.noMore = true

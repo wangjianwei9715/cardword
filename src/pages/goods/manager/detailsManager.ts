@@ -1,3 +1,17 @@
+/*
+ * @FilePath: \jichao_app_2\src\pages\goods\manager\detailsManager.ts
+ * @Author: wjw
+ * @Date: 2023-11-03 14:49:34
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-12-07 14:10:09
+ * Copyright: 2023 .
+ * @Descripttion: 
+ */
+import { app } from "@/app";
+export const anonymousInfo = {
+	userName:"匿名用户",
+	avatar:app.defaultAvatar
+}
 export default class detailsManager {
     private static instance: detailsManager;
 	/**
@@ -56,5 +70,30 @@ export default class detailsManager {
 			{name:'拼团份数',desc:`${goodsData.totalNum}份`},
 			{name:'拼团时间',desc:`${(goodsData.overAt-goodsData.startAt)/86400}天`},
 		]
+	}
+	// 购买记录
+	getBuyRecord(goodCode:string,cb:Function){
+		app.http.GetWithCrypto(`dataApi/good/${goodCode}/latest_sales`,{},async ({list,dic}:any)=>{
+			if(list){
+				const data = list.slice(0, 5).map(({dicKey,time,num,anonymous}:any)=>{
+					const {userName,avatar} = anonymous ? anonymousInfo : dic[dicKey];
+					return {time,num,userName,avatar}
+				});
+				cb(data)
+			}
+		})
+	}
+	// 商品精彩时刻
+	reqSeriesCards(goodCode:string,cb:Function) {
+		app.http.Get(`dataApi/cardCheck/good/rarityCard/list/${goodCode}`, {}, ({list}: any) => {
+			cb(list||[])
+		})
+	}
+	queryCoupon(data:any,cb:Function){
+		// 商品非在售 或 禁用优惠券
+		if((data.state!=1&&data.state!=0) || (data.bit & 1) == 1) return;
+		app.http.Get(`dataApi/coupon/merchant/online/good/${data.goodCode}/brief`,{},(res:any)=>{
+			cb(res.list||[])
+		})
 	}
 }

@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="bottom-gm">
-			<view class="bottom-gm-title" @click="gmCheck = !gmCheck">
+			<view class="bottom-gm-title" @click="onClickCheck">
 			<view class="bottom-gm-gx" :class="{ 'bottom-gm-check': gmCheck }"></view>购买须知:
 			</view>
 			<view class="bottom-gm-tips">
@@ -27,6 +27,10 @@
 		gmCheck!:Boolean
 
 		operationCardShow = false;
+		onClickCheck(){
+			uni.setStorageSync("confirmPurchaseNotes",!this.gmCheck);
+			this.gmCheck = !this.gmCheck;
+		}
 		onClickAddress() {
 			uni.navigateTo({
 				url: "/pages/userinfo/setting_addresses?type=order",

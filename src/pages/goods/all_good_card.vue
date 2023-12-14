@@ -8,7 +8,8 @@
 				@click="onClickTranslate()">
 			</image>
 		</view>
-
+		<!-- 卡密奖励 -->
+		<noAward ref="rNoAward"/>
 		<view class="item-goodtitle">{{goodTitle}}</view>
 		<table class="rules-table">
 			<thead>
@@ -34,9 +35,10 @@
 		Component
 	} from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
+	import noAward from "./component/noAward.vue"
 	//@ts-ignore
 	import { KwwConfusion } from "@/net/kwwConfusion.js"
-	@Component({})
+	@Component({ components:{noAward} })
 	export default class ClassName extends BaseNode {
 		goodCode = '';
 		goodType = 0;
@@ -61,6 +63,10 @@
 				if(query.teamId){
 					this.teamId = Number(query.teamId)
 				}
+				this.$nextTick(()=>{
+					// 拼团商品卡密奖励轮播图
+					this.$refs.rNoAward.getLamp(this.goodCode)
+				})
 				this.reqNewData()
 			}
 		}

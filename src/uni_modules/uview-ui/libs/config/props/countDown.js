@@ -11,6 +11,7 @@ export default {
     // u-count-down 计时器组件
     countDown: {
         time: 0,
+        fontSize:'15px',
         format: 'HH:mm:ss',
         autoStart: true,
         millisecond: false

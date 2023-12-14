@@ -82,7 +82,7 @@
 		goodCode = '';
 		orderCode = '';
 		teamDataList:any = [];
-		teamDataList2 = [];
+		teamDataList2:any = [];
 		getGoodsImg = getGoodsImg;
 		dateFormat = dateFormat;
 		parsePic = parsePic;
@@ -112,22 +112,19 @@
 			}
 		}
 		getTpCardNo(){
-			if(this.noMore){
-				return;
-			}
-			const { cardNoParams } = this;
-			app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/cardNo`,{...cardNoParams,q:this.searchTetxt},(res:any)=>{
+			if(this.noMore) return;
+			app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/cardNo`,{...this.cardNoParams,q:this.searchTetxt},(res:any)=>{
 				if(res.list){
-					this.teamDataList = this.teamDataList.concat(res.list)
+					const list = this.listAnonymous(res.list);
+					this.teamDataList = this.teamDataList.concat(list)
 				}
 				this.noMore = res.isFetchEnd;
-				cardNoParams.fromId = this.teamDataList[this.teamDataList.length-1].id;
+				this.cardNoParams.fromId = this.teamDataList[this.teamDataList.length-1].id;
 			})
 		}
 		getTpCardNoResult(){
-			if(this.noMore){
-				return;
-			}
+			if(this.noMore) return;
+
 			let params = {
 				q:this.searchTetxt,
 				pageIndex:this.currentPage,
@@ -135,7 +132,8 @@
 			}
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/report',params,(res:any)=>{
 				if(res.list){
-					this.teamDataList2 = this.teamDataList2.concat(res.list)
+					const list = this.listAnonymous(res.list);
+					this.teamDataList2 = this.teamDataList2.concat(list)
 				}else{
 					this.noMore = true
 				}
@@ -143,6 +141,11 @@
 					this.noMore = true
 				}
 				this.currentPage++;
+			})
+		}
+		listAnonymous(list:any[]){
+			return list.map(({anonymous,userName,...rest}:any)=>{
+				return {...rest,userName:anonymous?"匿名用户":userName}
 			})
 		}
 		onClickBack() {

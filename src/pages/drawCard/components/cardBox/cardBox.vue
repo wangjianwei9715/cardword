@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-17 15:05:16
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-11-14 16:32:56
+ * @LastEditTime: 2023-11-21 15:22:52
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -180,4 +180,18 @@
 		transform: translate3d(0,-3px,0);
 		}
 	}
+	.flip-vertical-right {
+		animation: flip-vertical-right 1s linear;
+	}
+	@keyframes flip-vertical-right {
+		0% {
+			-webkit-transform: rotateY(0);
+					transform: rotateY(0);
+		}
+		100% {
+			-webkit-transform: rotateY(360deg);
+					transform: rotateY(360deg);
+		}
+	}
+
 </style>

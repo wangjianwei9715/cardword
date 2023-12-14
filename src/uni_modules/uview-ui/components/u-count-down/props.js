@@ -5,6 +5,11 @@ export default {
             type: [String, Number],
             default: uni.$u.props.countDown.time
         },
+        // 文字size
+        fontSize: {
+            type: String,
+            default: uni.$u.props.countDown.fontSize
+        },
         // 时间格式，DD-日，HH-时，mm-分，ss-秒，SSS-毫秒
         format: {
             type: String,

@@ -69,18 +69,8 @@
 					</view>
 				</view>
 			</view>
-			<view class="luckyBar" @click="onClickLuckyBag" v-if="goodsData.bit&&(goodsData.bit&256)==256">
-				<view class="text"><text>{{luckyData.luckyWeight}}</text>概率掉落福袋</view>
-				<!-- <view class="flex1"></view> -->
-				<view class="flex1" v-if="luckyData.luckyList" style="position: relative;height: 64rpx;justify-content: flex-end;display: flex;">
-					<view v-for="(item,index) in luckyData.luckyList" style="position: absolute;height: 64rpx;justify-content: flex-end;flex-wrap: nowrap;">
-						<image mode="aspectFit" :class="{hide:index!=nowShowLuckyIndex,show:index===nowShowLuckyIndex}" :src="parsePic(pic.pic)" class="pic" v-for="(pic) in item"></image>
-					</view>
-					
-				</view>
-				<view class="luckyBar-right"></view>
-			</view>
-			<!-- <view class="a">55555</view> -->
+			<!-- 卡密奖励 -->
+			<noAward ref="rNoAward"/>
 			<!-- 活动展示 -->
 			<goodAct :goodsData="goodsData" :showChedui.sync="showCheduiDraw" :cheduiData="cheduiData" :userData="userData" />
 			
@@ -232,8 +222,8 @@
 				可免单{{goodsData.freeNoNum}}组
 			</view>
 		</view>
-		<bagPop ref="bagPop"></bagPop>
 		
+		<customerService :show.sync="customerServiceShow" :kefu="goodsData.kefu" :goodCode="goodCode" :kefuWechat="goodsData.publisher&&goodsData.publisher.kefu_wechat"/>
 	</view>
 </template>
 
@@ -246,11 +236,13 @@
 	import { parsePic,secondsFormat } from "@/tools/util";
 	import { Goods, Share } from "./utils/class";
 	import detailsManager from "./manager/detailsManager"
-	import bagPop from "../act/luckyBag/components/bagPop.vue"
+	import noAward from "./component/noAward.vue"
+	import customerService from "./component/customerService.vue"
 	const Manager =  detailsManager.getIns();
 	@Component({
 		components:{
-			bagPop
+			noAward,
+			customerService
 		}
 	})
 	export default class ClassName extends BaseNode {
@@ -291,8 +283,7 @@
 		seriesCardEnd = true;
 		AD_id=null;
 		referer="";//来源
-		nowShowLuckyIndex:number=0
-		luckyData:any={}
+		customerServiceShow=false;
 		onLoad(query: any) {
 			// #ifndef MP
 			const goodCode = query.goodCode ||query.id
@@ -301,16 +292,7 @@
 			this.AD_id = query.AD_id || null;
 			this.referer = query.referer;
 			this.getGoodData(()=>{
-				// 购买记录
-				this.getBuyRecord()
-				// 查询可领取优惠券
-				setTimeout(()=>{
-					this.queryCoupon()
-				},200)
-				setTimeout(()=>{
-					// 商品精彩时刻
-					this.reqSeriesCards()
-				},500)
+				this.getOrtherData()
 			});
 			// #endif
 		}
@@ -323,7 +305,7 @@
 		//   下拉刷新
 		onPullDownRefresh() {
 			this.getGoodData(() => {
-				this.getBuyRecord()
+				this.getOrtherData()
 				uni.stopPullDownRefresh();
 			})
 		}
@@ -346,12 +328,7 @@
 		getGoodData(cb?:Function) {
 			const goodCode = this.goodCode;
 			clearInterval(this.countDownData.countInterval);
-			app.http.GetWithCrypto(`dataApi/good/${goodCode}/detail`, {referer:this.firstShow?this.referer:"PageRefresh"}, (data: any) => {
-				if (!data.good) {
-					uni.showToast({ title: '无此商品', icon: 'none' })
-					app.navigateTo.switchTab(0)
-					return;
-				}
+			app.http.GetWithCrypto(`dataApi/good/${goodCode}/1/detail`, {referer:this.firstShow?this.referer:"PageRefresh"}, (data: any) => {
 				this.favorType = data.favorite>0;
 				this.goodsData = data.good;
 				this.payChannel = data.payChannel || [];
@@ -364,20 +341,6 @@
 						this.cheduiData = res
 					})
 				}
-				if((bit&256)==256&&!this.luckyData.goodCode){
-					app.http.Get(`dataApi/activity/nt/luckyBag/preview/${goodCode}`,{},(res:any)=>{
-						this.luckyData.goodCode=goodCode
-						this.luckyData.luckyWeight = res.data.weight
-						res.list=res.data.list || []
-						let list=[]
-						for (var i = 0; i < res.list.length; i += 2) {
-						    list.push(res.list.slice(i, i + 2));
-						}
-						this.luckyData.luckyList=list
-						if(list.length) this.nowShowLuckyIndex=0
-						if(list.length>1) this.startLuckyTransition()
-					})
-				}
 				// 倒计时
 				this.countDownData.countDown = state == 0 ? (leftsec-(overAt-startAt)) : leftsec;
 				this.getGoodsImage();
@@ -386,39 +349,28 @@
 				cb && cb()
 			})
 		}
-		getBuyRecord(){
+		async getOrtherData(){
+			// 拼团商品卡密奖励轮播图
+			this.$refs.rNoAward.getLamp(this.goodCode)
 			// 购买记录
-			if (this.goodsData.state != 1) return;
-
-			app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/latest_sales`,{},({list,dic}:any)=>{
-				if(list){
-					this.buyRecordList = list.map(({dicKey,time,num}:any)=>{
-						const {userName,avatar} = dic[dicKey];
-						return {time,num,userName,avatar}
-					}).filter((x:any,index:number)=>index<5);
-				}
-			})
-		}
-		queryCoupon(){
-			const data = this.goodsData;
-			// 商品非在售 或 禁用优惠券
-			if((data.state!=1&&data.state!=0) || (data.bit & 1) == 1) return;
-			app.http.Get(`dataApi/coupon/merchant/online/good/${data.goodCode}/brief`,{},(res:any)=>{
-				this.getCouponList = res.list||[]
-			})
-		}
-		getProgress() {
-			app.http.Get(`dataApi/good/${this.goodCode}/progress`, {}, ({data}:any) => {
-				this.goodsData.currentNum = data.currentNum;
-				this.goodsData.totalNum = data.totalNum;
-				this.goodsData.lockNum = data.lockNum;
-			})
-		}
-		reqSeriesCards() {
-			app.http.Get(`dataApi/cardCheck/good/rarityCard/list/${this.goodCode}`, {}, ({list}: any) => {
-				this.cardList = list || []
-				this.seriesCardEnd = !( list && list.length>0)
-			})
+			if (this.goodsData.state == 1) {
+				Manager.getBuyRecord(this.goodCode,(list:any)=>{
+					this.buyRecordList = list;
+				})
+			};
+			// 查询可领取优惠券
+			setTimeout(()=>{
+				Manager.queryCoupon(this.goodsData,(list:any)=>{
+					this.getCouponList = list
+				})
+			},200)
+			// 商品精彩时刻
+			setTimeout(()=>{
+				Manager.reqSeriesCards(this.goodCode,(list:any)=>{
+					this.cardList = list
+					this.seriesCardEnd = !( list && list.length>0)
+				})
+			},500)
 		}
 		/**
 		 * 设置商品图片
@@ -489,13 +441,17 @@
 		}
 		onClickTipBtn(item: any) {
 			if (item.id == 1) {
-				app.platform.hasLoginToken(()=>{
-					let params = {
-						agentExten:this.goodsData.kefu||'',
-						businessParam:'goodCode:'+this.goodCode
-					}
-					app.platform.heliService(params)
-				})
+				if(this.goodsData.publisher.kefu_wechat){
+					this.customerServiceShow=true;
+				}else{
+					app.platform.hasLoginToken(()=>{
+						const params = {
+							agentExten:this.goodsData.kefu||'',
+							businessParam:'goodCode:'+this.goodCode
+						}
+						app.platform.heliService(params)
+					})
+				}
 			}
 			if (item.id == 2) {
 				uni.navigateTo({ url: '/pages/userinfo/order_myCard?code=&goodCode=' + this.goodCode })
@@ -782,7 +738,7 @@
 		navigateToConfirmOrder(params=''){
 			const AD_id = this.AD_id?`&AD_id=${this.AD_id}`:''
 			uni.navigateTo({
-				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}${params}${AD_id}`
+				url: `pay/payGoods?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}${params}${AD_id}`
 			})
 		}
 		onClickteamRandomCancel() {
@@ -801,19 +757,6 @@
 				swiperData.swiperCurrent = index == 0 ? 0 : swiperData.carouselLength;
 			}
 		}
-		onClickLuckyBag(){
-			this.$refs.bagPop.showPop(this.goodCode)
-		}
-		startLuckyTransition(){
-			setInterval(()=>{
-				if (this.nowShowLuckyIndex==this.luckyData.luckyList.length-1){
-					this.nowShowLuckyIndex=0
-					return
-				}
-				this.nowShowLuckyIndex++
-			},4000)
-		}
-		
 	}
 </script>
 
@@ -1898,61 +1841,6 @@
 			font-weight: 600;
 			color: #FFFFFF;
 			margin-right: 10rpx;
-		}
-	}
-	.luckyBar{
-		width: 710rpx;
-		height:93rpx;
-		background-size: 100% 100%;
-		background-image: url("/static/act/luckyBag/goodsLucky.png");
-		// margin-bottom: 6rpx;
-		display: flex;
-		align-items: center;
-		position: relative;
-		margin-top: -8rpx;
-		box-sizing: border-box;
-		padding-top: 7rpx;
-		.text{
-			font-size: 26rpx;
-			font-family: PingFang SC;
-			// font-weight: bold;
-			color: #333333;
-			margin-left: 144rpx;
-			
-			text{
-				font-size: 32rpx;
-				// color: #fdb927;
-				font-weight: bold;
-			}
-		}
-		.flex1{
-			flex: 1;
-		}
-		.pic{
-			width: 64rpx;
-			height: 64rpx;
-			// background: #333333;
-			border-radius: 2rpx;
-			margin-left: 16rpx;
-			// transition: all 0.3s;
-			transition: opacity 1s;
-			opacity:0;
-		}
-		&-right {
-			width: 11rpx;
-			height:17rpx;
-			background:url(@/static/goods/v2/icon_right_new.png) no-repeat center;
-			background-size: 100% 100%;
-			margin-right: 31rpx;
-			margin-left: 30rpx;
-		}
-		.hide{
-			opacity: 0;
-			// transform: scale(0);
-		}
-		.show{
-			opacity: 1;
-			// transform: scale(1);
 		}
 	}
 </style>
