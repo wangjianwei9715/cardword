@@ -21,23 +21,6 @@ class GamePlay {
     operaShow = false
 }
 /**
- * 倒计时相关数据
- * @countInterval		倒计时方法
- * @countDown           倒计时秒数
- * @countDay 			天数
- * @countHour			小时
- * @countMinute			分钟
- * @countSecond			秒数
- */
-class CountDown {
-    countInterval = "";
-    countDown = "";
-    countDay = "";
-    countHour = "";
-    countMinute = "";
-    countSecond = "";
-}
-/**
  * 轮播相关数据
  * @carouselLength 		{Number}	轮播图数量（不包含原封图）
  * @swiperCurrent 		{Number}	轮播当前位置
@@ -144,7 +127,6 @@ class ChoiceTR {
 };
 export const Goods = {
     GamePlay : ():GamePlay => new GamePlay(),
-    CountDown : ():CountDown => new CountDown(),
     Swiper : ():Swiper => new Swiper(),
     Pic : ():Pic => new Pic(),
     Plan : ():Plan => new Plan(),

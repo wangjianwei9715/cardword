@@ -2,13 +2,16 @@
   <view class="content">
     <!-- 地址 -->
     <payAddress :addressData="addressData"/>
-
     <view class="order-detail" v-if="goodsData.pic">
       <payInfo :goodsData="goodsData" :normalRandomGoods="normalRandomGoods" :baoduiId="baoduiId" :payNum.sync="payNum" :maxNum="maxNum" :randomTeam.sync="payRandomTeamData" :cartData="cartData" :baoduiName="baoduiName" :onePrice="keepTwoDecimal(onePrice)" @getOnePrice="getOnePrice"/>
       
       <confirmorderGuess v-if="getBitDisableGuess"  :freeNum="freeNum>=payNum?(freeNum-payNum):0" :checkTeam.sync="guessCheckTeam" :teamList="guessList" :lastGuess="lastGuess" @onScrolltolower="onScrolltolower" />
 
       <view class="yunfei-info top-order" >
+        <view class="yunfei-item">
+          <text class="item-name">运费</text>
+          <text class="item-name fontBold" >包邮</text>
+        </view>
         <view class="yunfei-item">
           <text class="item-name">商品金额</text>
           <text class="item-name">¥{{ totalAmount }}</text>
@@ -17,19 +20,11 @@
         <payCoupon ref="rPayCoupon" :disable="getBitDisableCoupon" :totalAmount="(totalAmount-allDiscount)" :totalPrice="getTotalPrice" @couponConfirm="onClickCouponConfirm"/>
         <view class="yunfei-item" v-show="freeNum > 0">
           <text class="item-name">免单优惠</text>
-          <text class="item-name">- ¥{{freeDiscount}}</text>
+          <text class="item-name discounts">- ¥{{freeDiscount}}</text>
         </view>
         <view class="yunfei-item" v-show="cartData == ''&&(goodsData.price - onePrice > 0)">
           <text class="item-name">优惠</text>
-          <text class="item-name">- ¥{{allDiscount}}</text>
-        </view>
-        <view class="yunfei-item">
-          <text class="item-name">运费</text>
-          <text class="item-name">包邮</text>
-        </view>
-        <view class="yunfei-item">
-          <text class="item-name">合计:</text>
-          <view class="item-name">¥<view class="item-totalprice">{{getTotalPrice}}</view></view>
+          <text class="item-name discounts">- ¥{{allDiscount}}</text>
         </view>
         <view class="yunfei-item">
           <text class="item-name">匿名购买:</text>
@@ -47,11 +42,12 @@
 
       <view class="bottom-content-box">
         <view class="bottom-content">
-          <view class="heji-money-pay">
-            <text class="heji-text-b">合计:</text>
-            <view class="heji-money2-b">¥<text>{{getTotalPrice}}</text></view>
+          <view class="total-price">
+            ¥<text class="price-text">{{ filterPrice(getTotalPrice).integer }}</text>
+						<text class="decimal"
+								v-if="filterPrice(getTotalPrice).decimal">{{ filterPrice(getTotalPrice).decimal }}</text>
           </view>
-          <view class="btn-payment2" @click="onClickToPay()">去支付</view>
+          <view class="btn-payment" @click="onClickToPay()">提交订单</view>
         </view>
       </view>
 
@@ -457,7 +453,22 @@ export default class ClassName extends BaseNode {
     uni.setStorageSync("anonymityState",!this.anonymity);
 		this.anonymity = !this.anonymity;
   }
-  
+  filterPrice(price: number) {
+    let data = {
+      integer: 0,
+      decimal: 0,
+    }
+    if (!price) return data
+    const priceArr: any = String(price).split('.')
+    if (priceArr.length == 1) {
+      data.integer = priceArr[0]
+      return data
+    }
+    return {
+      integer: priceArr[0],
+      decimal: '.' + priceArr[1]
+    }
+  }
 }
 </script>
 
@@ -476,7 +487,7 @@ page {
   padding-bottom: calc(150rpx) !important;
   padding-bottom: calc(150rpx + constant(safe-area-inset-bottom)) !important;
   padding-bottom: calc(150rpx + env(safe-area-inset-bottom)) !important;
-  padding: 14rpx
+  padding: 20rpx
 }
 .order-detail {
   width: 100%;
@@ -489,7 +500,7 @@ page {
 
 // 
 .item-name {
-  font-size: 25rpx;
+  font-size: 26rpx;
   font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #333333;
@@ -502,12 +513,6 @@ page {
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 600;
   color: #ff504f;
-}
-.item-name .item-totalprice{
-  font-size: 27rpx;
-  font-family: PingFangSC-Medium;
-  font-weight: bold;
-  color: #333333;
 }
 .item-name-right {
   width: 10rpx;
@@ -579,18 +584,22 @@ page {
   color: #88878C;
   line-height: 28rpx;
 }
-
-.heji-money2-b {
+.total-price{
   height:40rpx;
-  font-size: 29rpx;
+  font-size: 36rpx;
   font-family: PingFangSC-Regular;
   font-weight: 500;
-  color: $btn-red;
+  color: #FA1545;
   line-height: 40rpx;
   margin-left: 12rpx;
 }
-.heji-money2-b text{
-  font-size: 42rpx;
+.total-price .price-text{
+  font-size: 48rpx;
+  font-family: PingFangSC-Regular;
+  font-weight: 500;
+}
+.total-price .decimal{
+  font-size: 38rpx;
   font-family: PingFangSC-Regular;
   font-weight: 500;
 }
@@ -619,25 +628,23 @@ page {
 
 .heji-money-pay {
   height:60rpx;
-  margin-left: 16rpx;
   display: flex;
   align-items: flex-end;
   line-height: 80rpx;
 }
 
 .btn-payment {
-  width: 360rpx;
-  height: 88rpx;
-  background: #cecfd3;
-  border-radius: 4rpx;
+  width: 200rpx;
+  height:84rpx;
+  border-radius: 5rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: $font-28;
-  font-family: PingFangSC-Medium, PingFang SC;
-  font-weight: 600;
-  color: #ffffff;
-  line-height: 40rpx;
+  font-size: 32rpx;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 500;
+  color: #FFFFFF;
+  background: linear-gradient(90deg, #FA1545 0%, #CF004F 100%);
 }
 
 .btn-payment2 {
@@ -693,5 +700,14 @@ page {
 }
 .btn-anonymityed {
   background: url(@/static/userinfo/pay_gou.png) no-repeat center/ 100% 100%;
+}
+.discounts{
+  font-size: 26rpx;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 600;
+  color: #FA1545;
+}
+.fontBold{
+  font-weight: bold;
 }
 </style>

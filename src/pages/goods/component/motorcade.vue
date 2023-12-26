@@ -1,33 +1,63 @@
 <template>
-	<view class="good-act-content" v-if="goodsActData!=''">
+	<view class="good-act-content" v-if="(cheduiData.list&&cheduiData.list!='')">
 		
 		<view class="detail-act-box">
-			<view class="act-box" @click.prevent="onClickActHelp" v-show="goodsActData!=''">
-				<view class="act-box-name">活动</view>
-				<view class="act-box-desc" >
-					<view class="act-box-desc-item u-line-1" v-for="(item,index) in goodsActData" :key="index">
-						<view class="detail-act-desc" :class="{'discount-box':item.indexOf('猜球队')!=-1}">
-							<view class="detail-act-guess" v-if="item.indexOf('猜球队')!=-1"></view>{{item}}
-						</view>
-					</view>
+			<view v-show="cheduiData.list" class="act-box" @click.prevent="cheduiShowDrawer=true;isPullDown(false)">
+				<view class="box-name">
+					<image class="icon-name" src="@/static/goods/detail/chedui.png"/>
+					车队排行
+				</view>
+				<view class="act-box-desc flex-between">
+					<view class="act-box-desc-item flex-between">前{{cheduiData.totalNum}}名送礼品</view>
+					<u-notice-bar style="padding:0;max-width:350rpx;text-align:right" :fontSize="'24rpx'" :text="rewardList" direction="column" icon="" color="#A27339" bgColor="rgba(0,0,0,0)" :duration="3000" :flexEnd="true"></u-notice-bar>
 				</view>
 				<view class="detail-act-right"></view>
 			</view>
-			<view class="act-box" v-if="goodsData.remark">
-				<view class="act-box-name">备注</view>
-				<view class="act-box-desc remark-border">
-					<view class="act-box-desc-item u-line-1">
-						<view class="detail-act-desc">{{goodsData.remark}}</view>
+		</view>
+		<!-- 车队排行榜 -->
+		<bottomDrawer :showDrawer="showChedui" :title="'车队排行榜'" @closeDrawer="cheduiShowDrawer=false;isPullDown(true)" :needSafeArea="true" :padding="'0rpx 0rpx'">
+			<view class="drawer-header">
+				<view class="drawer-header-name">上车最多的前{{cheduiData.totalNum}}名玩家送礼</view>
+				<image style="width:27rpx;height:26rpx" src="@/static/goods/v2/icon_help.png" @click="cheduiHelpShowDrawer=true"></image>
+			</view>
+			<view class="drawer-center-list">
+				<view class="drawer-chedui" v-for="(item,index) in cheduiData.list" :key="index">
+					<view class="chedui-rank-item">
+						<view class="chedui-rank-item-left">
+							<view class="chedui-rank-item-num" :class="`chedui-rank-item-num-${item.index}`">{{item.index}}</view>
+							<view class="chedui-avatar-box" :class="`chedui-avatar-box${item.index}`">
+								<image v-if="item.occupy" class="chedui-rank-avatar" :src="`${item.avatar&&item.avatar!=''&&!item.anonymous?decodeURIComponent(item.avatar):defaultAvatar}`"/>
+								<image v-else class="chedui-rank-avatar" :src="waitAvatar"/>
+							</view>
+							<view class="chedui-rank-name" v-if="item.occupy">
+								<view class="chedui-rank-n u-line-1">{{item.anonymous?"匿名用户":item.userName}}</view>
+								<view class="chedui-rank-jf u-line-1">积分 {{item.amount}}</view>
+							</view>
+						</view>
+						<view class="chedui-rank-item-reward u-line-2" :class="{'font-bold':item.index<=3}">{{item.name}}</view>
 					</view>
 				</view>
 			</view>
-		</view>
+			<view class="drawer-bottom">
+				<view class="chedui-rank-item">
+					<view class="chedui-rank-item-left">
+						<view class="chedui-rank-item-num">{{cheduiData.myRank>0?cheduiData.myRank:'-'}}</view>
+						<view class="chedui-avatar-box" :class="`chedui-avatar-box${cheduiData.myRank}`">
+							<image class="chedui-rank-avatar" :src="decodeURIComponent(userData.avatar)"/>
+						</view>
+						<view class="chedui-rank-name">
+							<view class="chedui-rank-n u-line-1">{{userData.name||''}}</view>
+							<view class="chedui-rank-jf u-line-1">积分 {{cheduiData.myAmount}}</view>
+						</view>
+					</view>
+					<view class="chedui-rank-item-reward u-line-1">{{cheduiData.myRank>0?cheduiData.list[cheduiData.myRank-1].name:'未上榜'}}</view>
+				</view>
+			</view>
+		</bottomDrawer>
 
-		<!-- 底部弹窗 -->
-		<bottomDrawer :showDrawer="showDrawer" :title="'活动规则'" @closeDrawer="onClickCloseDrawer">
-			<view class="drawer-helpmsg" v-for="(item,index) in [...drawerMsg]" :key="index">
-				<view class="drawer-help-title">{{item.title}}</view>
-				<view class="drawer-help-content" v-html="item.content"></view>
+		<bottomDrawer :showDrawer="cheduiHelpShowDrawer" :title="'车队排行榜'" @closeDrawer="cheduiHelpShowDrawer=false" :needSafeArea="true">
+			<view class="drawer-helpmsg" v-for="(item,index) in [helpOne,...cheduiHelp]" :key="index">
+				<view class="drawer-help-cd">{{item.content}}</view>
 			</view>
 		</bottomDrawer>
 	</view>
@@ -37,23 +67,29 @@
 	import { Component, Prop,Vue,Watch,PropSync } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { app } from "@/app";
-	import { guessRules,cheduiHelp } from "@/tools/DataRules";
+	import { cheduiHelp } from "@/tools/DataRules";
 	@Component({})
 	export default class ClassName extends BaseComponent {
-		guessRules:any = guessRules;
 		cheduiHelp = cheduiHelp;
 		@Prop({ default: [] })
 		goodsData: any;
-		// 底部抽屉
-		goodsActData:any = [];
-		showDrawer = false;
-		drawerMsg:any = [];
-		onceDActivity = false;
+		@Prop({ default: {} })
+		cheduiData: any;
+		@Prop({ default: {} })
+		userData: any;
+		@PropSync("showChedui",{
+			type:Boolean
+		}) cheduiShowDrawer!: Boolean;
+
 		rewardList = [];
-		@Watch('goodsData')
-		onGoodsDataChanged(val: any, oldVal: any) {
+		cheduiHelpShowDrawer = false;
+		helpOne = {};
+		defaultAvatar = app.defaultAvatar;
+		waitAvatar = '../../static/goods/v2/waitAvatar.png'
+		@Watch('cheduiData')
+		onCheduiDataChanged(val: any, oldVal: any) {
 			if(val){
-				this.getGoodsActData(this.goodsData)
+				this.setChedui()
 			}
 		}
 		created() {
@@ -62,29 +98,13 @@
 				return this.replace(reg, e);
 			}
 		}
-		// 获取活动内容
-		getGoodsActData(data:any){
-			this.goodsActData = data.dActivity||[];
-			if((this.goodsData.bit & 8) == 8){
-				this.goodsActData.push('猜球队 赢免单');
+		setChedui(){
+			this.helpOne = {content:`1.本活动仅对当前商品${this.goodsData.goodCode}生效，累计上车金额（含使用优惠券金额）最多的前${this.cheduiData.totalNum}名玩家，获得相应的榜单礼品`};
+			if(this.cheduiData.list){
+				this.rewardList = this.cheduiData.list.map((x:any)=>{
+					return x.name
+				}).slice(0,5)
 			}
-		}
-		onClickActHelp(){
-			if(!this.onceDActivity){
-				app.http.Get('dataApi/good/'+this.goodsData.goodCode+'/dActivity',{},(res:any)=>{
-					this.onceDActivity = true;
-					if(res.list){
-						this.drawerMsg = [...this.drawerMsg,...res.list]
-					}
-					if((this.goodsData.bit & 8) == 8){
-						this.drawerMsg.push(this.guessRules);
-					}
-				})
-			}
-			this.showDrawer = true;
-		}
-		onClickCloseDrawer() {
-			this.showDrawer = false;
 		}
 		isPullDown(isPull:boolean) {
 			//#ifdef APP-PLUS
@@ -107,35 +127,41 @@
 
 <style lang="scss">
 	.good-act-content{
-		width: 710rpx;
-		border-radius: 3rpx;
-		background:#fff;
-		margin-bottom: 14rpx;
+		width: 100%;
+		height: 42rpx;
+		background: #FAEEDD;
+		border-radius: 4rpx;
+		box-sizing: border-box;
+		margin-top: 24rpx;
 	}
 	.detail-act-box{
 		width: 100%;
 		box-sizing: border-box;
-		padding:7rpx 30rpx;
 		.act-box{
 			width: 100%;
-			min-height:76rpx;
+			height: 42rpx;
+			box-sizing: border-box;
+			padding:0 20rpx 0 4rpx;
 			display: flex;
-			.act-box-name{
-				height:76rpx;
-				width:82rpx;
-				font-size: 24rpx;
-				font-family: PingFangSC-Semibold;
-				font-weight: 600;
-				color: #D9D9D9;
+			align-items: center;
+			.box-name{
+				width: 122rpx;
+				height:34rpx;
 				display: flex;
 				align-items: center;
+				box-sizing: border-box;
+				padding-left: 2rpx;
+				background: linear-gradient(90deg, #DEC18B 0%, #C99C49 100%);
+				font-size: 20rpx;
+				font-family: YouSheBiaoTiHei;
+				color: #FFFFFF;
 			}
-			.chedui-name{
-				color:#FA1545
+			.icon-name{
+				width: 32rpx;
+				height:32rpx;
 			}
 			.act-box-desc{
 				width: 550rpx;
-				min-height:76rpx;
 			}
 			.flex-between{
 				display: flex;
@@ -147,10 +173,10 @@
 				align-items: center;
 				box-sizing: border-box;
 				font-size: 24rpx;
-				font-family: PingFang SC;
+				font-family: PingFangSC, PingFang SC;
 				font-weight: 400;
-				color: #333333;
-				margin:20rpx 0;
+				color: #A27339;
+				padding-left: 16rpx;
 			}
 		}
 		.detail-act-index{
@@ -191,13 +217,6 @@
 	.discount-box{
 		display: flex;
 		align-items: center;
-	}
-	.detail-act-guess{
-		width: 130rpx;
-		height:28rpx;
-		margin-right: 20rpx;
-		background:url(../../pages/act/static/guess/guess_icon.png) no-repeat center;
-		background-size: 100% 100%;
 	}
 	
 	.detail-discount{
@@ -246,14 +265,7 @@
 		white-space: pre-wrap;
 		margin-bottom: 15rpx;
 	}
-	.detail-act-right{
-		width: 11rpx;
-		height:17rpx;
-		background:url(../../static/goods/v2/icon_right_new.png) no-repeat center;
-		background-size: 100% 100%;
-		margin-left: 10rpx;
-		margin-top: 30rpx;
-	}
+	
 	.drawer-header{
 		width: 100%;
 		height:60rpx;
@@ -390,7 +402,10 @@
 	.hasAct{
 		border-bottom: 1rpx solid #E6E6E6;
 	}
-	.remark-border{
-		border-top: 2rpx solid #F0F0F0;
+	.detail-act-right{
+		width: 12rpx;
+		height:20rpx;
+		background:url(@/static/goods/detail/chedui_right.png) no-repeat center /100% 100%;
+		margin-left: 12rpx;
 	}
 </style>

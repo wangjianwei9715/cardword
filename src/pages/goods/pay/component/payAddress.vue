@@ -3,14 +3,14 @@
 		<view class="header-left">
 			<view class="icon-address"></view>
 			<view v-if="addressData != ''" class="header-address">
-				<view class="address-desc" >{{ addressData.name }}{{ addressData.phone }}</view >
 				<view class="address-name" >{{ addressData.district }}{{ addressData.detail }}</view >
+				<view class="address-desc" >{{ addressData.name }}{{ addressData.phone }}</view >
 			</view>
 			<view v-else class="header-address">
 				<view class="address-tips">请选择收货地址</view>
 			</view>
 		</view>
-		<button class="header-right">&#xe470;</button>
+		<button class="header-right"></button>
 		<image class="header-order-line"  src="@/static/goods/v2/buy.png" />
 	</view>
 </template>
@@ -56,26 +56,19 @@
 	min-height: 100rpx;
 	box-sizing: border-box;
 	display: flex;
-	align-items: center;
 }
 .header-right {
-	width: 72rpx;
-	height: 72rpx;
-	background-color: rgba(0, 0, 0, 0);
-	font-family: uniicons;
-	font-size: 48rpx;
-	font-weight: normal;
-	font-style: normal;
-	line-height: 72rpx;
-	color: #c4c3c8;
-	margin: 0;
+	width: 12rpx;
+	height:20rpx;
+	background:url(@/static/pay/v2/right.png) no-repeat center / 100% 100%
 }
 .icon-address {
-	width: 31rpx;
-	height: 42rpx;
-	background: url(@/static/goods/icon_address.png) no-repeat center;
+	width: 28rpx;
+	height: 36rpx;
+	background: url(@/static/pay/v2/address.png) no-repeat center;
 	background-size: 100% 100%;
-	margin-right: 24rpx;
+	margin-right: 10rpx;
+	margin-top: 10rpx;
 }
 .header-address {
 	width: 570rpx;
@@ -86,17 +79,17 @@
 }
 .address-desc {
 	width: 100%;
-	font-size: 31rpx;
+	font-size: 24rpx;
 	font-family: PingFangSC-Regular;
 	font-weight: 400;
-	color: #333333;
+	color: rgba(0,0,0,0.9);
 }
 .address-name {
 	width: 100%;
-	font-size: 27rpx;
-	font-family: PingFangSC-Regular;
-	font-weight: 400;
-	color: #88878C;
+	font-size: 32rpx;
+	font-family: PingFangSC-Medium;
+	font-weight: 500;
+	color: rgba(0,0,0,0.9);
 }
 .address-tips {
 	height: 100rpx;

@@ -336,7 +336,7 @@
 			this.orderDesc.price.desc ='¥'+this.keepTwoDecimal(data.price+data.discount+(data.coupon?data.coupon:0));
 			this.orderDesc.discount.desc ='- ¥'+data.discount;
 			this.orderDesc.mCoupon.desc ='- ¥'+(data.merchantCoupon?data.merchantCoupon:0);
-			this.orderDesc.oCoupon.desc ='- ¥'+(data.coupon?(data.coupon-data.merchantCoupon):0);
+			this.orderDesc.oCoupon.desc ='- ¥'+(data.coupon?this.keepTwoDecimal(data.coupon-data.merchantCoupon):0);
 			if(data.payInfo){
 				for (const key in this.orderInfo) {
 					if (Object.prototype.hasOwnProperty.call(data.payInfo, key)) {

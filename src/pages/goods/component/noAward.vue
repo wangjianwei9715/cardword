@@ -1,7 +1,7 @@
 <template>
 	<view v-if="awardList.length">
-		<view class="cardCode" @click="onClickAward">
-			<view class="text"><text>搓卡密掉好物</text></view>
+		<view class="cardCode" :style="{width}" @click="onClickAward">
+			<view class="text"><text>搓卡密 掉好物</text></view>
 			<view class="flex1" style="position: relative;height: 64rpx;justify-content: flex-end;display: flex;">
 				<swiper class="swiper" autoplay="true" circular="true">
 					<swiper-item class="swiper-item" v-for="(item,index) in awardList" :key="index">
@@ -12,12 +12,12 @@
 			<view class="cardCode-right"></view>
 		</view>
 		
-		<awardPopup ref="rAwardPopup"/>
+		<awardPopup ref="rAwardPopup" :price="price" :state="state" @goBuy="onGoBuy"/>
 	</view>
 </template>
 
 <script lang="ts">
-	import { Component } from "vue-property-decorator";
+	import { Component,Prop } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { parsePic } from "@/tools/util";
 	import awardPopup from "./awardPopup.vue"
@@ -28,6 +28,12 @@
 		}
 	})
 	export default class ClassName extends BaseComponent {
+		@Prop({ default: "710rpx" })
+		width?: string;
+		@Prop({ default: 0 })
+		price?: number;
+		@Prop({ default: 0 })
+		state?: number;
 		parsePic=parsePic;
 		awardList:any = [];
 		goodCode = "";
@@ -54,6 +60,9 @@
 		onClickAward(){
 			this.$refs.rAwardPopup.showAwardPopup(this.goodCode)
 		}
+		onGoBuy(){
+			this.$emit("buy")
+		}
 		
 	}
 </script>
@@ -61,22 +70,21 @@
 <style lang="scss" scoped>
 	.cardCode{
 		width: 710rpx;
-		height:93rpx;
+		height:92rpx;
 		background-size: 100% 100%;
-		background-image: url("/static/act/luckyBag/goodsLucky.png");
+		background-image: url("/static/goods/detail/noAward.png");
 		// margin-bottom: 6rpx;
 		display: flex;
 		align-items: center;
 		position: relative;
-		margin-top: -8rpx;
 		box-sizing: border-box;
-		padding-top: 7rpx;
 		.swiper{
 			position: absolute;
 			width: 240rpx;
 			height: 64rpx;
 			justify-content: flex-end;
 			flex-wrap: nowrap;
+			background:rgba(0,0,0,0);
 			.swiper-item{
 				display: inline-flex;
 				justify-content: flex-end;
@@ -84,15 +92,15 @@
 		}
 		.text{
 			font-size: 26rpx;
-			font-family: PingFang SC;
+			font-family: ArialBold;
 			// font-weight: bold;
 			color: #333333;
-			margin-left: 144rpx;
-			
+			margin-left: 100rpx;
 			text{
 				font-size: 32rpx;
-				// color: #fdb927;
+				color: #7380A1;
 				font-weight: bold;
+
 			}
 		}
 		.flex1{
