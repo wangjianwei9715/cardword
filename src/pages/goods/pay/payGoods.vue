@@ -65,6 +65,7 @@ import payAddress from "./component/payAddress.vue";
 import payInfo from "./component/payInfo.vue";
 import payNeedKnow from "./component/payNeedKnow.vue";
 import payCoupon from "./component/payCoupon.vue"
+import { filterPrice } from "@/tools/util";
 //@ts-ignore
 import { KwwConfusion } from "@/net/kwwConfusion.js"
 const parseJSONIfPresent = (value:any) => {
@@ -79,6 +80,7 @@ const parseJSONIfPresent = (value:any) => {
   }
 })
 export default class ClassName extends BaseNode {
+  filterPrice = filterPrice;
   addressData: any = [];
   payNum = 1;
   goodsData: { [x: string]: any } = [];
@@ -452,22 +454,6 @@ export default class ClassName extends BaseNode {
   onClickAnonymity(){
     uni.setStorageSync("anonymityState",!this.anonymity);
 		this.anonymity = !this.anonymity;
-  }
-  filterPrice(price: number) {
-    let data = {
-      integer: 0,
-      decimal: 0,
-    }
-    if (!price) return data
-    const priceArr: any = String(price).split('.')
-    if (priceArr.length == 1) {
-      data.integer = priceArr[0]
-      return data
-    }
-    return {
-      integer: priceArr[0],
-      decimal: '.' + priceArr[1]
-    }
   }
 }
 </script>

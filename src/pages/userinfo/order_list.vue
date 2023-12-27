@@ -11,9 +11,10 @@
 					<input class="search-input" type="text" v-model="listParams.q" placeholder="搜索" confirm-type="search"
 						@confirm="onInputSearch" />
 				</view>
+				<view class="icon-kf" @click="onClickHeliService"></view>
 			</view>
 			<view class="header-tab">
-				<tabc :tabc="orderTab" :tabsCheck="orderTabCheck" @tabsClick="onClickListTabs"></tabc>
+				<u-tabs :itemStyle="{width:'125rpx',height:'90rpx',lineHeight:'86rpx',padding:0,background:'#fff'}" :activeStyle="activeStyle" :inactiveStyle="inactiveStyle" lineColor="#FA1545" lineHeight="2" :list="orderTab" :current="orderTabCheck" @click="onClickListTabs"></u-tabs>
 			</view>
 		</view>
 
@@ -52,6 +53,18 @@
 	}
 	@Component({})
 	export default class ClassName extends BaseNode {
+		activeStyle={
+			"font-size": "28rpx",
+			"font-family": "PingFangSC-Medium",
+			"font-weight": 500,
+			"color":" #333333",
+		}
+		inactiveStyle={
+			"font-size": "24rpx",
+			"font-family": "PingFang SC",
+			"font-weight": 400,
+			"color":" #999999",
+		}
 		orderTab = [
 			{ id: 0, name: "全部" },
 			{ id: 1, name: "待支付" },
@@ -80,7 +93,7 @@
 		payChannel: any = [];
 		onLoad(query: any) {
 			if (query.type) {
-				this.orderTabCheck = query.type;
+				this.orderTabCheck = Number(query.type);
 			}
 			this.againReqNewData();
 		}
@@ -198,7 +211,7 @@
 		onClickBack() {
 			app.navigateTo.navigateBack()
 		}
-		onClickListTabs(id: number) {
+		onClickListTabs({id}:any) {
 			if (id == this.orderTabCheck) {
 				return;
 			}
@@ -249,6 +262,9 @@
 				}
 			});
 		}
+		onClickHeliService(){
+			app.platform.heliService({agentExten:''})
+		}
 	}
 </script>
 
@@ -271,7 +287,7 @@
 
 	.header-top {
 		width: 100%;
-		height: 88rpx;
+		height: 98rpx;
 		display: flex;
 		box-sizing: border-box;
 		padding: 0 32rpx 0 0;
@@ -281,17 +297,20 @@
 	}
 
 	.header-search {
-		width: 626rpx;
-		height: 64rpx;
-		background: #f5f5f8;
+		width:570rpx;
+		height: 72rpx;
+		background: #F6F6F6;
 		border-radius: 4rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		position: relative;
-		border-radius: 29rpx;
 	}
-
+	.icon-kf{
+		width: 40rpx;
+		height:34rpx;
+		background: url(@/static/goods/detail/kf.png) no-repeat center / 100% 100%;
+	}
 	.header-back {
 		width: 80rpx;
 		height: 88rpx;
@@ -302,10 +321,8 @@
 
 	.header-tab {
 		width: 100%;
-		height: 90rpx;
 		margin-top: -10rpx;
 		box-sizing: border-box;
-		border-bottom: 1px solid #f1f1f4;
 	}
 
 	.order-list {
@@ -317,24 +334,23 @@
 	.search-input {
 		width: 626rpx;
 		height: 64rpx;
-		background: #f5f5f8;
+		background: #F6F6F6;
 		border-radius: 4rpx;
 		font-size: 24rpx;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
-		color: #14151a;
-		padding-left: 76rpx;
-		border-radius: 29rpx;
+		color: #DDDDDD;
+		padding-left: 64rpx;
 	}
 
 	.search-icon {
-		width: 28rpx;
-		height: 28rpx;
-		background: url(../../static/index/sousuo@2x.png) no-repeat center;
+		width: 26rpx;
+		height: 27rpx;
+		background: url(@/static/cardForum/sousuo@2x.png) no-repeat center;
 		background-size: 100% 100%;
 		position: absolute;
-		left: 28rpx;
+		left: 16rpx;
 		top: 50%;
-		margin-top: -14rpx;
+		margin-top: -13rpx;
 	}
 </style>

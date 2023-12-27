@@ -62,7 +62,7 @@
 <script lang="ts">
 	import { Component, Prop, Vue } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
-	import { getGoodsImg } from "@/tools/util";
+	import { getGoodsImg,filterPrice } from "@/tools/util";
 	import { app } from "@/app";
 	@Component({})
 	export default class ClassName extends BaseComponent {
@@ -84,6 +84,7 @@
 		@Prop({ default: false })
 		nomore?: any;
 		getGoodsImg = getGoodsImg;
+		filterPrice = filterPrice;
 		screenHeight = uni.getSystemInfoSync().windowHeight
 		showPlan: any = []
 		valid = true;
@@ -91,22 +92,6 @@
 			
 		}
 		mounted() { //挂载到实例上去之后调用
-		}
-		filterPrice(price: number) {
-			let data = {
-				integer: 0,
-				decimal: 0,
-			}
-			if (!price) return data
-			const priceArr: any = String(price).split('.')
-			if (priceArr.length == 1) {
-				data.integer = priceArr[0]
-				return data
-			}
-			return {
-				integer: priceArr[0],
-				decimal: '.' + priceArr[1]
-			}
 		}
 		onClickJumpUrl(id: any) {
 			this.$emit("send", id);
