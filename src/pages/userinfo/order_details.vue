@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-26 15:18:35
+ * @LastEditTime: 2023-12-27 11:35:45
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -21,10 +21,9 @@
 				</view>
 			</view>
 		</view>
-		
-		<view class="order-box">
+		<view class="order-box" v-if="orderData.good">
 			<!-- 商品信息 -->
-			<view class="order-index" v-if="orderData.seller"> 
+			<view class="order-index"> 
 				<view class="order-index-header">
 					<view class="header-left">
 						<muqian-lazyLoad class="seller-image" :src="orderData.seller.avatar?decodeURIComponent(orderData.seller.avatar):defaultAvatar" mode="aspectFill" :borderRadius="'50%'"></muqian-lazyLoad>

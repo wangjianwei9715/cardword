@@ -1,12 +1,4 @@
-<!--
- * @FilePath: \jichao_app_2\src\pages\userinfo\order_myCard.vue
- * @Author: wjw
- * @Date: 2023-12-14 14:35:27
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-27 10:10:42
- * Copyright: 2023 .
- * @Descripttion: 
--->
+
 <template>
 	<view class="box-content">
 		<navigationbarTabs ref="rNavigationbarTabs" :titles="titles" :current="headerCurrent" backColor="#fff" backgroundColor="rgba(0,0,0,0)" @tabsClisk="onTabsClick"/>
@@ -95,7 +87,7 @@
 			<view >
 				<view class="buyer-title">【赠】</view>
 				<view class="card-box" >
-					<view class="card-index">
+					<view class="card-index" @click="onClickGoMall">
 						<view class="buyerbox-index">
 							<view class="title">卡币x{{typeTabCurrent==1?orderPoint:buyerData.totalPoint}}</view>
 							<view class="desc">前往卡币商城</view>
@@ -264,6 +256,9 @@
 			app.http.Get(`${urlFront}${code}/noAwards`,params,(res:any)=>{
 				this.buyerData.noAwards = res.list || []
 			})
+		}
+		onClickGoMall(){
+			app.navigateTo.goMallIndex()
 		}
 	}
 </script>

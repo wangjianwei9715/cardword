@@ -153,7 +153,7 @@
 				padding-left: 2rpx;
 				background: linear-gradient(90deg, #DEC18B 0%, #C99C49 100%);
 				font-size: 20rpx;
-				font-family: YouSheBiaoTiHei;
+				font-family: HYLiLiangHeiJ;
 				color: #FFFFFF;
 			}
 			.icon-name{

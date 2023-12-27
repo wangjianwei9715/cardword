@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view id="pageTopContainer" class="header-banner" :style="{ backgroundColor: `rgba(${navColor},${scrollTopPercent})` }">
+		<view id="pageTopContainer" class="navigation-header" :style="{ backgroundColor: `rgba(${navColor},${scrollTopPercent})` }">
 			<view class="content" :style="'height:' + statusBarHeight + 'px'"></view>
 			<view class="tab-header">
 				<view class="icon-back" v-show="showBack" :style="{color:scrollTopPercent>=1?'#333':backColor}" @click="onClickBack">&#xe582;</view>
@@ -121,7 +121,7 @@ export default class navigationbar extends BaseComponent {
 </script>
 
 <style lang="scss">
-.header-banner {
+.navigation-header {
 	width: 100%;
 	background: #fff;
 	position: fixed;

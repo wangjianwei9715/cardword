@@ -1,7 +1,7 @@
 <template>
 	<view v-if="awardList.length">
 		<view class="cardCode" :style="{width}" @click="onClickAward">
-			<view class="text"><text>搓卡密 掉好物</text></view>
+			<view class="text">搓卡密 掉好物</view>
 			<view class="flex1" style="position: relative;height: 64rpx;justify-content: flex-end;display: flex;">
 				<swiper class="swiper" autoplay="true" circular="true">
 					<swiper-item class="swiper-item" v-for="(item,index) in awardList" :key="index">
@@ -91,17 +91,10 @@
 			}
 		}
 		.text{
-			font-size: 26rpx;
-			font-family: ArialBold;
-			// font-weight: bold;
-			color: #333333;
+			font-family: HYLiLiangHeiJ;
+			font-size: 34rpx;
+			color: #7380A1;
 			margin-left: 100rpx;
-			text{
-				font-size: 32rpx;
-				color: #7380A1;
-				font-weight: bold;
-
-			}
 		}
 		.flex1{
 			flex: 1;
