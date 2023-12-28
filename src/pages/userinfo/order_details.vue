@@ -236,7 +236,7 @@
 						}
 					}
 				});
-			},200)
+			},this.clickToPay?200:0)
 
 			this.onEventUI('orderchange',()=>{
 				this.initEvent();

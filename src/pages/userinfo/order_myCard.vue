@@ -3,7 +3,7 @@
 	<view class="box-content">
 		<navigationbarTabs ref="rNavigationbarTabs" :titles="titles" :current="headerCurrent" backColor="#fff" backgroundColor="rgba(0,0,0,0)" @tabsClisk="onTabsClick"/>
 		<view class="header">
-			<view class="search-box">
+			<view class="search-box" v-show="showCardNo">
 				<view class="search-icon"></view>
 				<input class="search-input" type="text"  v-model="searchText" placeholder="搜索球员、球队"  confirm-type="search"  @confirm="reqSearchList" />
 				<view class="search-close" @click="searchText='',reqSearchList()"></view>
@@ -28,7 +28,7 @@
 		<view v-if="showCardNo" class="list-index">
 			<view v-if="typeTabCurrent==2&&listSort==''">
 				<view class="card-box" v-for="(item,index) in cardList" :key="index">
-					<view class="order-title">订单编号{{item.goodOrder}}</view>
+					<view class="order-title">订单号：{{item.goodOrder}}</view>
 					<view class="card-index" v-for="(items,indexs) in item.nos" :key="indexs">
 						<cardNoInfo :data="items" :type="pintuanType"/>
 						<muqian-lazyLoad class="card-pic" v-if="items.state==2" :src="items.pic"  preview/>
@@ -42,6 +42,7 @@
 					<muqian-lazyLoad class="card-pic" v-if="items.state==2" :src="items.pic"  preview/>
 				</view>
 			</view>
+			<empty v-show="empty"/>
 		</view>
 		<view v-else class="list-index">
 			<view v-if="buyerData.hits.length">
@@ -148,6 +149,7 @@
 		orderNum = 0;
 		orderPoint = 0;
 		playInfo:any = {};
+		empty=false
 		onLoad(query:any) {
 			this.orderCode = query.code;
 			this.goodCode = query.goodCode;
@@ -223,6 +225,7 @@
 				if(data.list){
 					this.cardList = this.cardList.concat(data.list);
 				}
+				this.empty = this.cardList.length==0;
 				this.debug && app.platform.refrain(this.cardList);
 				this.typeTabClick = false;
 				this.currentPage++;
@@ -235,7 +238,8 @@
 		onClickMoreNos(item:any){
 			const params = {
 				pageIndex:Math.floor(item.nos.length/30)+1,
-				pageSize:30
+				pageSize:30,
+				q:this.searchText
 			}
 			app.http.Get(`me/orderInfo/buyer/${item.goodOrder}/nos`,params,(res:any)=>{
 				item.nos = item.nos.concat(res.list)
@@ -280,7 +284,7 @@
 		font-family: PingFangSC, PingFang SC;
 		font-weight: 400;
 		color: #BBBBBB;
-		margin-bottom: 8rpx;
+		margin-bottom: 12rpx;
 	}
 	.more-text{
 		width: 100%;
