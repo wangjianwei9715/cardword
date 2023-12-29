@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-25 14:48:13
+ * @LastEditTime: 2023-12-29 11:20:38
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -197,7 +197,7 @@
 			margin-bottom: 20rpx;
 		}
 		.popup-listitem:last-child{
-			margin-bottom: 100rpx;
+			margin-bottom: 200rpx;
 		}
 		.popup-header-rank{
 			font-size: 25rpx;
@@ -269,7 +269,11 @@
 		.popup-list-info{
 			width: 450rpx;
 			min-height: 200rpx;
+			display: inline-flex;
+			flex-wrap: wrap;
+			align-content: space-between;
 			.popup-list-name{
+				width: 100%;
 				font-size: 28rpx;
 				height:40rpx;
 				font-family: PingFangSC, PingFang SC;
@@ -277,6 +281,7 @@
 				color: #333333;
 			}
 			.popup-list-text{
+				width: 100%;
 				font-size: 24rpx;
 				height:40rpx;
 				font-family: PingFangSC, PingFang SC;
@@ -285,11 +290,14 @@
 			}
 			.popup-code-name{
 				width: 100%;
+				min-height: 60rpx;
 				font-size: 24rpx;
 				font-family: PingFangSC, PingFang SC;
 				font-weight: 400;
 				color: #666666;
-				margin-top: 30rpx;
+				margin-top: 60rpx;
+				display: inline-flex;
+				align-items: flex-end;
 			}
 		}
 	}
