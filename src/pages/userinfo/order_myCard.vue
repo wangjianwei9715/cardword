@@ -149,10 +149,14 @@
 		orderNum = 0;
 		orderPoint = 0;
 		playInfo:any = {};
-		empty=false
+		empty=false;
 		onLoad(query:any) {
-			this.orderCode = query.code;
+			this.orderCode = query.code || '';
 			this.goodCode = query.goodCode;
+			if(query.goodJump){
+				this.typeTabCurrent = 2;
+				this.typeTab = [ {name:'全部订单',type:2} ]
+			}
 			this.pintuanType = Number(query.pintuanType);
 			this.sortData = myCardGoodsType(this.pintuanType);
 			this.playInfo = cardPlayInfo(this.pintuanType)

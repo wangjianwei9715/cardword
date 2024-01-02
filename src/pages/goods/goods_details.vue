@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-25 17:32:34
+ * @LastEditTime: 2024-01-02 09:56:46
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -458,7 +458,7 @@
 				}
 			}
 			if (item.id == 2) {
-				uni.navigateTo({ url: '/pages/userinfo/order_myCard?code=&goodCode=' + this.goodCode })
+				uni.navigateTo({ url:`/pages/userinfo/order_myCard?goodCode=${this.goodCode}&pintuanType=${this.goodsData.pintuan_type}&type=0&goodJump=true` })
 			}
 		}
 		onClickShops() {

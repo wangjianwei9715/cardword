@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-27 11:35:45
+ * @LastEditTime: 2024-01-02 10:17:00
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -14,7 +14,7 @@
 		<view class="header">
 			<view class="header-statename" @click="onClickStateDesc">
 				{{orderData.state==1?'订单将于'+countDownStr+'后关闭':orderData.desc}}
-				<view v-if="orderData.state==2">
+				<view v-if="orderData.state==2&&orderData.good.state==1">
 					<view class="good-progress">
 						<view class="progressMask" :style="{width:(100-goodsManaager.listPlan(orderData.good,'num'))+'%'}"></view>
 					</view>
@@ -290,7 +290,7 @@
 		}
 		initEvent(cb?:Function){
 			const {orderCode} = this;
-			app.http.Get(`me/orderInfo/buyer/${orderCode}`,{},(res:any)=>{
+			app.http.Get(`me/orderInfo/buyer/${orderCode}/detail`,{},(res:any)=>{
 				const data = res.data;
 				this.onceLoad = false;
 				this.orderData = data
