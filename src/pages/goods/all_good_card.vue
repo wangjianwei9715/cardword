@@ -1,16 +1,15 @@
 <template>
 	<view class="content">
-		<view class="tab-header" v-if="goodType<4||goodType>10">
-			<view class="search-icon"></view>
-			<input class="search-input" type="text"  v-model="searchText" placeholder="搜索球员、球队"  confirm-type="search"  @confirm="onClickSearch" />
-			
-			<image v-if="translate" src="../../static/goods/icon_fanyi.png" style="width: 42rpx; height: 40rpx; margin: 0 28rpx;"
-				@click="onClickTranslate()">
-			</image>
+		<transitionNav ref='transitionNav' :whiteTitle="true" :needIconShadow="false" title="卡密列表"/>
+		<view class="bg-image">
+			<view class="tab-header" v-if="goodType<4||goodType>10">
+				<view class="search-icon"></view>
+				<input class="search-input" type="text"  v-model="searchText" placeholder="搜索球员、球队"  confirm-type="search"  @confirm="onClickSearch" />
+				<view class="search-close" @click="searchText='',onClickSearch()"></view>
+			</view>
 		</view>
 		<!-- 卡密奖励 -->
-		<noAward ref="rNoAward"/>
-		<view class="item-goodtitle">{{goodTitle}}</view>
+		<noAward ref="rNoAward" width="750rpx"/>
 		<table class="rules-table">
 			<thead>
 				<tr class="item-content">
@@ -77,6 +76,10 @@
 			}else{
 				this.reqNewData() 
 			}
+		}
+		onPageScroll(data: any) {
+			//@ts-ignore
+			this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll(data)
 		}
 		reqNewData(cb?:Function) {
 			// 获取更多商品
@@ -161,38 +164,57 @@
 <style lang="scss">
 	$font-22:22rpx;
 	$font-24:24rpx;
-
+	.bg-image{
+		width: 750rpx;
+		height:300rpx;
+		background: url(@/static/goods/detail/card-bg.png) no-repeat top /100% 626rpx;
+		box-sizing: border-box;
+		padding-top: 186rpx;
+	}
 	.tab-header {
-		width: 100%;
-		height: 104rpx;
+		width: 678rpx;
+		height: 74rpx;
 		position: relative;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		box-sizing: border-box;
-		padding: 0 20rpx;
 		z-index: 10;
+		margin:0 auto;
+		background: rgba(255,255,255,0.4);
+		border-radius: 5rpx;
+		padding:0 20rpx;
+		opacity: 0.6;
 	}
 	.search-icon{
-		width: 28rpx;
-		height:28rpx;
-		background:url(../../static/index/sousuo@2x.png) no-repeat center;
+		width: 32rpx;
+		height:32rpx;
+		background:url(@/static/goods/detail/search.png) no-repeat center;
 		background-size:100% 100%;
 		position: absolute;
-		left:48rpx;
+		left:20rpx;
 		top:50%;
-		margin-top: -14rpx;
+		margin-top: -16rpx;
+	}
+	.search-close{
+		width: 32rpx;
+		height:32rpx;
+		background:url(@/static/goods/detail/search-close.png) no-repeat center;
+		background-size:100% 100%;
+		position: absolute;
+		right:20rpx;
+		top:50%;
+		margin-top: -16rpx;
 	}
 	.search-input{
 		width: 100%;
 		height:64rpx;
-		background: #F5F5F8;
 		border-radius: 4rpx;
 		font-size: 24rpx;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
-		color: #14151A;
-		padding-left:76rpx ;
+		color: rgba(255,255,255,0.4);
+		padding-left:48rpx ;
 	}
 	.item-goodtitle{
 		width: 100%;
@@ -207,9 +229,10 @@
 		padding:20rpx ;
 	}
 	.item-content{
-		background: #F6F7FB;
+		background: #FFFFFF;
+		height:60rpx
 	}
-
+	
 	.title-middle {
 		font-size: 26rpx;
 		font-family: PingFangSC-Regular;
@@ -223,15 +246,16 @@
 		background: #F0F0F2;
 	}
 	.title-middle3 {
-		background: #FCFCFC;
+		background: #FFFFFF;
 	}
 	.text-name {
 		width: 100%;
+		height:60rpx;
 		box-sizing: border-box;
 		text-align: center;
-		font-size: 27rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		font-size: 24rpx;
+		font-family: PingFangSC, PingFang SC;
+		font-weight: 600;
 		color: #333333;
 	}
 	.rules-table{
@@ -246,7 +270,9 @@
 		font-weight: 400;
 		color: #34363A;
 		text-align: center;
-		border:1px solid #E5E5E5;
 		padding:10rpx ;
+	}
+	.item-content td{
+		height:60rpx !important;
 	}
 </style>

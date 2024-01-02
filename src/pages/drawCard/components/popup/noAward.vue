@@ -1,23 +1,21 @@
-<!--
- * @Author: lsj a1353474135@163.com
- * @Date: 2023-11-13 16:59:19
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-05 11:25:15
- * @FilePath: \jichao_app_2\src\pages\drawCard\components\popup\noAward.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
-	<u-popup mode="center" :closeOnClickOverlay="false" :overlayOpacity="0.7" bgColor="transparent" :show="show" @close="onClose">
+	<u-popup mode="center" :overlayOpacity="0.7" bgColor="transparent" :show="show" @close="onClose">
 		<view class="popup-content">
-			<view class="title">恭喜，您得到{{award.name}}！</view>
-			<muqian-lazyLoad class="image" mode="aspectFit" :src="$parsePic(award.pic)"></muqian-lazyLoad>
-			<view class="tips">
-				<image class="icon" src="/static/act/luckyBag/i.png" />
-				该奖励{{award.distribute==1?"拼团成功后":"立即"}}发放
+			<view class="title"></view>
+			<view class="center">
+				<view class="luck">Good luck</view>
+				<view class="close" @click="onClose"></view>
+				<view class="pic-box">
+					<muqian-lazyLoad class="image" mode="aspectFit" :src="$parsePic(award.pic)"></muqian-lazyLoad>
+				</view>
+				<view class="name u-line-2">{{award.name}}</view>
+				<view class="tips">
+					<image class="icon" src="/static/drawCard/noAward/help.png" />
+					活动奖品{{award.distribute==1?"拼团成功后":"立即"}}发放
+				</view>
 			</view>
-			<view class="btn" @click="onClickBtn">我知道了</view>
-			<view class="tips tips-btn" @click="onClickNoShow">
-				本商品不再提醒
+			<view class="noshow" @click="onClickNoShow">
+				此商品不再提醒
 			</view>
 		</view>
 	</u-popup>
@@ -56,61 +54,96 @@ export default class ClassName extends BaseComponent {
 @mixin font($size) {
 	font-size: $size;
 	font-family: PingFang SC;
-	font-weight: 600;
+	font-weight: 400;
 	color: #FFFFFF;
 }
 
 .popup-content {
 	@include lineBox;
-	width: 588rpx;
+	width: 838rpx;
+	height:1040rpx;
+	background:url(@/static/drawCard/noAward/popup.png) no-repeat center /100% 100%;
+	position: relative;
 	flex-direction: column;
 	align-items: center;
-
+	padding-top: 114rpx;
+	box-sizing: border-box;
 	.title {
-		@include font(42rpx)
+		width: 752rpx;
+		height:286rpx;
+		background:url(@/static/drawCard/noAward/title.png) no-repeat center /100% 100%;
+		position: absolute;
+		top:-74rpx;
+		left:56rpx
 	}
-	.tipsTitle{
-		color:#fff;
-		font-weight:bold;
-		@include font(30rpx);
-		position:relative;
-		bottom:12rpx;
-	}
-	.image {
-		width: 292rpx;
-		height: 235rpx;
-		transform: scale(1.2);
-		margin: 76rpx 0 100rpx 0
-	}
-
-	.btn {
-		@include font(36rpx);
-		width: 480rpx;
-		height: 80rpx;
-		background: #fdb927;
-		border-radius: 3rpx;
-		text-align: center;
-		line-height: 80rpx;
-		margin-top:30rpx;
-	}
-
-	.tips {
-		@include lineBox;
-		font-size: 24rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
-		color: #E6E6E6;
-		justify-content: center;
-		align-items: center;
-		.icon {
-			width: 24rpx;
-			height: 24rpx;
-			margin-right: 10rpx;
+	.center{
+		width: 600rpx;
+		height:800rpx;
+		position: relative;
+		box-sizing: border-box;
+		padding-top: 100rpx;
+		.luck{
+			width: 220rpx;
+			height:54rpx;
+			font-size: 44rpx;
+			font-family: HYLiLiangHeiJ;
+			color: rgba(255,255,255,0.4);
+			line-height: 54rpx;
+			text-shadow: inset 0px 0px 18px rgba(250,25,72,0.44);
+			position: absolute;
+			left:0;
+			top:-2rpx;
+			text-align: center;
+		}
+		.close{
+			width: 56rpx;
+			height:56rpx;
+			background:url(@/static/drawCard/noAward/close.png) no-repeat center /100% 100%;
+			position: absolute;
+			top:38rpx;
+			right:26rpx
+		}
+		.pic-box{
+			width: 266rpx;
+			height:385rpx;
+			margin:0 auto;
+			.image {
+				width: 266rpx;
+				height: 385rpx;
+			}
+		}
+		.name{
+			width: 480rpx;
+			margin:0 auto;
+			@include font(28rpx);
+			color: #171717;
+			line-height: 40rpx;
+			margin-top: 50rpx;
+			text-align: center;
+		}
+		.tips{
+			@include font(24rpx);
+			width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: absolute;
+			left:0;
+			bottom:100rpx;
+			.icon{
+				width: 30rpx;
+				height:30rpx;
+				margin-right: 4rpx;
+			}
 		}
 	}
-	.tips-btn{
-		font-size: 28rpx;
-		margin-top: 20rpx;
+	.noshow{
+		width: 100%;
+		text-align: center;
+		position: absolute;
+		bottom:0;
+		left:0;
+		@include font(28rpx);
 	}
 }
 </style>

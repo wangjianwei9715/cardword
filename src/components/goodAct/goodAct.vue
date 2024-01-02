@@ -1,86 +1,33 @@
 <template>
-	<view class="good-act-content" v-if="goodsActData!=''||(cheduiData.list&&cheduiData.list!='')">
+	<view class="good-act-content" v-if="goodsActData!=''">
 		
 		<view class="detail-act-box">
-			<view v-show="cheduiData.list" class="act-box" :class="{'hasAct':goodsActData!=''}" @click.prevent="cheduiShowDrawer=true;isPullDown(false)">
-				<view class="act-box-name chedui-name">车队</view>
-				<view class="act-box-desc flex-between">
-					<view class="act-box-desc-item flex-between">车队排行榜前{{cheduiData.totalNum}}名送礼品!</view>
-					<u-notice-bar style="padding:0;max-width:180rpx;text-align:right" :fontSize="'25rpx'" :text="rewardList" direction="column" icon="" color="#A3A3A3" bgColor="rgba(0,0,0,0)" :duration="3000" :flexEnd="true"></u-notice-bar>
-				</view>
-				<view class="detail-act-right"></view>
-			</view>
 			<view class="act-box" @click.prevent="onClickActHelp" v-show="goodsActData!=''">
 				<view class="act-box-name">活动</view>
 				<view class="act-box-desc" >
 					<view class="act-box-desc-item u-line-1" v-for="(item,index) in goodsActData" :key="index">
-						<view class="detail-act-desc" :class="{'discount-box':item.indexOf('猜球队')!=-1}" v-if="item!='discount'">
+						<view class="detail-act-desc" :class="{'discount-box':item.indexOf('猜球队')!=-1}">
 							<view class="detail-act-guess" v-if="item.indexOf('猜球队')!=-1"></view>{{item}}
-						</view>
-						<view class="detail-act-desc discount-box" v-else>
-							<view class="detail-discount" v-show="discount[index-1]" v-for="index in 2" :key="index">
-								{{discount[index-1]}}
-							</view>
 						</view>
 					</view>
 				</view>
 				<view class="detail-act-right"></view>
 			</view>
-			
+			<view class="act-box" v-if="goodsData.remark">
+				<view class="act-box-name">备注</view>
+				<view class="act-box-desc remark-border">
+					<view class="act-box-desc-item u-line-1">
+						<view class="detail-act-desc">{{goodsData.remark}}</view>
+					</view>
+				</view>
+			</view>
 		</view>
 
 		<!-- 底部弹窗 -->
 		<bottomDrawer :showDrawer="showDrawer" :title="'活动规则'" @closeDrawer="onClickCloseDrawer">
-			<view class="drawer-helpmsg" v-for="(item,index) in [discountMsg,...drawerMsg]" :key="index">
+			<view class="drawer-helpmsg" v-for="(item,index) in [...drawerMsg]" :key="index">
 				<view class="drawer-help-title">{{item.title}}</view>
 				<view class="drawer-help-content" v-html="item.content"></view>
-			</view>
-		</bottomDrawer>
-
-		<!-- 车队排行榜 -->
-		<bottomDrawer :showDrawer="showChedui" :title="'车队排行榜'" @closeDrawer="cheduiShowDrawer=false;isPullDown(true)" :needSafeArea="true" :padding="'0rpx 0rpx'">
-			<view class="drawer-header">
-				<view class="drawer-header-name">上车最多的前{{cheduiData.totalNum}}名玩家送礼</view>
-				<image style="width:27rpx;height:26rpx" src="@/static/goods/v2/icon_help.png" @click="cheduiHelpShowDrawer=true"></image>
-			</view>
-			<view class="drawer-center-list">
-				<view class="drawer-chedui" v-for="(item,index) in cheduiData.list" :key="index">
-					<view class="chedui-rank-item">
-						<view class="chedui-rank-item-left">
-							<view class="chedui-rank-item-num" :class="`chedui-rank-item-num-${item.index}`">{{item.index}}</view>
-							<view class="chedui-avatar-box" :class="`chedui-avatar-box${item.index}`">
-								<image v-if="item.occupy" class="chedui-rank-avatar" :src="`${item.avatar&&item.avatar!=''&&!item.anonymous?decodeURIComponent(item.avatar):defaultAvatar}`"/>
-								<image v-else class="chedui-rank-avatar" :src="waitAvatar"/>
-							</view>
-							<view class="chedui-rank-name" v-if="item.occupy">
-								<view class="chedui-rank-n u-line-1">{{item.anonymous?"匿名用户":item.userName}}</view>
-								<view class="chedui-rank-jf u-line-1">积分 {{item.amount}}</view>
-							</view>
-						</view>
-						<view class="chedui-rank-item-reward u-line-2" :class="{'font-bold':item.index<=3}">{{item.name}}</view>
-					</view>
-				</view>
-			</view>
-			<view class="drawer-bottom">
-				<view class="chedui-rank-item">
-					<view class="chedui-rank-item-left">
-						<view class="chedui-rank-item-num">{{cheduiData.myRank>0?cheduiData.myRank:'-'}}</view>
-						<view class="chedui-avatar-box" :class="`chedui-avatar-box${cheduiData.myRank}`">
-							<image class="chedui-rank-avatar" :src="decodeURIComponent(userData.avatar)"/>
-						</view>
-						<view class="chedui-rank-name">
-							<view class="chedui-rank-n u-line-1">{{userData.name||''}}</view>
-							<view class="chedui-rank-jf u-line-1">积分 {{cheduiData.myAmount}}</view>
-						</view>
-					</view>
-					<view class="chedui-rank-item-reward u-line-1">{{cheduiData.myRank>0?cheduiData.list[cheduiData.myRank-1].name:'未上榜'}}</view>
-				</view>
-			</view>
-		</bottomDrawer>
-
-		<bottomDrawer :showDrawer="cheduiHelpShowDrawer" :title="'车队排行榜'" @closeDrawer="cheduiHelpShowDrawer=false" :needSafeArea="true">
-			<view class="drawer-helpmsg" v-for="(item,index) in [helpOne,...cheduiHelp]" :key="index">
-				<view class="drawer-help-cd" v-html="item.content"></view>
 			</view>
 		</bottomDrawer>
 	</view>
@@ -97,36 +44,16 @@
 		cheduiHelp = cheduiHelp;
 		@Prop({ default: [] })
 		goodsData: any;
-		@Prop({ default: {} })
-		cheduiData: any;
-		@Prop({ default: {} })
-		userData: any;
-		@PropSync("showChedui",{
-			type:Boolean
-		}) cheduiShowDrawer!: Boolean;
-
 		// 底部抽屉
 		goodsActData:any = [];
 		showDrawer = false;
 		drawerMsg:any = [];
-		discount = [];
 		onceDActivity = false;
-		discountMsg:any = {}
 		rewardList = [];
-		cheduiHelpShowDrawer = false;
-		helpOne = {};
-		defaultAvatar = app.defaultAvatar;
-		waitAvatar = '../../static/goods/v2/waitAvatar.png'
 		@Watch('goodsData')
 		onGoodsDataChanged(val: any, oldVal: any) {
 			if(val){
 				this.getGoodsActData(this.goodsData)
-			}
-		}
-		@Watch('cheduiData')
-		onCheduiDataChanged(val: any, oldVal: any) {
-			if(val){
-				this.setChedui()
 			}
 		}
 		created() {
@@ -135,26 +62,9 @@
 				return this.replace(reg, e);
 			}
 		}
-		setChedui(){
-			this.helpOne = {content:`1.本活动仅对当前商品${this.goodsData.goodCode}生效，累计上车金额（含使用优惠券金额）最多的前${this.cheduiData.totalNum}名玩家，获得相应的榜单礼品`};
-			if(this.cheduiData.list){
-				this.rewardList = this.cheduiData.list.map((x:any)=>{
-					return x.name
-				}).slice(0,5)
-			}
-		}
 		// 获取活动内容
 		getGoodsActData(data:any){
 			this.goodsActData = data.dActivity||[];
-
-			let discount = data.discount ? data.discount.map((x:any)=>{
-				return x.content
-			}) : ''
-			if(discount!='') {
-				this.goodsActData  = [ 'discount',...this.goodsActData ];
-				this.discountMsg = {title:'阶梯奖励：',content:discount.toString().replaceAll(',',';')}
-				this.discount = JSON.parse(JSON.stringify(discount))
-			};
 			if((this.goodsData.bit & 8) == 8){
 				this.goodsActData.push('猜球队 赢免单');
 			}
@@ -213,10 +123,10 @@
 			.act-box-name{
 				height:76rpx;
 				width:82rpx;
-				font-size: 25rpx;
+				font-size: 24rpx;
 				font-family: PingFangSC-Semibold;
 				font-weight: 600;
-				color: #333333;
+				color: #D9D9D9;
 				display: flex;
 				align-items: center;
 			}
@@ -236,7 +146,7 @@
 				display: flex !important;
 				align-items: center;
 				box-sizing: border-box;
-				font-size: 25rpx;
+				font-size: 24rpx;
 				font-family: PingFang SC;
 				font-weight: 400;
 				color: #333333;
@@ -479,5 +389,8 @@
 	}
 	.hasAct{
 		border-bottom: 1rpx solid #E6E6E6;
+	}
+	.remark-border{
+		border-top: 2rpx solid #F0F0F0;
 	}
 </style>

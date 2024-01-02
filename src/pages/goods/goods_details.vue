@@ -1,3 +1,12 @@
+<!--
+ * @FilePath: \jichao_app_2\src\pages\goods\goods_details.vue
+ * @Author: wjw
+ * @Date: 2023-12-14 14:35:27
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-01-02 09:56:46
+ * Copyright: 2023 .
+ * @Descripttion: 
+-->
 <template>
 	<view class="content" v-show="goodsData!=''" :class="{'body-hidden':choiceTeamData.teamCheckShow||choiceTRData.show}">
 		<navigationbar title="商品详情" :custom="true">
@@ -24,30 +33,49 @@
 			</view>
 		</view>
 		<view class="detail-index-bg">
-			<view class="detail-bg">
-				<view class="header-content-end" v-if="goodsData.state>=2">
-					<view class="header-price">¥<text>{{goodsData.price}}</text><text
-							class="price-qi">{{getPriceStart?'起':''}}</text></view>
-				</view>
-				<view class="header-content" :class="{'random-bg':getSelectType}" v-else-if="goodsData.state==1||goodsData.state==0">
-					<view class="header-price">¥<text>{{goodsData.price}}</text><text
-							class="price-qi">{{getPriceStart?'起':''}}</text></view>
-					<view class="header-right">
-						<view class="icon-end">{{goodsData.state==0?'距开售':'距结束'}}</view>
-						<view class="countdown-content">
-							<view v-if="countDownData.countDay>0" class="countdown-index countdown-day">{{countDownData.countDay}}<text>天</text></view>
-							<view class="countdown-index">{{`${countDownData.countHour} : ${countDownData.countMinute} : ${countDownData.countSecond}`}}</view>
+			<view class="detail-header">
+				<view class="detail-header-left">
+					<!-- 基础卡片 -->
+					<baseCard/>
+					<view class="header-left-price">
+						<view class="header-price">
+							¥<text>{{goodsData.price}}</text>
+							<text class="price-qi">{{getPriceStart?'起':''}}</text>
 						</view>
+						<view class="header-saled">已售{{goodSaled}}</view>
 					</view>
 				</view>
+				<view class="detail-header-right" v-if="[0,1].includes(goodsData.state)">
+					<u-count-down :time="countDown*1000" format="DD:HH:mm:ss" autoStart @change="onChangeCountDown" @finish="onFinishCountDown">
+						<view class="countdown-box">
+							<view class="countdown-custom">
+								{{ countDownData.days>=10?countDownData.days:'0'+countDownData.days }}
+							</view>
+							<text class="countdown-days">天</text>
+							<view class="countdown-custom">
+								{{ countDownData.hours>=10?countDownData.hours:'0'+countDownData.hours }}
+							</view>
+							<text class="countdown-doc">:</text>
+							<view class="countdown-custom">
+								{{ countDownData.minutes>=10?countDownData.minutes:'0'+countDownData.minutes }}
+							</view>
+							<text class="countdown-doc">:</text>
+							<view class="countdown-custom">
+								{{ countDownData.seconds>=10?countDownData.seconds:'0'+countDownData.seconds }}
+							</view>
+						</view>
+					</u-count-down>
+				</view>
+			</view>
+			<view class="detail-bg">
 				<view class="header">
 					<view class="header-top">
 						<goodCouponGet :goodCode="goodsData.goodCode" :goodPage="true" :list="getCouponList" />
 						<view class="header-top-title">{{goodsData.title}}</view>
 						<view class="header-top-plan">
 							<view class="plan-top-line">
-								<view class="header-top-plan-num-state" >
-									{{goodsData.state>=2?'拼团已完成':'拼团进行中'}}
+								<view class="header-top-plan-num-state" v-if="!firstShow">
+									{{goodsInfo.num}} | {{goodsInfo.pt_type}}
 								</view>
 								<view class="header-top-plan-num-str" v-if="planData.showMsg">
 									<view class="header-shengyu">剩余</view><u-count-to :style="{'font-family':'ArialBold','letter-spacing':'-2rpx'}" :start-val="goodsData.totalNum" :end-val="goodSurplusNum" :duration="1000" :fontSize="15" :bold="true" color="#333"></u-count-to>/{{goodsData.totalNum}}{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}
@@ -58,21 +86,20 @@
 								<view class="progress-mask" :style="{width:(100-planData.width)+'%'}"> </view>
 							</view>
 						</view>
-					</view>
-
-					<view class="header-bottom">
-						<view class="header-bottom-index" v-for="item in goodsSpe" :key="item.id"
-							@click="onClickCardPlay(item)">
-							<view class="header-bottom-index-name">{{item.name}}</view>
-							<view class="header-bottom-index-desc">{{item.desc}}</view>
+						<view class="header-discount" v-if="goodsData.discount">
+							<view class="discount-item" v-for="(item,index) in goodsData.discount" :key="`discount_${index}`">
+								<view class="discount-text">满{{item.minNum}}组</view>
+								<view class="discount-text discount-price">每组{{item.price}}元</view>
+							</view>
 						</view>
+						<motorcade :goodsData="goodsData" :showChedui.sync="showCheduiDraw" :cheduiData="cheduiData" :userData="userData"/>
 					</view>
 				</view>
 			</view>
 			<!-- 卡密奖励 -->
-			<noAward ref="rNoAward"/>
+			<noAward ref="rNoAward" :price="goodsData.price" :state="goodsData.state" @buy="onClickBuy"/>
 			<!-- 活动展示 -->
-			<goodAct :goodsData="goodsData" :showChedui.sync="showCheduiDraw" :cheduiData="cheduiData" :userData="userData" />
+			<goodAct :goodsData="goodsData" />
 			
 			<!-- 预售商品 -->
 			<view class="detail-bg" v-if="goodsData.book">
@@ -127,7 +154,7 @@
 					<view class="goods-desc-title">
 						<view class="goods-desc-title-left">拼团详情</view>
 						<view class="goods-desc-title-right" @click.stop="showDrawer = true">
-							规则<image class="goods-desc-title-help" src="../../static/goods/v2/icon_right_new.png" />
+							规则<image class="goods-desc-title-help" src="@/static/goods/detail/help.png" />
 						</view>
 					</view>
 					<view class="goods-desc-explain">
@@ -175,7 +202,7 @@
 				</view>
 			</view>
 			<view class="btn-cardlist" @click="onClickAllCard">
-				<image class="cardlist-icon" src="@/static/goods/v2/icon_list_v3.png"></image>列表 
+				<image class="cardlist-icon" src="@/static/goods/detail/cardlist.png"></image>列表 
 			</view>
 			<view class="btn-confirm" :style="{width:`${tipBtn.length==2?'310rpx':'395rpx'}`}" :class="{'random-confirm':getSelectType}" @click="onClickBuy()">
 				{{goodsData.isSelect?'选择编号':'立即购买'}}
@@ -232,17 +259,20 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import { goodsDetailRules, goodsDetailHelp } from "@/tools/DataRules";
-	import { goodDetailSpe } from "@/tools/DataExchange"
-	import { parsePic,secondsFormat } from "@/tools/util";
+	import { parsePic } from "@/tools/util";
 	import { Goods, Share } from "./utils/class";
 	import detailsManager from "./manager/detailsManager"
 	import noAward from "./component/noAward.vue"
 	import customerService from "./component/customerService.vue"
+	import motorcade from "./component/motorcade.vue"
+	import baseCard from "./component/baseCard.vue"
 	const Manager =  detailsManager.getIns();
 	@Component({
 		components:{
 			noAward,
-			customerService
+			customerService,
+			motorcade,
+			baseCard
 		}
 	})
 	export default class ClassName extends BaseNode {
@@ -253,7 +283,6 @@
 		goodsManaager:any = app.goods;
 		goodsDetailRules = goodsDetailRules
 		goodsDetailHelp = goodsDetailHelp;
-		goodsSpe = goodDetailSpe;
 		shareObj = {
 			shareShow:false,
 			shareData:new Share()
@@ -262,7 +291,6 @@
 		goodsDesc:any = [];
 		favorType = false;
 		gamePlayData:any = Goods.GamePlay();
-		countDownData:any = Goods.CountDown();
 		swiperData:any = Goods.Swiper();
 		picData:any = Goods.Pic();
 		tipBtn = [Manager.tipBtn[0]];
@@ -284,6 +312,8 @@
 		AD_id=null;
 		referer="";//来源
 		customerServiceShow=false;
+		countDown = 0;
+		countDownData:any={};
 		onLoad(query: any) {
 			// #ifndef MP
 			const goodCode = query.goodCode ||query.id
@@ -324,10 +354,25 @@
 			const { goodsData } = this;
 			return goodsData.totalNum - (goodsData.currentNum + goodsData.lockNum)
 		}
+		// 已售数量
+		public get goodSaled() : number {
+			const { currentNum, lockNum } = this.goodsData;
+			return (currentNum + lockNum)
+		}
+		// 拼团类型信息
+		public get goodsInfo() : any {
+			const { spec, pintuan_type } = this.goodsData
+			return {
+				num:spec.name || "",
+				pt_type:this.goodsManaager.gameplayType[pintuan_type] || ""
+			}
+		}
+		onChangeCountDown(e:any){
+			this.countDownData = e
+		}
 		// 数据详情赋值
 		getGoodData(cb?:Function) {
 			const goodCode = this.goodCode;
-			clearInterval(this.countDownData.countInterval);
 			app.http.GetWithCrypto(`dataApi/good/${goodCode}/1/detail`, {referer:this.firstShow?this.referer:"PageRefresh"}, (data: any) => {
 				this.favorType = data.favorite>0;
 				this.goodsData = data.good;
@@ -342,10 +387,8 @@
 					})
 				}
 				// 倒计时
-				this.countDownData.countDown = state == 0 ? (leftsec-(overAt-startAt)) : leftsec;
+				this.countDown = state == 0 ? (leftsec-(overAt-startAt)) : leftsec;
 				this.getGoodsImage();
-				this.getCountDown();
-				this.getGoodsSpe();
 				cb && cb()
 			})
 		}
@@ -390,53 +433,14 @@
 			}
 		}
 		/**
-		 * 倒计时定时器
+		 * 倒计时结束
 		 */
-		getCountDown() {
-			const { countDownData,goodsData } = this;
-			setCountDownStr()
-			countDownData.countInterval = this.scheduler(() => {
-				if (countDownData.countDown > 0) {
-					countDownData.countDown--;
-					setCountDownStr()
-				} else {
-					if(goodsData.state == 0){
-						this.getGoodData();
-					} else if (goodsData.state == 1) {
-						goodsData.state = -99
-					}
-					clearInterval(countDownData.countInterval)
-				}
-			}, 1);
-
-			function setCountDownStr() {
-				const { day, hour, minute, second } = secondsFormat(countDownData.countDown);
-				countDownData.countDay = day;
-				countDownData.countHour = hour;
-				countDownData.countMinute = minute;
-				countDownData.countSecond = second
-			}
-		}
-		/**
-		 * 商品规格、配置、形式
-		 */
-		getGoodsSpe() {
-			const { goodsData, goodsSpe } = this;
-			const { spec, num, pintuan_type, random_type } = goodsSpe;
-			const specName = goodsData.spec.name;
-			const numValue = goodsData.spec.num === -1 ? '暂无' : goodsData.spec.num + '张';
-
-			if (goodsData.isSelect) {
-				this.goodsSpe = {
-					spec: { id: 3, name: specName, desc: '拼团规格' },
-					num: { id: 4, name: numValue, desc: '卡片数量' },
-					pintuan_type: { id: 1, name: '自选球队', desc: '拼团形式' }
-				};
+		onFinishCountDown(){
+			const { state } = this.goodsData
+			if(state == 0){
+				this.getGoodData();
 			} else {
-				spec.name = specName;
-				num.name = numValue;
-				pintuan_type.name = this.goodsManaager.gameplayType[goodsData.pintuan_type]
-				random_type.name = goodsData.random_type==1?"即买即随":(goodsData.random_type==2?"拼满随机":"-");
+				this.goodsData.state = -99
 			}
 		}
 		onClickTipBtn(item: any) {
@@ -454,7 +458,7 @@
 				}
 			}
 			if (item.id == 2) {
-				uni.navigateTo({ url: '/pages/userinfo/order_myCard?code=&goodCode=' + this.goodCode })
+				uni.navigateTo({ url:`/pages/userinfo/order_myCard?goodCode=${this.goodCode}&pintuanType=${this.goodsData.pintuan_type}&type=0&goodJump=true` })
 			}
 		}
 		onClickShops() {
@@ -909,21 +913,7 @@
 		padding-top: 27rpx;
 	}
 
-	.header-price {
-		font-size: 38rpx;
-		font-family: Impact;
-		font-weight: 600;
-		color: #FFFFFF;
-		box-sizing: border-box;
-		padding-top: 10rpx;
-	}
-	.header-price text {
-		font-size: 50rpx;
-		font-family: Impact;
-		font-weight: 400;
-		color: #FFFFFF;
-		margin-left: 10rpx;
-	}
+	
 
 	.header-content-end {
 		background: #fff;
@@ -947,17 +937,7 @@
 		color: #333333
 	}
 
-	.header-price .price-qi {
-		font-size: 20rpx;
-		color: #ffffff;
-		font-weight: 200;
-	}
-
-	.price-black .price-qi {
-		font-size: 20rpx;
-		color: #ACAEB7;
-		font-weight: 200;
-	}
+	
 
 	.header-right {
 		// width: 240rpx;
@@ -990,47 +970,10 @@
 		margin-bottom: 10rpx;
 		margin-top: 5rpx;
 	}
-
-	.countdown-content {
-		width: 100%;
-		height: 27rpx;
-		display: flex;
-		align-items: center;
-		justify-content: flex-end;
-	}
-
-	.countdown-index {
-		height: 36rpx;
-		text-align: center;
-		line-height: 36rpx;
-		font-size: 24rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 600;
-		color: #FFFFFF;
-		border-radius: 3rpx;
-		margin-right: 4rpx;
-	}
-	.countdown-day {
-		margin-right: 10rpx !important;
-	}
-	.countdown-day text{
-		font-size: 24rpx;
-		font-family: PingFangSC-Regular;
-		color: #FFFFFF;
-		font-weight: 400;
-	}
-	.countdown-icon {
-		font-size: 22rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 400;
-		color: $color-F;
-		margin: 0 1rpx;
-	}
 	.header {
 		width: 100%;
 		box-sizing: border-box;
-		padding: 0 30rpx ;
-		padding-bottom: 13rpx;
+		padding: 0 30rpx 30rpx 30rpx;
 	}
 	.header-top-id {
 		width: 100%;
@@ -1049,11 +992,11 @@
 
 		&-title {
 			width: 100%;
-			font-size: 29rpx;
+			font-size: 32rpx;
 			font-family: PingFangSC-Medium ;
-			font-weight: 400;
+			font-weight: 500;
 			color: #333333;
-			line-height: 48rpx;
+			line-height: 44rpx;
 			word-break:break-all;
 		}
 
@@ -1074,7 +1017,6 @@
 		&-plan {
 			width: 100%;
 			margin-top: 16rpx;
-			margin-bottom: 23rpx;
 			.plan-top-line{
 				width:100%;
 				display: flex;
@@ -1125,10 +1067,10 @@
 			}
 			.header-top-plan-num-state{
 				height: 30rpx;
-				font-size: 24rpx;
+				font-size: 22rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
-				color: #C0C0C0;
+				color: #999999;
 				text-align: right;
 				margin-bottom: 0rpx;
 				display: flex;
@@ -1140,17 +1082,17 @@
 				font-size: 24rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
-				color: #C0C0C0;
+				color: #999999;
 				display: flex;
 				align-items: baseline;
 			}
 			.header-shengyu{
 				height:30rpx;
 				line-height: 30rpx;
-				font-size: 24rpx;
+				font-size: 22rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
-				color: #C0C0C0;
+				color: #999999;
 				display: flex;
 				align-items: baseline;
 				margin-right: 6rpx;
@@ -1158,7 +1100,7 @@
 			.header-top-plan-box{
 				display: inline-block;
 				height: 30rpx;
-				font-size: 24rpx;
+				font-size: 22rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 600;
 				color: #959695;
@@ -1167,10 +1109,10 @@
 			}
 			.header-top-plan-numbottom {
 				height: 30rpx;
-				font-size: 24rpx;
+				font-size: 22rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
-				color: #C0C0C0;
+				color: #999999;
 				text-align: right;
 			}
 		}
@@ -1222,39 +1164,6 @@
 			}
 		}
 	}
-
-	.header-bottom {
-		width: 100%;
-		height: 88rpx;
-		box-sizing: border-box;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-
-		&-index {
-			height: 88rpx;
-			box-sizing: border-box;
-			text-align: center;
-			&-name {
-				text-align: center;
-				font-size: 24rpx;
-				font-family: PingFangSC-Medium;
-				font-weight: 400;
-				color: #333333;
-				margin-bottom: 3rpx;
-			}
-			&-desc {
-				font-size: 24rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
-				color: #C0C0C0;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-		}
-	}
-
 	.goods-seller {
 		width: 100%;
 		box-sizing: border-box;
@@ -1364,9 +1273,9 @@
 			}
 
 			.goods-desc-title-help {
-				width: 11rpx;
-				height:17rpx;
-				margin-left: 21rpx;
+				width: 28rpx;
+				height:28rpx;
+				margin-left: 8rpx;
 			}
 		}
 
@@ -1462,22 +1371,22 @@
 		.btn-cardlist{
 			width: 150rpx;
 			height: 82rpx;
-			border: 1rpx solid #949494;
+			border: 1rpx solid #DDDDDD;
 			border-radius: 3rpx;
 			display: flex;
 			align-items: center;
-			font-size: 29rpx;
+			font-size: 32rpx;
 			font-family: PingFangSC-Semibold;
 			font-weight:400;
-			color: #333333;
+			color: #BBBBBB;
 			justify-content: center;
 			box-sizing: border-box;
 			margin-right: 12rpx;
 		}
 		.cardlist-icon{
-			width: 32rpx;
-			height:34rpx;
-			margin-right: 13rpx;
+			width: 26rpx;
+			height:26rpx;
+			margin-right: 6rpx;
 		}
 		.btn-confirm {
 			width: 395rpx;
@@ -1841,6 +1750,114 @@
 			font-weight: 600;
 			color: #FFFFFF;
 			margin-right: 10rpx;
+		}
+	}
+	@mixin font($size) {
+		font-size: $size;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #FFFFFF;
+	}
+	.detail-header{
+		width: 750rpx;
+		height:124rpx;
+		background: url(@/static/goods/detail/header.png) no-repeat center /100% 100%;
+		margin-top: -10rpx;
+		box-sizing: border-box;
+		display: flex;
+		justify-content: space-between;
+		padding:0 36rpx 0 48rpx;
+		align-items: center;
+	}
+	.detail-header-left{
+		height: 92rpx;
+		.header-left-price{
+			display: flex;
+			align-items: center;
+			.header-price {
+				@include font(32rpx);
+				font-family: Impact;
+				font-weight: 600;
+				box-sizing: border-box;
+			}
+			.header-price text {
+				@include font(44rpx);
+				font-family: Impact;
+				margin-left: 10rpx;
+			}
+			.header-price .price-qi {
+				@include font(20rpx);
+			}
+			.header-saled{
+				@include font(20rpx);
+				margin-left: 10rpx;
+				margin-bottom: -15rpx;
+				line-height: 28rpx;
+			}
+		}
+	}
+	.detail-header-right{
+		height: 92rpx;
+		display: flex;
+		align-items: flex-end;
+		box-sizing: border-box;
+		padding-bottom: 10rpx;
+	}
+	.countdown-box{
+		display: flex;
+		align-items: center;
+		.countdown-custom{
+			width: 38rpx;
+			height:38rpx;
+			background: rgba(255,255,255,0.2);
+			border-radius: 3rpx;
+			@include font(26rpx);
+			font-weight: 600;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			margin:0 6rpx;
+		}
+		.countdown-doc{
+			height:38rpx;
+			@include font(28rpx);
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.countdown-days{
+			height:38rpx;
+			@include font(22rpx);
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+		}
+	}
+	.header-discount{
+		width: 100%;
+		display: flex;
+		margin-top: 16rpx;
+		.discount-item{
+			width: 192rpx;
+			height:40rpx;
+			background: url(@/static/goods/detail/discount.png) no-repeat center /100% 100%;
+			display: flex;
+			box-sizing: border-box;
+			margin-right:16rpx;
+			overflow:hidden;
+			.discount-text{
+				width: 78rpx;
+				height:40rpx;
+				@include font(20rpx);
+				color: #FA1545;
+				text-align: center;
+				line-height: 40rpx;
+				overflow:hidden;
+			}
+			.discount-price{
+				width: 112rpx;
+				overflow:hidden;
+			}
 		}
 	}
 </style>

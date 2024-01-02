@@ -1,9 +1,18 @@
 <template>
 	<view>
+		<view class="merchant-info">
+			<muqian-lazyLoad class="merchant-avatar" :src="goodsData.publisher.avatar" borderRadius="50%"/>
+			{{goodsData.publisher.name}}
+		</view>
 		<view class="goods-info">
-			<muqian-lazyLoad class="carousel" :src="getGoodsImg(decodeURIComponent(goodsData.pic.carousel))"/>
+			<muqian-lazyLoad class="carousel" mode="aspectFill" :src="getGoodsImg(decodeURIComponent(goodsData.pic.carousel))"/>
 			<view class="right">
-				<text class="title">{{ goodsData.title }}</text>
+				<view class="title" :class="uLine">
+					<view v-if="isPresell" class="icon-presell">预售</view>
+					<view v-if="goodsData.buyLimit.maxNumPerOrder>0" class="icon-limit">限购{{goodsData.buyLimit.maxNumPerOrder}}份</view>
+					{{ goodsData.title }}
+				</view>
+				<view class="info-desc">1.基础卡片随机款 2.系列玩法</view>
 				<view class="pay-box" v-if="normalRandomGoods">
 					<view class="pay-goods">¥<text>{{ goodsData.price }}</text></view>
 					<view class="pay-goods-right" v-if="baoduiId == 0">
@@ -34,7 +43,11 @@
 				:key="index"
 				:class="{'current-discount':(payNum>=item.minNum)&&(goodsData.discount[index+1]?(payNum>=goodsData.discount[index+1].minNum?false:true):true)}"
 			>
-				{{ item.content }}
+				<view class="discount-num">满{{item.minNum}}组</view>
+				<view class="discount-price">
+					<text>¥{{item.price}}</text>
+					<text>/份</text>
+				</view>
 			</view>
 		</scroll-view>
 
@@ -117,6 +130,13 @@
 		public get isRandomTeam() : boolean {
 			return this.payRandomTeamData!='';
 		}
+		public get isPresell() : boolean {
+			return !uni.$u.test.isEmpty(this.goodsData.book)
+		}
+		public get uLine() : string {
+			const num = 2+(this.isPresell?1:0)+(this.goodsData.buyLimit.maxNumPerOrder>0?1:0)
+			return `u-line-${num}`
+		}
 		getOnePrice(){
 			this.$emit('getOnePrice')
 		}
@@ -168,13 +188,13 @@
 	flex-direction: row;
 	position: relative;
 	box-sizing: border-box;
-	padding:31rpx 20rpx 31rpx 20rpx;
+	padding:24rpx 20rpx 24rpx 20rpx;
 	.carousel{
 		width: 178rpx;
-		height:137rpx;
+		height:178rpx;
 	}
 	.right{
-		width: 480rpx;
+		width: 470rpx;
 		margin-left: 24rpx;
 		display: flex;
 		flex-direction: column;
@@ -185,11 +205,44 @@
 			font-weight: 400;
 			color: #333333;
 			line-height: 40rpx;
-			display: -webkit-box;
-			-webkit-box-orient: vertical;
-			-webkit-line-clamp: 2;
-			overflow: hidden;
-			word-break:break-all
+		}
+		.info-desc{
+			width: 100%;
+			font-size: 20rpx;
+			font-family: PingFangSC, PingFang SC;
+			font-weight: 400;
+			color: rgba(102,102,102,0.9);
+			margin-top: 8rpx;
+		}
+		.icon-presell{
+			height:30rpx;
+			background:#6DD400;
+			border-radius: 4rpx;
+			box-sizing: border-box;
+			padding:0 8rpx;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 20rpx;
+			font-family: PingFangSC;
+			font-weight: 400;
+			color: #FFFFFF;
+			margin-right: 8rpx;
+		}
+		.icon-limit{
+			height:30rpx;
+			border:1rpx solid #FA1545;
+			border-radius: 4rpx;
+			box-sizing: border-box;
+			padding:0 8rpx;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 20rpx;
+			font-family: PingFangSC;
+			font-weight: 400;
+			color: #FA1545;
+			margin-right: 8rpx;
 		}
 		.pay-box{
 			width: 100%;
@@ -212,19 +265,19 @@
 			left: 0;
 		}
 		.pay-goods {
-			margin-left: 8rpx;
+			margin-right: 4rpx;
 			margin-top: 58rpx;
-			font-size: 25rpx;
+			font-size: 28rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 500;
-			color: #333333;
+			color: rgba(0,0,0,0.9);
 			line-height: 28rpx;
 		}
 		.pay-goods text{
 			font-size: 32rpx;
 			font-family: PingFangSC-Semibold;
-			font-weight: 400;
-			color: #333333;
+			font-weight: 600;
+			color: rgba(0,0,0,0.9);
 		}
 		.select-team-title{
 			width: 123rpx;
@@ -288,16 +341,14 @@
 			margin-right:26rpx;
 		}
 		.img-add {
-			width: 28rpx;
-			height: 28rpx;
-			background: url(@/static/pay/v2/icon_add.png) no-repeat center;
-			background-size: cover;
+			width: 36rpx;
+			height: 38rpx;
+			background: url(@/static/pay/v2/add.png) no-repeat center / 100% 100%;
 		}
 		.img-jian {
-			width: 28rpx;
-			height: 5rpx;
-			background: url(@/static/pay/v2/icon_red.png) no-repeat center;
-			background-size: 100% 100%;
+			width: 36rpx;
+			height: 38rpx;
+			background: url(@/static/pay/v2/reduce.png) no-repeat center / 100% 100%;
 		}
 		.money-add {
 			height: 36rpx;
@@ -308,7 +359,7 @@
 			color: #333333;
 			line-height: 36rpx;
 			background:#F6F7FB;
-			margin:0 21rpx;
+			margin:0 10rpx;
 			width: 75rpx;
 		}
 
@@ -316,38 +367,56 @@
 }
 .huo-dong-bg {
 	width: 684rpx;
-	height: 108rpx;
+	height: 104rpx;
 	background: #ffffff;
 	display: flex;
 	white-space: nowrap;
 	align-items: center;
 	margin:0 auto;
-	border-top: 2rpx solid #F5F5F5;
 	box-sizing: border-box;
-	padding-top: 32rpx;
+	margin-bottom: 20rpx;
 }
 .item-youhui-bg {
-	text-align: center;
-	line-height: 43rpx;
-	margin-right: 16rpx;
-	height: 43rpx;
-	background: #F1F1F1;
-	font-size: 23rpx;
-	font-family: PingFangSC-Regular;
-	font-weight: 400;
-	color: #88878C;
-	padding: 0 22rpx;
-	width: fit-content;
-	display: inline-flex;
-	margin-right: 28rpx;
+	width: 92rpx;
+	height:104rpx;
+	background: url(@/static/pay/v2/discount.png) no-repeat center / 100% 100%;
 	display: inline-block;
 }
-.current-discount{
-	font-size: 23rpx;
-	font-family: PingFangSC-Regular;
+.discount-num{
+	width: 100%;
+	height:40rpx;
+	text-align: center;
+	line-height: 40rpx;
+	font-size: 20rpx;
+	font-family: PingFangSC, PingFang SC;
 	font-weight: 400;
-	color: #FFFFFF;
-	background:#FF0003;
+	color: #AAAAAA;
+}
+.discount-price{
+	width: 100%;
+	height:64rpx;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	box-sizing: border-box;
+	padding:4rpx 0 10rpx 0;
+}
+.discount-price text{
+	width: 100%;
+	font-size: 20rpx;
+	font-family: PingFangSC, PingFang SC;
+	font-weight: 400;
+	color: #AAAAAA;
+	text-align: center;
+}
+.discount-price text:first-child{
+	font-weight: bold;
+}
+.current-discount{
+	background: url(@/static/pay/v2/discount_.png) no-repeat center / 100% 100%;
+}
+.current-discount .discount-num,.current-discount .discount-price text{
+	color:#FA1545
 }
 // 自选卡种 选队随机
 .randomh-box{
@@ -491,5 +560,22 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+}
+.merchant-info{
+	width: 100%;
+	box-sizing: border-box;
+	padding:24rpx 20rpx 0 20rpx;
+	height:64rpx;
+	display: flex;
+	align-items: center;
+	font-size: 28rpx;
+	font-family: PingFangSC-Medium;
+	font-weight: 500;
+	color: rgba(0,0,0,0.9);
+	.merchant-avatar{
+		width: 40rpx;
+		height:40rpx;
+		margin-right: 8rpx;
+	}
 }
 </style>

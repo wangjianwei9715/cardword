@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-11-03 14:49:34
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-07 14:10:09
+ * @LastEditTime: 2023-12-25 15:41:16
  * Copyright: 2023 .
  * @Descripttion: 
  */
@@ -25,10 +25,10 @@ export default class detailsManager {
 		{
 			id: 1,
 			name: '客服',
-			url: '../../static/goods/v2/icon_kefu.png',
+			url: '../../static/goods/detail/kf.png',
 			class: 'kf'
 		},
-		{ id: 2, name: '我的卡密', url: '../../static/goods/v2/icon_order.png', class: 'order' }
+		{ id: 2, name: '我的卡密', url: '../../static/goods/detail/my-card.png', class: 'order' }
 	]
 	static getIns(): detailsManager {
 		if (!detailsManager.instance) {

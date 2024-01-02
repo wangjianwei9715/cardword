@@ -97,6 +97,9 @@ export default class navigateManager {
 			url:`/pages/illustration/album/selectCard?editCodeList=${selectSeries}&draftId=${draftId}`
 		})
 	}
+	goMallIndex(){
+		uni.navigateTo({ url:"/pages/mall/mallIndex" })
+	}
 	/**
 	 * 跳转tabbar
 	 * @param index  0:首页,1:图鉴,2:卡圈,3:消息,4:我的

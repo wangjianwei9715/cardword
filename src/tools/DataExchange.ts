@@ -38,25 +38,6 @@ export const goodsTypeTitle: { [x: string]: any } = {
 	'yifen':'一分上组',
     'fresh':'最新上架'
 }
-/**
- * @goodDetailSpe   商品详情 规格类型
- * @spec            拼团规格
- * @pintuan_type    拼团形式
- * @random_type     随机方式
- * @spec_str        查看卡密
- *  @value ｛number｝ id   id标识
- *  @value ｛string｝ name 内容
- *  @value ｛string｝ desc 描述
- *  @value ｛string｝ icon 图标
- */
-export var goodDetailSpe: {
-    [x: string]: any
-} = {
-    spec:{id:3,name:'',desc:'规格'},
-    num:{id:4,name:'',desc:'卡片数量'},
-    pintuan_type:{id:1,name:'',desc:'玩法'},
-    random_type:{id:2,name:'',desc:'随机形式'}
-};
 // 状态
 export var stateArray = [
     {

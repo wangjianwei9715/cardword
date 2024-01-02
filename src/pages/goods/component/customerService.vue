@@ -1,3 +1,12 @@
+<!--
+ * @FilePath: \jichao_app_2\src\pages\goods\component\customerService.vue
+ * @Author: wjw
+ * @Date: 2023-12-14 14:35:27
+ * @LastEditors: 
+ * @LastEditTime: 2023-12-25 14:55:35
+ * Copyright: 2023 .
+ * @Descripttion: 
+-->
 <template>
 	<u-action-sheet :actions="actionsList" :show="showAction" cancelText="取消" @select="onSheetSelect" @close="showAction=false"></u-action-sheet>
 </template>
@@ -17,8 +26,8 @@
 		@Prop({default:""})
 		kefuWechat!:string
 		actionsList = [
-			{ id:1, name:'商家微信客服', subname:"复制商家微信号，前往微信添加", icon:"/static/login/weixin@2x.png"},
-			{ id:2, name:'平台客服', icon:"/static/goods/v2/icon_kefu.png"},
+			{ id:1, name:'商家微信客服', subname:"复制商家微信号，前往微信添加", icon:"/static/goods/detail/wx.png"},
+			{ id:2, name:'平台客服', icon:"/static/goods/detail/kf.png"},
 		]
 		onSheetSelect({id}:any){
 			if(id==1){

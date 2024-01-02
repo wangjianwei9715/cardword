@@ -1,12 +1,16 @@
+<!--
+ * @FilePath: \jichao_app_2\src\components\buyCardId\buyCardId.vue
+ * @Author: wjw
+ * @Date: 2022-06-10 16:52:20
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-12-26 14:36:34
+ * Copyright: 2023 .
+ * @Descripttion: 
+-->
 <template>
 	<view class="buy-card">
 		<view class="card-index" v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index" @click="onClickLookCard(item)">
 			<view class="left" :class="{'bingo-name':item.bingo}">{{item.name}}</view>
-			<!-- <view v-if="showImg&&item.num>0" class="right">
-				<image class="show-img" :src="item.pic"  mode="aspectFill"/>
-			</view> -->
-			<view  class="right reward">{{waitPay?item.stateName:item.content}}</view>
-			
 		</view>
 	</view>
 </template>
@@ -60,9 +64,9 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			margin-bottom: 7rpx;
+			border-bottom: 1px solid #F3F3F3;
 			.left{
-				width: 584rpx;
+				width: 100%;
 				min-height: 96rpx;
 				box-sizing: border-box;
 				display: flex;
@@ -73,7 +77,7 @@
 				color: #333333;
 				line-height: 32rpx;
 				padding:10rpx 20rpx;
-				background: #F6F7F8;
+				background: #FAFAFA;
 			}
 			.right{
 				width:104rpx;

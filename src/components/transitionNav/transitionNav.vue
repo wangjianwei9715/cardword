@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-24 11:05:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-10-10 16:41:15
+ * @LastEditTime: 2023-12-26 09:43:09
  * @FilePath: \jichao_app_2\src\components\transitionNav\transitionNav.vue
  * @Description: 渐变导航栏（兼容nvue, nvue中把组件放到结构最下面:越后层级越高）
 -->
@@ -12,7 +12,7 @@
         <view class="status" :style="{ paddingTop: app.statusBarHeight + 'px', }">
         </view>
         <view id="pageTop" class="pageTop">
-            <view class="pageTitle" :style="[opacityStyle]">
+            <view class="pageTitle" :style="[opacityStyle,showWhiteTitle]">
                 <text class="titleText">{{ title }}</text>
             </view>
             <view class="leftBackContainer" :class="{ whiteBack: needIconShadow&&!customBack }" @click="app.platform.pageBack()">
@@ -185,6 +185,10 @@ export default {
         customBack:{
             type:Boolean,
             default:false
+        },
+        whiteTitle:{
+            type:Boolean,
+            default:false
         }
 
     },
@@ -198,6 +202,12 @@ export default {
         }
     },
     computed: {
+        showWhiteTitle(){
+            if(this.whiteTitle && this.scrollTopPercent < 1){
+                return { opacity:1,color:'#fff' }
+            }
+            return {}
+        },
         scrollTopPercent() {
             if (!this.transition) return 100
             return this.scrollTop / (this.MAX_HEIGHT.toFixed(2) * 1.4)

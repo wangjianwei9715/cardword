@@ -1,24 +1,36 @@
+<!--
+ * @FilePath: \jichao_app_2\src\pages\userinfo\order_details.vue
+ * @Author: wjw
+ * @Date: 2023-12-14 14:35:27
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-01-02 10:17:00
+ * Copyright: 2023 .
+ * @Descripttion: 
+-->
 <template >
 	<view class="content" >
+		<transitionNav ref='transitionNav' :whiteTitle="true" :needIconShadow="false" :title="orderData.stateName"/>
 		<!-- 头部状态 -->
 		<view class="header">
-			<view class="header-state">{{orderRefund?'已退款':orderState[orderData.state]}}</view>
-			<view class="header-state-desc" v-if="!orderRefund">{{orderData.state==1?'订单将于'+countDownStr+'后关闭':orderStateDesc(orderData)}}</view>
+			<view class="header-statename" @click="onClickStateDesc">
+				{{orderData.state==1?'订单将于'+countDownStr+'后关闭':orderData.desc}}
+				<view v-if="orderData.state==2&&orderData.good.state==1">
+					<view class="good-progress">
+						<view class="progressMask" :style="{width:(100-goodsManaager.listPlan(orderData.good,'num'))+'%'}"></view>
+					</view>
+				</view>
+			</view>
 		</view>
-		
-		<view class="order-box">
+		<view class="order-box" v-if="orderData.good">
 			<!-- 商品信息 -->
-			<view class="order-index" v-if="orderData.seller" @click="onClickGoodDetail"> 
+			<view class="order-index"> 
 				<view class="order-index-header">
 					<view class="header-left">
 						<muqian-lazyLoad class="seller-image" :src="orderData.seller.avatar?decodeURIComponent(orderData.seller.avatar):defaultAvatar" mode="aspectFill" :borderRadius="'50%'"></muqian-lazyLoad>
 						<view class="seller-name">{{orderData.seller.name}}</view>
 					</view>
-					<view class="header-right">
-						<view :class="['header-right-index','state'+orderData.state]">{{orderGoodsStateStr(orderData)}}</view>
-					</view>
 				</view>
-				<view class="order-index-center">
+				<view class="order-index-center" @click="onClickGoodDetail">
 					<image class="goods-image" :src="detailPic" mode="aspectFill"></image>
 					<view class="goods-content">
 						<view class="title">{{orderData.good.title}}</view>
@@ -32,25 +44,37 @@
 					</view>
 				</view>
 			</view>
+			<!-- 金额计算 -->
+			<view class="order-desc">
+				<u-divider lineColor="#F6F6F6" style="margin-top:0;margin-bottom:10rpx"></u-divider>
+				<view class="orderPInfo" :class="{'show-pinfo':showPriceInfo}">
+					<view class="order-desc-index" v-for="item in orderDesc" :key="item.id" v-show="item.desc!='- ¥0'">
+						<view class="name">{{item.name}}</view><view class="info" :class="{'redfont':item.desc.indexOf('-')!=-1}">{{item.desc}}</view>
+					</view>
+				</view>
+				<view class="order-desc-index" @click="showPriceInfo=!showPriceInfo">
+					<view></view>
+					<view class="price">
+						实付款
+						<view class="total-price">
+							¥<text class="price-text">{{ filterPrice(orderData.price).integer }}</text>
+							<text class="decimal" v-if="filterPrice(orderData.price).decimal">{{ filterPrice(orderData.price).decimal }}</text>
+						</view>
+						<view class="icon-up" :class="{'icon-down':!showPriceInfo}"></view>
+					</view>
+				</view>
+			</view>
 			<!-- 选队随机 自选卡种 -->
 			<view class="randomh-box" v-show="optionList!=''" >
 				<view class="randomh-index" v-for="(item,index) in optionList" :key="index">
 					<view class="randomh-index-left">{{item.name}}</view>
 					<view class="randomh-index-right">
 						<view class="randomh-index-price">￥{{item.amount}}</view>
-						<view class="randomh-index-num">x{{item.num}}件</view>
+						<view class="randomh-index-num">x{{item.num}}</view>
 					</view>
 				</view>
 			</view>
-			<!-- 金额计算 -->
-			<view class="order-desc">
-				<view class="order-desc-index" v-for="item in orderDesc" :key="item.id" v-show="item.desc!='- ¥0'">
-					<view class="name">{{item.name}}</view><view class="info">{{item.desc}}</view>
-				</view>
-				<view class="order-desc-index">
-					<view class="name">合计：</view><view class="info order-totalprice">￥{{orderData.price}}</view>
-				</view>
-			</view>
+			
 			<view class="buyer-cotnent" v-if="cartList.length && cardList.length==0">
 				<view class="card-header">
 					<view class="card-header-title">已选编号</view>
@@ -66,24 +90,26 @@
 			<!-- 我的编号 -->
 			<view class="buyer-cotnent" v-if="cardList!='' && !clickToPay">
 				<view class="card-header">
-					<view class="card-header-title">我的卡密<view class="card-header-title-desc">{{orderData.state>2?'+'+orderData.point:'未中卡可获得卡币'}}<image class="order-gold" src="../../static/order/gold.png" /></view></view>
-					<view class="card-header-right" @click="onClickAllCard">查看全部<view class="icon-right"></view></view>
+					<u-tabs :list="cardTabs" :itemStyle="{padding:0,paddingRight:'28rpx'}" :activeStyle="activeStyle" :inactiveStyle="inactiveStyle" :current="cardTabsCurrent" lineHeight="0" @click="clickCurrentCardTab"></u-tabs>
+					<view class="card-header-right" @click="onClickAllCard">
+						{{cardTabsCurrent==0?`查看全部${orderData.num}条`:"查看全部"}}
+						<view class="icon-right"></view>
+					</view>
 				</view>
-				<buyCardId :cardList="cardList"/>
-			</view>
-			<!-- 收货地址 -->
-			<view class="address-content" v-if="orderData.receiver">
-				<view class="index">
-					<view class="address-icon"></view>
-					<view class="address-desc">{{orderData.receiver.name}} {{orderData.receiver.phone}}</view>
-				</view>
-				<view class="address-info">
-					{{orderData.receiver.address}}
-				</view>
+				<!-- 卡密信息|购入信息 -->
+				<buyCardId v-show="cardTabsCurrent==0" :cardList="cardList"/>
+				<buyInfo v-show="cardTabsCurrent==1" ref="rBuyInfo" :orderCode="orderCode" :num="orderData.num" :point="orderData.point"/>
 			</view>
 			<!-- 订单详细信息 -->
 			<view class="order-info" v-if="orderInfo.orderNo.desc!=''">
 				<view class="title">订单信息</view>
+				<view class="index">
+					<view class="index-left">收货信息</view>
+					<view class="index-right">
+						<view>{{orderData.receiver.address}}</view>
+						<view>{{orderData.receiver.name}} {{orderData.receiver.phone}}</view>
+					</view>
+				</view>
 				<view class="index" v-for="item in orderInfo" :key="item.id" v-show="item.desc!=0">
 					<view class="index-left">{{item.title}}</view>
 					<view class="index-right">
@@ -120,21 +146,42 @@
 	import BaseNode from '../../base/BaseNode.vue';
 	import {getCountDownTime, parsePic} from '@/tools/util';
 	import { app } from "@/app";
-	import { getGoodsImg } from "../../tools/util";
+	import { getGoodsImg, filterPrice } from "@/tools/util";
 	import {orderState} from "@/tools/DataExchange"
-	import { orderStateDesc,orderGoodsStateStr,orderSetOperate, getGoodsPintuan } from "@/tools/switchUtil"
+	import { orderStateDesc,orderSetOperate, getGoodsPintuan } from "@/tools/switchUtil"
 	//@ts-ignore
 	import { KwwConfusion } from "@/net/kwwConfusion.js"
-	@Component({})
+	import buyInfo from "./component/buyInfo.vue"
+	@Component({
+		components:{
+			buyInfo
+		}
+	})
 	export default class ClassName extends BaseNode {
+		goodsManaager = app.goods;
 		parsePic = parsePic;
 		getGoodsImg = getGoodsImg;
+		filterPrice = filterPrice;
 		orderState = orderState;
 		orderStateDesc = orderStateDesc;
-		orderGoodsStateStr = orderGoodsStateStr;
 		orderSetOperate = orderSetOperate;
 		getGoodsPintuan = getGoodsPintuan;
 
+		activeStyle={
+			"font-size": "28rpx",
+			"font-weight": 600,
+			"color":" #333333",
+		}
+		inactiveStyle={
+			"font-size": "28rpx",
+			"font-weight": 600,
+			"color":" #BBBBBB",
+		}
+		cardTabs = [
+			{id:0,name:"卡密信息"},
+			{id:1,name:"购入信息"}
+		]
+		cardTabsCurrent = 0;
 		defaultAvatar = app.defaultAvatar;
 		detailPic = '';
 		countDownInter:any;
@@ -143,11 +190,10 @@
 		orderCode = '';
 		orderData:{[x:string]:any} = [];
 		orderDesc = {
-			price:{id:1,name:'商品金额',desc:''},
+			price:{id:1,name:'总价',desc:''},
 			discount:{id:2,name:'优惠（阶梯奖励）',desc:''},
 			mCoupon:{id:3,name:'商家优惠券',desc:''},
 			oCoupon:{id:4,name:'平台优惠券',desc:''},
-			yunfei:{id:5,name:'运费',desc:'包邮'},
 		}
 		cardList:{[x:string]:any} = [];
 		orderInfo:any = {
@@ -177,6 +223,7 @@
 		optionList:any = [];
 		onceLoad = true;
 		retryNum = 0;
+		showPriceInfo = false
 		onLoad(query:any) {
 			this.orderCode = query.code ?? '';
 			this.clickToPay = query.waitPay ?? false;
@@ -189,7 +236,7 @@
 						}
 					}
 				});
-			},200)
+			},this.clickToPay?200:0)
 
 			this.onEventUI('orderchange',()=>{
 				this.initEvent();
@@ -209,7 +256,10 @@
 					}
 				})
 			}
-			
+		}
+		onPageScroll(data: any) {
+			//@ts-ignore
+			this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll(data)
 		}
 		onHide(){
 			clearInterval(this.countDownInter);
@@ -219,6 +269,12 @@
 		}
 		public get orderRefund() : boolean {
 			return this.orderData.refund
+		}
+		clickCurrentCardTab({id}:any){
+			this.cardTabsCurrent = id;
+			if(id==1){
+				this.$refs.rBuyInfo.orderInfo()
+			}
 		}
 		clickPayShowLoading(cb?:Function){
 			uni.showLoading({
@@ -234,14 +290,13 @@
 		}
 		initEvent(cb?:Function){
 			const {orderCode} = this;
-			app.http.Get(`me/orderInfo/buyer/${orderCode}`,{},(res:any)=>{
+			app.http.Get(`me/orderInfo/buyer/${orderCode}/detail`,{},(res:any)=>{
 				const data = res.data;
 				this.onceLoad = false;
 				this.orderData = data
 				this.payChannel = data.good.payChannel??[]
 				this.countDown = data.leftSec
 				this.getCountDown();
-				uni.setNavigationBarTitle({ title: data.stateName });
 				this.getGoodDesc(data);
 				this.operateData = this.orderSetOperate(data);
 				this.detailPic = parsePic(getGoodsImg(decodeURIComponent(data.good.pic)))
@@ -336,7 +391,7 @@
 			this.orderDesc.price.desc ='¥'+this.keepTwoDecimal(data.price+data.discount+(data.coupon?data.coupon:0));
 			this.orderDesc.discount.desc ='- ¥'+data.discount;
 			this.orderDesc.mCoupon.desc ='- ¥'+(data.merchantCoupon?data.merchantCoupon:0);
-			this.orderDesc.oCoupon.desc ='- ¥'+(data.coupon?(data.coupon-data.merchantCoupon):0);
+			this.orderDesc.oCoupon.desc ='- ¥'+(data.coupon?this.keepTwoDecimal(data.coupon-data.merchantCoupon):0);
 			if(data.payInfo){
 				for (const key in this.orderInfo) {
 					if (Object.prototype.hasOwnProperty.call(data.payInfo, key)) {
@@ -363,7 +418,7 @@
 		onClickAllCard(){
 			const { good, num, point } = this.orderData
 			uni.navigateTo({
-				url:`/pages/userinfo/order_myCard?code=${this.orderCode}&goodCode=${this.orderGoodCode}&pintuanType=${good.pintuanType}&num=${num}&point=${point}`
+				url:`/pages/userinfo/order_myCard?code=${this.orderCode}&goodCode=${this.orderGoodCode}&pintuanType=${good.pintuanType}&num=${num}&point=${point}&type=${this.cardTabsCurrent}`
 			})
 		}
 		onClickGoodDetail(){
@@ -524,8 +579,13 @@
 			result = Math.round(num * 100) / 100;
 			return result > 0 ? result : 0;
 		}
-		
-		
+		onClickStateDesc(){
+			app.platform.goZgLive({
+				roomID: this.orderData.roomId,
+				isAnchor: false,
+				goodCode:this.orderData.good.goodCode
+			})
+		}
 	}
 </script>
 
@@ -540,11 +600,23 @@
 	}
 	.header{
 		width: 100%;
-		height:354rpx;
-		background:url(../../static/order/top_bg.png);
+		height:626rpx;
+		background:url(@/static/goods/detail/card-bg.png);
 		background-size: 100% 100%;
 		box-sizing: border-box;
-		padding:40rpx 40rpx;
+		padding-top:190rpx;
+		.header-statename{
+			width:100%;
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			box-sizing: border-box;
+			padding: 0 100rpx;
+			font-size: 24rpx;
+			font-family: PingFangSC, PingFang SC;
+			font-weight: 400;
+			color: #FFFFFF;
+		}
 		&-state{
 			width: 100%;
 			font-size: 37rpx;
@@ -565,16 +637,17 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:0 14rpx;
+		margin-top: -370rpx;
 	}
 	.order{
 		&-index{
 			width: 100%;
 			// height:305rpx;
-			padding:0 22rpx 31rpx 22rpx;
-			border-radius: 4rpx;
+			padding:0 20rpx 0 20rpx;
+			border-top-left-radius: 4rpx;
+			border-top-right-radius: 4rpx;
 			background:#fff;
 			box-sizing: border-box;
-			margin-top: -188rpx;
 			&-header{
 				width: 100%;
 				height:93rprx;
@@ -591,15 +664,15 @@
 						width: 40rpx;
 						height:40rpx;
 						border-radius: 50%;
-						margin-right: 16rpx;
+						margin-right: 8rpx;
 					}
 					.seller-name{
 						height:40rpx;
 						line-height: 40rpx;
-						font-size: 27rpx;
+						font-size: 28rpx;
 						font-family: PingFangSC-Regular;
 						font-weight: 400;
-						color: #333333;
+						color: rgba(0,0,0,0.9);
 					}
 				}
 				.header-right{
@@ -647,19 +720,19 @@
 			}
 			&-center{
 				width: 100%;
-				height:137rpx;
+				height:178rpx;
 				display: flex;
 				box-sizing: border-box;
 				align-items: center;
 				.goods-image{
 					width: 178rpx;
-					height:137rpx;
+					height:178rpx;
 					border-radius: 4rprx;
 					margin-right: 24rpx;
 				}
 				.goods-content{
 					width: 480rpx;
-					height:137rpx;
+					height:178rpx;
 					box-sizing: border-box;
 					position: relative;
 					.title{
@@ -761,20 +834,73 @@
 	.order-desc{
 		width: 100%;
 		box-sizing: border-box;
-		border-top:13rpx solid $content-bg;
-		border-bottom: 13rpx solid $content-bg;
-		padding: 20rpx 22rpx 0 22rpx;
+		border-bottom: 20rpx solid $content-bg;
+		padding: 20rpx;
 		background: #fff;
+		.orderPInfo{
+			max-height: 0;
+			transition: all 0.2s linear;
+			overflow: hidden;
+		}
+		.show-pinfo{
+			max-height: 200rpx;
+		}
 		&-index{
 			width: 100%;
 			box-sizing: border-box;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			margin-bottom: 20rpx;
-			font-size: 25rpx;
+			height:60rpx;
+			font-size: 24rpx;
 			font-weight: 400;
 			color: #333333;
+
+			.price{
+				height:40rpx;
+				font-size: 24rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: rgba(0,0,0,0.9);
+				line-height: 40rpx;
+				display: inline-flex;
+			}
+			.total-price{
+				height:40rpx;
+				font-size: 28rpx;
+				font-family: PingFang SC;
+				font-weight: 500;
+				color: #000000;
+				line-height: 30rpx;
+				margin-left: 6rpx;
+			}
+			.total-price .price-text{
+				font-size: 36rpx;
+				font-family: Impact;
+				font-weight: 500;
+				margin-left:2rpx;
+			}
+			.total-price .decimal{
+				font-size: 28rpx;
+				font-family: Impact;
+				font-weight: 500;
+			}
+			.info{
+				font-weight: bold;
+			}
+			.redfont{
+				color:#FA1545;
+			}
+			.icon-up{
+				width: 20rpx;
+				height:12rpx;
+				margin-left: 8rpx;
+				background:url(@/static/order/up.png) no-repeat center / 100% 100%;
+				margin-top: 14rpx;
+			}
+			.icon-down{
+				transform: rotate(180deg);
+			}
 		}
 		.order-totalprice{
 			font-size: 27rpx;
@@ -865,13 +991,13 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:20rpx;
-		border-bottom: 13rpx solid $content-bg;
+		border-bottom: 20rpx solid $content-bg;
 		background: #fff;
 	}
 	.address-content{
 		width: 100%;
 		box-sizing: border-box;
-		border-bottom: 13rpx solid $content-bg;
+		border-bottom: 20rpx solid $content-bg;
 		padding:30rpx 25rpx;
 		background: #fff;
 		.title{
@@ -924,7 +1050,7 @@
 		box-sizing: border-box;
 		background: #fff;
 		padding:30rpx 22rpx 10rpx 22rpx;
-		border-bottom: 13rpx solid $content-bg;
+		border-bottom: 20rpx solid $content-bg;
 		
 		.title{
 			width: 100%;
@@ -937,27 +1063,30 @@
 		.index{
 			width: 100%;
 			display: flex;
-			height:40rpx;
-			align-items: center;
+			min-height:40rpx;
+			align-items: flex-start;
 			margin-bottom: 20rpx;
 			justify-content: space-between;
 			.index-left{
+				width:150rpx;
 				height:40rpx;
 				display: flex;
 				align-items: center;
-				font-size: 25rpx;
+				font-size: 24rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 			}
 			.index-right{
-				height:40rpx;
+				min-height:40rpx;
 				display: flex;
 				align-items: center;
-				font-size: 25rpx;
+				font-size: 24rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
-				color: #C6C6C8;
+				color: #666666;
+				flex-wrap: wrap;
+				justify-content: flex-end;
 			}
 		}
 		.copy{
@@ -1025,23 +1154,23 @@
 			justify-content: flex-end;
 			
 			.mini-btn{
-				width: 180rpx;
-				border:1px solid #DADADA;
+				width: 168rpx;
+				border:1px solid #E0E0E0;
 				display: flex;
 				align-items: center;
 				justify-content: center;
 				font-family: PingFangSC-Regular;
-				color: #88878c;
+				color: #333333;
 				margin-left: 15rpx;
-				height: $btn-height;
-				line-height: $btn-height;
-				font-size: $btn-fontSize;
+				height: 72rpx;
+				line-height: 72rpx;
+				font-size: 28rpx;
 				border-radius:$btn-radius;
 				font-weight: $btn-weight;
 			}
 			.right{
-				width: 180rpx;
-				background: $btn-red;
+				width: 168rpx;
+				background: linear-gradient(90deg, #FA1545 0%, #CF004F 100%);
 				border:1px solid $btn-red;
 				color: #fff;
 				margin-left: 15rpx;
@@ -1083,6 +1212,7 @@
   border-bottom-left-radius: 5rpx;
   border-bottom-right-radius: 5rpx;
   position: relative;
+  margin-bottom: 20rpx;
 }
 .randomh-box::after{
   content: '';
@@ -1152,5 +1282,21 @@
 	color: #88878C;
   }
 }
+.good-progress {
+	background: linear-gradient(90deg, #FF829C 0%, #FA1545 100%);
+	width: 160rpx;
+	height: 12rpx;
+	position: relative;
+	display: flex;
+	justify-content: flex-end;
+	margin:0 auto;
+	margin-left: 12rpx;
+	.progressMask {
+		height: inherit;
+		background-color: #FFFFFF;
+		width: 0%;
+	}
+}
+
 // 
 </style>

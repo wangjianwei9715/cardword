@@ -485,6 +485,22 @@ export function liveCountDownV2(startDate: number, endDate: number = 0, mmbol: b
 		return day + hour + minute + (!day && !hour && !minute ? second : '')
 	}
 }
+export function filterPrice(price: number) {
+	let data = {
+		integer: 0,
+		decimal: 0,
+	}
+	if (!price) return data
+	const priceArr: any = String(price).split('.')
+	if (priceArr.length == 1) {
+		data.integer = priceArr[0]
+		return data
+	}
+	return {
+		integer: priceArr[0],
+		decimal: '.' + priceArr[1]
+	}
+}
 export const weekDay = function (time: number, type?: number) {
 	const weekNum: number = new Date(time * 1000).getDay();
 	const week: any = {

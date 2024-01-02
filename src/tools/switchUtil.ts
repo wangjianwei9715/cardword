@@ -31,50 +31,17 @@ export function orderStateDesc(data:any) {
         case 2:
             return '拼团正在进行中';
         case 3:
-            return '恭喜您，购得'+data.hitNum+'张卡片，等待商家发货';
+            return '等待商家发货';
         case 4:
-            return '恭喜您，购得'+data.hitNum+'张卡片，商家已发货，请注意物流信息';
+            return '将于快递送达后15天自动确认收货。';
         case 5:
-            return '恭喜您，获得'+data.hitNum+'张卡片，感谢您的信任与支持';
+            return '感谢您的信任与支持。';
         case 10:
             return '很遗憾，您未中卡，感谢您的信任与支持';
         case -1:
-            return '订单已关闭'
+            return '您未在规定时间内完成付款，交易已关闭'
     }
 }
-
-// 订单商品状态  //0预售 1出售中, 2拼团成功, 3即奖直播 4直播中  5待上传 6待发货 7发货完成 -100 系统下架 -1未发布 -2拼团失败
-export function orderGoodsStateStr(data:any) {
-    switch(data.good.state){
-        case 0:
-            return '预售中';
-        case 1:
-            return '拼团中'+(data.good.lockNum+data.good.currentNum)+'/'+data.good.totalNum;
-        case 2:
-            return '拼团成功';
-        case 3:
-            return '即将直播';
-        case 4:
-            return '直播中';
-        case 5:
-            return '待上传拆卡报告';
-        case 6:
-            return '拆卡结果审核中';
-        case 7:
-            return '待发货';
-        case 8:
-            return '发货完成';
-        case -100:
-            return '系统下架';
-        case -1:
-            return '未发布';
-        case -2:
-            return '拼团失败';
-        default:
-            return '拼团成功'
-    }
-}
-
 // 订单设置底部按钮 //1 等待支付 2 进行中 3 等待发货 4 等待收货 5 收货成功  10 未中卡
 export function orderSetOperate(data:any):{[x:string]:any} {
     switch(data.state){
@@ -88,7 +55,7 @@ export function orderSetOperate(data:any):{[x:string]:any} {
             }
         case 4: case 5:
             return [{cmd: "drawCard", name: "卡密特效"},{cmd: "wuliu", name: "查看物流"},{cmd: "resultCard", name: "拆卡报告"}];
-        case -1:
+        case -1: case -4:
             return [{cmd: "viewGood", name: "查看详情"}];
         default:
             return [{cmd: "drawCard", name: "卡密特效"},{cmd: "resultCard", name: "拆卡报告"}];
@@ -115,6 +82,37 @@ export function myCardGoodsType(state:any){
             }
         default:
             return [];
+    }
+}
+// 卡密规则
+export function cardPlayInfo(state:any){
+    switch(state){
+        case 1: case 11: //随机卡种、选队随机
+            return {
+				cName:"球员丨球队",
+				eName:"player丨team",
+				desc:"限编，卡种，编号"
+			}
+        case 2: //随机球队
+            return {
+				cName:"球队",
+				eName:"team"
+			}
+        case 3: //随机球员
+            return {
+				cName:"球员",
+				eName:"player"
+			}
+        case 10: //自选买队
+            return {
+				cName:"球队",
+				eName:"",
+				desc:"分支"
+			}
+        default:
+            return {
+                cName:"卡密",
+            };
     }
 }
 // 自选随机说明
