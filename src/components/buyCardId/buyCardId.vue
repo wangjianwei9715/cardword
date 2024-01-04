@@ -3,14 +3,14 @@
  * @Author: wjw
  * @Date: 2022-06-10 16:52:20
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-26 14:36:34
+ * @LastEditTime: 2024-01-04 14:54:45
  * Copyright: 2023 .
  * @Descripttion: 
 -->
 <template>
 	<view class="buy-card">
 		<view class="card-index" v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index" @click="onClickLookCard(item)">
-			<view class="left" :class="{'bingo-name':item.bingo}">{{item.name}}</view>
+			<view class="left" :class="{'bingo-name':item.bingo,'wincard':item.state==2}">{{item.name}}</view>
 		</view>
 	</view>
 </template>
@@ -101,5 +101,8 @@
 	}
 	.bingo-name{
 		font-weight: bold !important;
+	}
+	.wincard{
+		color:#FA1545 !important
 	}
 </style>

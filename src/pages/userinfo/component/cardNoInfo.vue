@@ -1,8 +1,8 @@
 <template>
 	<view class="cardno-info">
-		<view class="cardno-box cname">{{noInfo.cName}}</view>
+		<view class="cardno-box cname" :class="{'bingo-name':data.state==2}">{{noInfo.cName}}</view>
 		<view class="cardno-box ename">{{noInfo.eName}}</view>
-		<view v-if="noInfo.desc" class="cardno-box desc" :class="{'bingo-name':noInfo.bingo}">{{noInfo.desc}}</view>
+		<view v-if="noInfo.desc" class="cardno-box desc">{{noInfo.desc}}</view>
 	</view>
 </template>
 

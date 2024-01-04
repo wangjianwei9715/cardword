@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-04 14:03:40
+ * @LastEditTime: 2024-01-04 15:17:04
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -295,16 +295,27 @@
 				font-weight: 400;
 				color: #666666;
 			}
+			// .popup-code-name{
+			// 	width: 100%;
+			// 	min-height: 60rpx;
+			// 	font-size: 24rpx;
+			// 	font-family: PingFangSC, PingFang SC;
+			// 	font-weight: 400;
+			// 	color: #666666;
+			// 	margin-top: 60rpx;
+			// 	display: inline-flex;
+			// 	align-items: flex-end;
+			// }
 			.popup-code-name{
 				width: 100%;
-				min-height: 60rpx;
+				min-height: 90rpx;
 				font-size: 24rpx;
 				font-family: PingFangSC, PingFang SC;
 				font-weight: 400;
 				color: #666666;
-				margin-top: 60rpx;
+				margin-top: 30rpx;
 				display: inline-flex;
-				align-items: flex-end;
+				align-items: flex-start;
 			}
 		}
 	}

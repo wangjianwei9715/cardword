@@ -44,7 +44,11 @@ export function orderStateDesc(data:any) {
 }
 // 订单设置底部按钮 //1 等待支付 2 进行中 3 等待发货 4 等待收货 5 收货成功  10 未中卡
 export function orderSetOperate(data:any):{[x:string]:any} {
-    switch(data.state){
+    const { state } = data;
+    if(state < 0){
+        return [{cmd: "viewGood", name: "查看详情"}];
+    }
+    switch(state){
         case 1:
             return [{cmd: "cancel", name: "取消支付"},{cmd: "toPay", name: "立即支付"}];
         case 2:
@@ -55,8 +59,6 @@ export function orderSetOperate(data:any):{[x:string]:any} {
             }
         case 4: case 5:
             return [{cmd: "drawCard", name: "卡密特效"},{cmd: "wuliu", name: "查看物流"},{cmd: "resultCard", name: "拆卡报告"}];
-        case -1: case -4:
-            return [{cmd: "viewGood", name: "查看详情"}];
         default:
             return [{cmd: "drawCard", name: "卡密特效"},{cmd: "resultCard", name: "拆卡报告"}];
     }

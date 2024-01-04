@@ -12,11 +12,11 @@
 				<!-- <muqian-lazyLoad class="card-pic" :src=""  preview/> -->
 			</view>
 		</view>
-		<view class="buyinfo-item" v-if="buyerData.hits.length">
+		<view class="buyinfo-item" v-if="buyerData.hits.length" @click="goResult">
 			<view class="item-left">
 				<view class="name">
 					<view class="title">系列玩法中卡</view>
-					<view class="desc">等待拆卡报告</view>
+					<view class="desc">查看拆卡报告</view>
 				</view>
 				<view class="num">x{{buyerData.hitsTotal}}</view>
 			</view>
@@ -92,6 +92,9 @@
 			})
 			this.end = true;
 		}
+		goResult(){
+			this.$emit("goResult")
+		}	
 	}
 </script>
 
