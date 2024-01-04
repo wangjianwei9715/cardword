@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-04 11:15:36
+ * @LastEditTime: 2024-01-04 14:03:40
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -28,7 +28,7 @@
 							<view class="popup-list-info">
 								<view class="popup-list-name u-line-1">{{item.name}}</view>
 								<view class="popup-list-text">
-									共{{item.randomNum>0?item.randomNum:1}}份 {{item.tp==2?(item.conpon&&item.conpon.distribute==2?"即搓即得":"拼成发放"):"拼成发放"}}
+									共{{item.randomNum>0?item.randomNum:1}}份 {{item.tp==2?(item.coupon&&item.coupon.distribute==2?"即搓即得":"拼成发放"):"拼成发放"}}
 								</view>
 								<view class="popup-code-name">{{item.randomNum>0?"随机卡密发放":item.noName}}</view>
 							</view>

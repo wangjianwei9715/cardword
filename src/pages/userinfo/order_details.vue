@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-04 11:09:37
+ * @LastEditTime: 2024-01-04 14:13:03
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -106,8 +106,8 @@
 				<view class="index">
 					<view class="index-left">收货信息</view>
 					<view class="index-right">
-						<view>{{orderData.receiver.address}}</view>
-						<view>{{orderData.receiver.name}} {{orderData.receiver.phone}}</view>
+						<view class="index-right-address">{{orderData.receiver.address}}</view>
+						<view class="index-right-address">{{orderData.receiver.name}} {{orderData.receiver.phone}}</view>
 					</view>
 				</view>
 				<view class="index" v-for="item in orderInfo" :key="item.id" v-show="item.desc!=0">
@@ -1087,6 +1087,12 @@
 				color: #666666;
 				flex-wrap: wrap;
 				justify-content: flex-end;
+			}
+			.index-right-address{
+				font-size: 24rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: #666666;
 			}
 		}
 		.copy{
