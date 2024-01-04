@@ -5,11 +5,11 @@
 			<view v-show="cheduiData.list" class="act-box" @click.prevent="cheduiShowDrawer=true;isPullDown(false)">
 				<view class="box-name">
 					<image class="icon-name" src="@/static/goods/detail/chedui.png"/>
-					车队排行
+					<text class="box-name-text">车队排行</text>
 				</view>
 				<view class="act-box-desc flex-between">
 					<view class="act-box-desc-item flex-between">前{{cheduiData.totalNum}}名送礼品</view>
-					<u-notice-bar style="padding:0;max-width:350rpx;text-align:right" :fontSize="'24rpx'" :text="rewardList" direction="column" icon="" color="#A27339" bgColor="rgba(0,0,0,0)" :duration="3000" :flexEnd="true"></u-notice-bar>
+					<u-notice-bar style="padding:0;max-width:350rpx;text-align:right;height:36rpx;" :fontSize="'24rpx'" :text="rewardList" direction="column" icon="" color="#A27339" bgColor="rgba(0,0,0,0)" :duration="3000" :flexEnd="true"></u-notice-bar>
 				</view>
 				<view class="detail-act-right"></view>
 			</view>
@@ -152,9 +152,14 @@
 				box-sizing: border-box;
 				padding-left: 2rpx;
 				background: linear-gradient(90deg, #DEC18B 0%, #C99C49 100%);
-				font-size: 20rpx;
-				font-family: HYLiLiangHeiJ;
+			}
+			.box-name-text{
+				height:34rpx;
+				font-size: 18rpx;
+				font-family: hei;
 				color: #FFFFFF;
+				display: flex;
+				align-items: center;
 			}
 			.icon-name{
 				width: 32rpx;
@@ -162,6 +167,7 @@
 			}
 			.act-box-desc{
 				width: 550rpx;
+				height: 42rpx;
 			}
 			.flex-between{
 				display: flex;
@@ -169,6 +175,8 @@
 				justify-content: space-between;
 			}
 			.act-box-desc-item{
+				height: 42rpx;
+				line-height: 42rpx;
 				display: flex !important;
 				align-items: center;
 				box-sizing: border-box;

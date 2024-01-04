@@ -88,12 +88,13 @@ export default class ClassName extends BaseComponent {
 			font-size: 44rpx;
 			font-family: HYLiLiangHeiJ;
 			color: rgba(255,255,255,0.4);
-			line-height: 54rpx;
 			text-shadow: inset 0px 0px 18px rgba(250,25,72,0.44);
 			position: absolute;
 			left:0;
 			top:-2rpx;
-			text-align: center;
+			display: flex;
+			align-items: flex-start;
+			justify-content: center;
 		}
 		.close{
 			width: 56rpx;

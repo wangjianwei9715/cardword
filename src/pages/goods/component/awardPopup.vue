@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-29 11:20:38
+ * @LastEditTime: 2024-01-04 11:15:36
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -12,7 +12,10 @@
 		<u-popup :show="popupShow" :round="5" @close="popupShow=false">
 			<view class="popup-box">
 				<view class="popup-header">
-					<view class="popup-title">搓卡密 实时掉落好物<image @click="ruleShow=true" class="icon-help" src="@/static/goods/detail/noAward-help.png"/></view>
+					<view class="popup-title">
+						<text class="hy-title">搓卡密 实时掉落好物</text>
+						<image @click="ruleShow=true" class="icon-help" src="@/static/goods/detail/noAward-help.png"/>
+					</view>
 					<view class="popup-desc">{{awardNum.sole}}份指定卡密奖励 {{awardNum.random}}份随机卡密奖励</view>
 					<view class="popup-close" @click="popupShow=false"></view>
 				</view>
@@ -156,7 +159,7 @@
 			width: 100%;
 			height:150rpx;
 			box-sizing: border-box;
-			padding:36rpx 0 0 36rpx;
+			padding:26rpx 0 0 36rpx;
 			position: relative;
 		}
 		.popup-close{
@@ -170,12 +173,16 @@
 		.popup-title{
 			width: 100%;
 			height: 70rpx;
+			display: flex;
+			align-items: center;
+		}
+		.hy-title{
+			height: 50rpx;
 			font-size: 40rpx;
 			font-family: HYLiLiangHeiJ;
 			color: #7380A1;
-			line-height: 50rpx;
-			display: flex;
-			align-items: center;
+			display: inline-flex;
+			align-items: flex-start;
 		}
 		.icon-help{
 			width: 72rpx;

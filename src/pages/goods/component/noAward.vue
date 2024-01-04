@@ -91,6 +91,9 @@
 			}
 		}
 		.text{
+			height:42rpx;
+			display: flex;
+			align-items: flex-start;
 			font-family: HYLiLiangHeiJ;
 			font-size: 34rpx;
 			color: #7380A1;

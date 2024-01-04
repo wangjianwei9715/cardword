@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-02 10:17:00
+ * @LastEditTime: 2024-01-04 11:09:37
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -98,7 +98,7 @@
 				</view>
 				<!-- 卡密信息|购入信息 -->
 				<buyCardId v-show="cardTabsCurrent==0" :cardList="cardList"/>
-				<buyInfo v-show="cardTabsCurrent==1" ref="rBuyInfo" :orderCode="orderCode" :num="orderData.num" :point="orderData.point"/>
+				<buyInfo v-show="cardTabsCurrent==1" ref="rBuyInfo" :orderCode="orderCode" :num="orderData.buyNoNum" :point="orderData.point"/>
 			</view>
 			<!-- 订单详细信息 -->
 			<view class="order-info" v-if="orderInfo.orderNo.desc!=''">

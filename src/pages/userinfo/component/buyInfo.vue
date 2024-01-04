@@ -1,6 +1,6 @@
 <template>
 	<view class="buyinfo-box">
-		<view class="buyinfo-item">
+		<view class="buyinfo-item" v-show="num>0">
 			<view class="item-left">
 				<view class="name">
 					<view class="title">随机正版基础卡片</view>
