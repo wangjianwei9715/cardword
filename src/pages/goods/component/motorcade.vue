@@ -9,7 +9,7 @@
 				</view>
 				<view class="act-box-desc flex-between">
 					<view class="act-box-desc-item flex-between">前{{cheduiData.totalNum}}名送礼品</view>
-					<u-notice-bar style="padding:0;max-width:350rpx;text-align:right;height:36rpx;" :fontSize="'24rpx'" :text="rewardList" direction="column" icon="" color="#A27339" bgColor="rgba(0,0,0,0)" :duration="3000" :flexEnd="true"></u-notice-bar>
+					<u-notice-bar style="padding:0;max-width:350rpx;text-align:right;height:32rpx;" :fontSize="'24rpx'" :text="rewardList" direction="column" icon="" color="#A27339" bgColor="rgba(0,0,0,0)" :duration="3000" :flexEnd="true"></u-notice-bar>
 				</view>
 				<view class="detail-act-right"></view>
 			</view>

@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-04 15:17:04
+ * @LastEditTime: 2024-01-04 15:43:05
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -308,14 +308,15 @@
 			// }
 			.popup-code-name{
 				width: 100%;
-				min-height: 90rpx;
+				min-height: 94rpx;
 				font-size: 24rpx;
 				font-family: PingFangSC, PingFang SC;
 				font-weight: 400;
 				color: #666666;
-				margin-top: 30rpx;
+				margin-top: 26rpx;
 				display: inline-flex;
 				align-items: flex-start;
+				line-height: 34rpx;
 			}
 		}
 	}
