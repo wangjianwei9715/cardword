@@ -42,11 +42,9 @@
 				</view>
 				<view v-else class="drawer-bottom-rank">暂无广告卡可用</view>
 
-				<view v-if="hasUsableCard" :class="buttonData.class" style="display: flex;align-items: center;justify-content: center;" @click="buttonData.clickHandler">
+				<view v-if="hasUsableCard" :class="buttonData.class" @click="buttonData.clickHandler">
 					{{ buttonData.text }} 
 					<u-count-down v-if="currentState.waitUpload" :time="countDown(adData.coverUpOverTime)" format="mm:ss" @finish="onFinish"></u-count-down>
-					<u-count-down v-if="adFull&&!currentState.waitUpload&&!currentState.waitReview&&adData.recently_at>0&&!currentState.inEffect" @finish="onFinish" style="color: #ffffff;" :time="countDown(adData.recently_at)" format="mm:ss"></u-count-down>
-					
 				</view>
 				<view v-else class="drawer-bottom-btn" @click="redirectToMall">去积分中心兑换</view>
 			</view>
@@ -108,7 +106,6 @@
 			};
 		}
 		public get adFull() : boolean {
-			// return true
 			return this.adData.now_num>=this.adData.limit_num;
 		}
 		public get usableAdCardList() : string {
@@ -129,21 +126,19 @@
 			return hour
 		}
 		public get buttonData():{[x:string]:any} {
-			const { state,reminder } = this.adData;
-			console.log(state);
-			
+			const { state } = this.adData;
 			const { notStart, waitUpload, waitReview, inEffect } = stateMap;
 			if(this.currentState.notStart){
-				this.buttonConfig[notStart].text = this.adFull? this.fullTips(reminder) : `确认使用（可申请广告位${this.adData.now_num}/${this.adData.limit_num}）`
+				this.buttonConfig[notStart].text = this.adFull? "广告位已满" : `确认使用（可申请广告位${this.adData.now_num}/${this.adData.limit_num}）`
 			}
 			if(this.currentState.inEffect){
-				this.buttonConfig[inEffect].text =`生效中`
+				this.buttonConfig[inEffect].text = `续费时长（${this.useHour}/${this.maxAdHour}h)`
 			}
 			return {
 				class: {
 					'drawer-bottom-btn': true,
-					'btn-disabled': state===waitReview || (state===notStart&&this.adFull&&reminder),
-					'upload-btn': state===waitUpload || (this.adFull)
+					'btn-disabled': state===waitReview || (state===notStart&&this.adFull),
+					'upload-btn': state===waitUpload
 				},
 				...this.buttonConfig[state]
 			};
@@ -153,13 +148,6 @@
 				const pic:any = await Upload.getInstance().uploadSocialImgs(1, "illustration", ["album"]);
 				this.uploadImg = pic[0];
 			})
-		}
-		fullTips(reminder:boolean){
-			if (reminder){
-				return this.adData.recently_at>0?`提醒已设置,距离下一次可用:`:`广告位已满,提醒已设置`
-			}else{
-				return this.adData.recently_at>0?`已满、预约结束前提醒:`:`已满、点击设置提醒`
-			}
 		}
 		countDown(endTime:number){
 			return (endTime-Math.round(+new Date().getTime() / 1000))*1000
@@ -179,26 +167,9 @@
 			if(item.num<=0) item.num = 0;
 			if(item.num>=item.remaining_quantity) item.num = item.remaining_quantity;
 		}
-		setMerReminder(){
-			app.http.Post(`merchant/me/adCard/reminder`,{},()=>{
-				uni.showModal({
-					title:"设置提醒成功",
-					content:"平台将在最近一次有可用广告位的前5分钟提醒您，请留意站内信;提示倒计时结束后可刷新页面申请广告位",
-					showCancel:false
-				})
-				this.adData.reminder=true
-			})
-			return
-		}
 		onClickConfirmUse(){
-			console.log("use",this.adFull);
-			if(this.adFull&&!this.adData.reminder){
-				this.setMerReminder()
-				return
-			}
 			const { inEffect } = this.currentState
 			if(this.selectedHour==0 || (this.adFull&&!inEffect)) return;
-			if (inEffect) return
 			if(inEffect && this.useHour > maxAdHour){
 				uni.showToast({title:"超出可续费时间,请重新确认",icon:"none"})
 				return;
@@ -215,7 +186,7 @@
 								return {count:Number(x.num),hour:x.hour}
 							})
 						}
-						app.http.Post("merchant/me/adCard/use/v2",params,(res:any)=>{
+						app.http.Post("merchant/me/adCard/use",params,(res:any)=>{
 							this.getList()
 						})
 					}
