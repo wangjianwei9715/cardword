@@ -35,12 +35,28 @@
             <view class="goodsItem" v-for="(item, index) in goodsList" :key="index">
                 <view class="goodsItem_top">
                     <muqian-lazyLoad class="logo" borderRadius="3rpx" :src="item.cover"></muqian-lazyLoad>
+                    <view class="startTimeBlock" v-if="item.canBuy_at > 0">
+                        <view class="startTimeBlock_leftFont">{{ item.canBuy_at > nowTimeStamp ? '距离开始' : '开抢中' }}</view>
+                        <view class="startTimeBlock_rightCountDown"
+                            v-if="item.canBuy_at && item.canBuy_at > 0 && nowTimeStamp < item.canBuy_at">
+                            <view class="timeBlock flexCenter"
+                                v-for="(time,tIndex) in getCountDownInfo(nowTimeStamp, item.canBuy_at).hours" :key="`hours${tIndex}`">{{ time }}</view>
+                            <view class="colon">:</view>
+                            <view class="timeBlock flexCenter"
+                                v-for="(time,tIndex) in getCountDownInfo(nowTimeStamp, item.canBuy_at).minutes" :key="`minutes${tIndex}`">{{ time }}</view>
+                            <view class="colon">:</view>
+                            <view class="timeBlock flexCenter"
+                                v-for="(time,tIndex) in getCountDownInfo(nowTimeStamp, item.canBuy_at).seconds" :key="`seconds${tIndex}`">{{ time }}</view>
+                        </view>
+                    </view>
                 </view>
                 <view class="goodsItem_bottom">
                     <view class="goodsName">{{ item.title }}</view>
                     <view class="goodsPriceBlock">
                         <view class="goodsPriceBlock_bottom">
                             <view class="money">{{item.price}}{{ item.pay_type==payTypeMap.money ? '元' : '积分' }}</view>
+                            <view class="flex1"></view>
+                            <view class="leftNum" v-if='item.canBuy_at&&item.canBuy_at>0&&item.stock_num'>库存:{{ item.stock_num }}</view>
                             <view class="leftNum" v-if='item.limit_num>0'>限购:{{ item.limit_num }}</view>
                         </view>
                     </view>
@@ -81,6 +97,8 @@ export default class ClassName extends BaseNode {
         tp: 0,
     }
     successRequest: boolean = false
+    nowTimeStamp: any = Math.round(+new Date() / 1000);
+    stampTimer:any=null
     tab: any = {
         index: 0,
         list: [
@@ -98,6 +116,7 @@ export default class ClassName extends BaseNode {
     merchantInfo:any = {};
     onShow(){
         this.refreshPages()
+        this.startStampTimer()
     }
     onPageScroll(data: any) {
         //@ts-ignore
@@ -117,6 +136,33 @@ export default class ClassName extends BaseNode {
     }
     async getMerchantInfo(){
         this.merchantInfo = await getMerchantIntegral()
+    }
+    startStampTimer() {
+        this.stampTimer && clearInterval(this.stampTimer)
+        this.nowTimeStamp = Math.round(+new Date() / 1000)
+        this.stampTimer = setInterval(() => {
+            this.nowTimeStamp = Math.round(+new Date() / 1000)
+        }, 1000)
+    }
+    getCountDownInfo(nowTimeStamp: number, endTimeStamp: number) {
+        if (!endTimeStamp) endTimeStamp = Math.round((new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 -
+            1) / 1000)
+        let times: any = new Date(endTimeStamp * 1000).getTime() - new Date(nowTimeStamp * 1000).getTime();
+        let ss: any = Math.floor(times / 1000)
+        let hh = this.formatNumberZero(Math.floor(ss / 3600));
+        ss %= 3600;
+        let mm = this.formatNumberZero((Math.floor(ss / 60)));
+        ss %= 60;
+        ss = this.formatNumberZero(ss);
+        const timeInfo: any = {
+            hours: String(hh).split(''),
+            minutes: String(mm).split(''),
+            seconds: String(ss).split('')
+        }
+        return timeInfo
+    }
+    formatNumberZero(val: any) {
+        return val < 10 ? "0" + val : val
     }
     refreshPages(){
         this.queryParams.pageIndex = 1;
@@ -150,6 +196,13 @@ export default class ClassName extends BaseNode {
         })
     }
     onClickBuy(item:any){
+        if (item.canBuy_at&&item.canBuy_at>0&&item.canBuy_at>Math.round(+new Date()/1000)){
+            uni.showToast({
+                title:"倒计时结束后可购买",
+                icon:"none"
+            })
+            return
+        }
         app.platform.UIClickFeedBack(); 
         this.buyPopup = {
             show:true,
@@ -365,7 +418,9 @@ page {
         }
     }
 }
-
+.flex1{
+    flex: 1;
+}
 .goodsItem_bottom {
     width: inherit;
     box-sizing: border-box;
@@ -391,7 +446,7 @@ page {
 
     .goodsPriceBlock_bottom {
         display: flex;
-        justify-content: space-between;
+        // justify-content: space-between;
         align-items: center;
 
         .leftNum {
@@ -399,6 +454,7 @@ page {
             font-family: PingFang SC;
             font-weight: 400;
             color: #999999;
+            margin-left: 10rpx;
         }
     }
 
