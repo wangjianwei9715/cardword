@@ -17,26 +17,27 @@
         <view class="goodsInfoWrap_right">
           <view class="goodsInfoWrap_right_goodsName">
             <!-- 广告卡 -->
-            <view v-if="isAdCard(item.tp)" class="name u-line-1" >
-              累计使用{{item.num}}张 <text @click="onClickShowModal(item)">详情</text>
+            <view v-if="isAdCard(item.tp)" class="name u-line-1">
+              累计使用{{ item.num }}张 <text @click="onClickShowModal(item)">详情</text>
             </view>
-            <view v-else class="name u-line-1" >
-              {{ item.weight+"权重卡"+item.hour+"小时 * "+item.num }}
+            <view v-else class="name u-line-1">
+              {{ item.weight + "权重卡" + item.hour + "小时 * " + item.num }}
             </view>
 
             <view class="state">{{ logStateMap[String(item.logState)] }}</view>
           </view>
 
           <view class="goodsInfoWrap_right_exchangeTime">
-            {{item.goodsCode!=""?`商品ID：${item.goodsCode}`:"用于商家主页"}}
+            {{ item.goodsCode != "" ? `商品ID：${item.goodsCode}` : "用于商家主页" }}
           </view>
           <!-- 广告卡 -->
-          <view v-if="isAdCard(item.tp)" class="goodsInfoWrap_right_ad" >
-            <view class="inline color-red">发起时间 {{ $u.timeFormat(item.effective_at,"mm.dd hh:MM") }}</view>
-            <view class="inline">使用后累计 <text class="color-red">{{item.afterHour}}小时</text></view>
+          <view v-if="isAdCard(item.tp)" class="goodsInfoWrap_right_ad">
+            <view class="inline color-red">发起时间 {{ $u.timeFormat(item.effective_at, "mm.dd hh:MM") }}</view>
+            <view class="inline">使用后累计 <text class="color-red">{{ item.afterHour }}小时</text></view>
           </view>
-          <view v-else class="goodsInfoWrap_right_price" >
-            开始结束时间{{ $u.timeFormat(item.effective_at,"mm.dd hh:MM") }} - {{ $u.timeFormat(item.failure_at,"mm.dd hh:MM") }}
+          <view v-else class="goodsInfoWrap_right_price">
+            开始结束时间{{ $u.timeFormat(item.effective_at, "mm.dd hh:MM") }} - {{ $u.timeFormat(item.failure_at, "mm.dd hh:MM")
+            }}
           </view>
 
         </view>
@@ -49,11 +50,12 @@
       :columns="stateOption" @close="stateShow = false" @cancel="stateShow = false"></u-picker>
     <logisticsPop :visible.sync="visible" :code="wuliuCode" />
 
-    <u-modal :show="modalData.show" title="详情" confirmText="我知道了" :closeOnClickOverlay="true" @close="modalData.show=false" @confirm="modalData.show=false">
-			<view class="slot-content">
-				<rich-text :nodes="modalData.content"></rich-text>
-			</view>
-		</u-modal>
+    <u-modal :show="modalData.show" title="详情" confirmText="我知道了" :closeOnClickOverlay="true"
+      @close="modalData.show = false" @confirm="modalData.show = false">
+      <view class="slot-content">
+        <rich-text :nodes="modalData.content"></rich-text>
+      </view>
+    </u-modal>
   </view>
 </template>
 
@@ -73,7 +75,7 @@ export default class ClassName extends BaseNode {
   cardImg = mall.cardImg;
   queryParams: any = {
     pageIndex: 1,
-    pageSize: 20,
+    pageSize: 10,
     tp: 100,
     state: 100,
   };
@@ -86,8 +88,8 @@ export default class ClassName extends BaseNode {
   visible: boolean = false
   wuliuCode: string = ""
   modalData = {
-    show:false,
-    content:""
+    show: false,
+    content: ""
   }
   onLoad(query: any) {
     this.reqNewData();
@@ -121,8 +123,8 @@ export default class ClassName extends BaseNode {
     );
     return findItem.label;
   }
-  isAdCard(tp:number){
-    return tp==1
+  isAdCard(tp: number) {
+    return tp == 1
   }
   changeOrderDetail(code: string, orderDetail: any) {
     const index: number = this.awardList.findIndex((item: any) => {
@@ -166,12 +168,16 @@ export default class ClassName extends BaseNode {
       cb && cb();
     });
   }
-  onClickShowModal(item:any){
-    const content = item.adCardList.join("<br>")
-    this.modalData = {
-      show:true,
-      content
-    }
+  onClickShowModal(item: any) {
+    app.http.Get("dataApi/merchant/me/cards/useLog/adUseDetail", { ids: item.adCardIds.split(",") }, (res: any) => {
+      console.log(res);
+      const content = (res.list || []).join("<br>")
+      this.modalData = {
+        show: true,
+        content
+      }
+    })
+
   }
 }
 </script>
@@ -231,6 +237,7 @@ page {
   padding: 25rpx 30rpx 34rpx 30rpx;
   margin-bottom: 14rpx;
   position: relative;
+
   .goodsInfoWrap {
     height: 133rpx;
     display: flex;
@@ -243,7 +250,7 @@ page {
       display: flex;
       align-items: center;
       justify-content: center;
-      color:#333333;
+      color: #333333;
       font-size: 28rpx;
     }
   }
@@ -271,26 +278,27 @@ page {
         font-family: PingFang SC;
         font-weight: 400;
         color: #333333;
-        text{
-          text-decoration:underline;
-          color:#409EFF;
+
+        text {
+          text-decoration: underline;
+          color: #409EFF;
           margin-left: 20rpx;
         }
       }
 
       .state {
-        height:30rpx;
-        background:#fa1545;
+        height: 30rpx;
+        background: #fa1545;
         position: absolute;
-        right:0;
-        top:0;
+        right: 0;
+        top: 0;
         font-size: 21rpx;
         font-family: PingFang SC;
         font-weight: 400;
-        color:#fff ;
+        color: #fff;
         box-sizing: border-box;
         line-height: 30rpx;
-        padding:0 15rpx;
+        padding: 0 15rpx;
         border-bottom-left-radius: 3rpx;
       }
     }
@@ -301,17 +309,21 @@ page {
       font-weight: 400;
       color: #fa1545;
     }
+
     &_ad {
       width: 100%;
       box-sizing: border-box;
       display: flex;
       justify-content: space-between;
-      .inline,text{
+
+      .inline,
+      text {
         font-size: 20rpx;
         font-family: PingFang SC;
         font-weight: 400;
       }
-      .color-red{
+
+      .color-red {
         color: #fa1545;
       }
     }
@@ -342,5 +354,4 @@ page {
       border: 2rpx solid #fa1545;
     }
   }
-}
-</style>
+}</style>

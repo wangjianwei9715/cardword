@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 16:19:36
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-10-19 10:40:48
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2024-01-18 14:00:42
  * @FilePath: \jichao_app_2\src\pages\merchant\mall\pay.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -32,8 +32,12 @@
             </view>
         </view>
         <view class="publickBlock priceContainer">
+            <view class="price_left">购买份数</view>
+            <view class="price_right">{{buyNum}}份</view>
+        </view>
+        <view class="publickBlock priceContainer">
             <view class="price_left">商品金额</view>
-            <view class="price_right">￥{{goodsDetail.price}}</view>
+            <view class="price_right">￥{{goodsDetail.price*buyNum}}</view>
         </view>
         <view class="publickBlock buyReadContainer">
             <view class="buyReadTop" @click="isReadAgreement = !isReadAgreement">
@@ -52,7 +56,7 @@
                 <view class="payInfo">
                     <view class="all">合计</view>
                     <view class="price">
-                        <text class="moneySymbol">￥</text> {{ goodsDetail.price }}
+                        <text class="moneySymbol">￥</text> {{ goodsDetail.price*buyNum }}
                     </view>
                 </view>
                 <view class="exchangeButton flexCenter" @click="onClickPay">立即支付</view>
@@ -93,9 +97,13 @@ export default class ClassName extends BaseNode {
     addressData: any = {}
     showPayMent: boolean = false
     isReadAgreement: boolean = false
+    buyNum:number=1
     orderCode: string = ""//订单编号
     onLoad(query: any) {
         this.ID = query.id
+        if (query.buyNum){
+            this.buyNum=+query.buyNum
+        }
         this.getDefaultAddress()
         this.reqNewData()
     }
@@ -139,7 +147,7 @@ export default class ClassName extends BaseNode {
             title: ""
         })
         this.showPayMent = false
-        app.http.Pay(`merchant/exchange/cash/${this.ID}`, { deliveryId: this.needAddress?this.addressData.id:null, channel }, (res: any) => {
+        app.http.Pay(`merchant/exchange/cash/${this.ID}`, { deliveryId: this.needAddress?this.addressData.id:null, channel,buyNum:this.buyNum }, (res: any) => {
             this.orderCode = res.orderCode
             uni.hideLoading()
             //订单创建成功跳转支付宝支付

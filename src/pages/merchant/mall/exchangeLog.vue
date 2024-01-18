@@ -16,7 +16,7 @@
         <muqian-lazyLoad borderRadius="3rpx" class="img" :src="item.cover" preview/>
         <view class="goodsInfoWrap_right">
           <view class="goodsInfoWrap_right_goodsName">
-            <view class="name u-line-1">{{ item.name }}</view>
+            <view class="name u-line-1">{{ item.name }}{{ item.buyNum>1?`(${item.buyNum}份)`:"" }}</view>
             <view class="state">
               {{ orderStateMap[String(item.state)] }}
             </view>
