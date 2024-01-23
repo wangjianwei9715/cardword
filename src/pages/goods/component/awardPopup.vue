@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-04 15:43:05
+ * @LastEditTime: 2024-01-22 10:03:33
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -19,7 +19,7 @@
 					<view class="popup-desc">{{awardNum.sole}}份指定卡密奖励 {{awardNum.random}}份随机卡密奖励</view>
 					<view class="popup-close" @click="popupShow=false"></view>
 				</view>
-				<u-list @scrolltolower="getAwardList" height="900rpx" >
+				<u-list @scrolltolower="getAwardList" height="1200rpx" >
 					<u-list-item class="popup-listitem" v-for="(item, index) in awardList" :key="index" >
 						<view class="popup-list-box">
 							<view class="popup-list-pic">
@@ -137,7 +137,7 @@
 <style lang="scss" scoped>
 	.popup-box{
 		width: 100%;
-		height:1000rpx;
+		height:1300rpx;
 		background: linear-gradient(180deg, #EAF0FF 0%,#FFFFFF 10%, #FFFFFF 100%);
 		position: relative;
 		.award-btn{
@@ -263,6 +263,7 @@
 		.popup-item-pic{
 			width: 200rpx;
 			height:200rpx;
+			background: #333333
 		}
 		.popup-list-box{
 			width: 100%;

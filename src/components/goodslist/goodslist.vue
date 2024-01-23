@@ -40,7 +40,7 @@
 							{{goodsManaager.listPlan(item,'str')}}
 						</view>
 					</view>
-					<view class="goodslist-progress" :class="{'goodslist-progress-select':goodsManaager.ifSelectType(item)}">
+					<view class="goodslist-progress" :class="{'goodslist-progress-select':goodsManaager.ifSelectType(item)}" :style="progressBg">
 						<view class="progressMask" :style="{width:(100-goodsManaager.listPlan(item,'num'))+'%'}"></view>
 					</view>
 				</view>
@@ -83,6 +83,8 @@
 		empty?: any;
 		@Prop({ default: false })
 		nomore?: any;
+		@Prop({ default: "" })
+		progressColor?: string;
 		getGoodsImg = getGoodsImg;
 		filterPrice = filterPrice;
 		screenHeight = uni.getSystemInfoSync().windowHeight
@@ -92,6 +94,12 @@
 			
 		}
 		mounted() { //挂载到实例上去之后调用
+		}
+		public get progressBg() : any {
+			if(this.progressColor=="") return {}
+			return {
+				background:this.progressColor
+			}
 		}
 		onClickJumpUrl(id: any) {
 			this.$emit("send", id);

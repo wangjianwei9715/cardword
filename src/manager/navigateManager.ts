@@ -92,6 +92,11 @@ export default class navigateManager {
 			url:`/pages/illustration/album/selectCard?seriesCode=${code}&name=${name}`
 		})
 	}
+	goIllSeries(seriesCode:string){
+		uni.navigateTo({
+			url: `/pages/illustration/seriesDetail?seriesCode=${seriesCode}`
+		})
+	}
 	goAlbumEdit(selectSeries:string,draftId:string){
 		uni.navigateTo({
 			url:`/pages/illustration/album/selectCard?editCodeList=${selectSeries}&draftId=${draftId}`

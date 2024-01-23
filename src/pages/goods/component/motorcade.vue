@@ -128,7 +128,7 @@
 <style lang="scss">
 	.good-act-content{
 		width: 100%;
-		height: 42rpx;
+		height: 50rpx;
 		background: #FAEEDD;
 		border-radius: 4rpx;
 		box-sizing: border-box;
@@ -139,9 +139,9 @@
 		box-sizing: border-box;
 		.act-box{
 			width: 100%;
-			height: 42rpx;
+			height: 50rpx;
 			box-sizing: border-box;
-			padding:0 20rpx 0 4rpx;
+			padding:0 20rpx 0 8rpx;
 			display: flex;
 			align-items: center;
 			.box-name{

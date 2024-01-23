@@ -43,6 +43,7 @@
 	align-items: center;
 	justify-content: space-between;
 	position: relative;
+	border-radius: 5rpx;
 }
 .header-order-line{
 	width: 100%;
@@ -63,8 +64,8 @@
 	background:url(@/static/pay/v2/right.png) no-repeat center / 100% 100%
 }
 .icon-address {
-	width: 28rpx;
-	height: 36rpx;
+	width: 40rpx;
+	height: 40rpx;
 	background: url(@/static/pay/v2/address.png) no-repeat center;
 	background-size: 100% 100%;
 	margin-right: 10rpx;

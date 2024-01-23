@@ -88,10 +88,10 @@
 		.header-title{
 			height:88rpx;
 			line-height: 88rpx;
-			font-size: 34rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 600;
-			color: #000000;
+			font-size: 18px;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #333;
 		}
 		.icon-search{
 			width: 42rpx;

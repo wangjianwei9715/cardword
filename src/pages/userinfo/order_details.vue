@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-04 15:04:58
+ * @LastEditTime: 2024-01-22 11:07:16
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -416,9 +416,9 @@
 			},1)
 		}
 		onClickAllCard(){
-			const { good, num, point } = this.orderData
+			const { good, buyNoNum, point } = this.orderData
 			uni.navigateTo({
-				url:`/pages/userinfo/order_myCard?code=${this.orderCode}&goodCode=${this.orderGoodCode}&pintuanType=${good.pintuanType}&num=${num}&point=${point}&type=${this.cardTabsCurrent}`
+				url:`/pages/userinfo/order_myCard?code=${this.orderCode}&goodCode=${this.orderGoodCode}&pintuanType=${good.pintuanType}&num=${buyNoNum}&point=${point}&type=${this.cardTabsCurrent}`
 			})
 		}
 		onClickGoodDetail(){
@@ -601,7 +601,7 @@
 	.header{
 		width: 100%;
 		height:626rpx;
-		background:url(@/static/goods/detail/card-bg.png);
+		background:url(@/static/order/card-bg.png);
 		background-size: 100% 100%;
 		box-sizing: border-box;
 		padding-top:190rpx;
@@ -644,8 +644,8 @@
 			width: 100%;
 			// height:305rpx;
 			padding:0 20rpx 0 20rpx;
-			border-top-left-radius: 4rpx;
-			border-top-right-radius: 4rpx;
+			border-top-left-radius: 5rpx;
+			border-top-right-radius: 5rpx;
 			background:#fff;
 			box-sizing: border-box;
 			&-header{
@@ -837,6 +837,8 @@
 		border-bottom: 20rpx solid $content-bg;
 		padding: 20rpx;
 		background: #fff;
+		border-bottom-left-radius: 5rpx;
+		border-bottom-right-radius: 5rpx;
 		.orderPInfo{
 			max-height: 0;
 			transition: all 0.3s linear;
@@ -993,6 +995,7 @@
 		padding:20rpx;
 		border-bottom: 20rpx solid $content-bg;
 		background: #fff;
+		border-radius: 5rpx;
 	}
 	.address-content{
 		width: 100%;
@@ -1051,7 +1054,7 @@
 		background: #fff;
 		padding:30rpx 22rpx 10rpx 22rpx;
 		border-bottom: 20rpx solid $content-bg;
-		
+		border-radius: 5rpx;
 		.title{
 			width: 100%;
 			font-size: 31rpx;
@@ -1113,6 +1116,7 @@
 		align-items: center;
 		padding:0 96rpx;
 		justify-content: space-between;
+		border-radius: 5rpx;
 		.tab-index{
 			height:80rpx;
 			display: flex;

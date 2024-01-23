@@ -1,5 +1,5 @@
 <template>
-	<view class="good-act-content" v-if="goodsActData!=''">
+	<view class="good-act-content" v-if="goodsActData!='' || goodsData.remark">
 		
 		<view class="detail-act-box">
 			<view class="act-box" @click.prevent="onClickActHelp" v-show="goodsActData!=''">
@@ -15,7 +15,7 @@
 			</view>
 			<view class="act-box" v-if="goodsData.remark">
 				<view class="act-box-name">备注</view>
-				<view class="act-box-desc remark-border">
+				<view class="act-box-desc" :class="{'remark-border':goodsActData!=''}">
 					<view class="act-box-desc-item u-line-1">
 						<view class="detail-act-desc">{{goodsData.remark}}</view>
 					</view>

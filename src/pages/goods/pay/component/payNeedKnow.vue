@@ -46,13 +46,14 @@
 	box-sizing: border-box;
 	border-top: 13rpx solid #F6F7FB;
 	padding: 35rpx 20rpx;
+	border-radius: 5rpx;
 	.bottom-gm-title {
 		width: 100%;
 		height: 40rpx;
 		display: flex;
 		align-items: center;
-		font-size: 29rpx;
-		font-family: PingFangSC-Regular;
+		font-size: 26rpx;
+		font-family: PingFangSC;
 		font-weight: 600;
 		color: #333333;
 	}
@@ -72,23 +73,24 @@
 	}
 	.bottom-gm-tips {
 		width: 100%;
-		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
+		font-size: 20rpx;
+		font-family: PingFangSC;
 		font-weight: 400;
-		color: #88878C;
-		line-height: 36rpx;
+		color: rgba(153,153,153,0.9);
+		line-height: 28rpx;
 		margin-top: 10rpx;
 	}
 	.bottom-gm-btn {
-		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
+		font-size: 26rpx;
+		font-family: PingFangSC;
 		font-weight: 400;
 		color: #88878C;
-		line-height: 36rpx;
+		line-height: 28rpx;
+		margin-top: 10rpx;
 	}
 	.bottom-gm-btn text{
-		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
+		font-size: 26rpx;
+		font-family: PingFangSC;
 		font-weight: 600;
 		color: #333333;
 	}

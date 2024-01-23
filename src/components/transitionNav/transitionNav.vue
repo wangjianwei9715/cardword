@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-24 11:05:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-26 09:43:09
+ * @LastEditTime: 2024-01-22 10:09:33
  * @FilePath: \jichao_app_2\src\components\transitionNav\transitionNav.vue
  * @Description: 渐变导航栏（兼容nvue, nvue中把组件放到结构最下面:越后层级越高）
 -->
@@ -327,11 +327,11 @@ export default {
 
 /* #ifndef APP-NVUE */
 .pageTitle {
-    font-size: 32rpx;
-    color: #3C3C3C;
+    font-size: 18px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    color: #333;
     position: absolute;
-    font-family: HYQiHei;
-    font-weight: bold;
+    font-weight: 500;
     left: 0;
     right: 0;
     margin: auto;
@@ -353,10 +353,10 @@ export default {
 }
 
 .titleText {
-    font-size: 32rpx;
-    color: #3C3C3C;
-    font-family: HYQiHei;
-    font-weight: bold;
+    font-size: 18px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #333;
 }
 
 /* #endif */

@@ -11,7 +11,6 @@
 		</view>
 		<view class="header-info-box">
 			<view class="play-box" v-show="showCardNo">
-				<view class="icon-play"></view>
 				<view class="play-info">
 					<view>{{playInfo.cName}}</view>
 					<view>{{playInfo.eName}}</view>
@@ -29,7 +28,7 @@
 			<view v-if="typeTabCurrent==2&&listSort==''">
 				<view class="card-box" v-for="(item,index) in cardList" :key="index">
 					<view class="order-title">订单号：{{item.goodOrder}}</view>
-					<view class="card-index" v-for="(items,indexs) in item.nos" :key="indexs">
+					<view class="card-index" :class="{'win-card-box':items.state==2}" v-for="(items,indexs) in item.nos" :key="indexs">
 						<cardNoInfo :data="items" :type="pintuanType"/>
 						<muqian-lazyLoad class="card-pic" v-if="items.state==2" :src="items.pic"  preview/>
 					</view>
@@ -37,7 +36,7 @@
 				</view>
 			</view>
 			<view class="card-box" v-else>
-				<view class="card-index" v-for="(items,indexs) in cardList" :key="indexs">
+				<view class="card-index" :class="{'win-card-box':items.state==2}" v-for="(items,indexs) in cardList" :key="indexs">
 					<cardNoInfo :data="items" :type="pintuanType"/>
 					<muqian-lazyLoad class="card-pic" v-if="items.state==2" :src="items.pic"  preview/>
 				</view>
@@ -71,12 +70,12 @@
 					</view>
 				</view>
 			</view>
-			<view >
+			<view v-show="showBuyerCard">
 				<view class="buyer-title">随机正版基础卡片</view>
 				<view class="card-box" >
 					<view class="card-index">
 						<view class="buyerbox-index">
-							<view class="title">随机正版基础卡片x{{typeTabCurrent==1?orderNum:buyerData.totalNoNum}}</view>
+							<view class="title">随机正版基础卡片x{{typeTabCurrent==1?orderNum:buyerData.totalBuyNoNum}}</view>
 							<view class="desc">查看领取方式</view>
 						</view>
 						<view  class="index-right">
@@ -144,7 +143,7 @@
 			hits:[],
 			noAwards:[],
 			totalPoint:0,
-			totalNoNum:0
+			totalBuyNoNum:0
 		}
 		orderNum = 0;
 		orderPoint = 0;
@@ -175,6 +174,13 @@
 		}
 		public get showCardNo() : boolean {
 			return this.headerCurrent==0
+		}
+		public get showBuyerCard() : boolean {
+			if(this.typeTabCurrent==1){
+				return this.orderNum>0
+			}else{
+				return this.buyerData.totalBuyNoNum>0
+			}
 		}
 		onTabsClick(e:any){
 			if(e.index == this.headerCurrent) return;
@@ -259,7 +265,7 @@
 			app.http.Get(`${urlFront}${code}/hits`,params,(res:any)=>{
 				this.buyerData.hits = res.list || [];
 				res.totalPoint && (this.buyerData.totalPoint = res.totalPoint)
-				res.totalNoNum && (this.buyerData.totalNoNum = res.totalNoNum)
+				res.totalBuyNoNum && (this.buyerData.totalBuyNoNum = res.totalBuyNoNum)
 			})
 			app.http.Get(`${urlFront}${code}/noAwards`,params,(res:any)=>{
 				this.buyerData.noAwards = res.list || []
@@ -279,7 +285,7 @@
 	.header{
 		width: 100%;
 		height:458rpx;
-		background:url(@/static/goods/detail/card-bg.png) no-repeat top/100% 626rpx;
+		background:url(@/static/order/mycard.png) no-repeat top/100% 626rpx;
 		box-sizing: border-box;
 		padding-top:186rpx;
 	}
@@ -398,7 +404,7 @@
 	.card-box{
 		width: 100%;
 		box-sizing: border-box;
-		padding:0 14rpx;
+		padding:0 20rpx;
 		margin-bottom: 20rpx;
 	}
 	.card-index{
@@ -411,6 +417,9 @@
 		margin-bottom: 16rpx;
 		border-radius: 4rpx;
 		padding:16rpx 20rpx 16rpx 16rpx
+	}
+	.win-card-box{
+		border: 1rpx solid #FA1545;
 	}
 	.order-type-index{
 		width: 130rpx;
@@ -577,14 +586,6 @@
 		background:url(@/static/order/my_card.png) no-repeat center / 100% 100%;
 		margin:0 auto;
 		position: relative;
-		.icon-play{
-			width: 76rpx;
-			height:80rpx;
-			background:url(@/static/order/play.png) no-repeat center / 100% 100%;
-			position: absolute;
-			left:40rpx;
-			top:38rpx
-		}
 		.play-info{
 			width: 100%;
 			height:154rpx;

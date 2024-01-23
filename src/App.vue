@@ -59,11 +59,11 @@
 				//   console.log("开发环境"); 
 				// app.localTest = true;  
 				// app.bussinessApiDomain = `http://192.168.8.63:8701${app.requestVersion}`;
-				// app.bussinessApiDomain = `https://server.ssltest.ka-world.com${app.requestVersion}`; 
+				// app.bussinessApiDomain = `http://server.ssltest.ka-world.com${app.requestVersion}`; 
 				// app.launch_url = ['http://service.s777.ka-world.com']
-				// app.funcApiDomain = "http://functest.ssl.ka-world.com${app.requestVersion}";
+				// app.funcApiDomain = "http://functest.ssl.ka-world.com/api/v2/";
 				// 正式服测试环境 
-				// app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com${app.requestVersion}';
+				// app.bussinessApiDomain=`http://server.beta_bigstone.ka-world.com${app.requestVersion}`;
 			}
 			uni.setStorageSync("openAppTime", Math.round(+new Date() / 1000)); //存储打开app时间
 			if(!uni.getStorageSync("webViewVersion") || uni.getStorageSync("webViewVersion")!=app.webViewVersion){
@@ -342,6 +342,10 @@
 		font-family: "MINI";
 		src: url("~@/common/Tao/MINI.ttf");
 	}
+	@font-face {
+		font-family: "HYLiLiangHeiJ";
+		src: url("~@/common/Tao/HYLiLiangHeiJ.ttf");
+	}
 	// #endif
 	.content {
 		display: flex;
@@ -351,7 +355,10 @@
 		width: 750rpx;
 		box-sizing: border-box;
 	}
-
+	.uni-page-head__title{
+		font-family: PingFangSC-Medium, PingFang SC !important;
+		font-weight: 500 !important;
+	}
 	[type="search"]::-webkit-search-decoration {
 		display: none;
 	}

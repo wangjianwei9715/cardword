@@ -67,6 +67,9 @@
 								<text :class="[item.disabled && 'u-tabs__wrapper__nav__item__text--disabled']"
 									class="u-tabs__wrapper__nav__item__text" :style="[textStyle(index)]">{{ item[keyName]
 									}}</text>
+								<view class="u-tabs_sort" v-if="item.sort" @click="onClickSort(item.sort,index)">
+									<slot name="sort"></slot>
+								</view>
 								<u-badge :show="!!(item.badge && (item.badge.show || item.badge.isDot || item.badge.value))"
 									:isDot="item.badge && item.badge.isDot || propsBadge.isDot"
 									:value="item.badge && item.badge.value || propsBadge.value"
@@ -339,6 +342,11 @@ export default {
 			})
 			// #endif
 		},
+		onClickSort(sort,index){
+			if(this.innerCurrent!=index) return;
+			const newSort = sort =="up" ? "down" : "up";
+			this.$emit('sort',newSort)
+		}
 	},
 }
 </script>
@@ -402,5 +410,10 @@ export default {
 			}
 		}
 	}
+	
 }
+.u-tabs_sort{
+	width: 17rpx;
+	margin-left: 4rpx;
+}	
 </style>

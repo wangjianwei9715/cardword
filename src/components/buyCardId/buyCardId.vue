@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-06-10 16:52:20
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-04 14:54:45
+ * @LastEditTime: 2024-01-22 11:02:10
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -64,7 +64,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			border-bottom: 1px solid #F3F3F3;
+			border-bottom: 1px dashed #F3F3F3;
 			.left{
 				width: 100%;
 				min-height: 96rpx;

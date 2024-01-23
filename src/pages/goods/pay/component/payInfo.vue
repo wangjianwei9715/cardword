@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="payinfo-box">
 		<view class="merchant-info">
 			<muqian-lazyLoad class="merchant-avatar" :src="goodsData.publisher.avatar" borderRadius="50%"/>
 			{{goodsData.publisher.name}}
@@ -182,13 +182,19 @@
 </script>
 
 <style lang="scss">
+.payinfo-box{
+	background: #fff;
+	border-radius: 5rpx;
+	box-sizing: border-box;
+	padding-bottom: 20rpx;
+}
 .goods-info {
 	width: 100%;
 	display: flex;
 	flex-direction: row;
 	position: relative;
 	box-sizing: border-box;
-	padding:24rpx 20rpx 24rpx 20rpx;
+	padding:24rpx 20rpx 0rpx 20rpx;
 	.carousel{
 		width: 178rpx;
 		height:178rpx;
@@ -374,7 +380,7 @@
 	align-items: center;
 	margin:0 auto;
 	box-sizing: border-box;
-	margin-bottom: 20rpx;
+	margin-top: 20rpx;
 }
 .item-youhui-bg {
 	width: 92rpx;
@@ -421,7 +427,7 @@
 // 自选卡种 选队随机
 .randomh-box{
 	width: 100%;
-	padding:26rpx 20rpx;
+	padding:26rpx 20rpx 0rpx 20rpx;
 	box-sizing: border-box;
 	background:#fff;
 	border-bottom-left-radius: 5rpx;

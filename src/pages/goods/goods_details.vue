@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-02 09:56:46
+ * @LastEditTime: 2024-01-22 10:53:18
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -67,7 +67,7 @@
 					</u-count-down>
 				</view>
 			</view>
-			<view class="detail-bg">
+			<view class="detail-bg detail-bg-header">
 				<view class="header">
 					<view class="header-top">
 						<goodCouponGet :goodCode="goodsData.goodCode" :goodPage="true" :list="getCouponList" />
@@ -204,7 +204,7 @@
 			<view class="btn-cardlist" @click="onClickAllCard">
 				<image class="cardlist-icon" src="@/static/goods/detail/cardlist.png"></image>列表 
 			</view>
-			<view class="btn-confirm" :style="{width:`${tipBtn.length==2?'310rpx':'395rpx'}`}" :class="{'random-confirm':getSelectType}" @click="onClickBuy()">
+			<view class="btn-confirm" :style="{width:`${tipBtn.length==2?'332rpx':'395rpx'}`}" :class="{'random-confirm':getSelectType}" @click="onClickBuy()">
 				{{goodsData.isSelect?'选择编号':'立即购买'}}
 			</view>
 		</view>
@@ -883,8 +883,11 @@
 		border-radius: 3rpx;
 		background: #fff;
 		margin-bottom: 14rpx;
+		border-radius: 5rpx;
 	}
-
+	.detail-bg-header{
+		border-radius: 0rpx 0rpx 5rpx 5rpx;
+	}
 	.header-content {
 		width: 710rpx;
 		height: 100rpx;
@@ -1357,19 +1360,18 @@
 			}
 
 			.icon-kf {
-				width: 38rpx;
-				height: 36rpx;
-				margin-bottom: 3rpx;
+				width: 40rpx;
+				height: 34rpx;
+				margin-bottom: 8rpx;
 			}
 
 			.icon-order {
-				width: 38rpx;
-				height: 36rpx;
-				margin-bottom: 3rpx;
+				width: 40rpx;
+				height: 42rpx;
 			}
 		}
 		.btn-cardlist{
-			width: 150rpx;
+			width: 152rpx;
 			height: 82rpx;
 			border: 1rpx solid #DDDDDD;
 			border-radius: 3rpx;
@@ -1838,7 +1840,7 @@
 		display: flex;
 		margin-top: 16rpx;
 		.discount-item{
-			width: 192rpx;
+			width: 178rpx;
 			height:40rpx;
 			background: url(@/static/goods/detail/discount.png) no-repeat center /100% 100%;
 			display: flex;
@@ -1855,7 +1857,7 @@
 				overflow:hidden;
 			}
 			.discount-price{
-				width: 112rpx;
+				width: 100rpx;
 				overflow:hidden;
 			}
 		}

@@ -477,7 +477,6 @@ page {
 }
 .order-detail {
   width: 100%;
-  background: #fff;
 }
 .top-order{
   border-top: 13rpx solid $content-bg;
@@ -530,7 +529,9 @@ page {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding:10rpx 20rpx
+  padding:10rpx 20rpx;
+  background: #ffffff;
+  border-radius: 5rpx;
 }
 .yunfei-item {
   width: 100%;
@@ -620,7 +621,7 @@ page {
 }
 
 .btn-payment {
-  width: 200rpx;
+  width: 332rpx;
   height:84rpx;
   border-radius: 5rpx;
   display: flex;
@@ -630,21 +631,7 @@ page {
   font-family: PingFangSC, PingFang SC;
   font-weight: 500;
   color: #FFFFFF;
-  background: linear-gradient(90deg, #FA1545 0%, #CF004F 100%);
-}
-
-.btn-payment2 {
-  width: 360rpx;
-  background: $btn-red;
-  font-family: PingFangSC-Regular;
-  color: #FFFFFF;
-  box-sizing: border-box;
-  text-align: center;
-  height: $btn-height;
-  line-height: $btn-height;
-  font-size: $btn-fontSize;
-  border-radius:$btn-radius;
-  font-weight: $btn-weight;
+  background: #FA1545;
 }
 .goods-money-availa {
   font-size: 24rpx;

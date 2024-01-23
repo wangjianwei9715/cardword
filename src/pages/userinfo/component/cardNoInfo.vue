@@ -1,8 +1,8 @@
 <template>
 	<view class="cardno-info">
-		<view class="cardno-box cname" :class="{'bingo-name':data.state==2}">{{noInfo.cName}}</view>
+		<view class="cardno-box cname" :class="{'bingo-name':data.state==2 && !noInfo.desc}">{{noInfo.cName}}</view>
 		<view class="cardno-box ename">{{noInfo.eName}}</view>
-		<view v-if="noInfo.desc" class="cardno-box desc">{{noInfo.desc}}</view>
+		<view v-if="noInfo.desc" class="cardno-box desc" :class="{'bingo-name':data.state==2}">{{noInfo.desc}}</view>
 	</view>
 </template>
 
@@ -87,19 +87,19 @@
 		}
 		.cname{
 			font-size: 24rpx;
-			font-family: PingFangSC, PingFang SC;
+			font-family: PingFangSC-Medium;
 			font-weight: 500;
 			color: #333333;
 		}
 		.ename{
 			font-size: 20rpx;
-			font-family: PingFangSC, PingFang SC;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #DDDDDD;
 		}
 		.desc{
-			font-size: 22rpx;
-			font-family: PingFangSC, PingFang SC;
+			font-size: 24rpx;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #999999;
 			margin-top: 6rpx;
