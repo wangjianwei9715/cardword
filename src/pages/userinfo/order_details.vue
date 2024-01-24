@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-22 11:07:16
+ * @LastEditTime: 2024-01-24 13:44:35
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -31,7 +31,10 @@
 					</view>
 				</view>
 				<view class="order-index-center" @click="onClickGoodDetail">
-					<image class="goods-image" :src="detailPic" mode="aspectFill"></image>
+					<view class="goods-pic-box">
+						<image class="goods-image blur-bg" :src="detailPic" mode="heightFix"></image>
+						<image class="goods-image" :src="detailPic" mode="aspectFit"></image>
+					</view>
 					<view class="goods-content">
 						<view class="title">{{orderData.good.title}}</view>
 						<view class="desc" v-if="orderData.good.pintuanType>10">
@@ -724,11 +727,27 @@
 				display: flex;
 				box-sizing: border-box;
 				align-items: center;
+				.goods-pic-box{
+					width: 178rpx;
+					height:178rpx;
+					border-radius: 5rpx;
+					margin-right: 24rpx;
+					position: relative;
+					overflow: hidden;
+				}
 				.goods-image{
 					width: 178rpx;
 					height:178rpx;
 					border-radius: 4rprx;
-					margin-right: 24rpx;
+					position: relative;
+					z-index: 2;
+				}
+				.blur-bg{
+					filter: blur(2px);
+					position: absolute;
+					top:0;
+					left:0;
+					z-index: 1 !important;
 				}
 				.goods-content{
 					width: 480rpx;

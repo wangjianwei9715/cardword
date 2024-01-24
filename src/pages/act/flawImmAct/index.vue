@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-01-04 17:24:40
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-19 11:29:36
+ * @LastEditTime: 2024-01-24 10:58:42
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -95,22 +95,15 @@
 			return this.currentPlayer.tp && this.currentPlayer.tp == 2 
 		}
 		initPlayerList(){
-			// app.http.Get("activity/logoman/card/list",{},(res:any)=>{
-			// 	this.playerList = res.list.map((x:any,index:number)=>{
-			// 		return {
-			// 			...x,
-			// 			left:(index*playerWidth)
-			// 		}
-			// 	})
-			// })
-			this.playerList = Array.from({ length: 50 }, (_, index) => (
-				{
-					pic:`/static/drawCard/animation/${index+100}.png`,
-					left:(index*playerWidth),
-					num:349,
-					tp:index<2?1:2
-				}
-			))
+			app.http.Get("activity/logoman/card/list",{},(res:any)=>{
+				this.playerList = res.list.map((x:any,index:number)=>{
+					return {
+						...x,
+						left:(index*playerWidth)
+					}
+				})
+				this.getPlayerDetail()
+			})
 		}
 		getPlayerDetail(){
 			app.http.Get(`activity/logoman/card/detail/${this.currentPlayer.id}`,{},(res:any)=>{
