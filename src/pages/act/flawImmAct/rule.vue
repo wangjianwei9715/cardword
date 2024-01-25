@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\pages\act\flawImmAct\rule.vue
  * @Author: wjw
  * @Date: 2024-01-04 17:25:25
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-08 13:51:43
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2024-01-25 18:26:34
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -31,8 +31,8 @@
 			</thead>
 			<tbody>
 				<tr v-for="(item,index) in awardTable" :key="index" >
-					<td class="table-title">{{item.name}}</td>
-					<td>{{item.award}}</td>
+					<td class="table-title">{{item.zh_name}}</td>
+					<td>{{item.amount}}元平台无门槛券</td>
 				</tr>
 			</tbody>
 		</table>
@@ -40,14 +40,19 @@
 </template>
 
 <script lang="ts">
+import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
 @Component({})
 export default class ClassName extends BaseNode {
 	awardTable = [
-		{name:"勒布朗·詹姆斯",award:"100元平台无门槛券"}
+		// {name:"勒布朗·詹姆斯",award:"100元平台无门槛券"}
 	]
     onLoad(query: any) {
+		app.http.Get("dataApi/activity/logoman/playerList/role",{},(res:any)=>{
+			console.log(res);
+			this.awardTable=res.list || []
+		})
     }
 
 }
