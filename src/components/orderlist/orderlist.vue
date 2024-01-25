@@ -106,7 +106,7 @@
 						line-height: 40rpx;
 						font-size: 28rpx;
 						font-family: PingFangSC-Regular, PingFang SC;
-						font-weight: 400;
+						font-weight: 600;
 						color: #333333;
 					}
 				}
@@ -228,7 +228,7 @@
 			&-bottom{
 				width: 100%;
 				box-sizing: border-box;
-				padding:15rpx 0 38rpx 20rpx;
+				padding:25rpx 0 25rpx 20rpx;
 				display: flex;
 				justify-content: space-between;
 				.hitnum-bg{

@@ -38,7 +38,7 @@
 	background: #fff;
 	box-sizing: border-box;
 	padding: 0 25rpx;
-	border-bottom: 13rpx solid #f5f5f9;
+	border-bottom: 14rpx solid #f5f5f9;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;

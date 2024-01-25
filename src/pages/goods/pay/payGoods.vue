@@ -473,13 +473,13 @@ page {
   padding-bottom: calc(150rpx) !important;
   padding-bottom: calc(150rpx + constant(safe-area-inset-bottom)) !important;
   padding-bottom: calc(150rpx + env(safe-area-inset-bottom)) !important;
-  padding: 20rpx
+  padding: 14rpx
 }
 .order-detail {
   width: 100%;
 }
 .top-order{
-  border-top: 13rpx solid $content-bg;
+  border-top: 14rpx solid $content-bg;
 }
 
 

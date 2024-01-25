@@ -129,12 +129,14 @@
 		margin:0 5rpx;
 	}
 	.swiper-pic{
-		width: 124rpx;
-		height:124rpx;
+		width: 76rpx;
+		height:76rpx;
 		transition: all 0.3s;
 		position: absolute;
-		left:0;
-		top:0;
+		left:50%;
+		top:50%;
+		margin-top: -38rpx;
+		margin-left: -38rpx;
 		z-index: 2;
 	}
 	.swiper-icon{

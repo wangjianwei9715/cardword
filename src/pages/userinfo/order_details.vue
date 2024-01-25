@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-24 13:44:35
+ * @LastEditTime: 2024-01-25 14:47:15
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -171,14 +171,16 @@
 		getGoodsPintuan = getGoodsPintuan;
 
 		activeStyle={
-			"font-size": "28rpx",
+			"font-size": "31rpx",
 			"font-weight": 600,
 			"color":" #333333",
+			"font-family": "PingFangSC-Medium"
 		}
 		inactiveStyle={
-			"font-size": "28rpx",
+			"font-size": "31rpx",
 			"font-weight": 600,
 			"color":" #BBBBBB",
+			"font-family": "PingFangSC-Medium"
 		}
 		cardTabs = [
 			{id:0,name:"卡密信息"},
@@ -674,7 +676,7 @@
 						line-height: 40rpx;
 						font-size: 28rpx;
 						font-family: PingFangSC-Regular;
-						font-weight: 400;
+						font-weight: 600;
 						color: rgba(0,0,0,0.9);
 					}
 				}
@@ -853,7 +855,7 @@
 	.order-desc{
 		width: 100%;
 		box-sizing: border-box;
-		border-bottom: 20rpx solid $content-bg;
+		border-bottom: 14rpx solid $content-bg;
 		padding: 20rpx;
 		background: #fff;
 		border-bottom-left-radius: 5rpx;
@@ -1012,14 +1014,14 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:20rpx;
-		border-bottom: 20rpx solid $content-bg;
+		border-bottom: 14rpx solid $content-bg;
 		background: #fff;
 		border-radius: 5rpx;
 	}
 	.address-content{
 		width: 100%;
 		box-sizing: border-box;
-		border-bottom: 20rpx solid $content-bg;
+		border-bottom: 14rpx solid $content-bg;
 		padding:30rpx 25rpx;
 		background: #fff;
 		.title{
@@ -1072,7 +1074,7 @@
 		box-sizing: border-box;
 		background: #fff;
 		padding:30rpx 22rpx 10rpx 22rpx;
-		border-bottom: 20rpx solid $content-bg;
+		border-bottom: 14rpx solid $content-bg;
 		border-radius: 5rpx;
 		.title{
 			width: 100%;
@@ -1195,7 +1197,7 @@
 				line-height: 72rpx;
 				font-size: 28rpx;
 				border-radius:$btn-radius;
-				font-weight: $btn-weight;
+				font-weight: bold;
 			}
 			.right{
 				width: 168rpx;

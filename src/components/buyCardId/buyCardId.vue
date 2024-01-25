@@ -3,14 +3,17 @@
  * @Author: wjw
  * @Date: 2022-06-10 16:52:20
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-22 11:02:10
+ * @LastEditTime: 2024-01-25 14:42:33
  * Copyright: 2023 .
  * @Descripttion: 
 -->
 <template>
 	<view class="buy-card">
 		<view class="card-index" v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index" @click="onClickLookCard(item)">
-			<view class="left" :class="{'bingo-name':item.bingo,'wincard':item.state==2}">{{item.name}}</view>
+			<view class="left" :class="{'bingo-name':item.bingo,'wincard':item.state==2}">
+				{{item.name}}
+			</view>
+			<view v-show="index<cardList.length-1" class="left-bottom-order"></view>
 		</view>
 	</view>
 </template>
@@ -64,7 +67,10 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			border-bottom: 1px dashed #F3F3F3;
+			box-sizing: border-box;
+			background: #FAFAFA;
+			padding:0 20rpx;
+			flex-wrap: wrap;
 			.left{
 				width: 100%;
 				min-height: 96rpx;
@@ -76,8 +82,11 @@
 				font-weight: 400;
 				color: #333333;
 				line-height: 32rpx;
-				padding:10rpx 20rpx;
-				background: #FAFAFA;
+				padding:10rpx 0;
+			}
+			.left-bottom-order{
+				width: 100%;
+				border-bottom: 1px dashed #F3F3F3;
 			}
 			.right{
 				width:104rpx;

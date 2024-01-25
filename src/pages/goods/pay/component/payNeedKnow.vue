@@ -44,7 +44,7 @@
 	width: 100%;
 	background: #FFF;
 	box-sizing: border-box;
-	border-top: 13rpx solid #F6F7FB;
+	border-top: 14rpx solid #F6F7FB;
 	padding: 35rpx 20rpx;
 	border-radius: 5rpx;
 	.bottom-gm-title {

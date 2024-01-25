@@ -5,7 +5,11 @@
 			{{goodsData.publisher.name}}
 		</view>
 		<view class="goods-info">
-			<muqian-lazyLoad class="carousel" mode="aspectFill" :src="getGoodsImg(decodeURIComponent(goodsData.pic.carousel))"/>
+			<view class="goods-pic-box">
+				<muqian-lazyLoad class="goods-image blur-bg" :src="goodsPic" mode="heightFix"/>
+				<muqian-lazyLoad class="goods-image" :src="goodsPic" mode="aspectFit"/>
+			</view>
+			
 			<view class="right">
 				<view class="title" :class="uLine">
 					<view v-if="isPresell" class="icon-presell">预售</view>
@@ -137,6 +141,9 @@
 			const num = 2+(this.isPresell?1:0)+(this.goodsData.buyLimit.maxNumPerOrder>0?1:0)
 			return `u-line-${num}`
 		}
+		public get goodsPic() : string {
+			return getGoodsImg(decodeURIComponent(this.goodsData.pic.carousel))
+		}
 		getOnePrice(){
 			this.$emit('getOnePrice')
 		}
@@ -195,12 +202,29 @@
 	position: relative;
 	box-sizing: border-box;
 	padding:24rpx 20rpx 0rpx 20rpx;
-	.carousel{
+	.goods-pic-box{
 		width: 178rpx;
 		height:178rpx;
+		border-radius: 5rpx;
+		position: relative;
+		overflow: hidden;
+	}
+	.goods-image{
+		width: 178rpx;
+		height:178rpx;
+		border-radius: 4rprx;
+		position: relative;
+		z-index: 2;
+	}
+	.blur-bg{
+		filter: blur(2px);
+		position: absolute;
+		top:0;
+		left:0;
+		z-index: 1 !important;
 	}
 	.right{
-		width: 470rpx;
+		width: 482rpx;
 		margin-left: 24rpx;
 		display: flex;
 		flex-direction: column;
@@ -576,7 +600,7 @@
 	align-items: center;
 	font-size: 28rpx;
 	font-family: PingFangSC-Medium;
-	font-weight: 500;
+	font-weight: 600;
 	color: rgba(0,0,0,0.9);
 	.merchant-avatar{
 		width: 40rpx;
