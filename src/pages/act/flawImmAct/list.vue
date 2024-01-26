@@ -1,5 +1,5 @@
 <template>
-	<view :class="{'flaw':showFl}">
+	<view class="flaw-list" :class="{'flaw':showFl}">
 		<view class="bg-color" ></view>
 		<view class="act-content">
 			<view class="act-header">
@@ -8,7 +8,7 @@
 					<view class="icon-rotate"></view>
 				</view>
 			</view>
-			<view class="logo-box" @click="onClickGoIndex()">
+			<view class="logo-content" @click="onClickGoIndex()">
 				<image class="logo-msg" :src="`/static/act/immfl/${showFl?'flaw':'imm'}_msg.png`"/>
 			</view>
 			<view class="tabs-index">
@@ -150,95 +150,101 @@
 		width: 100%;
 		height:100%;
 	}
-	.bg-color{
-		width: 100%;
-		height:100%;
-		position: fixed;
-		top:0;
-		left:0;
-		z-index: 1;
-		background: linear-gradient(180deg, #E3341C, #E67629, #BF7619);
-	}
-	.act-content{
-		width: 100%;
-		min-height: 1143rpx;
-		box-sizing: border-box;
-		position: relative;
-		z-index: 2;
-		background:url(@/static/act/immfl/imm_bg.png) no-repeat top / 100% 1143rpx;
-		.act-header{
+	.flaw-list{
+		.tabs-index /deep/ .u-tabs__wrapper__nav{
+			justify-content: space-between;
+		}
+		.bg-color{
 			width: 100%;
-			height: 591rpx;
+			height:100%;
+			position: fixed;
+			top:0;
+			left:0;
+			z-index: 1;
+			background: linear-gradient(180deg, #E3341C, #E67629, #BF7619);
+		}
+		.act-content{
+			width: 100%;
+			min-height: 1143rpx;
 			box-sizing: border-box;
 			position: relative;
-			.ill-btn{
-				width: 261rpx;
-				height:79rpx;
-				background:url(@/static/act/immfl/imm_btn.png) no-repeat center / 100% 100%;
-				position: absolute;
-				top:394rpx;
-				left:31rpx;
-				z-index: 2;
-			}
-			.act-icon{
-				width: 707rpx;
-				height:420rpx;
-				position: absolute;
-				top:171rpx;
-				left:43rpx;
-				background:url(@/static/act/immfl/imm_icon.png) no-repeat center / 100% 100%;
-				z-index: 1;
-				.icon-rotate{
-					width: 395rpx;
-					height:108rpx;
+			z-index: 2;
+			background:url(@/static/act/immfl/imm_bg.png) no-repeat top / 100% 1143rpx;
+			.act-header{
+				width: 100%;
+				height: 591rpx;
+				box-sizing: border-box;
+				position: relative;
+				.ill-btn{
+					width: 261rpx;
+					height:79rpx;
+					background:url(@/static/act/immfl/imm_btn.png) no-repeat center / 100% 100%;
 					position: absolute;
-					left:323rpx;
-					top:157rpx;
-					background:url(@/static/act/immfl/imm_rotate.png) no-repeat center / 100% 100%;
+					top:394rpx;
+					left:31rpx;
+					z-index: 2;
+				}
+				.act-icon{
+					width: 707rpx;
+					height:420rpx;
+					position: absolute;
+					top:171rpx;
+					left:43rpx;
+					background:url(@/static/act/immfl/imm_icon.png) no-repeat center / 100% 100%;
+					z-index: 1;
+					.icon-rotate{
+						width: 395rpx;
+						height:108rpx;
+						position: absolute;
+						left:323rpx;
+						top:157rpx;
+						background:url(@/static/act/immfl/imm_rotate.png) no-repeat center / 100% 100%;
+					}
 				}
 			}
-		}
-		.logo-box{
-			width:750rpx;
-			height:227rpx;
-			background:url(@/static/act/immfl/imm_logo.png) no-repeat center / 100% 100%;
-			position: relative;
-			z-index: 6;
-			margin-top: -89rpx;
-			.logo-msg{
-				width: 390rpx;
-				height:104rpx;
-				position: absolute;
-				bottom:32rpx;
-				left:175rpx;
+			.logo-content{
+				width:750rpx;
+				height:227rpx;
+				background:url(@/static/act/immfl/imm_logo.png) no-repeat center / 100% 100%;
+				position: relative;
+				z-index: 6;
+				margin-top: -89rpx;
+				.logo-msg{
+					width: 390rpx;
+					height:104rpx;
+					position: absolute;
+					bottom:32rpx;
+					left:175rpx;
+				}
+			}
+			.tabs-index{
+				width: 100%;
+				padding: 0 20rpx;
+				box-sizing: border-box;
 			}
 		}
-		.tabs-index{
-			width: 100%;
-			padding: 0 20rpx;
-			box-sizing: border-box;
+		.sort-box{
+			width: 15rpx;
+			height:13rpx;
+		}
+		.icon-sort-up{
+			margin-top: 5rpx;
+			background:url(@/static/act/immfl/icon_up_imm.png) no-repeat center / 100% 100%;
+			margin-bottom: 4rpx;
+		}
+		.icon-sort-upn{
+			margin-top: 5rpx;
+			background:url(@/static/act/immfl/icon_up.png) no-repeat center / 100% 100%;
+			margin-bottom: 4rpx;
+		}
+		.icon-sort-down{
+			background:url(@/static/act/immfl/icon_down_imm.png) no-repeat center / 100% 100%;
+		}
+		.icon-sort-downn{
+			background:url(@/static/act/immfl/icon_down.png) no-repeat center / 100% 100%;
 		}
 	}
-	.sort-box{
-		width: 15rpx;
-		height:13rpx;
-	}
-	.icon-sort-up{
-		margin-top: 5rpx;
-		background:url(@/static/act/immfl/icon_up_imm.png) no-repeat center / 100% 100%;
-		margin-bottom: 4rpx;
-	}
-	.icon-sort-upn{
-		margin-top: 5rpx;
-		background:url(@/static/act/immfl/icon_up.png) no-repeat center / 100% 100%;
-		margin-bottom: 4rpx;
-	}
-	.icon-sort-down{
-		background:url(@/static/act/immfl/icon_down_imm.png) no-repeat center / 100% 100%;
-	}
-	.icon-sort-downn{
-		background:url(@/static/act/immfl/icon_down.png) no-repeat center / 100% 100%;
-	}
+	
 	.flaw{
 		.bg-color{
 			background: linear-gradient(180deg, #395C64, #42BCCD, #384952) !important;
@@ -254,7 +260,7 @@
 			left:15rpx !important;
 			background:url(@/static/act/immfl/flaw_icon.png) no-repeat center / 100% 100% !important;
 		}
-		.logo-box{
+		.logo-content{
 			background:url(@/static/act/immfl/flaw_logo.png) no-repeat center / 100% 100% !important;
 		}
 		.logo-msg{
@@ -272,7 +278,5 @@
 			background:url(@/static/act/immfl/icon_down_flaw.png) no-repeat center / 100% 100% !important;
 		}
 	}
-	.tabs-index /deep/ .u-tabs__wrapper__nav{
-		justify-content: space-between;
-	}
+	
 </style>
