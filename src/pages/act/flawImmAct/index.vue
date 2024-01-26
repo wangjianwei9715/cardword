@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-01-04 17:24:40
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-24 10:58:42
+ * @LastEditTime: 2024-01-26 09:37:00
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -106,6 +106,8 @@
 			})
 		}
 		getPlayerDetail(){
+			this.detailPic.sign.pic = "";
+			this.detailPic.player.pic = "";
 			app.http.Get(`activity/logoman/card/detail/${this.currentPlayer.id}`,{},(res:any)=>{
 				this.playerReceiveNum = res.receiveNum || 0;
 				this.playerDetail = res.data || {};
