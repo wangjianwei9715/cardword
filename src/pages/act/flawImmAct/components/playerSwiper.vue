@@ -30,13 +30,6 @@
 	const halfPlayerWidth = playerWidth/2; //一半宽度
 	const centerMargin = uni.upx2px(750); //两边需要倾斜的距离 值越大倾斜角度越小
 	const tiltHeight = 150; //倾斜高度 值越大倾斜角度越大
-	const TaskData = [
-		{name:"背板",num:3},
-		{name:"线条",num:10},
-		{name:"签名",num:50},
-		{name:"人物",num:150},
-		{name:"LOGOMAN",num:350}
-	];
 	@Component({components:{actProgress}})
 	export default class ClassName extends BaseComponent {
 		@PropSync("current",{
@@ -44,13 +37,15 @@
 		}) playerCurrent!: any;
 		@Prop({default:[]})
 		list!:any[]
+		@Prop({default:[]})
+		taskData!:any[]
 		swiperLeft = 0;
 		lastLeft = 0;
 		public get maxWidth() : number {
 			return (playerWidth * this.list.length)
 		}
 		taskSchedule(item:any) : number {
-			return  TaskData.filter((x:any)=>{
+			return  this.taskData.filter((x:any)=>{
 				return (item.num||0)>=x.num;
 			}).length * 20;
 		}

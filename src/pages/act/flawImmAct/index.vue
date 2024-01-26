@@ -14,7 +14,7 @@
 			<view class="msg">规则说明</view>
 		</view>
 		<!-- 球员Swiper -->
-		<playerSwiper :current.sync="playerCurrent" :list="playerList" @change="onChangeCurrent"/>
+		<playerSwiper :current.sync="playerCurrent" :list="playerList" :taskData="taskData" @change="onChangeCurrent"/>
 		<view class="decorate"></view>
 
 		<view class="card">

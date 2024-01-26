@@ -17,7 +17,7 @@
 				<view class="act-box-name">备注</view>
 				<view class="act-box-desc" :class="{'remark-border':goodsActData!=''}">
 					<view class="act-box-desc-item u-line-1">
-						<view class="detail-act-desc">{{goodsData.remark}}</view>
+						<view class="detail-act-remark">{{goodsData.remark}}</view>
 					</view>
 				</view>
 			</view>
@@ -187,6 +187,13 @@
 		overflow: hidden;
 		text-overflow:ellipsis;
 		white-space: nowrap;
+	}
+	.detail-act-remark{
+		width: 550rpx;
+		font-size: 25rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #333333;
 	}
 	.discount-box{
 		display: flex;
