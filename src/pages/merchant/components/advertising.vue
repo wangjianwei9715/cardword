@@ -192,11 +192,12 @@
 		}
 		onClickConfirmUse(){
 			console.log("use",this.adFull);
-			if(this.adFull&&!this.adData.reminder){
+			const { inEffect } = this.currentState
+			if(this.adFull&&!this.adData.reminder&&!inEffect){
 				this.setMerReminder()
 				return
 			}
-			const { inEffect } = this.currentState
+		
 			if(this.selectedHour==0 || (this.adFull&&!inEffect)) return;
 			if (inEffect) return
 			if(inEffect && this.useHour > maxAdHour){
