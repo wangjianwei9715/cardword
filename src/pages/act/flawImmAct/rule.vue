@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\pages\act\flawImmAct\rule.vue
  * @Author: wjw
  * @Date: 2024-01-04 17:25:25
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-01-25 18:26:34
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-01-26 10:06:21
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -11,7 +11,7 @@
     <view class="content">
         <view class="title">活动说明：</view>
         <view class="desc">
-            活动期间（2024.10.10~2024.11.10），获得指定球员卡密可解锁对应LOGOMAN活动卡片。共50名球员可解锁（50张卡片），每张卡片需解锁5个部位，解锁完成后可领取优惠券奖励（有效期30天），每张卡片集齐均可领取一次。</view>
+            活动期间（2024.10.10~2024.11.10），获得指定球员卡密可解锁对应LOGOMAN活动卡片。共{{playerNum}}名球员可解锁（{{playerNum}}张卡片），每张卡片需解锁5个部位，解锁完成后可领取优惠券奖励（有效期30天），每张卡片集齐均可领取一次。</view>
         <view class="title">解锁卡片规则：</view>
         <view class="desc">获得指定球员卡密即可获得该球员卡片的解锁值，<text>获得时为待计入状态，拼团成功后累计至活动，若拼团失败则不增加</text>。</view>
         <view class="desc">每张卡片分别需要解锁背板/线条/签名/人物/LOGOMAN共5个部位，解锁值分别为5/20/45/100/230。</view>
@@ -48,6 +48,9 @@ export default class ClassName extends BaseNode {
 	awardTable = [
 		// {name:"勒布朗·詹姆斯",award:"100元平台无门槛券"}
 	]
+	public get playerNum() : number {
+		return this.awardTable.length
+	}
     onLoad(query: any) {
 		app.http.Get("dataApi/activity/logoman/playerList/role",{},(res:any)=>{
 			console.log(res);

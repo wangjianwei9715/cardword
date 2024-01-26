@@ -5,6 +5,7 @@
 			<view class="act-header">
 				<view class="ill-btn" @click="onClickGoIll()"></view>
 				<view class="act-icon" @click="onClickChangeAct()">
+					<view class="icon-tips"></view>
 					<view class="icon-rotate"></view>
 				</view>
 			</view>
@@ -20,7 +21,7 @@
 				</u-tabs>
 			</view>
 			<view class="goods-lists">
-				<goodslist :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" :nomore="listParams.nomore" :progressColor="showFl?'#8EDBFF':'#FFE63B'"/>
+				<goodslist v-if="goodsList" :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" :nomore="listParams.nomore" :progressColor="showFl?'#8EDBFF':'#FFE63B'"/>
 				<empty v-if="goodsList&&!goodsList.length&&listParams.nomore" />
 			</view>
 		</view>
@@ -192,6 +193,14 @@
 					left:43rpx;
 					background:url(@/static/act/immfl/imm_icon.png) no-repeat center / 100% 100%;
 					z-index: 1;
+					.icon-tips{
+						width: 139rpx;
+						height:54rpx;
+						position: absolute;
+						top:10rpx;
+						right:10rpx;
+						background:url(@/static/act/immfl/tips.png) no-repeat center / 100% 100%;
+					}
 					.icon-rotate{
 						width: 395rpx;
 						height:108rpx;
