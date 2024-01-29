@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-13 14:08:17
+ * @LastEditTime: 2024-01-29 11:35:20
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -62,8 +62,6 @@
 				</movable-view>
 			</movable-area>
       
-      <!-- 国宝福袋 -->
-      <popup :popupShow.sync="showLuckyBox" @noShow="once=0"/>
       <!-- 指定卡密奖励 -->
       <noAward :popupShow.sync="showNoAward" :award="noAwardData" @noShow="once=0"/>
       
@@ -113,10 +111,9 @@
   import scene from './components/scene/scene.vue'
   import animationCard from './components/animationCard/animationCard.vue'
   import cardBox from './components/cardBox/cardBox.vue'
-  import popup from './components/popup/popup.vue'
   import noAward from './components/popup/noAward.vue'
   @Component({
-    components:{music,scene,animationCard,cardBox,popup,noAward}
+    components:{music,scene,animationCard,cardBox,noAward}
   })
 	export default class ClassName extends BaseNode {
     parsePic = parsePic;
@@ -163,7 +160,6 @@
       height:880,
       boxTop:1170
     }
-    showLuckyBox=false;
     showNoAward=false;
     noAwardData:any={};
     once=0;
@@ -354,7 +350,6 @@
     setShowLuckyBox() {
       if(this.once==0) return;
       const currentItem = this.codeList[this.cardData.step];
-      this.showLuckyBox = currentItem.index==this.nextStep(0)&&!this.animationStart&&currentItem.luckyBagTp>0
       // 指定卡密奖励
       if(!uni.$u.test.isEmpty(currentItem.award)){
         this.noAwardData = currentItem.award;

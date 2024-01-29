@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-01-04 17:24:40
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-29 15:31:53
+ * @LastEditTime: 2024-01-29 15:57:47
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -16,19 +16,23 @@
 		<!-- 球员Swiper -->
 		<playerSwiper :current.sync="playerCurrent" :list="playerList" :taskData="taskData" @change="onChangeCurrent"/>
 		<view class="decorate"></view>
-
-		<view class="card">
-			<view class="card-bg" v-show="!playerIsflaw">
-				<view class="card-pic-box">
-					<image v-for="item in detailPic" :key="item.index" class="card-pic" :class="{'grayimg':item.index>taskPhase}" :src="item.networkPic?(!playerIsflaw?item.pic:''):`/static/act/immfl/index/${item.imm}`"></image>
+		<!-- 球员详情 -->
+		<swiper class="swiper-box" v-if="showSwiper">
+			<swiper-item @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
+				<view class="card">
+					<view class="card-bg" v-show="!playerIsflaw">
+						<view class="card-pic-box">
+							<image v-for="item in detailPic" :key="item.index" class="card-pic" :class="{'grayimg':item.index>taskPhase}" :src="item.networkPic?(!playerIsflaw?item.pic:''):`/static/act/immfl/index/${item.imm}`"></image>
+						</view>
+					</view>
+					<view class="card-bg card-flaw" v-show="playerIsflaw">
+						<view class="card-pic-box">
+							<image v-for="item in detailPic" :key="item.index" class="card-pic" :class="{'grayimg':item.index>taskPhase}" :src="item.networkPic?(playerIsflaw?item.pic:''):`/static/act/immfl/index/${item.flaw}`"></image>
+						</view>
+					</view>
 				</view>
-			</view>
-			<view class="card-bg card-flaw" v-show="playerIsflaw">
-				<view class="card-pic-box">
-					<image v-for="item in detailPic" :key="item.index" class="card-pic" :class="{'grayimg':item.index>taskPhase}" :src="item.networkPic?(playerIsflaw?item.pic:''):`/static/act/immfl/index/${item.flaw}`"></image>
-				</view>
-			</view>
-		</view>
+			</swiper-item>
+		</swiper>
 		<view class="bottom">
 			<view class="name">获得{{playerDetail.name||""}}卡密解锁卡片</view>
 			<view class="task">
@@ -80,6 +84,12 @@
 		playerReceiveNum = 0;
 		taskData = TaskData;
 		detailPic = new DetailPic();
+		touchData = {
+			startX:0,
+			moveX:0,
+			move:false
+		}
+		showSwiper=true
 		onLoad(query:any) {
 			this.initPlayerList()
 		}
@@ -137,6 +147,27 @@
 		}
 		onClickRule(){
 			uni.navigateTo({url:"/pages/act/flawImmAct/rule"})
+		}
+		handleTouchStart(event:any) {
+			this.touchData.startX = event.touches[0].clientX;
+		}
+		handleTouchMove(event:any) {
+			this.touchData.moveX = event.touches[0].clientX;
+			this.touchData.move = true;
+		}
+		handleTouchEnd() {
+			if(!this.touchData.move) return;
+			if (this.touchData.moveX - this.touchData.startX > 100) {
+				this.showSwiper = false;
+				this.playerCurrent = this.playerCurrent==0 ? this.playerList.length-1 : this.playerCurrent-1;
+			} else if (this.touchData.moveX - this.touchData.startX < -100) {
+				this.showSwiper = false;
+				this.playerCurrent = this.playerCurrent==this.playerList.length-1 ? 0 : this.playerCurrent+1;
+			}
+			this.touchData.move = false;
+			setTimeout(() => {
+				this.showSwiper = true;
+			}, 100);
 		}
 	}
 </script>
@@ -197,12 +228,16 @@
 			left:21.5rpx;
 			z-index: 1;
 		}
-		.card{
+		.swiper-box{
 			width: 725rpx;
 			height:726rpx;
 			position: absolute;
 			top:382rpx;
 			left:12.5rpx;
+		}
+		.card{
+			width: 725rpx;
+			height:726rpx;
 			display: flex;
 			align-items: center;
 			justify-content: center;

@@ -61,7 +61,7 @@
 		<paymentSuccess :showPaySuccess.sync="showPaySuccess" :showJoin="true" />
 		<winningCardPopup :show.sync="showWinningCrad" />
 		<openscreenAd :show.sync="openScreenData.show" :goodData="openScreenData.data"/>
-		<luckyBagOpenPop :popupShow.sync="luckyBagShow" :type="1" :num="ntLuckyBag" @close="showTabBar"/>
+		<flawImmPop :popupShow.sync="flawImmShow" @close="showTabBar"/>
 	</view>
 </template>
 
@@ -75,14 +75,14 @@
 	import winningCardPopup from './component/index/winningCardPopup.vue'
 	import openscreenAd from './component/index/openscreenAd.vue'
 	import goodsListSwiper from './component/index/goodsListSwiper.vue'
-	import luckyBagOpenPop from "../drawCard/components/popup/popup.vue"
+	import flawImmPop from "../act/flawImmAct/components/popup.vue"
 	@Component({components: {
 		update,
 		indexHot,
 		winningCardPopup,
 		openscreenAd,
 		goodsListSwiper,
-		luckyBagOpenPop
+		flawImmPop
 	},})
 	export default class Index extends BaseNode {
 		noticeList = [''];
@@ -109,8 +109,7 @@
 		scrollTop = 0;
 		scrollTopNum = 0;
 		showIndex = false;
-		luckyBagShow=false
-		ntLuckyBag=0
+		flawImmShow=false
 		onLoad(query: any) {
 			let listeners = ['BackLogin']
 			this.register(listeners);
@@ -252,15 +251,13 @@
 						this.showWinningCrad = true;
 						uni.hideTabBar()
 					};
-					if(res.data.ntLuckyBag&&res.data.ntLuckyBag>0){
+					if(!res.data.logomanReceive){
 						const date=(new Date().getMonth()+1)+"-"+new Date().getDate()
-						if (uni.getStorageSync("luckyBagTipsDay")!=date){
-							uni.setStorageSync("luckyBagTipsDay",date)
-							this.luckyBagShow=true;
+						if (uni.getStorageSync("flawImmTipsDay")!=date){
+							uni.setStorageSync("flawImmTipsDay",date)
+							this.flawImmShow=true;
 							uni.hideTabBar()
-							this.ntLuckyBag=res.data.ntLuckyBag
 						}
-						
 					}
 				})
 				// 我的关注商家是否有新商品

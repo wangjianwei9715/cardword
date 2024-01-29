@@ -50,7 +50,6 @@
 			}).length * 20;
 		}
 		changeSwiperIndex(e:any){
-			if(this.playerCurrent===e.detail.current) return;
 			this.playerCurrent = e.detail.current;
 			this.$emit('change');
 		}
