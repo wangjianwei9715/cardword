@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-01-04 17:24:40
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-26 09:37:00
+ * @LastEditTime: 2024-01-29 15:31:53
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -58,17 +58,17 @@
 	class DetailPic {
 		bg={index:1,pic:"",networkPic:false,imm:"bg_1.png",flaw:"flaw_bg_1.png"};
 		line={index:2,pic:"",networkPic:false,imm:"bg_2.png",flaw:"flaw_bg_2.png"};
-		sign={index:3,pic:"",networkPic:true};
-		player={index:4,pic:"",networkPic:true};
+		player={index:3,pic:"",networkPic:true};
+		sign={index:4,pic:"",networkPic:true};
 		logo={index:5,pic:"",networkPic:false,imm:"bg_5.png",flaw:"flaw_bg_5.png"}
 	}
 	const playerWidth = uni.upx2px(124);
 	const TaskData = [
-		{name:"背板",num:3},
+		{name:"背板",num:1},
 		{name:"线条",num:10},
+		{name:"人物",num:25},
 		{name:"签名",num:50},
-		{name:"人物",num:150},
-		{name:"LOGOMAN",num:350}
+		{name:"LOGOMAN",num:100}
 	]; //各阶段任务需要的指标值
 	@Component({
 		components:{playerSwiper}
@@ -96,12 +96,15 @@
 		}
 		initPlayerList(){
 			app.http.Get("activity/logoman/card/list",{},(res:any)=>{
-				this.playerList = res.list.map((x:any,index:number)=>{
+				const list = res.list.sort((a:any,b:any)=>{
+					return b.num-a.num || b.amount-a.amount
+				}).map((x:any,index:number)=>{
 					return {
 						...x,
 						left:(index*playerWidth)
 					}
 				})
+				this.playerList = list;
 				this.getPlayerDetail()
 			})
 		}
