@@ -14,12 +14,13 @@
 				<u-divider class="widthMax"></u-divider>
 				<view class="tips">{{ needPayMoney ? "￥" : "所需积分" }}：<text>{{ price }}</text></view>
 				<view class="tips buyNum">购买份数：
-					<u-number-box v-model="buyNum">
+					<u-number-box v-model="buyNum" :max="maxNum" :min=1>
 						<view slot="minus" class="minus">
 							<u-icon name="minus" size="18rpx"></u-icon>
 						</view>
-						<text slot="input" style="width: 50rpx;text-align: center;color: #fa1545;font-size: 24rpx;" class="input">{{ buyNum
-						}}</text>
+						<text slot="input" style="width: 50rpx;text-align: center;color: #fa1545;font-size: 24rpx;"
+							class="input">{{ buyNum
+							}}</text>
 						<view slot="plus" class="plus">
 							<u-icon name="plus" color="#FFFFFF" size="18rpx"></u-icon>
 						</view>
@@ -59,7 +60,7 @@ export default class ClassName extends BaseComponent {
 	@Watch('show')
 	onChangeShow(val: boolean) {
 		if (val) {
-			this.buyNum=1
+			this.buyNum = 1
 			this.detail = {};
 			app.http.Get(`dataApi/merchant/mall/goodsDetail/${this.id}`, {}, (res: any) => {
 				this.detail = res.data || {}
@@ -73,8 +74,20 @@ export default class ClassName extends BaseComponent {
 		const { buy_require, require_num } = this.detail
 		return buy_require == 1 ? `入驻时间不超过${require_num}天` : `上月销售额不超过${require_num}元`
 	}
-	public get price():number{
-		return this.detail.price*this.buyNum
+	public get price(): number {
+		return this.detail.price * this.buyNum
+	}
+	public get maxNum(): number {
+		if (this.detail.limit_num != 0) {
+			return this.detail.limit_num
+		}
+		if (this.detail.totalNum == 0 && this.detail.limit_num == 0){
+			return 99999
+		}
+		if (this.detail.totalNum>0&&this.detail.limit_num == 0){
+			return this.detail.totalNum
+		}
+		return 999999
 	}
 	onClickConfirm() {
 		app.platform.UIClickFeedBack();
@@ -86,7 +99,7 @@ export default class ClassName extends BaseComponent {
 			return;
 		}
 		app.http.Post(`merchant/exchange/${this.id}`, {
-			buyNum:this.buyNum
+			buyNum: this.buyNum
 		}, (res: any) => {
 			this.$emit("exchangeSuccess")
 			this.exchangeShow = true;
@@ -100,6 +113,7 @@ export default class ClassName extends BaseComponent {
 		this.exchangeClose();
 		uni.navigateTo({ url: "/pages/merchant/goods_sale" })
 	}
+
 }
 </script>
 
@@ -199,9 +213,11 @@ export default class ClassName extends BaseComponent {
 	width: 100%;
 	text-align: center;
 }
-.buyNum{
+
+.buyNum {
 	align-items: center;
 }
+
 .minus {
 	width: 28rpx;
 	height: 28rpx;
@@ -231,5 +247,4 @@ export default class ClassName extends BaseComponent {
 	/* #endif */
 	justify-content: center;
 	align-items: center;
-}
-</style>
+}</style>
