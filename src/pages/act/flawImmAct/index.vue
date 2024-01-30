@@ -3,12 +3,12 @@
  * @Author: wjw
  * @Date: 2024-01-04 17:24:40
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-29 15:57:47
+ * @LastEditTime: 2024-01-30 10:19:19
  * Copyright: 2024 .
  * @Descripttion: 
 -->
 <template>
-	<view class="logo-content" :class="playerIsflaw?'type-flaw':'type-imm'">
+	<view class="logo-content" v-if="playerList.length" :class="playerIsflaw?'type-flaw':'type-imm'">
 		<view class="back" @click="onClickBack"></view>
 		<view class="rule" @click="onClickRule">
 			<view class="msg">规则说明</view>
@@ -17,7 +17,7 @@
 		<playerSwiper :current.sync="playerCurrent" :list="playerList" :taskData="taskData" @change="onChangeCurrent"/>
 		<view class="decorate"></view>
 		<!-- 球员详情 -->
-		<swiper class="swiper-box" v-if="showSwiper">
+		<swiper class="detail-swiper-box" v-if="showSwiper">
 			<swiper-item @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
 				<view class="card">
 					<view class="card-bg" v-show="!playerIsflaw">
@@ -228,7 +228,7 @@
 			left:21.5rpx;
 			z-index: 1;
 		}
-		.swiper-box{
+		.detail-swiper-box{
 			width: 725rpx;
 			height:726rpx;
 			position: absolute;
