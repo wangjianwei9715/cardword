@@ -3,7 +3,7 @@
 		<view class="header-banner" :style="{ backgroundColor: backgroundColor,borderBottom:borderBottom }">
 			<view class="content" :style="'height:' + statusBarHeight + 'px'"></view>
 			<view class="tab-header">
-				<view class="icon-back" v-show="showBack" :style="{color:backColor}" @click="onClickBack">&#xe582;</view>
+				<view class="icon-back" :class="{'icon-back-white':backColor!='#000'}" v-show="showBack" @click="onClickBack"></view>
 				<view class="header-title" :style="{color:backColor}">{{ title }}</view>
 				<view class="header-icon" v-if="custom">
 					<slot name="right"></slot>
@@ -91,7 +91,7 @@ export default class navigationbar extends BaseComponent {
 		height: 88rpx;
 		display: flex;
 		box-sizing: border-box;
-		padding: 0 30rpx;
+		padding: 0 30rpx 0rpx 12rpx;
 		position: relative;
 		z-index: 10;
 		align-items: center;
@@ -99,23 +99,20 @@ export default class navigationbar extends BaseComponent {
 	}
 
 	.icon-back {
+		width: 56rpx;
+		height:56rpx;
 		position: absolute;
-		left: 18rpx;
+		left: 12rpx;
 		top: 50%;
-		margin-top: -25rpx;
-		width: 50rpx;
-		height: 50rpx;
-		background-color: rgba(255, 255, 255,0);
-		font-family: uniicons;
-		font-size: 46rpx;
-		font-weight: normal;
-		font-style: normal;
-		color: #000;
+		margin-top: -28rpx;
+		background: url(@/static/index/back_b.png) no-repeat center / 100% 100%;
 	}
-
+	.icon-back-white{
+		background: url(@/static/index/back_w.png) no-repeat center / 100% 100% !important;
+	}
 	.header-title {
 		height: 88rpx;
-		line-height: 80rpx;
+		line-height: 88rpx;
 		font-size: 18px;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;

@@ -1,5 +1,6 @@
 <template>
-  <view class="content">
+  <view class="pay-content">
+    <navigationbar title="确认订单" borderBottom="0px"/>
     <!-- 地址 -->
     <payAddress :addressData="addressData"/>
     <view class="order-detail" v-if="goodsData.pic">
@@ -458,7 +459,7 @@ export default class ClassName extends BaseNode {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" >
 $font-16: 16rpx;
 $font-20: 20rpx;
 $font-24: 24rpx;
@@ -467,13 +468,13 @@ $font-28: 28rpx;
 page {
   background: $content-bg;
 }
-.content {
+.pay-content {
   width: 100%;
   box-sizing: border-box;
+  padding: 0 14rpx;
   padding-bottom: calc(150rpx) !important;
   padding-bottom: calc(150rpx + constant(safe-area-inset-bottom)) !important;
   padding-bottom: calc(150rpx + env(safe-area-inset-bottom)) !important;
-  padding: 14rpx
 }
 .order-detail {
   width: 100%;
@@ -497,7 +498,7 @@ page {
   font-size: $font-24;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 600;
-  color: #ff504f;
+  color: #FA1545;
 }
 .item-name-right {
   width: 10rpx;
@@ -529,13 +530,13 @@ page {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding:10rpx 20rpx;
+  padding:10rpx 26rpx;
   background: #ffffff;
   border-radius: 5rpx;
 }
 .yunfei-item {
   width: 100%;
-  height:60rpx;
+  height:68rpx;
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -575,7 +576,7 @@ page {
   height:40rpx;
   font-size: 36rpx;
   font-family: PingFangSC-Regular;
-  font-weight: 500;
+  font-weight: 600;
   color: #FA1545;
   line-height: 40rpx;
   margin-left: 12rpx;
@@ -583,12 +584,12 @@ page {
 .total-price .price-text{
   font-size: 48rpx;
   font-family: PingFangSC-Regular;
-  font-weight: 500;
+  font-weight: 600;
 }
 .total-price .decimal{
   font-size: 38rpx;
   font-family: PingFangSC-Regular;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .bottom-content-box{

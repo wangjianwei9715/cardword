@@ -2,20 +2,16 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-11-13 16:59:19
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-29 11:15:23
+ * @LastEditTime: 2024-01-30 16:01:12
  * @FilePath: \jichao_app_2\src\pages\act\flawImmAct\components\popup.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
 	<u-popup mode="center" :closeOnClickOverlay="false" :overlayOpacity="0.7" bgColor="transparent" :show="show" @close="onClose">
 		<view class="popup-content">
-			<view class="tipsTitle">温馨提示</view>
-			<view class="title">您有已集齐未领取的卡片</view>
-			<image class="image" src="/static/act/luckyBag/bag_open.png"></image>
-			<view class="tips" style="position:relative;bottom:40rpx;" @click.stop="onClose">
-				晚点再说
-			</view>
-			<view class="btn" @click="onClickBtn">去领取</view>
+			<image class="image" src="/static/act/immfl/popup.png"></image>
+			<view class="btn" @click="onClickBtn"></view>
+			<view class="close" @click="onClose"></view>
 		</view>
 	</u-popup>
 </template>
@@ -65,10 +61,10 @@ export default class ClassName extends BaseComponent {
 
 .popup-content {
 	@include lineBox;
-	width: 588rpx;
+	width: 508rpx;
+	height:900rpx;
 	flex-direction: column;
 	align-items: center;
-
 	.title {
 		@include font(42rpx)
 	}
@@ -80,40 +76,25 @@ export default class ClassName extends BaseComponent {
 		bottom:12rpx;
 	}
 	.image {
-		width: 292rpx;
-		height: 235rpx;
-		transform: scale(1.2);
-		margin: 76rpx 0 100rpx 0
+		width: 508rpx;
+		height: 471rpx;
+		margin-left: -24rpx;
 	}
 
 	.btn {
-		@include font(36rpx);
-		width: 480rpx;
-		height: 80rpx;
-		background: #fdb927;
-		border-radius: 3rpx;
-		text-align: center;
-		line-height: 80rpx;
-		margin-top:30rpx;
+		width: 379rpx;
+		height:87rpx;
+		margin:0 auto;
+		background: url(@/static/act/immfl/popup_btn.png) no-repeat center / 100% 100%;
+		margin-top: 33rpx
 	}
-
-	.tips {
-		@include lineBox;
-		font-size: 24rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
-		color: #E6E6E6;
-		justify-content: center;
-		align-items: center;
-		.icon {
-			width: 24rpx;
-			height: 24rpx;
-			margin-right: 10rpx;
-		}
-	}
-	.tips-btn{
-		font-size: 28rpx;
-		margin-top: 20rpx;
+	.close{
+		width: 36rpx;
+		height:36rpx;
+		background: url(@/static/act/immfl/popup_close.png) no-repeat center / 100% 100%;
+		position: absolute;
+		right:-36rpx;
+		top:-2rpx;
 	}
 }
 </style>

@@ -102,7 +102,7 @@
 	.buyinfo-box{
 		.buyinfo-item{
 			width: 100%;
-			height:72rpx;
+			height:90rpx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
@@ -113,45 +113,47 @@
 		}
 		.item-left{
 			width: 560rpx;
-			height:72rpx;
+			height:90rpx;
 			display: inline-flex;
 			.name{
 				width: 380rpx;
-				height:72rpx;
+				height:90rpx;
 				display: flex;
 				align-items: center;
 				flex-wrap: wrap;
 				.title{
 					width: 100%;
-					font-size: 24rpx;
+					font-size: 26rpx;
 					font-family: PingFangSC, PingFang SC;
 					font-weight: 400;
 					color: #333333;
+					margin-bottom: 4rpx;
 				}
 				.desc{
 					width: 100%;
-					font-size: 20rpx;
+					font-size: 22rpx;
 					font-family: PingFangSC, PingFang SC;
 					font-weight: 400;
 					color: #999999;
+					margin-top: 4rpx;
 				}
 			}
 			.num{
-				height:72rpx;
+				height:90rpx;
 				font-size: 24rpx;
 				font-family: PingFangSC, PingFang SC;
 				font-weight: 400;
 				color: rgba(153,153,153,0.9);
-				line-height: 72rpx;
+				line-height: 90rpx;
 			}
 		}
 		.item-right{
-			width: 72rpx;
-			height:72rpx;
+			width: 80rpx;
+			height:80rpx;
 		}
 		.card-pic{
-			width: 72rpx;
-			height:72rpx;
+			width: 80rpx;
+			height:80rpx;
 		}
 	}
 </style>

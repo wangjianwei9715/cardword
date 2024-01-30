@@ -2,7 +2,7 @@
 <template>
 	<view class="box-content">
 		<navigationbarTabs ref="rNavigationbarTabs" :titles="titles" :current="headerCurrent" backColor="#fff" backgroundColor="rgba(0,0,0,0)" @tabsClisk="onTabsClick"/>
-		<view class="header">
+		<view class="header" :style="{'height':headerCurrent==1?'358rpx':'458rpx'}">
 			<view class="search-box" v-show="showCardNo">
 				<view class="search-icon"></view>
 				<input class="search-input" type="text"  v-model="searchText" placeholder="搜索球员、球队"  confirm-type="search"  @confirm="reqSearchList" />
@@ -110,12 +110,13 @@
 	import { parsePic } from "@/tools/util";
 	import cardSort from "./component/cardSort.vue"
 	import cardNoInfo from "./component/cardNoInfo.vue"
+	import navigationbarTabs from "@/components/navigationbarTabs/navigationbarTabs.vue"
 	const title = [
 		{index:0,name:'卡密信息'},
 		{index:1,name:'购入信息'}
 	]
 	@Component({
-		components:{cardSort,cardNoInfo}
+		components:{navigationbarTabs,cardSort,cardNoInfo}
 	})
 	export default class ClassName extends BaseNode {
 		titles = title;
@@ -416,7 +417,7 @@
 		background:#F6F7FB;
 		margin-bottom: 16rpx;
 		border-radius: 4rpx;
-		padding:16rpx 20rpx 16rpx 16rpx
+		padding:20rpx
 	}
 	.win-card-box{
 		border: 1rpx solid #FA1545;
@@ -462,13 +463,13 @@
 		box-sizing: border-box;
 		padding-bottom: 40rpx;
 		.title{
-			font-size: 24rpx;
+			font-size: 26rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 500;
 			color: #333333;
 		}
 		.cardno{
-			font-size: 20rpx;
+			font-size: 22rpx;
 			font-family: PingFangSC, PingFang SC;
 			font-weight: 400;
 			color: #999999;
@@ -479,7 +480,7 @@
 			position: absolute;
 			bottom:0;
 			left:0;
-			font-size: 16rpx;
+			font-size: 18rpx;
 			font-family: PingFangSC, PingFang SC;
 			font-weight: 400;
 			color: #DDDDDD;

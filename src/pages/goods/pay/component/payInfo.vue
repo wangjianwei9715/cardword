@@ -46,6 +46,7 @@
 				v-for="(item, index) in goodsData.discount"
 				:key="index"
 				:class="{'current-discount':(payNum>=item.minNum)&&(goodsData.discount[index+1]?(payNum>=goodsData.discount[index+1].minNum?false:true):true)}"
+				@click="onClickDiscountItem(item)"
 			>
 				<view class="discount-num">满{{item.minNum}}组</view>
 				<view class="discount-price">
@@ -185,6 +186,10 @@
 			}
 			this.getOnePrice();
 		}
+		onClickDiscountItem(item:any){
+			this.payGoodsNum=item.minNum;
+			this.getOnePrice()
+		}
 	}
 </script>
 
@@ -193,7 +198,7 @@
 	background: #fff;
 	border-radius: 5rpx;
 	box-sizing: border-box;
-	padding-bottom: 20rpx;
+	padding-bottom: 30rpx;
 }
 .goods-info {
 	width: 100%;
@@ -201,7 +206,7 @@
 	flex-direction: row;
 	position: relative;
 	box-sizing: border-box;
-	padding:24rpx 20rpx 0rpx 20rpx;
+	padding:24rpx 26rpx 0rpx 26rpx;
 	.goods-pic-box{
 		width: 178rpx;
 		height:178rpx;
@@ -224,13 +229,13 @@
 		z-index: 1 !important;
 	}
 	.right{
-		width: 482rpx;
+		width: 470rpx;
 		margin-left: 24rpx;
 		display: flex;
 		flex-direction: column;
 		position: relative;
 		.title{
-			font-size: 28rpx;
+			font-size: 26rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #333333;
@@ -238,10 +243,10 @@
 		}
 		.info-desc{
 			width: 100%;
-			font-size: 20rpx;
+			font-size: 24rpx;
 			font-family: PingFangSC, PingFang SC;
 			font-weight: 400;
-			color: rgba(102,102,102,0.9);
+			color: #999999;
 			margin-top: 8rpx;
 		}
 		.icon-presell{
@@ -371,14 +376,14 @@
 			margin-right:26rpx;
 		}
 		.img-add {
-			width: 36rpx;
-			height: 38rpx;
-			background: url(@/static/pay/v2/add.png) no-repeat center / 100% 100%;
+			width: 15rpx;
+			height: 15rpx;
+			background: url(@/static/pay/v2/icon_add_.png) no-repeat center / 100% 100%;
 		}
 		.img-jian {
-			width: 36rpx;
-			height: 38rpx;
-			background: url(@/static/pay/v2/reduce.png) no-repeat center / 100% 100%;
+			width: 15rpx;
+			height: 3rpx;
+			background: url(@/static/pay/v2/icon_reduce_.png) no-repeat center / 100% 100%;
 		}
 		.money-add {
 			height: 36rpx;
@@ -396,7 +401,7 @@
 	}
 }
 .huo-dong-bg {
-	width: 684rpx;
+	width: 670rpx;
 	height: 104rpx;
 	background: #ffffff;
 	display: flex;
@@ -451,7 +456,7 @@
 // 自选卡种 选队随机
 .randomh-box{
 	width: 100%;
-	padding:26rpx 20rpx 0rpx 20rpx;
+	padding:26rpx 26rpx 0rpx 26rpx;
 	box-sizing: border-box;
 	background:#fff;
 	border-bottom-left-radius: 5rpx;
@@ -581,11 +586,11 @@
 	display: flex;
 	flex-direction: column;
 	box-sizing: border-box;
-	padding:10rpx 20rpx
+	padding:10rpx 26rpx
 }
 .yunfei-item {
 	width: 100%;
-	height:60rpx;
+	height:68rpx;
 	align-items: center;
 	display: flex;
 	flex-direction: row;
@@ -594,13 +599,12 @@
 .merchant-info{
 	width: 100%;
 	box-sizing: border-box;
-	padding:24rpx 20rpx 0 20rpx;
-	height:64rpx;
+	padding:30rpx 26rpx 0 26rpx;
 	display: flex;
 	align-items: center;
-	font-size: 28rpx;
-	font-family: PingFangSC-Medium;
-	font-weight: 600;
+	font-size: 30rpx;
+	font-family: PingFang SC;
+	font-weight: 400;
 	color: rgba(0,0,0,0.9);
 	.merchant-avatar{
 		width: 40rpx;

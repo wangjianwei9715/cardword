@@ -3,13 +3,13 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-22 10:53:18
+ * @LastEditTime: 2024-01-30 16:03:14
  * Copyright: 2023 .
  * @Descripttion: 
 -->
 <template>
 	<view class="content" v-show="goodsData!=''" :class="{'body-hidden':choiceTeamData.teamCheckShow||choiceTRData.show}">
-		<navigationbar title="商品详情" :custom="true">
+		<navigationbar title="商品详情" borderBottom="0px" :custom="true">
 			<template slot="right">
 				<view :class="['icon-collect',{'icon-favored':favorType}]" @click="onClickFavor"></view>
 				<view class="icon-share" @click="onClickShare"></view>
@@ -78,7 +78,7 @@
 									{{goodsInfo.num}} | {{goodsInfo.pt_type}}
 								</view>
 								<view class="header-top-plan-num-str" v-if="planData.showMsg">
-									<view class="header-shengyu">剩余</view><u-count-to :style="{'font-family':'ArialBold','letter-spacing':'-2rpx'}" :start-val="goodsData.totalNum" :end-val="goodSurplusNum" :duration="1000" :fontSize="15" :bold="true" color="#333"></u-count-to>/{{goodsData.totalNum}}{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}
+									<view class="header-shengyu">剩余</view><u-count-to :style="{'font-family':'ArialBold','letter-spacing':'-2rpx'}" :start-val="goodsData.totalNum" :end-val="goodSurplusNum" :duration="1000" :fontSize="14" :bold="true" color="#333"></u-count-to>/{{goodsData.totalNum}}{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}
 								</view>
 								<view class="header-top-plan-num-state" v-else > {{planData.str}}{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}</view>
 							</view>
@@ -976,7 +976,7 @@
 	.header {
 		width: 100%;
 		box-sizing: border-box;
-		padding: 0 30rpx 30rpx 30rpx;
+		padding: 0 24rpx 30rpx 24rpx;
 	}
 	.header-top-id {
 		width: 100%;
@@ -1024,7 +1024,7 @@
 				width:100%;
 				display: flex;
 				justify-content: space-between;
-				margin-bottom: 10rpx;
+				margin-bottom: 14rpx;
 				align-items: flex-end;
 				.plan-top-rank{
 					height:30rpx;
@@ -1070,7 +1070,7 @@
 			}
 			.header-top-plan-num-state{
 				height: 30rpx;
-				font-size: 22rpx;
+				font-size: 24rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #999999;
@@ -1171,7 +1171,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		border-radius: 5rpx;
-		padding:34rpx 30rpx;
+		padding:34rpx 24rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -1250,7 +1250,7 @@
 	.goods-desc {
 		width: 100%;
 		box-sizing: border-box;
-		padding: 28rpx 30rpx 30rpx 30rpx;
+		padding: 28rpx 24rpx 30rpx 24rpx;
 
 		&-title {
 			width: 100%;
@@ -1326,7 +1326,7 @@
 		position: fixed;
 		bottom: 0;
 		left: 0;
-		background: $color-F;
+		background: rgba(255,255,255,0.99);
 		z-index: 8;
 		box-sizing: border-box;
 		padding: 19rpx 50rpx 0 0;
@@ -1697,12 +1697,12 @@
 		justify-content: space-between;
 	}
 	.goods-desc-explain-box{
-		width: 650rpx;
+		width: 662rpx;
 		display: flex;
 		justify-content: space-between;
 		margin:0 auto;
 		.explain-name{
-			width: 160rpx;
+			width: 170rpx;
 			min-height:80rpx;
 			background:#F3F4F7;
 			font-size: 24rpx;
@@ -1838,7 +1838,7 @@
 	.header-discount{
 		width: 100%;
 		display: flex;
-		margin-top: 16rpx;
+		margin-top: 20rpx;
 		.discount-item{
 			width: 178rpx;
 			height:40rpx;

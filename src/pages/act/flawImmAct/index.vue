@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-01-04 17:24:40
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-30 10:19:19
+ * @LastEditTime: 2024-01-30 16:13:01
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -34,7 +34,10 @@
 			</swiper-item>
 		</swiper>
 		<view class="bottom">
-			<view class="name">获得{{playerDetail.name||""}}卡密解锁卡片</view>
+			<view class="name">
+				<view class="name-player">{{currentPlayer.zh_name}}</view>
+				<view class="name-tips">-获得该球员卡密解锁卡片-</view>
+			</view>
 			<view class="task">
 				<view class="task-item" v-for="(item,index) in taskData" :key="index">
 					<text class="complete" v-if="taskPhase>index">已解锁{{item.name}}</text>
@@ -47,7 +50,7 @@
 			</view>
 			<view class="get-btn" @click="onClickBottomBtn">
 				<view class="receive">{{playerReceiveNum}}人已领</view>
-				{{playerDetail.state==2?"已领取":`解锁整卡领${playerDetail.couponAmount||0}元无门槛`}}
+				{{playerDetail.state==2?"已领取":`${playerDetail.num>=100?'领取':'解锁整卡领'}${playerDetail.couponAmount||0}元无门槛`}}
 			</view>
 			<view class="tips">Tips：随机球员2倍；随机球队3倍；手提/IMM额外2倍</view>
 		</view>
@@ -287,18 +290,26 @@
 			bottom:0;
 			left:0;
 			box-sizing: border-box;
-			padding-top: 60rpx;
+			padding-top: 40rpx;
 			.name{
 				width: 100%;
-				text-align: center;
-				@include font(34rpx,600);
+				.name-player{
+					width: 100%;
+					text-align: center;
+					@include font(34rpx,600);
+				}
+				.name-tips{
+					width: 100%;
+					text-align: center;
+					@include font(22rpx);
+				}
 			}
 			.task{
 				width: 100%;
 				display: flex;
 				justify-content: space-between;
 				flex-wrap: wrap;
-				margin-top: 40rpx;
+				margin-top: 30rpx;
 				.task-item{
 					width: 50%;
 					box-sizing: border-box;
@@ -334,7 +345,7 @@
 				height:108rpx;
 				background:url(@/static/act/immfl/index/imm_btn.png) no-repeat center / 100% 100%;
 				margin:0 auto;
-				margin-top: 25rpx;
+				margin-top: 10rpx;
 				@include font(38rpx,600);
 				color:#9A4319;
 				text-align: center;

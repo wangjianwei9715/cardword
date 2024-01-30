@@ -3,7 +3,7 @@
 		<view id="pageTopContainer" class="navigation-header" :style="{ backgroundColor: `rgba(${navColor},${scrollTopPercent})` }">
 			<view class="content" :style="'height:' + statusBarHeight + 'px'"></view>
 			<view class="tab-header">
-				<view class="icon-back" v-show="showBack" :style="{color:scrollTopPercent>=1?'#333':backColor}" @click="onClickBack">&#xe582;</view>
+				<view class="icon-back" :class="{'icon-back-white':scrollTopPercent<1}" v-show="showBack" @click="onClickBack"></view>
 				<view class="header-title">
 					<u-tabs :list="titles" lineHeight="0" :activeStyle="activeStyle" :inactiveStyle="inactiveStyle" itemStyle="height:88rpx;line-height:88rpx;" :current="current" @click="onClickTabs"></u-tabs>
 				</view>
@@ -142,18 +142,16 @@ export default class navigationbar extends BaseComponent {
 	}
 
 	.icon-back {
+		width: 56rpx;
+		height:56rpx;
 		position: absolute;
-		left: 18rpx;
+		left: 12rpx;
 		top: 50%;
-		margin-top: -25rpx;
-		width: 50rpx;
-		height: 50rpx;
-		background-color: rgba(255, 255, 255,0);
-		font-family: uniicons;
-		font-size: 46rpx;
-		font-weight: normal;
-		font-style: normal;
-		color: #000;
+		margin-top: -28rpx;
+		background: url(@/static/index/back_b.png) no-repeat center / 100% 100%;
+	}
+	.icon-back-white{
+		background: url(@/static/index/back_w.png) no-repeat center / 100% 100% !important;
 	}
 
 	.header-title {

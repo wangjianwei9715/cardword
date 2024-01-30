@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-25 14:47:15
+ * @LastEditTime: 2024-01-30 17:37:38
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -23,7 +23,7 @@
 		</view>
 		<view class="order-box" v-if="orderData.good">
 			<!-- 商品信息 -->
-			<view class="order-index"> 
+			<view class="order-index padding-lr"> 
 				<view class="order-index-header">
 					<view class="header-left">
 						<muqian-lazyLoad class="seller-image" :src="orderData.seller.avatar?decodeURIComponent(orderData.seller.avatar):defaultAvatar" mode="aspectFill" :borderRadius="'50%'"></muqian-lazyLoad>
@@ -48,8 +48,8 @@
 				</view>
 			</view>
 			<!-- 金额计算 -->
-			<view class="order-desc">
-				<u-divider lineColor="#F6F6F6" style="margin-top:0;margin-bottom:10rpx"></u-divider>
+			<view class="order-desc padding-lr">
+				<u-divider lineColor="#F6F6F6" style="margin-top:0;margin-bottom:15rpx"></u-divider>
 				<view class="orderPInfo" :class="{'show-pinfo':showPriceInfo}">
 					<view class="order-desc-index" v-for="item in orderDesc" :key="item.id" v-show="item.desc!='- ¥0'">
 						<view class="name">{{item.name}}</view><view class="info" :class="{'redfont':item.desc.indexOf('-')!=-1}">{{item.desc}}</view>
@@ -78,7 +78,7 @@
 				</view>
 			</view>
 			
-			<view class="buyer-cotnent" v-if="cartList.length && cardList.length==0">
+			<view class="buyer-cotnent padding-lr" v-if="cartList.length && cardList.length==0">
 				<view class="card-header">
 					<view class="card-header-title">已选编号</view>
 				</view>
@@ -91,7 +91,7 @@
 			<!-- 预测卡密 -->
 
 			<!-- 我的编号 -->
-			<view class="buyer-cotnent" v-if="cardList!='' && !clickToPay">
+			<view class="buyer-cotnent padding-lr" v-if="cardList!='' && !clickToPay">
 				<view class="card-header">
 					<u-tabs :list="cardTabs" :itemStyle="{padding:0,paddingRight:'28rpx'}" :activeStyle="activeStyle" :inactiveStyle="inactiveStyle" :current="cardTabsCurrent" lineHeight="0" @click="clickCurrentCardTab"></u-tabs>
 					<view class="card-header-right" @click="onClickAllCard">
@@ -104,7 +104,7 @@
 				<buyInfo v-show="cardTabsCurrent==1" ref="rBuyInfo" :orderCode="orderCode" :num="orderData.buyNoNum" :point="orderData.point" @goResult="onClcikResult(1)"/>
 			</view>
 			<!-- 订单详细信息 -->
-			<view class="order-info" v-if="orderInfo.orderNo.desc!=''">
+			<view class="order-info padding-lr" v-if="orderInfo.orderNo.desc!=''">
 				<view class="title">订单信息</view>
 				<view class="index">
 					<view class="index-left">收货信息</view>
@@ -598,6 +598,10 @@
 	page{
 		background:$content-bg;
 	}
+	.padding-lr{
+		padding-left: 26rpx !important;
+		padding-right: 26rpx !important;
+	}
 	.content{
 		width: 100%;
 		box-sizing: border-box;
@@ -609,7 +613,7 @@
 		background:url(@/static/order/card-bg.png);
 		background-size: 100% 100%;
 		box-sizing: border-box;
-		padding-top:190rpx;
+		padding-top:188rpx;
 		.header-statename{
 			width:100%;
 			display: inline-flex;
@@ -661,7 +665,7 @@
 				align-items: center;
 				justify-content: space-between;
 				.header-left{
-					height:93rpx;
+					height:100rpx;
 					box-sizing: border-box;
 					display: flex;
 					align-items: center;
@@ -674,9 +678,9 @@
 					.seller-name{
 						height:40rpx;
 						line-height: 40rpx;
-						font-size: 28rpx;
+						font-size: 30rpx;
 						font-family: PingFangSC-Regular;
-						font-weight: 600;
+						font-weight: 400;
 						color: rgba(0,0,0,0.9);
 					}
 				}
@@ -758,7 +762,7 @@
 					position: relative;
 					.title{
 						width: 100%;
-						font-size: 28rpx;
+						font-size: 26rpx;
 						font-family: PingFangSC-Regular;
 						font-weight: 400;
 						color: #333333;
@@ -856,7 +860,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		border-bottom: 14rpx solid $content-bg;
-		padding: 20rpx;
+		padding:20rpx 20rpx 15rpx 20rpx;
 		background: #fff;
 		border-bottom-left-radius: 5rpx;
 		border-bottom-right-radius: 5rpx;
@@ -874,14 +878,19 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			height:60rpx;
-			font-size: 24rpx;
+			height:68rpx;
+			font-size: 26rpx;
 			font-weight: 400;
 			color: #333333;
-
+			.name{
+				font-size: 26rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: #333333;
+			}
 			.price{
 				height:40rpx;
-				font-size: 24rpx;
+				font-size: 26rpx;
 				font-family: PingFangSC-Regular, PingFang SC;
 				font-weight: 400;
 				color: rgba(0,0,0,0.9);
@@ -1013,7 +1022,7 @@
 	.buyer-cotnent{
 		width: 100%;
 		box-sizing: border-box;
-		padding:20rpx;
+		padding:30rpx;
 		border-bottom: 14rpx solid $content-bg;
 		background: #fff;
 		border-radius: 5rpx;
@@ -1073,7 +1082,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		background: #fff;
-		padding:30rpx 22rpx 10rpx 22rpx;
+		padding:30rpx 22rpx 20rpx 22rpx;
 		border-bottom: 14rpx solid $content-bg;
 		border-radius: 5rpx;
 		.title{
@@ -1135,32 +1144,45 @@
 		background:#fff;
 		display: flex;
 		align-items: center;
-		padding:0 96rpx;
 		justify-content: space-between;
 		border-radius: 5rpx;
+		position: relative;
 		.tab-index{
+			width:50%;
 			height:80rpx;
 			display: flex;
+			justify-content: center;
 			align-items: center;
-			font-size: 27rpx;
+			font-size: 24rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #333333;
 			.icon-lianxi{
-				width: 42rpx;
-				height:40rpx;
+				width: 28rpx;
+				height:24rpx;
 				background:url(../../static/order/kefu.png) no-repeat center;
 				background-size: 100% 100%;
-				margin-right:16rpx
+				margin-right:8rpx
 			}
 			.icon-tousu{
-				width: 36rpx;
-				height:38rpx;
+				width: 34rpx;
+				height:30rpx;
 				background:url(../../static/order/tousu.png) no-repeat center;
 				background-size: 100% 100%;
-				margin-right:16rpx
+				margin-right:6rpx
 			}
 		}
+	}
+	.info-tab::after{
+		content: "";
+		width: 2rpx;
+		height: 32rpx;
+		background:#EEEEEE;
+		position: absolute;
+		left:50%;
+		top:50%;
+		margin-left: -1rpx;
+		margin-top: -16rpx;
 	}
 	.bottom-btn{
 		width: 100%;
@@ -1197,7 +1219,7 @@
 				line-height: 72rpx;
 				font-size: 28rpx;
 				border-radius:$btn-radius;
-				font-weight: bold;
+				font-weight: 400;
 			}
 			.right{
 				width: 168rpx;

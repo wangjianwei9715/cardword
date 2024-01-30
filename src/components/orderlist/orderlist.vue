@@ -84,10 +84,10 @@
 			margin-bottom: 14rpx;
 			&-header{
 				width: 100%;
-				height:80rprx;
+				height:100rpx;
 				display: flex;
 				box-sizing: border-box;
-				padding:0 20rpx 0 28rpx;
+				padding:0 26rpx 0 26rpx;
 				align-items: center;
 				justify-content: space-between;
 				.header-left{
@@ -106,7 +106,7 @@
 						line-height: 40rpx;
 						font-size: 28rpx;
 						font-family: PingFangSC-Regular, PingFang SC;
-						font-weight: 600;
+						font-weight: 400;
 						color: #333333;
 					}
 				}
@@ -118,7 +118,7 @@
 						height:80rpx;
 						display: flex;
 						align-items: center;
-						font-size: 24rpx;
+						font-size: 26rpx;
 						font-family: PingFang SC;
 						font-weight: 400;
 						color: rgba(153,153,153,0.9);
@@ -137,8 +137,9 @@
 				height:148rpx;
 				display: flex;
 				box-sizing: border-box;
-				padding:0 20rpx;
+				padding:0 26rpx;
 				align-items: center;
+				margin-top: -10rpx;
 				.goods-image{
 					width: 178rpx;
 					height:148rpx;
@@ -153,9 +154,9 @@
 					position: relative;
 					.title{
 						width: 100%;
-						font-size: 24rpx;
+						font-size: 26rpx;
 						font-family: PingFangSC-Regular, PingFang SC;
-						color: rgba(0,0,0,0.9);
+						color: #333333;
 						line-height: 34rpx;
 						margin-bottom: 0;
 						box-sizing: border-box;
@@ -190,7 +191,7 @@
 							font-size: 22rpx;
 							font-family: PingFangSC, PingFang SC;
 							font-weight: 400;
-							color: #999999;
+							color: #C0C0C0;
 						}
 						.price{
 							height:40rpx;
@@ -228,7 +229,7 @@
 			&-bottom{
 				width: 100%;
 				box-sizing: border-box;
-				padding:25rpx 0 25rpx 20rpx;
+				padding:25rpx 0 30rpx 26rpx;
 				display: flex;
 				justify-content: space-between;
 				.hitnum-bg{
@@ -282,9 +283,9 @@
 						justify-content: center;
 						border-radius:5rpx;
 						font-size: 24rpx;
-						font-family: PingFangSC-Medium, PingFang SC;
+						font-family: PingFangSC;
 						font-weight: 400;
-						margin-right: 20rpx;
+						margin-right: 26rpx;
 						background:#fff;
 						border:1rpx solid #DADADA;
 						color:#333333
