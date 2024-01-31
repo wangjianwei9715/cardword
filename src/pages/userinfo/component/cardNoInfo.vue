@@ -28,7 +28,7 @@
 					return {
 						cName:`${playerChinese} | ${teamChinese}`,
 						eName:`${player} | ${team}`,
-						desc:`${seq}, ${cardSet}, ${number}`
+						desc:`${seq==0?'无限':seq}编, ${cardSet}, No.${number}`
 					}
 				case 2: //随机球队
 					return {

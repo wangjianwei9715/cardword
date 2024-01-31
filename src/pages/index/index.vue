@@ -251,7 +251,7 @@
 						this.showWinningCrad = true;
 						uni.hideTabBar()
 					};
-					if(!res.data.logomanReceive){
+					if(res.data.logomanReceive){
 						const date=(new Date().getMonth()+1)+"-"+new Date().getDate()
 						if (uni.getStorageSync("flawImmTipsDay")!=date){
 							uni.setStorageSync("flawImmTipsDay",date)

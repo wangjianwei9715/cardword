@@ -141,14 +141,14 @@
 <style lang="scss">
 .yunfei-item {
 	width: 100%;
-	height:60rpx;
+	height:68rpx;
 	align-items: center;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 }
 .item-name {
-	font-size: 25rpx;
+	font-size: 26rpx;
 	font-family: PingFangSC-Regular;
 	font-weight: 400;
 	color: #333333;
@@ -160,7 +160,7 @@
 	font-size: 24rpx;
 	font-family: PingFangSC-Medium, PingFang SC;
 	font-weight: 600;
-	color: #ff504f;
+	color: #FA1545;
 }
 .item-name-right {
 	width: 10rpx;

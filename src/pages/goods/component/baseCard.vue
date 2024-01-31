@@ -1,3 +1,12 @@
+<!--
+ * @FilePath: \jichao_app_2\src\pages\goods\component\baseCard.vue
+ * @Author: wjw
+ * @Date: 2024-01-30 09:24:51
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-01-30 16:11:13
+ * Copyright: 2024 .
+ * @Descripttion: 
+-->
 <template>
 	<view>
 		<view class="header-base" @click="basePopupShow=true">
@@ -12,13 +21,13 @@
 				<view class="base-center">
 					<view class="base-popup-name">每份将购得由商家提供的以下内容：</view>
 					<view class="base-popup-item">
-						<view class="item-title">1、基础卡片随机款1张</view>
+						<view class="item-title">1、正版基础卡片随机款1张（拼成后累计）</view>
 						<view class="item-desc">发货方式：(1）联系商家并向商家支付运费后发货。</view>
 						<view class="item-desc">(2) 30日内累计达到商家要求张数后，按商家要求确认发货方式。</view>
 					</view>
 					<view class="base-popup-item">
-						<view class="item-title">2、系列玩法一份（卡密）</view>
-						<view class="item-desc">通过系列玩法（卡密）获得的卡片包邮，并按订单填写的收货地址发货</view>
+						<view class="item-title">2、系列卡密1份</view>
+						<view class="item-desc">通过系列卡密玩法获得的卡片包邮，并按订单填写的收货地址发货</view>
 					</view>
 				</view>
             </view>
@@ -66,7 +75,7 @@
 		.base-center{
 			width: 100%;
 			box-sizing: border-box;
-			padding: 0 36rpx 44rpx 36rpx;
+			padding: 0 36rpx 100rpx 36rpx;
 			.base-popup-name{
 				font-size: 28rpx;
 				font-family: PingFangSC, PingFang SC;
@@ -74,14 +83,14 @@
 				color: #333333;
 			}
 			.item-title{
-				font-size: 24rpx;
+				font-size: 30rpx;
 				font-family: PingFangSC, PingFang SC;
 				font-weight: 600;
 				color: #333333;
-				margin-top: 20rpx;
+				margin-top: 34rpx;
 			}
 			.item-desc{
-				font-size: 20rpx;
+				font-size: 24rpx;
 				font-family: PingFangSC, PingFang SC;
 				font-weight: 400;
 				color: #666666;

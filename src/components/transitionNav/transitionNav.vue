@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-24 11:05:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-22 10:09:33
+ * @LastEditTime: 2024-01-30 17:00:38
  * @FilePath: \jichao_app_2\src\components\transitionNav\transitionNav.vue
  * @Description: 渐变导航栏（兼容nvue, nvue中把组件放到结构最下面:越后层级越高）
 -->
@@ -17,10 +17,10 @@
             </view>
             <view class="leftBackContainer" :class="{ whiteBack: needIconShadow&&!customBack }" @click="app.platform.pageBack()">
                 <template v-if="needIconShadow&&!customBack">
-                    <image class="back" src="/static/index/v3/icon_back.png" />
+                    <image class="back" src="/static/index/back_b.png" />
                 </template>
                 <template v-if="!needIconShadow && showBack&&!customBack">
-                    <image class="back" :src="`/static/index/v3/${navBackGroundShow ? 'icon_back' : 'back'}.png`" />
+                    <image class="back" :src="`/static/index/${navBackGroundShow ? 'back_b' : 'back_w'}.png`" />
                     <!-- #ifndef APP-NVUE -->
                     <!-- 非nvue下利用css滤镜改变方向键颜色 -->
                     <!-- <image class="back" :class="{ filterBlack: navBackGroundShow }" src="/static/index/v3/back.png"
@@ -318,7 +318,7 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 0 36rpx;
+    padding: 0 36rpx 0 12rpx;
     width: 750rpx;
     height: 88rpx;
     position: relative;
@@ -408,10 +408,9 @@ export default {
 }
 
 .back {
-    width: 19rpx;
-    height: 35rpx;
+    width: 56rpx;
+    height: 56rpx;
 }
-
 .toolsText{
     font-size: 28rpx;
 }

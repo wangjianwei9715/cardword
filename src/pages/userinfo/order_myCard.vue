@@ -2,7 +2,7 @@
 <template>
 	<view class="box-content">
 		<navigationbarTabs ref="rNavigationbarTabs" :titles="titles" :current="headerCurrent" backColor="#fff" backgroundColor="rgba(0,0,0,0)" @tabsClisk="onTabsClick"/>
-		<view class="header">
+		<view class="header" :style="{'height':headerCurrent==1?'358rpx':'458rpx'}">
 			<view class="search-box" v-show="showCardNo">
 				<view class="search-icon"></view>
 				<input class="search-input" type="text"  v-model="searchText" placeholder="搜索球员、球队"  confirm-type="search"  @confirm="reqSearchList" />
@@ -50,7 +50,7 @@
 					<view class="card-index" v-for="(item,indexs) in buyerData.hits" :key="indexs">
 						<cardNoInfo :data="item" :type="pintuanType"/>
 						<view  class="index-right">
-							<muqian-lazyLoad class="card-pic" :src="item.pic"  preview/>
+							<muqian-lazyLoad class="card-pic" :src="item.pic" mode="aspectFit" preview/>
 						</view>
 					</view>
 				</view>
@@ -65,7 +65,7 @@
 							<view class="desc">{{item.state}}</view>
 						</view>
 						<view  class="index-right">
-							<muqian-lazyLoad class="card-pic" :src="item.awardPic"  preview/>
+							<muqian-lazyLoad class="card-pic" :src="item.awardPic" mode="aspectFit" preview/>
 						</view>
 					</view>
 				</view>
@@ -79,7 +79,7 @@
 							<view class="desc">查看领取方式</view>
 						</view>
 						<view  class="index-right">
-							<!-- <muqian-lazyLoad class="card-pic" :src=""  preview/> -->
+							<muqian-lazyLoad class="card-pic" src="/static/order/card.png" mode="aspectFit"/>
 						</view>
 					</view>
 				</view>
@@ -93,7 +93,7 @@
 							<view class="desc">前往卡币商城</view>
 						</view>
 						<view  class="index-right">
-							<!-- <muqian-lazyLoad class="card-pic" :src=""  preview/> -->
+							<muqian-lazyLoad class="card-pic" src="/static/order/kabi.png" mode="aspectFit"/>
 						</view>
 					</view>
 				</view>
@@ -110,12 +110,13 @@
 	import { parsePic } from "@/tools/util";
 	import cardSort from "./component/cardSort.vue"
 	import cardNoInfo from "./component/cardNoInfo.vue"
+	import navigationbarTabs from "@/components/navigationbarTabs/navigationbarTabs.vue"
 	const title = [
 		{index:0,name:'卡密信息'},
 		{index:1,name:'购入信息'}
 	]
 	@Component({
-		components:{cardSort,cardNoInfo}
+		components:{navigationbarTabs,cardSort,cardNoInfo}
 	})
 	export default class ClassName extends BaseNode {
 		titles = title;
@@ -416,7 +417,7 @@
 		background:#F6F7FB;
 		margin-bottom: 16rpx;
 		border-radius: 4rpx;
-		padding:16rpx 20rpx 16rpx 16rpx
+		padding:20rpx
 	}
 	.win-card-box{
 		border: 1rpx solid #FA1545;
@@ -462,13 +463,13 @@
 		box-sizing: border-box;
 		padding-bottom: 40rpx;
 		.title{
-			font-size: 24rpx;
+			font-size: 26rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 500;
 			color: #333333;
 		}
 		.cardno{
-			font-size: 20rpx;
+			font-size: 22rpx;
 			font-family: PingFangSC, PingFang SC;
 			font-weight: 400;
 			color: #999999;
@@ -479,7 +480,7 @@
 			position: absolute;
 			bottom:0;
 			left:0;
-			font-size: 16rpx;
+			font-size: 18rpx;
 			font-family: PingFangSC, PingFang SC;
 			font-weight: 400;
 			color: #DDDDDD;
@@ -508,7 +509,6 @@
 		font-family: Source Han Sans CN;
 		font-weight: 400;
 		color:#fff;
-		background:#CCCCCC;
 		margin-right: 8rpx;
 	}
 	.red-color{

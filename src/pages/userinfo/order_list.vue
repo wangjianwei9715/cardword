@@ -4,7 +4,7 @@
 			<statusbar />
 			<view class="header-top">
 				<view class="header-back" @click="onClickBack">
-					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
+					<view class="icon-back"></view>
 				</view>
 				<view class="header-search">
 					<view class="search-icon"></view>
@@ -54,13 +54,13 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		activeStyle={
-			"font-size": "28rpx",
+			"font-size": "30rpx",
 			"font-family": "PingFangSC-Medium",
 			"font-weight": 500,
 			"color":" #333333",
 		}
 		inactiveStyle={
-			"font-size": "24rpx",
+			"font-size": "26rpx",
 			"font-family": "PingFang SC",
 			"font-weight": 400,
 			"color":" #999999",
@@ -272,6 +272,10 @@
 	page {
 		background: $content-bg;
 	}
+	/deep/.u-tabs__wrapper__nav__line{
+		border-radius: 0 !important;
+		bottom:14rpx !important
+	}
 	.content{
 		width: 100%;
 	}
@@ -318,7 +322,11 @@
 		align-items: center;
 		justify-content: center;
 	}
-
+	.icon-back {
+		width: 56rpx;
+		height:56rpx;
+		background: url(@/static/index/back_b.png) no-repeat center / 100% 100%;
+	}
 	.header-tab {
 		width: 100%;
 		margin-top: -10rpx;
@@ -328,7 +336,7 @@
 	.order-list {
 		width: 100%;
 		box-sizing: border-box;
-		padding: 196rpx 14rpx 14rpx 14rpx;
+		padding: 190rpx 14rpx 14rpx 14rpx;
 	}
 
 	.search-input {

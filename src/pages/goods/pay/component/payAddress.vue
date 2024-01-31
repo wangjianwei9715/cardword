@@ -44,6 +44,7 @@
 	justify-content: space-between;
 	position: relative;
 	border-radius: 5rpx;
+	margin-top: 14rpx;
 }
 .header-order-line{
 	width: 100%;

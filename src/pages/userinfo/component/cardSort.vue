@@ -40,7 +40,7 @@
 				for(let i in this.sortComData){
 					this.sortComData[i].odType = 0;
 				}
-				item.odType = od==2?item.odType=0:od+1;
+				item.odType = od==2?1:2;
 				this.getSortStr()
 			}
 		}
@@ -88,32 +88,33 @@
 		.header-sort-icon{
 			width: 17rpx;
 			margin-left: 4rpx;
-			margin-bottom: -4rpx;
 			.icon-sort-up{
 				width: 17rpx;
 				height:12rpx;
 				background:url(@/static/goods/sort_u_.png) no-repeat center;
 				background-size: 100% 100%;
-				margin-bottom: 2rpx;
+				transform: scale(0.8);
 			}
 			.icon-sort-upn{
 				width: 17rpx;
 				height:12rpx;
 				background:url(@/static/goods/sort_u.png) no-repeat center;
 				background-size: 100% 100%;
-				margin-bottom: 2rpx;
+				transform: scale(0.8);
 			}
 			.icon-sort-down{
 				width: 17rpx;
 				height:12rpx;
 				background:url(@/static/goods/sort_d_.png) no-repeat center;
 				background-size: 100% 100%;
+				transform: scale(0.8);
 			}
 			.icon-sort-downn{
 				width: 17rpx;
 				height:12rpx;
 				background:url(@/static/goods/sort_d.png) no-repeat center;
 				background-size: 100% 100%;
+				transform: scale(0.8);
 			}
 		}
 		&-classify{
