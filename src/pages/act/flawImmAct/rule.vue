@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\pages\act\flawImmAct\rule.vue
  * @Author: wjw
  * @Date: 2024-01-04 17:25:25
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-29 15:34:02
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2024-01-31 14:52:45
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -53,8 +53,9 @@ export default class ClassName extends BaseNode {
 	}
     onLoad(query: any) {
 		app.http.Get("dataApi/activity/logoman/playerList/role",{},(res:any)=>{
-			console.log(res);
-			this.awardTable=res.list || []
+			this.awardTable=(res.list || []).sort((x:any,y:any)=>{
+				return y.amount-x.amount
+			})
 		})
     }
 

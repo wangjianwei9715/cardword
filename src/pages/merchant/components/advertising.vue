@@ -45,7 +45,7 @@
 				<view v-if="hasUsableCard" :class="buttonData.class" style="display: flex;align-items: center;justify-content: center;" @click="buttonData.clickHandler">
 					{{ buttonData.text }} 
 					<u-count-down v-if="currentState.waitUpload" :time="countDown(adData.coverUpOverTime)" format="mm:ss" @finish="onFinish"></u-count-down>
-					<u-count-down v-if="adFull&&!currentState.waitUpload&&!currentState.waitReview&&adData.recently_at>0&&!currentState.inEffect" @finish="onFinish" style="color: #ffffff;" :time="countDown(adData.recently_at)" :format="(+new Date())-adData.recently_at>60*60?'HH:mm:ss':'mm:ss'"></u-count-down>
+					<u-count-down v-if="adFull&&!currentState.waitUpload&&!currentState.waitReview&&adData.recently_at>0&&!currentState.inEffect" @finish="tipsFinish" style="color: #ffffff;" :time="countDown(adData.recently_at)" :format="(+new Date())-adData.recently_at>60*60?'HH:mm:ss':'mm:ss'"></u-count-down>
 					
 				</view>
 				<view v-else class="drawer-bottom-btn" @click="redirectToMall">去积分中心兑换</view>
@@ -234,6 +234,10 @@
 		onFinish(){
 			this.getList()
 			this.uploadImg="";
+		}
+		tipsFinish(){
+			this.uploadImg="";
+			this.adData.now_num-=1
 		}
 		getList(){
 			app.http.Get('merchant/me/adCard/list',{goodCode:this.goodCode},({list,...rest}:any)=>{
