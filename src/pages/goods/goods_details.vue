@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-31 13:51:35
+ * @LastEditTime: 2024-01-31 16:36:07
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -86,12 +86,12 @@
 								<view class="progress-mask" :style="{width:(100-planData.width)+'%'}"> </view>
 							</view>
 						</view>
-						<view class="header-discount" v-if="goodsData.discount">
+						<scroll-view class="header-discount" :scroll-x="true" v-if="goodsData.discount">
 							<view class="discount-item" v-for="(item,index) in goodsData.discount" :key="`discount_${index}`">
 								<view class="discount-text">满{{item.minNum}}组</view>
 								<view class="discount-text discount-price">每组{{item.price}}元</view>
 							</view>
-						</view>
+						</scroll-view>
 						<motorcade :goodsData="goodsData" :showChedui.sync="showCheduiDraw" :cheduiData="cheduiData" :userData="userData"/>
 					</view>
 				</view>
@@ -1841,27 +1841,30 @@
 	}
 	.header-discount{
 		width: 100%;
+		margin-top: 26rpx;
+		overflow: auto;
 		display: flex;
-		margin-top: 20rpx;
+		align-items: center;
+		white-space: nowrap;
 		.discount-item{
-			width: 178rpx;
-			height:40rpx;
+			width: 204.7rpx;
+			height:46rpx;
 			background: url(@/static/goods/detail/discount.png) no-repeat center /100% 100%;
-			display: flex;
+			display: inline-flex;
 			box-sizing: border-box;
 			margin-right:16rpx;
 			overflow:hidden;
 			.discount-text{
-				width: 78rpx;
-				height:40rpx;
-				@include font(20rpx);
+				width: 88.7rpx;
+				height:46rpx;
+				@include font(22rpx);
 				color: #FA1545;
 				text-align: center;
-				line-height: 40rpx;
+				line-height: 46rpx;
 				overflow:hidden;
 			}
 			.discount-price{
-				width: 100rpx;
+				width: 116rpx;
 				overflow:hidden;
 			}
 		}

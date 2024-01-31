@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-22 10:03:33
+ * @LastEditTime: 2024-01-31 16:32:18
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -30,7 +30,7 @@
 								<view class="popup-list-text">
 									共{{item.randomNum>0?item.randomNum:1}}份 {{item.tp==2?(item.coupon&&item.coupon.distribute==2?"即搓即得":"拼成发放"):"拼成发放"}}
 								</view>
-								<view class="popup-code-name">{{item.randomNum>0?"随机卡密发放":item.noName}}</view>
+								<view class="popup-code-name">{{item.randomNum>0?"随机卡密发放":"指定卡密："+item.noName}}</view>
 							</view>
 						</view>
 					</u-list-item>
@@ -261,9 +261,9 @@
 			margin-right: 20rpx;
 		}
 		.popup-item-pic{
-			width: 200rpx;
-			height:200rpx;
-			background: #333333
+			width: 166rpx;
+			height:166rpx;
+			transform: scale(0.8);
 		}
 		.popup-list-box{
 			width: 100%;
@@ -271,12 +271,17 @@
 			justify-content: space-between;
 		}
 		.popup-list-pic{
-			width: 200rpx;
-			height:200rpx;
+			width: 166rpx;
+			height:166rpx;
+			display: flex;
+			justify-content: center;
+			align-items: flex-start;
+			border:0.8px solid #e8e8e8;
+			border-radius: 5rpx;
 		}
 		.popup-list-info{
-			width: 450rpx;
-			min-height: 200rpx;
+			width: 486rpx;
+			min-height: 166rpx;
 			display: inline-flex;
 			flex-wrap: wrap;
 			align-content: space-between;
@@ -294,26 +299,15 @@
 				height:40rpx;
 				font-family: PingFangSC, PingFang SC;
 				font-weight: 400;
-				color: #666666;
+				color: #D9D9D9
 			}
-			// .popup-code-name{
-			// 	width: 100%;
-			// 	min-height: 60rpx;
-			// 	font-size: 24rpx;
-			// 	font-family: PingFangSC, PingFang SC;
-			// 	font-weight: 400;
-			// 	color: #666666;
-			// 	margin-top: 60rpx;
-			// 	display: inline-flex;
-			// 	align-items: flex-end;
-			// }
 			.popup-code-name{
 				width: 100%;
-				min-height: 94rpx;
+				min-height: 63rpx;
 				font-size: 24rpx;
 				font-family: PingFangSC, PingFang SC;
 				font-weight: 400;
-				color: #666666;
+				color: #999999;
 				margin-top: 26rpx;
 				display: inline-flex;
 				align-items: flex-start;

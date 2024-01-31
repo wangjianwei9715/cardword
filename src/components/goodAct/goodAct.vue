@@ -120,12 +120,13 @@
 			width: 100%;
 			min-height:76rpx;
 			display: flex;
+			align-items: center;
 			.act-box-name{
-				height:76rpx;
+				margin:26rpx 0;
 				width:82rpx;
-				font-size: 24rpx;
-				font-family: PingFangSC-Semibold;
-				font-weight: 600;
+				font-size: 26rpx;
+				font-family: PingFang SC;
+				font-weight: 400;
 				color: #D9D9D9;
 				display: flex;
 				align-items: center;
@@ -146,11 +147,11 @@
 				display: flex !important;
 				align-items: center;
 				box-sizing: border-box;
-				font-size: 24rpx;
+				font-size: 25rpx;
 				font-family: PingFang SC;
 				font-weight: 400;
 				color: #333333;
-				margin:20rpx 0;
+				margin:26rpx 0;
 			}
 		}
 		.detail-act-index{
@@ -180,7 +181,7 @@
 	}
 	.detail-act-desc{
 		width: 550rpx;
-		font-size: 25rpx;
+		font-size: 26rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #333333;
@@ -190,7 +191,7 @@
 	}
 	.detail-act-remark{
 		width: 550rpx;
-		font-size: 25rpx;
+		font-size: 26rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #333333;
@@ -258,8 +259,6 @@
 		height:17rpx;
 		background:url(../../static/goods/v2/icon_right_new.png) no-repeat center;
 		background-size: 100% 100%;
-		margin-left: 10rpx;
-		margin-top: 30rpx;
 	}
 	.drawer-header{
 		width: 100%;

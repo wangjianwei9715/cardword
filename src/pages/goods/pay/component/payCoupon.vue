@@ -157,7 +157,7 @@
 	align-items: baseline;
 }
 .coupon-num {
-	font-size: 24rpx;
+	font-size: 26rpx;
 	font-family: PingFangSC-Medium, PingFang SC;
 	font-weight: 600;
 	color: #FA1545;

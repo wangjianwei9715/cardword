@@ -249,7 +249,7 @@
 			.payment-checked{
 				width: 36rpx;
 				height:36rpx;
-				background:url(../../static/pay/xuanzhong@2x.png) no-repeat center;
+				background:url(../../static/userinfo/pay_gou.png) no-repeat center;
 				background-size: 100% 100%;
 			}
 		}

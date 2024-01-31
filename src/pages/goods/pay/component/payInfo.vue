@@ -404,7 +404,7 @@
 }
 .huo-dong-bg {
 	width: 670rpx;
-	height: 104rpx;
+	height: 110rpx;
 	background: #ffffff;
 	display: flex;
 	white-space: nowrap;
@@ -414,16 +414,17 @@
 	margin-top: 20rpx;
 }
 .item-youhui-bg {
-	width: 92rpx;
-	height:104rpx;
+	width: 96rpx;
+	height:110rpx;
 	background: url(@/static/pay/v2/discount.png) no-repeat center / 100% 100%;
 	display: inline-block;
+	margin-right: 10rpx;
 }
 .discount-num{
 	width: 100%;
-	height:40rpx;
+	height:44rpx;
 	text-align: center;
-	line-height: 40rpx;
+	line-height: 44rpx;
 	font-size: 20rpx;
 	font-family: PingFangSC, PingFang SC;
 	font-weight: 400;
@@ -436,7 +437,7 @@
 	flex-wrap: wrap;
 	align-items: center;
 	box-sizing: border-box;
-	padding:4rpx 0 10rpx 0;
+	padding:0rpx 0 10rpx 0;
 }
 .discount-price text{
 	width: 100%;
@@ -448,6 +449,7 @@
 }
 .discount-price text:first-child{
 	font-weight: bold;
+	font-size: 24rpx;
 }
 .current-discount{
 	background: url(@/static/pay/v2/discount_.png) no-repeat center / 100% 100%;

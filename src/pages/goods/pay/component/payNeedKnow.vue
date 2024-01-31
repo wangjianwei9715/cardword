@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-01-30 09:24:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-30 14:52:08
+ * @LastEditTime: 2024-01-31 16:28:33
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -66,15 +66,15 @@
 		color: #333333;
 	}
 	.bottom-gm-gx {
-		width: 28rpx;
-		height: 28rpx;
+		width: 30rpx;
+		height: 30rpx;
 		background: url(@/static/userinfo/weixuan@2x.png) no-repeat center;
 		background-size: 100% 100%;
 		margin-right: 10rpx;
 	}
 	.bottom-gm-check {
-		width: 28rpx;
-		height: 28rpx;
+		width: 30rpx;
+		height: 30rpx;
 		background: url(@/static/userinfo/pay_gou.png) no-repeat center;
 		background-size: 100% 100%;
 		margin-right: 10rpx;

@@ -667,8 +667,8 @@ page {
 	margin-right: 10rpx;
 }
 .btn-anonymity {
-  width: 28rpx;
-  height: 28rpx;
+  width: 30rpx;
+  height: 30rpx;
   background: url(@/static/userinfo/weixuan@2x.png) no-repeat center/ 100% 100%;
   margin-right: 10rpx;
 }

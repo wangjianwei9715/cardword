@@ -116,7 +116,7 @@
 	}
 	.detail-act-desc{
 		width: 550rpx;
-		font-size: 25rpx;
+		font-size: 26rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #333333;

@@ -91,7 +91,7 @@ export default class navigationbar extends BaseComponent {
 		height: 88rpx;
 		display: flex;
 		box-sizing: border-box;
-		padding: 0 30rpx 0rpx 12rpx;
+		padding: 0 12rpx 0rpx 12rpx;
 		position: relative;
 		z-index: 10;
 		align-items: center;
