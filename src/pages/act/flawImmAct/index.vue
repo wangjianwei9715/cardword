@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-01-04 17:24:40
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-30 16:13:01
+ * @LastEditTime: 2024-01-31 14:56:18
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -22,12 +22,12 @@
 				<view class="card">
 					<view class="card-bg" v-show="!playerIsflaw">
 						<view class="card-pic-box">
-							<image v-for="item in detailPic" :key="item.index" class="card-pic" :class="{'grayimg':item.index>taskPhase}" :src="item.networkPic?(!playerIsflaw?item.pic:''):`/static/act/immfl/index/${item.imm}`"></image>
+							<image v-for="item in detailPic" :key="item.index" class="card-pic" :class="{'grayimg':item.index>taskPhase}" :style="{'opacity':playerOpacity(item)}" :src="item.networkPic?(!playerIsflaw?item.pic:''):`/static/act/immfl/index/${item.imm}`"></image>
 						</view>
 					</view>
 					<view class="card-bg card-flaw" v-show="playerIsflaw">
 						<view class="card-pic-box">
-							<image v-for="item in detailPic" :key="item.index" class="card-pic" :class="{'grayimg':item.index>taskPhase}" :src="item.networkPic?(playerIsflaw?item.pic:''):`/static/act/immfl/index/${item.flaw}`"></image>
+							<image v-for="item in detailPic" :key="item.index" class="card-pic" :class="{'grayimg':item.index>taskPhase}" :style="{'opacity':playerOpacity(item)}" :src="item.networkPic?(playerIsflaw?item.pic:''):`/static/act/immfl/index/${item.flaw}`"></image>
 						</view>
 					</view>
 				</view>
@@ -63,11 +63,11 @@
 	import BaseNode from '../../../base/BaseNode.vue';
 	import playerSwiper from "./components/playerSwiper.vue"
 	class DetailPic {
-		bg={index:1,pic:"",networkPic:false,imm:"bg_1.png",flaw:"flaw_bg_1.png"};
-		line={index:2,pic:"",networkPic:false,imm:"bg_2.png",flaw:"flaw_bg_2.png"};
-		player={index:3,pic:"",networkPic:true};
-		sign={index:4,pic:"",networkPic:true};
-		logo={index:5,pic:"",networkPic:false,imm:"bg_5.png",flaw:"flaw_bg_5.png"}
+		bg={index:1,pic:"",networkPic:false,imm:"bg_1.png",flaw:"flaw_bg_1.png",opacity:1};
+		line={index:2,pic:"",networkPic:false,imm:"bg_2.png",flaw:"flaw_bg_2.png",opacity:0.65};
+		player={index:3,pic:"",networkPic:true,opacity:1};
+		sign={index:4,pic:"",networkPic:true,opacity:0.5};
+		logo={index:5,pic:"",networkPic:false,imm:"bg_5.png",flaw:"flaw_bg_5.png",opacity:0.65}
 	}
 	const playerWidth = uni.upx2px(124);
 	const TaskData = [
@@ -107,6 +107,9 @@
 		public get playerIsflaw() : boolean {
 			return this.currentPlayer.tp && this.currentPlayer.tp == 2 
 		}
+		playerOpacity(item:any){
+			return item.index>this.taskPhase ? item.opacity : 1
+		}
 		initPlayerList(){
 			app.http.Get("activity/logoman/card/list",{},(res:any)=>{
 				const list = res.list.sort((a:any,b:any)=>{
@@ -142,7 +145,9 @@
 			};
 			app.http.Post(`activity/logoman/card/coupon/receive/${this.currentPlayer.id}`,{},(res:any)=>{
 				uni.showToast({title:"领取成功",icon:"none"})
-				this.getPlayerDetail()
+				setTimeout(() => {
+					this.getPlayerDetail()
+				}, 500);
 			})
 		}
 		onClickBack(){

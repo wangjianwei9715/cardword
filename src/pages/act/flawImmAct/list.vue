@@ -21,7 +21,7 @@
 				</u-tabs>
 			</view>
 			<view class="goods-lists">
-				<goodslist v-if="goodsList" :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" :nomore="listParams.nomore" :progressColor="showFl?'#8EDBFF':'#FFE63B'"/>
+				<goodslist v-if="goodsList.length" :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" :nomore="listParams.nomore" :progressColor="showFl?'#8EDBFF':'#FFE63B'"/>
 				<empty v-if="goodsList&&!goodsList.length&&listParams.nomore" />
 			</view>
 		</view>
