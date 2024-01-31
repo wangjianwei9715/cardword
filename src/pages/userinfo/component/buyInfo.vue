@@ -9,7 +9,7 @@
 				<view class="num">x{{num}}</view>
 			</view>
 			<view class="item-right">
-				<!-- <muqian-lazyLoad class="card-pic" :src=""  preview/> -->
+				<muqian-lazyLoad class="card-pic" src="/static/order/card.png" mode="aspectFit"/>
 			</view>
 		</view>
 		<view class="buyinfo-item" v-if="buyerData.hits.length" @click="goResult">
@@ -21,7 +21,7 @@
 				<view class="num">x{{buyerData.hitsTotal}}</view>
 			</view>
 			<view class="item-right">
-				<muqian-lazyLoad class="card-pic" :src="buyerData.hits[0].pic"  preview/>
+				<muqian-lazyLoad class="card-pic" :src="buyerData.hits[0].pic" mode="aspectFit" preview/>
 			</view>
 		</view>
 		<view class="buyinfo-item" v-if="buyerData.noAwards.length">
@@ -33,7 +33,7 @@
 				<view class="num">x{{buyerData.noAwardsTotal}}</view>
 			</view>
 			<view class="item-right">
-				<muqian-lazyLoad class="card-pic" :src="buyerData.noAwards[0].awardPic"  preview/>
+				<muqian-lazyLoad class="card-pic" :src="buyerData.noAwards[0].awardPic" mode="aspectFit" preview/>
 			</view>
 		</view>
 		<view class="buyinfo-item">
@@ -45,7 +45,7 @@
 				<view class="num">x{{point}}</view>
 			</view>
 			<view class="item-right">
-				<!-- <muqian-lazyLoad class="card-pic" :src=""  preview/> -->
+				<muqian-lazyLoad class="card-pic" src="/static/order/kabi.png" mode="aspectFit"/>
 			</view>
 		</view>
 	</view>

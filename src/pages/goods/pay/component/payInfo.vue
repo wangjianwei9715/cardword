@@ -354,8 +354,10 @@
 			align-items: center;
 		}
 		.num-box{
-			width: 36rpx;
-			height:36rpx;
+			width: 43rpx;
+			height:39rpx;
+			background: #F6F7FB;
+			border-radius: 1rpx;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -386,7 +388,7 @@
 			background: url(@/static/pay/v2/icon_reduce_.png) no-repeat center / 100% 100%;
 		}
 		.money-add {
-			height: 36rpx;
+			height: 39rpx;
 			text-align: center;
 			font-size: 25rpx;
 			font-family: PingFangSC-Regular;

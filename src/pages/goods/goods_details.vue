@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-30 16:03:14
+ * @LastEditTime: 2024-01-31 13:51:35
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -33,7 +33,7 @@
 			</view>
 		</view>
 		<view class="detail-index-bg">
-			<view class="detail-header">
+			<view class="detail-header" :class="{'detail-header-random':isRandomType}">
 				<view class="detail-header-left">
 					<!-- 基础卡片 -->
 					<baseCard/>
@@ -82,7 +82,7 @@
 								</view>
 								<view class="header-top-plan-num-state" v-else > {{planData.str}}{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}</view>
 							</view>
-							<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType}">
+							<view class="goodslist-progress" :class="{'goodslist-progress-select':isRandomType}">
 								<view class="progress-mask" :style="{width:(100-planData.width)+'%'}"> </view>
 							</view>
 						</view>
@@ -204,7 +204,7 @@
 			<view class="btn-cardlist" @click="onClickAllCard">
 				<image class="cardlist-icon" src="@/static/goods/detail/cardlist.png"></image>列表 
 			</view>
-			<view class="btn-confirm" :style="{width:`${tipBtn.length==2?'332rpx':'395rpx'}`}" :class="{'random-confirm':getSelectType}" @click="onClickBuy()">
+			<view class="btn-confirm" :style="{width:`${tipBtn.length==2?'332rpx':'395rpx'}`}" :class="{'random-confirm':isRandomType}" @click="onClickBuy()">
 				{{goodsData.isSelect?'选择编号':'立即购买'}}
 			</view>
 		</view>
@@ -342,7 +342,8 @@
 		public get firstShow () : boolean {
 			return uni.$u.test.isEmpty(this.goodsData)
 		}
-		public get getSelectType() : boolean{
+		// 自选随机类型
+		public get isRandomType() : boolean{
 			return [10,11,12].includes(this.goodsData.pintuan_type)
 		}
 		public get getPriceStart() : boolean {
@@ -1770,6 +1771,9 @@
 		justify-content: space-between;
 		padding:0 36rpx 0 48rpx;
 		align-items: center;
+	}
+	.detail-header-random{
+		background: url(@/static/goods/detail/header_r.png) no-repeat center /100% 100% !important;
 	}
 	.detail-header-left{
 		height: 92rpx;

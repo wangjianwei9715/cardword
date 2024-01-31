@@ -50,7 +50,7 @@
 					<view class="card-index" v-for="(item,indexs) in buyerData.hits" :key="indexs">
 						<cardNoInfo :data="item" :type="pintuanType"/>
 						<view  class="index-right">
-							<muqian-lazyLoad class="card-pic" :src="item.pic"  preview/>
+							<muqian-lazyLoad class="card-pic" :src="item.pic" mode="aspectFit" preview/>
 						</view>
 					</view>
 				</view>
@@ -65,7 +65,7 @@
 							<view class="desc">{{item.state}}</view>
 						</view>
 						<view  class="index-right">
-							<muqian-lazyLoad class="card-pic" :src="item.awardPic"  preview/>
+							<muqian-lazyLoad class="card-pic" :src="item.awardPic" mode="aspectFit" preview/>
 						</view>
 					</view>
 				</view>
@@ -79,7 +79,7 @@
 							<view class="desc">查看领取方式</view>
 						</view>
 						<view  class="index-right">
-							<!-- <muqian-lazyLoad class="card-pic" :src=""  preview/> -->
+							<muqian-lazyLoad class="card-pic" src="/static/order/card.png" mode="aspectFit"/>
 						</view>
 					</view>
 				</view>
@@ -93,7 +93,7 @@
 							<view class="desc">前往卡币商城</view>
 						</view>
 						<view  class="index-right">
-							<!-- <muqian-lazyLoad class="card-pic" :src=""  preview/> -->
+							<muqian-lazyLoad class="card-pic" src="/static/order/kabi.png" mode="aspectFit"/>
 						</view>
 					</view>
 				</view>
@@ -509,7 +509,6 @@
 		font-family: Source Han Sans CN;
 		font-weight: 400;
 		color:#fff;
-		background:#CCCCCC;
 		margin-right: 8rpx;
 	}
 	.red-color{
