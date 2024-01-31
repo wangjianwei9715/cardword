@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-01-04 17:24:40
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-31 14:56:18
+ * @LastEditTime: 2024-01-31 17:20:27
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -144,10 +144,9 @@
 				return;
 			};
 			app.http.Post(`activity/logoman/card/coupon/receive/${this.currentPlayer.id}`,{},(res:any)=>{
-				uni.showToast({title:"领取成功",icon:"none"})
-				setTimeout(() => {
-					this.getPlayerDetail()
-				}, 500);
+				uni.showToast({title:"领取成功",icon:"none"});
+				this.playerDetail.state=2;
+				this.playerReceiveNum++;
 			})
 		}
 		onClickBack(){
