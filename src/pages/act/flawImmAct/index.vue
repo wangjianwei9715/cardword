@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\pages\act\flawImmAct\index.vue
  * @Author: wjw
  * @Date: 2024-01-04 17:24:40
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-31 17:20:27
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2024-02-01 14:03:33
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -44,7 +44,7 @@
 					<text class="uncompleted" v-else>{{item.name}}({{playerDetail.num||0}}/{{item.num}})</text>
 					<view class="icon-lock" :class="{'lock-complete':taskPhase>index}"></view>
 				</view>
-				<view class="task-item" v-if="playerDetail.lockKamiNum">
+				<view class="task-item" v-if="playerDetail.lockKamiNum&&playerDetail.state==0">
 					<text class="lock-num">*有{{playerDetail.lockKamiNum}}条卡密待拼成后计入</text>
 				</view>
 			</view>
