@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-31 16:36:07
+ * @LastEditTime: 2024-02-05 15:37:27
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -66,6 +66,7 @@
 						</view>
 					</u-count-down>
 				</view>
+				<view class="detail-header-right pintuan-over" v-else>拼团已完成</view>
 			</view>
 			<view class="detail-bg detail-bg-header">
 				<view class="header">
@@ -202,7 +203,7 @@
 				</view>
 			</view>
 			<view class="btn-cardlist" @click="onClickAllCard">
-				<image class="cardlist-icon" src="@/static/goods/detail/cardlist.png"></image>列表 
+				<image class="cardlist-icon" src="@/static/goods/detail/cardlist_.png"></image>列表 
 			</view>
 			<view class="btn-confirm" :style="{width:`${tipBtn.length==2?'332rpx':'395rpx'}`}" :class="{'random-confirm':isRandomType}" @click="onClickBuy()">
 				{{goodsData.isSelect?'选择编号':'立即购买'}}
@@ -1381,14 +1382,14 @@
 			font-size: 32rpx;
 			font-family: PingFangSC-Semibold;
 			font-weight:400;
-			color: #BBBBBB;
+			color: #333333;
 			justify-content: center;
 			box-sizing: border-box;
 			margin-right: 12rpx;
 		}
 		.cardlist-icon{
-			width: 26rpx;
-			height:26rpx;
+			width: 32rpx;
+			height:34rpx;
 			margin-right: 6rpx;
 		}
 		.btn-confirm {
@@ -1808,6 +1809,10 @@
 		align-items: flex-end;
 		box-sizing: border-box;
 		padding-bottom: 10rpx;
+	}
+	.pintuan-over{
+		@include font(26rpx);
+		font-weight: 600;
 	}
 	.countdown-box{
 		display: flex;

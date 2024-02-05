@@ -2,8 +2,8 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "3.4.60",
-    "versionCode" : 3550,
+    "versionName" : "3.6.1",
+    "versionCode" : 3610,
     "transformPx" : false,
     "networkTimeout" : {
         "request" : 5000,
@@ -41,7 +41,10 @@
             "OAuth" : {},
             "Share" : {},
             "Push" : {},
-            "VideoPlayer" : {}
+            "VideoPlayer" : {},
+            "Orientation" : {
+                "description" : "传感器"
+            }
         },
         /* 模块配置 */
         "distribute" : {
@@ -196,7 +199,7 @@
             },
             "splashscreen" : {
                 "useOriginalMsgbox" : true,
-                "iosStyle" : "storyboard",
+                "iosStyle" : "common",
                 "androidStyle" : "default",
                 "ios" : {
                     "storyboard" : "unpackage/res/CustomStoryboard.zip"

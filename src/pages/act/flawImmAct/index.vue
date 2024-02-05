@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-01-04 17:24:40
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-02-05 13:05:33
+ * @LastEditTime: 2024-02-05 15:29:23
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -53,7 +53,7 @@
 				{{playerDetail.state==2?"已领取":`${playerDetail.num>=100?'领取':'解锁整卡领'}${playerDetail.couponAmount||0}元无门槛`}}
 				<view class="btn-remaining">本周剩余{{weekRemaining}}份</view>
 			</view>
-			<view class="tips">Tips：随机球员2倍；随机球队3倍；手提/IMM额外3倍</view>
+			<view class="tips">Tips：随机球员2倍；随机球队3倍；手提/IMM额外2倍</view>
 		</view>
 	</view>
 </template>
@@ -152,6 +152,7 @@
 				uni.showToast({title:"领取成功",icon:"none"});
 				this.playerDetail.state=2;
 				this.playerReceiveNum++;
+				this.playerDetail.weekReceive++;
 			})
 		}
 		onClickBack(){
@@ -359,7 +360,7 @@
 				color:#9A4319;
 				text-align: center;
 				position: relative;
-				line-height: 90rpx;
+				line-height: 80rpx;
 			}
 			.receive{
 				box-sizing: border-box;
@@ -378,7 +379,7 @@
 				@include font(20rpx);
 				color:#9A4319;
 				position: absolute;
-				bottom:12rpx;
+				bottom:16rpx;
 				left:0;
 				width: 100%;
 				text-align: center;
@@ -401,7 +402,7 @@
 			color:#19829A !important;
 			.receive{
 				background:#1BB2B7 !important;
-				color:#07ECEF !important
+				color:#3e747f !important
 			}
 		}
 		.btn-remaining{

@@ -2,10 +2,13 @@
 	<view class="content">
 		<transitionNav ref='transitionNav' :whiteTitle="true" :needIconShadow="false" title="卡密列表"/>
 		<view class="bg-image">
-			<view class="tab-header" v-if="goodType<4||goodType>10">
-				<view class="search-icon"></view>
-				<input class="search-input" type="text"  v-model="searchText" placeholder="搜索球员、球队"  confirm-type="search"  @confirm="onClickSearch" />
-				<view class="search-close" @click="searchText='',onClickSearch()"></view>
+			<view class="tab-header-box">
+				<view class="tab-header" v-if="goodType<4||goodType>10">
+					<view class="search-icon"></view>
+					<input class="search-input" type="text"  v-model="searchText" placeholder="搜索球员、球队"  confirm-type="search"  @confirm="onClickSearch" />
+					<view class="search-close" @click="searchText='',onClickSearch()"></view>
+				</view>
+				<view class="tab-translate" :class="{'translate-e':english}" @click="onClickTranslate"></view>
 			</view>
 		</view>
 		<!-- 卡密奖励 -->
@@ -171,8 +174,17 @@
 		box-sizing: border-box;
 		padding-top: 186rpx;
 	}
-	.tab-header {
+	.tab-header-box{
 		width: 678rpx;
+		height: 74rpx;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin:0 auto
+	}
+	.tab-header {
+		width: 622rpx;
 		height: 74rpx;
 		position: relative;
 		display: flex;
@@ -180,7 +192,6 @@
 		align-items: center;
 		box-sizing: border-box;
 		z-index: 10;
-		margin:0 auto;
 		background: rgba(255,255,255,0.4);
 		border-radius: 5rpx;
 		padding:0 20rpx;
@@ -274,5 +285,13 @@
 	}
 	.item-content td{
 		height:60rpx !important;
+	}
+	.tab-translate{
+		width: 36rpx;
+		height:36rpx;
+		background: url(@/static/goods/detail/translate_c.png) no-repeat center / 100% 100%;
+	}
+	.translate-e{
+		background: url(@/static/goods/detail/translate_e.png) no-repeat center / 100% 100% !important; 
 	}
 </style>

@@ -135,7 +135,7 @@
 				color:#FA1545
 			}
 			.act-box-desc{
-				width: 550rpx;
+				width: 587rpx;
 				min-height:76rpx;
 			}
 			.flex-between{
@@ -397,6 +397,7 @@
 		border-bottom: 1rpx solid #E6E6E6;
 	}
 	.remark-border{
-		border-top: 2rpx solid #F0F0F0;
+		width:598rpx !important;
+		border-top: 0.6px solid #F0F0F0;
 	}
 </style>

@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-01-04 17:25:25
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-02-05 10:44:05
+ * @LastEditTime: 2024-02-05 16:15:09
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -19,19 +19,21 @@
 		<view class="desc">随机卡种、选队随机玩法获得解锁值x1倍</view>
 		<view class="desc">随机球员玩法获得卡密解锁值x2倍</view>
 		<view class="desc">随机球队玩法获得卡密解锁值x3倍</view>
-		<view class="desc"><text>22-23手提、IMM系列解锁值额外x3倍</text></view>
-		<view class="desc">例:张三在22-23手提系列随机球队玩法中随到詹姆斯卡密，获得3x3=9点詹姆斯LOGO卡片解锁值；李四在23-24hoops系列随机卡种玩法中随到詹姆斯卡密，获得1点詹姆斯LOGO卡片解锁值。</view>
+		<view class="desc"><text>22-23手提、IMM系列解锁值额外x2倍</text></view>
+		<view class="desc">例:张三在22-23手提系列随机球队玩法中随到詹姆斯卡密，获得3x2=6点詹姆斯LOGO卡片解锁值；李四在23-24hoops系列随机卡种玩法中随到詹姆斯卡密，获得1点詹姆斯LOGO卡片解锁值。</view>
 		<view class="title">卡片清单与集齐奖励：</view>
 		<table class="rules-table">
 			<thead>
 				<tr class="item-content">
-					<td width="40%" class="table-title">球员名</td>
-					<td width="60%">集齐奖励</td>
+					<td width="30%" class="table-title">球员名</td>
+					<td width="30%">对应球队</td>
+					<td width="40%">集齐奖励</td>
 				</tr>
 			</thead>
 			<tbody>
 				<tr v-for="(item,index) in awardTable" :key="index" >
 					<td class="table-title">{{item.zh_name}}</td>
+					<td>{{item.zh_team}}</td>
 					<td>{{item.amount}}元平台无门槛券</td>
 				</tr>
 			</tbody>
@@ -72,6 +74,7 @@ page {
     box-sizing: border-box;
     padding: 0 30rpx;
     display: block;
+	padding-bottom: 50rpx;
 }
 
 .title {
@@ -96,7 +99,7 @@ page {
 .rules-table tr td{
 	height:50rpx;
 	line-height: 40rpx;
-	font-size: 26rpx;
+	font-size: 22rpx;
 	font-family: Microsoft YaHei;
 	font-weight: 400;
 	color: #333;

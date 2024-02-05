@@ -198,7 +198,7 @@
 						height:54rpx;
 						position: absolute;
 						top:10rpx;
-						right:10rpx;
+						right:72rpx;
 						background:url(@/static/act/immfl/tips.png) no-repeat center / 100% 100%;
 					}
 					.icon-rotate{
