@@ -3,7 +3,7 @@
 		<view class="header-left">
 			<view class="icon-address"></view>
 			<view v-if="addressData != ''" class="header-address">
-				<view class="address-name" >{{ addressData.district }}{{ addressData.detail }}</view >
+				<view class="address-name u-line-1" >{{ addressData.district }}{{ addressData.detail }}</view >
 				<view class="address-desc" >{{ addressData.name }}{{ addressData.phone }}</view >
 			</view>
 			<view v-else class="header-address">

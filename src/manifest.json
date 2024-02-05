@@ -41,10 +41,7 @@
             "OAuth" : {},
             "Share" : {},
             "Push" : {},
-            "VideoPlayer" : {},
-            "Orientation" : {
-                "description" : "传感器"
-            }
+            "VideoPlayer" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -199,7 +196,7 @@
             },
             "splashscreen" : {
                 "useOriginalMsgbox" : true,
-                "iosStyle" : "common",
+                "iosStyle" : "storyboard",
                 "androidStyle" : "default",
                 "ios" : {
                     "storyboard" : "unpackage/res/CustomStoryboard.zip"
