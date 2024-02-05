@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-01-04 17:24:40
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-02-05 11:43:52
+ * @LastEditTime: 2024-02-05 13:05:33
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -51,7 +51,7 @@
 			<view class="get-btn" @click="onClickBottomBtn">
 				<view class="receive">{{playerReceiveNum}}人已领</view>
 				{{playerDetail.state==2?"已领取":`${playerDetail.num>=100?'领取':'解锁整卡领'}${playerDetail.couponAmount||0}元无门槛`}}
-				<view class="btn-remaining">本周剩余100份</view>
+				<view class="btn-remaining">本周剩余{{weekRemaining}}份</view>
 			</view>
 			<view class="tips">Tips：随机球员2倍；随机球队3倍；手提/IMM额外3倍</view>
 		</view>
@@ -107,6 +107,10 @@
 		}
 		public get playerIsflaw() : boolean {
 			return this.currentPlayer.tp && this.currentPlayer.tp == 2 
+		}
+		public get weekRemaining() : number {
+			const { limit, weekReceive } = this.playerDetail;
+			return (limit-weekReceive) || 0;
 		}
 		playerOpacity(item:any){
 			return item.index>this.taskPhase ? item.opacity : 1
