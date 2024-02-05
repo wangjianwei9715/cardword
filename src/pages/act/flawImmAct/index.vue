@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\pages\act\flawImmAct\index.vue
  * @Author: wjw
  * @Date: 2024-01-04 17:24:40
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-02-01 14:03:33
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-02-05 11:43:52
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -51,8 +51,9 @@
 			<view class="get-btn" @click="onClickBottomBtn">
 				<view class="receive">{{playerReceiveNum}}人已领</view>
 				{{playerDetail.state==2?"已领取":`${playerDetail.num>=100?'领取':'解锁整卡领'}${playerDetail.couponAmount||0}元无门槛`}}
+				<view class="btn-remaining">本周剩余100份</view>
 			</view>
-			<view class="tips">Tips：随机球员2倍；随机球队3倍；手提/IMM额外2倍</view>
+			<view class="tips">Tips：随机球员2倍；随机球队3倍；手提/IMM额外3倍</view>
 		</view>
 	</view>
 </template>
@@ -73,9 +74,9 @@
 	const TaskData = [
 		{name:"背板",num:1},
 		{name:"线条",num:10},
-		{name:"人物",num:25},
-		{name:"签名",num:50},
-		{name:"LOGOMAN",num:100}
+		{name:"人物",num:35},
+		{name:"签名",num:80},
+		{name:"LOGOMAN",num:150}
 	]; //各阶段任务需要的指标值
 	@Component({
 		components:{playerSwiper}
@@ -354,7 +355,7 @@
 				color:#9A4319;
 				text-align: center;
 				position: relative;
-				line-height: 104rpx;
+				line-height: 90rpx;
 			}
 			.receive{
 				box-sizing: border-box;
@@ -365,9 +366,18 @@
 				position: absolute;
 				line-height: 40rpx;
 				right:8rpx;
-				top:6rpx;
+				top:4rpx;
 				background:#E7B403;
 				border-bottom-left-radius: 10rpx;
+			}
+			.btn-remaining{
+				@include font(20rpx);
+				color:#9A4319;
+				position: absolute;
+				bottom:12rpx;
+				left:0;
+				width: 100%;
+				text-align: center;
 			}
 			.tips{
 				width:100%;
@@ -389,6 +399,9 @@
 				background:#1BB2B7 !important;
 				color:#07ECEF !important
 			}
+		}
+		.btn-remaining{
+			color:#66A1AE !important
 		}
 		.bottom{
 			background:url(@/static/act/immfl/index/bottom.png) no-repeat center / 100% 100% !important;

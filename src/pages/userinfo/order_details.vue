@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-30 17:37:38
+ * @LastEditTime: 2024-02-05 11:27:19
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -423,7 +423,7 @@
 		onClickAllCard(){
 			const { good, buyNoNum, point } = this.orderData
 			uni.navigateTo({
-				url:`/pages/userinfo/order_myCard?code=${this.orderCode}&goodCode=${this.orderGoodCode}&pintuanType=${good.pintuanType}&num=${buyNoNum}&point=${point}&type=${this.cardTabsCurrent}`
+				url:`/pages/userinfo/order_myCard?code=${this.orderCode}&goodCode=${this.orderGoodCode}&pintuanType=${good.pintuanType}&num=${buyNoNum}&point=${point}&type=${this.cardTabsCurrent}&state=${good.state}&pic=${encodeURIComponent(good.pic)}`
 			})
 		}
 		onClickGoodDetail(){

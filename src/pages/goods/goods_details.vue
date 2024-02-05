@@ -459,7 +459,7 @@
 				}
 			}
 			if (item.id == 2) {
-				uni.navigateTo({ url:`/pages/userinfo/order_myCard?goodCode=${this.goodCode}&pintuanType=${this.goodsData.pintuan_type}&type=0&goodJump=true` })
+				uni.navigateTo({ url:`/pages/userinfo/order_myCard?goodCode=${this.goodCode}&pintuanType=${this.goodsData.pintuan_type}&type=0&goodJump=true&state=${this.goodsData.state}&pic=${encodeURIComponent(this.goodsData.pic.carousel[0])}` })
 			}
 		}
 		onClickShops() {

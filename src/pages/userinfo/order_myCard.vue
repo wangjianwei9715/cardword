@@ -12,9 +12,17 @@
 		<view class="header-info-box">
 			<view class="play-box" v-show="showCardNo">
 				<view class="play-info">
-					<view>{{playInfo.cName}}</view>
-					<view>{{playInfo.eName}}</view>
-					<view v-show="playInfo.desc">{{playInfo.desc}}</view>
+					<view class="play-info-title">{{playInfo.cName}}</view>
+					<view class="play-info-sub">{{playInfo.eName}}</view>
+					<view class="play-info-sub" v-show="playInfo.desc">{{playInfo.desc}}</view>
+				</view>
+				<view class="play-info-right">
+					<muqian-lazyLoad class="play-info-pic" :src="goodPic" mode="aspectFill"/>
+					<view class="play-info-title">共{{goodAllOrder?totalOrderNum:orderNum}}条卡密</view>
+					<view class="play-info-sub" v-if="goodState==1" @click="onClickGive">
+						去赠送<view class="play-info-icon"></view>
+					</view>
+					<view v-else-if="totalHit>0">共中卡{{totalHit}}张</view>
 				</view>
 			</view>
 			<view class="header-banner" >
@@ -25,7 +33,7 @@
 			</view>
 		</view>
 		<view v-if="showCardNo" class="list-index">
-			<view v-if="typeTabCurrent==2&&listSort==''">
+			<view v-if="goodAllOrder&&listSort==''">
 				<view class="card-box" v-for="(item,index) in cardList" :key="index">
 					<view class="order-title">订单号：{{item.goodOrder}}</view>
 					<view class="card-index" :class="{'win-card-box':items.state==2}" v-for="(items,indexs) in item.nos" :key="indexs">
@@ -75,7 +83,7 @@
 				<view class="card-box" >
 					<view class="card-index">
 						<view class="buyerbox-index">
-							<view class="title">随机正版基础卡片x{{typeTabCurrent==1?orderNum:buyerData.totalBuyNoNum}}</view>
+							<view class="title">随机正版基础卡片x{{goodAllOrder?buyerData.totalBuyNoNum:orderNum}}</view>
 							<view class="desc">查看领取方式</view>
 						</view>
 						<view  class="index-right">
@@ -89,7 +97,7 @@
 				<view class="card-box" >
 					<view class="card-index" @click="onClickGoMall">
 						<view class="buyerbox-index">
-							<view class="title">卡币x{{typeTabCurrent==1?orderPoint:buyerData.totalPoint}}</view>
+							<view class="title">卡币x{{goodAllOrder?buyerData.totalPoint:orderPoint}}</view>
 							<view class="desc">前往卡币商城</view>
 						</view>
 						<view  class="index-right">
@@ -150,9 +158,14 @@
 		orderPoint = 0;
 		playInfo:any = {};
 		empty=false;
+		goodState=0;
+		totalHit = 0;
+		goodPic = ""
 		onLoad(query:any) {
 			this.orderCode = query.code || '';
 			this.goodCode = query.goodCode;
+			this.goodState = query.state || 0;
+			this.goodPic = query.pic;
 			if(query.goodJump){
 				this.typeTabCurrent = 2;
 				this.typeTab = [ {name:'全部订单',type:2} ]
@@ -173,14 +186,20 @@
 			//@ts-ignore
 			this.$refs.rNavigationbarTabs.setPageScroll(data)
 		}
+		public get goodAllOrder() : boolean {
+			return this.typeTabCurrent==2
+		}
+		public get totalOrderNum() : number {
+			return this.cardList.reduce((total:number,item:any)=> total+item.noNum, 0)
+		}
 		public get showCardNo() : boolean {
 			return this.headerCurrent==0
 		}
 		public get showBuyerCard() : boolean {
-			if(this.typeTabCurrent==1){
-				return this.orderNum>0
-			}else{
+			if(this.goodAllOrder){
 				return this.buyerData.totalBuyNoNum>0
+			}else{
+				return this.orderNum>0
 			}
 		}
 		onTabsClick(e:any){
@@ -221,7 +240,7 @@
 			// 排序方式
 			let url = `me/orderInfo/buyer/${this.orderCode}/nos`
 			if(this.listSort) params.sort = this.listSort;
-			if(this.typeTabCurrent == 2) {
+			if(this.goodAllOrder) {
 				params.noSize = 90
 				params.leadOrderCode = this.orderCode;
 				url = this.listSort ? `me/good/${this.goodCode}/orderNos/plain` : `me/good/${this.goodCode}/orderNos/group`;
@@ -275,6 +294,11 @@
 		onClickGoMall(){
 			app.navigateTo.goMallIndex()
 		}
+		onClickGive(){
+			uni.navigateTo({
+				url:`/pages/userinfo/giving/giving_list?code=${this.goodCode}&pintuanType=${this.pintuanType}&orderCode=${this.goodAllOrder?this.cardList[0].goodOrder:this.orderCode}`
+			})
+	}
 	}
 </script>
 
@@ -583,18 +607,57 @@
 	.play-box{
 		width: 710rpx;
 		height:154rpx;
-		background:url(@/static/order/my_card.png) no-repeat center / 100% 100%;
 		margin:0 auto;
 		position: relative;
+		display: flex;
+		justify-content: space-between;
 		.play-info{
-			width: 100%;
-			height:154rpx;
+			width: 346rpx;
+			height:128rpx;
 			box-sizing: border-box;
-			padding:20rpx 0 20rpx 180rpx;
-			font-size: 24rpx;
-			font-family: PingFangSC, PingFang SC;
-			font-weight: 400;
-			color: #FFFFFF;
+			background:url(@/static/order/my_card.png) no-repeat center / 100% 100%;
+			padding:12rpx 0 12rpx 144rpx;
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+		}
+		.play-info-right{
+			width: 346rpx;
+			height:128rpx;
+			box-sizing: border-box;
+			background:url(@/static/order/my_card_r.png) no-repeat center / 100% 100%;
+			padding:20rpx 0 20rpx 144rpx;
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			position: relative;
+		}
+		.play-info-pic{
+			width: 88rpx;
+			height:88rpx;
+			position: absolute;
+			left:24rpx;
+			top:20rpx;	
+		}
+		.play-info-title{
+			width: 100%;
+			color:#FFFFFF;
+			font-size: 22rpx;
+			height:32rpx;
+		}
+		.play-info-sub{
+			width: 100%;
+			color:rgba(255, 255, 255, 0.70);
+			font-size: 22rpx;
+			height:32rpx;
+			display: flex;
+			align-items: center;
+		}
+		.play-info-icon{
+			width: 14rpx;
+			height:20rpx;
+			background:url(@/static/order/my_card_right.png) no-repeat center / 100% 100%;
+			margin-left: 4rpx;
 		}
 	}
 </style>

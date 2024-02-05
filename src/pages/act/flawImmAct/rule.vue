@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\pages\act\flawImmAct\rule.vue
  * @Author: wjw
  * @Date: 2024-01-04 17:25:25
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-01-31 14:52:45
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-02-05 10:44:05
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -11,16 +11,16 @@
     <view class="content">
         <view class="title">活动说明：</view>
         <view class="desc">
-            活动期间（2024.10.10~2024.11.10），获得指定球员卡密可解锁对应LOGOMAN活动卡片。共{{playerNum}}名球员可解锁（{{playerNum}}张卡片），每张卡片需解锁5个部位，解锁完成后可领取优惠券奖励（有效期30天），每张卡片集齐均可领取一次。</view>
+            活动期间（2024.02.05~2024.03.31）。参与总价大于10000元的商品可参与本活动，获得指定球员卡密可解锁对应LOGOMAN活动卡片。共{{playerNum}}名球员及其对应卡片，每张卡片需解锁5个部位，解锁完成后可领取优惠券奖励（有效期30天），每张卡片集齐均可领取一次。</view>
         <view class="title">解锁卡片规则：</view>
-        <view class="desc">获得指定球员卡密即可获得该球员卡片的解锁值，<text>获得时为待计入状态，拼团成功后累计至活动，若拼团失败则不增加</text>。</view>
-        <view class="desc">每张卡片分别需要解锁背板/线条/人物/签名/LOGOMAN共5个部位，解锁值分别为1/10/25/50/100。</view>
+        <view class="desc">获得指定球员卡密即可获得该球员卡片的解锁值，<text>获得时为待计入状态，拼团成功后累计至活动（若拼团失败则不增加），赠送卡密会把对应解锁值赠送给对方</text>。</view>
+        <view class="desc">每张卡片分别需要解锁背板/线条/人物/签名/LOGOMAN共5个部位，解锁值分别为1/10/35/80/150。</view>
         <view class="desc">解锁值增加规则如下：</view>
 		<view class="desc">随机卡种、选队随机玩法获得解锁值x1倍</view>
 		<view class="desc">随机球员玩法获得卡密解锁值x2倍</view>
 		<view class="desc">随机球队玩法获得卡密解锁值x3倍</view>
-		<view class="desc"><text>22-23手提、IMM系列解锁值额外x2倍</text></view>
-		<view class="desc">例:张三在22-23手提系列随机球队玩法中随到詹姆斯卡密，获得9点詹姆斯LOGO卡片解锁值；李四在23-24hoops系列随机卡种玩法中随到詹姆斯卡密，获得1点詹姆斯LOGO卡片解锁值。</view>
+		<view class="desc"><text>22-23手提、IMM系列解锁值额外x3倍</text></view>
+		<view class="desc">例:张三在22-23手提系列随机球队玩法中随到詹姆斯卡密，获得3x3=9点詹姆斯LOGO卡片解锁值；李四在23-24hoops系列随机卡种玩法中随到詹姆斯卡密，获得1点詹姆斯LOGO卡片解锁值。</view>
 		<view class="title">卡片清单与集齐奖励：</view>
 		<table class="rules-table">
 			<thead>
