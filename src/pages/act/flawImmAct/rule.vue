@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-01-04 17:25:25
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-02-05 16:15:09
+ * @LastEditTime: 2024-02-05 16:19:42
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -12,6 +12,9 @@
         <view class="title">活动说明：</view>
         <view class="desc">
             活动期间（2024.02.05~2024.03.31）。参与总价大于10000元的商品可参与本活动，获得指定球员卡密可解锁对应LOGOMAN活动卡片。共{{playerNum}}名球员及其对应卡片，每张卡片需解锁5个部位，解锁完成后可领取优惠券奖励（有效期30天），每张卡片集齐均可领取一次。</view>
+		<view class="desc">
+			关于奖品库存：每位球员每周一补充至100份优惠券库存，此外还会不定期增加额外库存，领完即止
+		</view>
         <view class="title">解锁卡片规则：</view>
         <view class="desc">获得指定球员卡密即可获得该球员卡片的解锁值，<text>获得时为待计入状态，拼团成功后累计至活动（若拼团失败则不增加），赠送卡密会把对应解锁值赠送给对方</text>。</view>
         <view class="desc">每张卡片分别需要解锁背板/线条/人物/签名/LOGOMAN共5个部位，解锁值分别为1/10/35/80/150。</view>

@@ -32,8 +32,6 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '@/base/BaseNode.vue';
-	const ImmSeriesCode = "";
-	const FlawSeriesCode = "";
 	class ListParams {
 		fetchFrom=1;
 		fetchSize=10;
@@ -61,7 +59,11 @@
 		tabsCurrent = 0;
 		goodsList: any = [];
 		listParams = new ListParams();
+		immSeriesCode="";
+		flawSeriesCode="";
 		onLoad(query:any) {
+			if (query.immSeriesCode) this.immSeriesCode = query.immSeriesCode
+			if (query.flawSeriesCode) this.flawSeriesCode = query.flawSeriesCode
 			this.openConfig()
 		}
 		onReachBottom() {
@@ -138,7 +140,7 @@
 			uni.navigateTo({url:"/pages/act/flawImmAct/index"})
 		}
 		onClickGoIll(){
-			app.navigateTo.goIllSeries(this.showActType==1?ImmSeriesCode:FlawSeriesCode)
+			app.navigateTo.goIllSeries(this.showActType==1?this.immSeriesCode:this.flawSeriesCode)
 		}
 		onClickJumpDetails(goodCode: any) {
 			app.navigateTo.goGoodsDetails(goodCode)
