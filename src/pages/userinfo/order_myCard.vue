@@ -78,7 +78,7 @@
 					</view>
 				</view>
 			</view>
-			<view v-show="showBuyerCard">
+			<view v-show="showBuyerCard" @click="showBasePopup=true">
 				<view class="buyer-title">随机正版基础卡片</view>
 				<view class="card-box" >
 					<view class="card-index">
@@ -107,6 +107,7 @@
 				</view>
 			</view>
 		</view>
+		<baseCardPopup :show.sync="showBasePopup"/>
 	</view>
 </template>
 
@@ -119,12 +120,13 @@
 	import cardSort from "./component/cardSort.vue"
 	import cardNoInfo from "./component/cardNoInfo.vue"
 	import navigationbarTabs from "@/components/navigationbarTabs/navigationbarTabs.vue"
+	import baseCardPopup from "@/pages/goods/component/baseCardPopup.vue"
 	const title = [
 		{index:0,name:'卡密信息'},
 		{index:1,name:'购入信息'}
 	]
 	@Component({
-		components:{navigationbarTabs,cardSort,cardNoInfo}
+		components:{navigationbarTabs,cardSort,cardNoInfo,baseCardPopup}
 	})
 	export default class ClassName extends BaseNode {
 		titles = title;
@@ -160,7 +162,8 @@
 		empty=false;
 		goodState=0;
 		totalHit = 0;
-		goodPic = ""
+		goodPic = "";
+		showBasePopup=false
 		onLoad(query:any) {
 			this.orderCode = query.code || '';
 			this.goodCode = query.goodCode;

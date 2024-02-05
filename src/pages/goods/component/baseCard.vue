@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-01-30 09:24:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-30 16:11:13
+ * @LastEditTime: 2024-02-05 13:28:24
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -12,34 +12,17 @@
 		<view class="header-base" @click="basePopupShow=true">
 			基础卡片<image class="icon-base" src="@/static/goods/detail/base.png"/>
 		</view>
-
-		<!-- 基础卡片说明 -->
-		<u-popup mode="bottom" closeable round="3rpx" :show="basePopupShow" @close="basePopupShow = false"
-            :safeAreaInsetBottom="false">
-            <view class="base-popup">
-                <view class="base-popup-title">购买说明</view>
-				<view class="base-center">
-					<view class="base-popup-name">每份将购得由商家提供的以下内容：</view>
-					<view class="base-popup-item">
-						<view class="item-title">1、正版基础卡片随机款1张（拼成后累计）</view>
-						<view class="item-desc">发货方式：(1）联系商家并向商家支付运费后发货。</view>
-						<view class="item-desc">(2) 30日内累计达到商家要求张数后，按商家要求确认发货方式。</view>
-					</view>
-					<view class="base-popup-item">
-						<view class="item-title">2、系列卡密1份</view>
-						<view class="item-desc">通过系列卡密玩法获得的卡片包邮，并按订单填写的收货地址发货</view>
-					</view>
-				</view>
-            </view>
-        </u-popup>
+		<baseCardPopup :show.sync="basePopupShow"/>
 	</view>
 </template>
 
 <script lang="ts">
 	import { Component, Prop} from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
-	
-	@Component({})
+	import baseCardPopup from "./baseCardPopup.vue"
+	@Component({
+		components:{baseCardPopup}
+	})
 	export default class ClassName extends BaseComponent {
 		basePopupShow=false
 	}

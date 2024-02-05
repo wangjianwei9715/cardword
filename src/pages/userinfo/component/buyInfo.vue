@@ -1,6 +1,6 @@
 <template>
 	<view class="buyinfo-box">
-		<view class="buyinfo-item" v-show="num>0">
+		<view class="buyinfo-item" v-show="num>0" @click="showBasePopup=true">
 			<view class="item-left">
 				<view class="name">
 					<view class="title">随机正版基础卡片</view>
@@ -48,14 +48,18 @@
 				<muqian-lazyLoad class="card-pic" src="/static/order/kabi.png" mode="aspectFit"/>
 			</view>
 		</view>
+		<baseCardPopup :show.sync="showBasePopup"/>
 	</view>
 </template>
 
 <script lang="ts">
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
+	import baseCardPopup from "@/pages/goods/component/baseCardPopup.vue"
 	import { app } from "@/app";
-	@Component({})
+	@Component({
+		components:{baseCardPopup}
+	})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:0})
 		num!:number;
@@ -71,6 +75,7 @@
 			noAwardsTotal:0
 		}
 		end = false;
+		showBasePopup=false
 		created(){//在实例创建完成后被立即调用
 			
 		}
