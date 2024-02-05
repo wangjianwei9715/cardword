@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 16:19:36
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-01-18 14:00:42
+ * @LastEditTime: 2024-02-05 17:57:51
  * @FilePath: \jichao_app_2\src\pages\merchant\mall\pay.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -50,7 +50,7 @@
             </view>
         </view>
         <payment :showPayMent="showPayMent" :payChannel="mallPayChannel" @cancelPay="showPayMent = false"
-            :payPrice="goodsDetail.price" :countTime="0" @pay="onClickPayGoods" />
+            :payPrice="goodsDetail.price*buyNum" :countTime="0" @pay="onClickPayGoods" />
         <view class="bottomFixedPay">
             <view class="payContainer">
                 <view class="payInfo">
