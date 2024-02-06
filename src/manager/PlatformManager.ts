@@ -455,7 +455,11 @@ export default class PlatformManager {
 	// 	if(!app.activityShareOrigin) app.activityShareOrigin=app.H5Url
 	// }
 	appLuanch(loginToken: any, cb?: Function) {
-		if(app.localTest) return;
+		if(app.bussinessApiDomain.indexOf("192.168")>-1 || app.bussinessApiDomain.indexOf("ssltest")>-1){
+			return
+		}else{
+			app.localTest=false;
+		}
 		// launchUrl             储存打乱顺序后的launch
 		// configLaunchUrl       access保存的launch数据
 		app.service_url = uni.getStorageSync('launchUrl') || ''
