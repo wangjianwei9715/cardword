@@ -1,3 +1,11 @@
+<!--
+ * @Author: lsj a1353474135@163.com
+ * @Date: 2023-12-18 14:02:31
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2024-02-26 14:07:08
+ * @FilePath: \card-world\src\pages\illustration\cardSetUpload.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
 	<view class="content" v-show="noData.show">
 		<view class="header-box">
@@ -82,12 +90,12 @@
 		onLoad(query: any) {
 			this.noCode = query.noCode;
 			this.numData = {
-				now:Number(query.nowIndex),
-				all:Number(query.indexAll)
+				now:Number(query.nowIndex ||1),
+				all:Number(query.indexAll ||1)
 			};
-			this.cardList = JSON.parse(query.cardList);
-			this.httpParams = JSON.parse(query.httpParams);
-			this.listParams = JSON.parse(query.params);
+			if(query.cardList)this.cardList = JSON.parse(query.cardList);
+			if (query.httpParams)this.httpParams = JSON.parse(query.httpParams);
+			if(query.params)this.listParams = JSON.parse(query.params);
 			this.getNoDetail()
 		}
 		initEvent(){
