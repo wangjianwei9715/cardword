@@ -135,7 +135,12 @@ export default class ClassName extends BaseNode {
         return Math.round( maxMonthWeight-nowMonthWeight ) || 0
     }
     async getMerchantInfo(){
-        this.merchantInfo = await getMerchantIntegral()
+        const info = await getMerchantIntegral();
+        this.merchantInfo = {
+            integral:info.integral,
+            maxMonthWeight:info.maxMonthWeight || 5000,
+            nowMonthWeight:info.nowMonthWeight
+        }
     }
     startStampTimer() {
         this.stampTimer && clearInterval(this.stampTimer)

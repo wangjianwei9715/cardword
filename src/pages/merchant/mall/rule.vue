@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-22 15:09:17
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-02-29 14:59:24
+ * @LastEditTime: 2024-02-29 15:06:17
  * @FilePath: \jichao_app_2\src\pages\merchant\mall\rule.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -33,7 +33,7 @@ import { getMerchantIntegral } from '../utils/util';
 export default class ClassName extends BaseNode {
     rule: any = rule
     merchantInfo:any = {
-        maxMonthWeight:0
+        maxMonthWeight:5000
     };
     onLoad(query: any) {
         if(query.maxMonthWeight){
@@ -43,7 +43,10 @@ export default class ClassName extends BaseNode {
         }
     }
     async getMerchantInfo(){
-        this.merchantInfo = await getMerchantIntegral()
+        const info = await getMerchantIntegral();
+        this.merchantInfo = {
+            maxMonthWeight:info.maxMonthWeight || 5000,
+        }
     }
 }
 </script>
