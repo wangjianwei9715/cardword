@@ -1,6 +1,6 @@
 <template>
     <view class="content">
-        <transitionNav @onClickRule="pageJump(`${mallRouter}/rule`)" @onClickBackPack="pageJump(`${mallRouter}/backpack?integral=${merchantInfo.integral}`)"
+        <transitionNav @onClickRule="pageJump(`${mallRouter}/rule?maxMonthWeight=${merchantInfo.maxMonthWeight}`)" @onClickBackPack="pageJump(`${mallRouter}/backpack?integral=${merchantInfo.integral}`)"
             :toolsMapCustomNew="custonRightIcon" ref='transitionNav' :needRightTools="['背包','积分规则']"
             :needIconShadow="false" title="积分中心">
             <template slot="slotLeft">
@@ -23,7 +23,7 @@
                 </view>
             </view>
         </view>
-        <view class="limit-line">本月剩余可兑权重分：{{ availableMonthWeight }}/{{ maxMonthWeight }}</view>
+        <view class="limit-line">本月剩余可兑权重分：{{ availableMonthWeight }}/{{ merchantInfo.maxMonthWeight||0 }}</view>
         <view class="uTabs">
             <view class="tabsItem" :class="{ tabsItem_select: index == tab.index }" @click="tabChange(item, index)"
                 v-for="(item, index) in tab.list" :key="index">{{ item.name }}</view>
@@ -75,7 +75,7 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
-import { mall, maxMonthWeight, payTypeMap } from '../constants/constants'
+import { mall, payTypeMap } from '../constants/constants'
 import mallBuy from '../components/mallBuy.vue';
 import { getMerchantIntegral } from '../utils/util';
 @Component({
@@ -85,7 +85,6 @@ import { getMerchantIntegral } from '../utils/util';
 })
 export default class ClassName extends BaseNode {
     payTypeMap = payTypeMap
-    maxMonthWeight = maxMonthWeight;
     pageJump = app.navigateTo.pageJump;
     custonRightIcon: any = mall.custonRightIcon;
     mallRouter = mall.mallRouter;
@@ -132,7 +131,8 @@ export default class ClassName extends BaseNode {
         }
     }
     public get availableMonthWeight() : number {
-        return Math.round( maxMonthWeight-(this.merchantInfo.nowMonthWeight) )
+        const { maxMonthWeight, nowMonthWeight } = this.merchantInfo;
+        return Math.round( maxMonthWeight-nowMonthWeight ) || 0
     }
     async getMerchantInfo(){
         this.merchantInfo = await getMerchantIntegral()

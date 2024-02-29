@@ -86,7 +86,7 @@
                     <view class="goodsInfo u-line-2">{{ forumDetail.good.title }}</view>
                 </view>
             </view>
-            <view class="time">编辑于 {{ $u.timeFormat(forumDetail.created_at, 'mm-dd hh:MM') }} {{ forumDetail.location ||
+            <view class="time">编辑于 {{ $u.timeFormat(forumDetail.created_at, 'yyyy-mm-dd hh:MM') }} {{ forumDetail.location ||
                 "未知" }}</view>
             <view class="line"></view>
             <view class="voteContainer" v-if="forumDetail.vote && forumDetail.vote.voteTitle">

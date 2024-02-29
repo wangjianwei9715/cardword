@@ -18,7 +18,7 @@
 				</view>
 				<view class="play-info-right">
 					<muqian-lazyLoad class="play-info-pic" :src="goodPic" mode="aspectFill"/>
-					<view class="play-info-title">共{{goodAllOrder?totalOrderNum:orderNum}}条卡密</view>
+					<view class="play-info-title">共{{totalOrderNum}}条卡密</view>
 					<view class="play-info-sub" v-if="goodState==1" @click="onClickGive">
 						去赠送<view class="play-info-icon"></view>
 					</view>
@@ -163,7 +163,8 @@
 		goodState=0;
 		totalHit = 0;
 		goodPic = "";
-		showBasePopup=false
+		showBasePopup=false;
+		totalOrderNum = 0;
 		onLoad(query:any) {
 			this.orderCode = query.code || '';
 			this.goodCode = query.goodCode;
@@ -192,10 +193,8 @@
 		public get goodAllOrder() : boolean {
 			return this.typeTabCurrent==2
 		}
-		public get totalOrderNum() : number {
-			return this.cardList.reduce((total:number,item:any)=> total+item.noNum, 0)
-		}
 		public get showCardNo() : boolean {
+			// 卡密信息
 			return this.headerCurrent==0
 		}
 		public get showBuyerCard() : boolean {
@@ -258,6 +257,7 @@
 				if(data.list){
 					this.cardList = this.cardList.concat(data.list);
 				}
+				this.totalOrderNum = this.goodAllOrder ? (data.totalNoNum || 0) : (data.total || 0);
 				this.empty = this.cardList.length==0;
 				this.debug && app.platform.refrain(this.cardList);
 				this.typeTabClick = false;
