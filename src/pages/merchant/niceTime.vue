@@ -81,6 +81,7 @@ export default class ClassName extends BaseNode {
     onLoad(query: any) {
         if (query.alias) this.alias = query.alias
         if (query.isMerchant) this.isMerchant = true
+        this.queryParams.pageIndex=1
         this.reqNewData()
     }
     onReachBottom() {
