@@ -13,21 +13,27 @@
 				</view>
 				<view class="detail-act-right"></view>
 			</view>
-			<view class="act-box" v-if="goodsData.remark">
+			<view class="act-box" v-if="goodsData.remark" @click.prevent="remarkDrawer=true">
 				<view class="act-box-name">备注</view>
 				<view class="act-box-desc" :class="{'remark-border':goodsActData!=''}">
-					<view class="act-box-desc-item u-line-1">
-						<view class="detail-act-remark">{{goodsData.remark}}</view>
+					<view class="act-box-desc-item">
+						<view class="detail-act-remark u-line-1">{{goodsData.remark}}</view>
 					</view>
 				</view>
 			</view>
 		</view>
 
 		<!-- 底部弹窗 -->
-		<bottomDrawer :showDrawer="showDrawer" :title="'活动规则'" @closeDrawer="onClickCloseDrawer">
+		<bottomDrawer :showDrawer="showDrawer" title="活动规则" @closeDrawer="onClickCloseDrawer">
 			<view class="drawer-helpmsg" v-for="(item,index) in [...drawerMsg]" :key="index">
 				<view class="drawer-help-title">{{item.title}}</view>
 				<view class="drawer-help-content" v-html="item.content"></view>
+			</view>
+		</bottomDrawer>
+		<!-- 备注弹窗 -->
+		<bottomDrawer :showDrawer="remarkDrawer" title="备注" @closeDrawer="remarkDrawer=false">
+			<view class="drawer-helpmsg">
+				<view class="drawer-help-content">{{goodsData.remark}}</view>
 			</view>
 		</bottomDrawer>
 	</view>
@@ -50,6 +56,7 @@
 		drawerMsg:any = [];
 		onceDActivity = false;
 		rewardList = [];
+		remarkDrawer = false;
 		@Watch('goodsData')
 		onGoodsDataChanged(val: any, oldVal: any) {
 			if(val){

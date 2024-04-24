@@ -77,7 +77,6 @@
     "vue": "^2.7.4",
     "vue-class-component": "^6.3.2",
     "vue-property-decorator": "^8.0.0",
-    "vue-tinder": "^2.0.3",
     "vuex": "3.6.2"
   },
   "devDependencies": {

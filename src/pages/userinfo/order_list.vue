@@ -157,6 +157,13 @@
 			this.reqNewData();
 		}
 		onInputSearch() {
+			const { q } = this.listParams;
+			let hideGoods = /[0-9]{12}/g
+			if(hideGoods.test(q)){
+				const code:any = q.match(hideGoods);
+				app.navigateTo.goOrderDetails(code)
+				return;
+			}
 			this.againReqNewData();
 		}
 		onClickOrder(code: any) {

@@ -34,6 +34,7 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import { illustration } from './constants/constants'
+	const DefaultYear = "22-23"
 	@Component({})
 	export default class ClassName extends BaseNode {
 		defaultSeriesLogo = illustration.defaultSeriesLogo;
@@ -55,7 +56,7 @@
 		getYearList(cb?:Function){
 			app.http.Get('dataApi/cardIllustration/list/year',{},({list}:any)=>{
 				this.sideTab = list || [];
-				const currentInit = list.findIndex((x:any) => x.name=="22-23");
+				const currentInit = list.findIndex((x:any) => x.name==DefaultYear);
 				this.current = currentInit >= 0 ? currentInit : 0;
 				cb?.()
 			})
