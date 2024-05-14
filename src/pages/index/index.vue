@@ -62,7 +62,7 @@
 		<winningCardPopup :show.sync="showWinningCrad" />
 		<openscreenAd :show.sync="openScreenData.show" :goodData="openScreenData.data"/>
 		<flawImmPop :popupShow.sync="flawImmShow" @close="showTabBar"/>
-		<medalPopup :show.sync="medalPopupShow"/>
+		<medalPopup :show.sync="medalPopupData.show" :data="medalPopupData.data"/>
 	</view>
 </template>
 
@@ -113,7 +113,10 @@
 		scrollTopNum = 0;
 		showIndex = false;
 		flawImmShow=false;
-		medalPopupShow=false
+		medalPopupData={
+			show:false,
+			data:{}
+		}
 		onLoad(query: any) {
 			let listeners = ['BackLogin']
 			this.register(listeners);
@@ -263,6 +266,12 @@
 							uni.hideTabBar()
 						}
 					}
+					if(res.data.medalReceive){
+						this.medalPopupData = {
+							show:true,
+							data:res.data.medalReceive
+						};	
+					}
 				})
 				// 我的关注商家是否有新商品
 				app.http.Get('me/fresh/followed_merchant_goods/light',{},(res:any)=>{
@@ -282,8 +291,6 @@
 					uni.hideTabBar()
 				}
 			})
-
-			this.medalPopupShow = true;
 		}
 		getHome(cb?:Function){
 			app.http.Get("dataApi/home", {}, (data: any) => {

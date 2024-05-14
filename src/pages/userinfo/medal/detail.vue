@@ -37,18 +37,18 @@
 	})
 	export default class ClassName extends BaseNode {
 		app = app;
-		medalNumberId = 0;
+		medalId = 0;
 		levelList = [];
 		currentLevel = 0;
 		startClientX = 0;
 		onLoad(query:any) {
-			this.medalNumberId = +query.id
+			this.medalId = +query.id
 		}
 		get currentLevelData(){
-			return this.levelList[this.currentLevel];
+			return this.levelList[this.currentLevel] || {};
 		}
 		medalDetail(){
-			app.http.Get(`medal/medal/detail/${this.medalNumberId}`,{},(res:any)=>{
+			app.http.Get(`medal/medal/detail/${this.medalId}`,{},(res:any)=>{
 				this.levelList = res.list;
 			})
 		}

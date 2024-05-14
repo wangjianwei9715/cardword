@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-11 13:34:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-14 11:04:30
+ * @LastEditTime: 2024-05-14 14:37:47
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -54,7 +54,7 @@
 					v-for="(item, index) in medalList"
 					:index="index"
 					:key="index"
-					@click="pageJump(`/pages/userinfo/medal/detail?id=${item.number_id}`)"
+					@click="goMedalDetail(item.id)"
 				>
 					<image class="grid-pic" :src="item.pic"/>
 					<text class="grid-text">{{ item.name }}</text>
@@ -98,12 +98,16 @@
 		tabCurrent = 0;
 		medalList = []
 		onLoad(query:any) {
+			this.homeUserId = +query.userId;
 			app.user.getAppDataUserId().then((res:any)=>{
 				this.userId = res;
+				if(query.userId==0) this.homeUserId = this.userId; 
 			});
-			this.homeUserId = +query.userId;
-			// this.medalHome();
-			// this.getMedalList();
+			this.medalHome();
+			this.getMedalList();
+			if(query.medalId){
+				this.goMedalDetail(query.medalId)
+			}
 
 			uni.$on("wearChange",(res:any)=>{
 				this.$set(this.userInfo,'medal',res=="unwear"?{}:res)
@@ -118,10 +122,13 @@
 			this.getMedalList()
 		}
 		get isMine(){
-			return this.userId!=0 && (this.userId===this.homeUserId)
+			return this.userId!=0 && (this.userId==this.homeUserId)
 		}
 		get tabCurrentType(){
 			return typeTabs[this.tabCurrent].type
+		}
+		goMedalDetail(id:number){
+			this.pageJump(`/pages/userinfo/medal/detail?id=${id}`)
 		}
 		medalHome(){
 			app.http.Get('dataApi/medal/user/home',{},(res:any)=>{

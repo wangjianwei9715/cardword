@@ -70,7 +70,15 @@ export default class PlatformManager {
 		}
 		return PlatformManager.instance;
 	}
-
+	// 登录记录
+	loginRecord(){
+		const loginToken = uni.getStorageSync("token");
+		const currentDate = new Date().toDateString();
+		if(!loginToken || uni.getStorageSync("loginRecordDate") === currentDate) return;
+		
+		uni.setStorageSync("loginRecordDate",currentDate);
+		app.http.Post("medal/login/record",{})
+	}
 	// 微信直播间
 	goWeChatLive(item: any) {
 		let ts = Math.floor(new Date().getTime()/1000);

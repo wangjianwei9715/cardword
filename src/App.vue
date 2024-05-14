@@ -228,6 +228,8 @@
 		},
 		onShow() {
 			console.log("App Show");
+			// 登录记录
+			app.platform.loginRecord()
 			// #ifdef APP-PLUS
 			const nowTimeStamp = Math.round(+new Date() / 1000);
 			const refreshThreshold = 2 * 60 * 60; //刷新App阈值
