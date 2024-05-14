@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-11-03 14:49:34
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-25 15:41:16
+ * @LastEditTime: 2024-05-14 11:35:43
  * Copyright: 2023 .
  * @Descripttion: 
  */
@@ -77,7 +77,7 @@ export default class detailsManager {
 			if(list){
 				const data = list.slice(0, 5).map(({dicKey,time,num,anonymous}:any)=>{
 					const {userName,avatar} = anonymous ? anonymousInfo : dic[dicKey];
-					return {time,num,userName,avatar}
+					return {time,num,userName,avatar,anonymous}
 				});
 				cb(data)
 			}

@@ -58,14 +58,17 @@
 </script>
 
 <style lang="scss">
+	@mixin fontSfTR {
+		font-family: PingFangSC-Regular;
+	}
 	.cardno-info{
 		.cardno-box{
+			@include fontSfTR;
 			width: 100%;
 			box-sizing: border-box;
 			display: -webkit-box;
 			align-items: center;
 			font-size: 22rpx;
-			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #333333;
 			line-height: 32rpx;
@@ -92,14 +95,14 @@
 			color: #333333;
 		}
 		.ename{
+			@include fontSfTR;
 			font-size: 20rpx;
-			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #DDDDDD;
 		}
 		.desc{
+			@include fontSfTR;
 			font-size: 24rpx;
-			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #999999;
 			margin-top: 6rpx;

@@ -306,6 +306,9 @@
 </script>
 
 <style lang="scss">
+	@mixin fontSfTR {
+		font-family: PingFangSC-Regular;
+	}
 	.card-pic{
 		width: 100rpx;
 		height:100rpx;
@@ -318,8 +321,8 @@
 		padding-top:186rpx;
 	}
 	.order-title{
+		@include fontSfTR;
 		font-size: 20rpx;
-		font-family: PingFangSC, PingFang SC;
 		font-weight: 400;
 		color: #BBBBBB;
 		margin-bottom: 12rpx;
@@ -355,11 +358,11 @@
 		padding-bottom: 30rpx;
 	}
 	.buyer-title{
+		@include fontSfTR;
 		width: 100%;
 		box-sizing: border-box;
 		padding-left: 20rpx;
 		font-size: 20rpx;
-		font-family: PingFangSC, PingFang SC;
 		font-weight: 400;
 		color: #BBBBBB;
 		margin-bottom: 8rpx;
@@ -384,51 +387,6 @@
 		border-radius: 10px;
 		margin-top: 14rpx;
 	}
-	.order-code{
-		width: 100%;
-		height:37rpx;
-		box-sizing: border-box;
-		font-size: 28rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
-		color: #666666;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-	.order-code-left{
-		height:37rpx;
-		display: flex;
-		align-items: center;
-	}
-	.order-code-box{
-		height:37rpx;
-		line-height: 37rpx;
-		font-size: 22rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
-		color: #FFFFFF;
-		background:#40444F;
-		box-sizing: border-box;
-		padding:0 15rpx;
-	}
-	.order-code-now{
-		height:37rpx;
-		line-height: 37rpx;
-		font-size: 24rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
-		color: $btn-red;
-		margin-left: 12rpx;
-	}
-	.order-code-right{
-		height:66rpx;
-		line-height: 66rpx;
-		font-size: 28rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
-		color: #666666;
-	}
 	.card-box{
 		width: 100%;
 		box-sizing: border-box;
@@ -450,13 +408,13 @@
 		border: 1rpx solid #FA1545;
 	}
 	.order-type-index{
+		@include fontSfTR;
 		width: 130rpx;
 		height:44rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		font-size: 32rpx;
-		font-family: PingFangSC, PingFang SC;
 		font-weight: 500;
 		color: #DDDDDD;
 	}
@@ -472,12 +430,12 @@
 		font-size: 26rpx;
 	}
 	.index-left{
+		@include fontSfTR;
 		width: 100%;
 		box-sizing: border-box;
 		display: -webkit-box;
 		align-items: center;
 		font-size: 22rpx;
-		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #333333;
 		line-height: 32rpx;
@@ -496,31 +454,31 @@
 			color: #333333;
 		}
 		.cardno{
+			@include fontSfTR;
 			font-size: 22rpx;
-			font-family: PingFangSC, PingFang SC;
 			font-weight: 400;
 			color: #999999;
 			margin-top: 8rpx;
 			line-height: 34rpx;
 		}
 		.desc{
+			@include fontSfTR;
 			position: absolute;
 			bottom:0;
 			left:0;
 			font-size: 18rpx;
-			font-family: PingFangSC, PingFang SC;
 			font-weight: 400;
 			color: #DDDDDD;
 		}
 	}
 	.award-left{
+		@include fontSfTR;
 		width: 610rpx;
 		min-height: 96rpx;
 		box-sizing: border-box;
 		display: inline-flex;
 		flex-wrap: wrap;
 		font-size: 22rpx;
-		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #333333;
 		line-height: 32rpx;
@@ -643,12 +601,14 @@
 			top:20rpx;	
 		}
 		.play-info-title{
+			@include fontSfTR;
 			width: 100%;
 			color:#FFFFFF;
 			font-size: 22rpx;
 			height:32rpx;
 		}
 		.play-info-sub{
+			@include fontSfTR;
 			width: 100%;
 			color:rgba(255, 255, 255, 0.70);
 			font-size: 22rpx;
@@ -657,6 +617,7 @@
 			align-items: center;
 		}
 		.play-info-icon{
+			@include fontSfTR;
 			width: 14rpx;
 			height:20rpx;
 			background:url(@/static/order/my_card_right.png) no-repeat center / 100% 100%;

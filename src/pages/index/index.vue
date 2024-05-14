@@ -62,6 +62,7 @@
 		<winningCardPopup :show.sync="showWinningCrad" />
 		<openscreenAd :show.sync="openScreenData.show" :goodData="openScreenData.data"/>
 		<flawImmPop :popupShow.sync="flawImmShow" @close="showTabBar"/>
+		<medalPopup :show.sync="medalPopupShow"/>
 	</view>
 </template>
 
@@ -76,13 +77,15 @@
 	import openscreenAd from './component/index/openscreenAd.vue'
 	import goodsListSwiper from './component/index/goodsListSwiper.vue'
 	import flawImmPop from "../act/flawImmAct/components/popup.vue"
+	import medalPopup from "./component/index/medalPopup.vue"
 	@Component({components: {
 		update,
 		indexHot,
 		winningCardPopup,
 		openscreenAd,
 		goodsListSwiper,
-		flawImmPop
+		flawImmPop,
+		medalPopup
 	},})
 	export default class Index extends BaseNode {
 		noticeList = [''];
@@ -109,7 +112,8 @@
 		scrollTop = 0;
 		scrollTopNum = 0;
 		showIndex = false;
-		flawImmShow=false
+		flawImmShow=false;
+		medalPopupShow=false
 		onLoad(query: any) {
 			let listeners = ['BackLogin']
 			this.register(listeners);
@@ -278,6 +282,8 @@
 					uni.hideTabBar()
 				}
 			})
+
+			this.medalPopupShow = true;
 		}
 		getHome(cb?:Function){
 			app.http.Get("dataApi/home", {}, (data: any) => {

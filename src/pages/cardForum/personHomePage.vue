@@ -1,67 +1,61 @@
 <template>
     <view class="content">
-        <transitionNav :needIconShadow="false" :shareData="shareData" :needRightTools="['分享']" ref="transitionNav"
-            :title="userInfo.userName" :report="!isMine" style="z-index: 999;"
-            @report="pageJump(`/pages/cardForum/report?byInformer=${userInfo.userId}&source=4`)">
+        <transitionNav :needIconShadow="false" ref="transitionNav" :title="userInfo.userName" style="z-index: 999;" @navBackGroundShowChange="navBackGroundShowChange">
+            <template slot="slotRight">
+                <view :style="{color:topHasBack?'#333':'#fff'}" @click="app.navigateTo.goMedalIndex(userId)">{{isMine?"去勋章墙":"TA的勋章墙"}}</view>
+            </template>
         </transitionNav>
-        <view class="userInfoWrap" id="userInfoWrap" @click="menuShow = isMine">
+        <view class="userInfoWrap" @click="menuShow = isMine">
             <image :src="$parsePic(userInfo.back_pic)" class="userBack" v-if="userInfo.back_pic"
                 mode="aspectFill"></image>
             <image v-else src="@/static/userinfo/v3/banner.png" class="userBack" mode="aspectFill"></image>
             <view class="back_shadow"></view>
-            <view class="fakeTop" :style="{ height: navHeight + 'px' }"></view>
-            <view class="userInfo">
-                <image class="userInfo_avatar" mode="aspectFill"
-                    :src="userInfo.avatar ? $parsePic(userInfo.avatar) : defaultAvatar">
-                </image>
-                <view class="userInfo_msg">
-                    <view class="userInfo_name">
-                        <text class="userInfo_name_text">{{ userInfo.userName }}</text>
-                        <image :style="userInfo.level == 10 ? { height: `29rpx`, width: `58rpx` } : {}"
-                            @click.stop="isMine?pageJump(`/pages/userinfo/level/index`):()=>{}" class="level"
-                            :src="`/static/userinfo/v3/level/${userInfo.level || 1}.png`"></image>
+            <view class="userinfo-box">
+                <view class="userinfo-header">
+                    <view class="avatar_name">
+                        <image class="userInfo_avatar" mode="aspectFill"
+                            :src="userInfo.avatar ? $parsePic(userInfo.avatar) : defaultAvatar">
+                        </image>
+                        <view class="userInfo_name">
+                            <text class="userInfo_name_text">{{ userInfo.userName }}</text>
+                            <image :style="userInfo.level == 10 ? { height: `29rpx`, width: `58rpx` } : {}"
+                                @click.stop="isMine?pageJump(`/pages/userinfo/level/index`):()=>{}" class="level"
+                                :src="`/static/userinfo/v3/level/${userInfo.level || 1}.png`"></image>
+                        </view>
                     </view>
-                    <view class="userInfo_ip">
-                        <text class="userInfo_ip_text">IP属地：{{ userInfo.location || '未知' }}</text>
-                        <text class="userInfo_ip_text" style="margin-left: 10rpx;">| 卡迷号：{{ userInfo.userId }}</text>
-                    </view>
+                    <view class="userData_follow" @click.stop="onClickUserFollow"
+                    :class="{ userData_follow_dis: userInfo.isFollow }" v-if="!isMine">{{
+                        userInfo.isFollow ? '已关注' : '关注' }}</view>
+                    <view class="userData_follow_dis" v-else
+                    @click.stop="pageJump('/pages/userinfo/user_info_v3')">修改资料</view>
                 </view>
-            </view>
-            <view class="descWrap">
-                <text class="desc_text u-line-2">{{ userInfo.sign || "暂无简介" }}</text>
-            </view>
-            <view class="userDataWrap">
+                <view class="userInfo_ip">
+                    <view class="userInfo_ip_text">IP属地：{{ userInfo.location || '未知' }}</view>
+                    <view class="userInfo_ip_text">卡迷号：{{ userInfo.userId }}</view>
+                </view>
+                <view class="desc_text u-line-2">{{ userInfo.sign || "暂无简介" }}</view>
                 <view class="userData_data">
-                    <view class="userData_item" @click.stop="">
-                        <text class="userData_num">{{ userInfo.fans || 0 }}</text>
-                        <text class="userData_name">粉丝</text>
-                    </view>
                     <view class="userData_item" @click.stop="onClickFollow">
                         <text class="userData_num">{{ userInfo.follow || 0 }}</text>
                         <text class="userData_name">关注</text>
+                    </view>
+                    <view class="userData_item" @click.stop="">
+                        <text class="userData_num">{{ userInfo.fans || 0 }}</text>
+                        <text class="userData_name">粉丝</text>
                     </view>
                     <view class="userData_item" @click.stop="">
                         <text class="userData_num">{{ userInfo.like || 0 }}</text>
                         <text class="userData_name">点赞/收藏</text>
                     </view>
                 </view>
-                <view class="flex1"></view>
-                <!-- @click="onClickFollow" -->
-                <text class="userData_follow" @click.stop="onClickUserFollow"
-                    :class="{ userData_follow_dis: userInfo.isFollow }" v-if="!isMine">{{
-                        userInfo.isFollow ? '已关注' :
-                        '关注' }}</text>
-                <text class="userData_edit flexCenter" v-else
-                    @click.stop="pageJump('/pages/userinfo/user_info_v3')">编辑资料</text>
             </view>
         </view>
         <u-sticky :customNavHeight="navHeight">
             <div style="background-color: #fff;" id="tabs" class="tabsWrap" ref="tabsWrap">
-                <u-tabs customType="cardForum"
-                    :itemStyle="{ width: (app.platform.systemInfo.screenWidth / tabs.list.length) + 'px', height: '84rpx', padding: 0, marginTop: '6rpx' }"
-                    :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
-                    :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs"
-                    :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
+                <u-tabs class="tabs" :list="tabs.list" :current="tabs.index" :lineColor="`url(${lineBg}) 100% 100%`" lineHeight="5rpx"  @click="tabClick" 	:itemStyle="{ width: (app.platform.systemInfo.screenWidth / 6) + 'px', height: '78rpx', padding: 0, marginTop: '6rpx' }"
+                    :activeStyle="{ color: '#333333', fontSize: '32rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
+                    :inactiveStyle="{ color: '#959695', fontSize: '26rpx', fontFamily: 'PingFang SC' }"
+				></u-tabs>
             </div>
         </u-sticky>
         <waterfalls v-if="current" style="width: 750rpx;margin-top: 10rpx;" :viewUserId="userId" ref="waterfall"
@@ -113,6 +107,7 @@ import { getDraftList, followActionByUser } from "./func"
 import Upload from "@/tools/upload"
 import forumEmpty from "./components/empty.vue"
 const navHeight = app.statusBarHeight + uni.upx2px(88)
+const lineBg = "/static/medal/tab_line.png";
 const mineTabs: any = [
     {
         name: '动态',
@@ -169,6 +164,7 @@ const defaultTagObj = {
 })
 export default class ClassName extends BaseNode {
     app = app
+    lineBg = lineBg;
     menuShow: boolean = false
     menuList: any = [{ name: '从相册中选择', id: 1 }]
     isMine: boolean = false
@@ -186,10 +182,16 @@ export default class ClassName extends BaseNode {
     cloudDraftNumByDynamic: number = 0
     cloudDraftNumByCardBook: number = 0
     userId: number = 0
+    topHasBack=false
     onLoad(query: any) {
         if (query.tabIndex) this.tabs.index = +query.tabIndex
         this.userId = +query.userId
         this.isMine = query.isMine == "1" //后续解除注释
+        if(query.isMine===undefined){
+            app.user.getAppDataUserId().then((res:any)=>{
+				this.isMine = this.userId == res;
+			});
+        }
         if (this.isMine) {
             this.draftListByDynamic = getDraftList("dynamic", this.isMine ? app.data.userId : this.userId)
             this.draftListByCardBook = getDraftList("cardBook", this.isMine ? app.data.userId : this.userId)
@@ -236,6 +238,9 @@ export default class ClassName extends BaseNode {
         if (!this.current) return false
         if (this.current.name=="动态" || this.current.name=="卡册") return false
         return true
+    }
+    navBackGroundShowChange(event: any) {
+        this.topHasBack = event
     }
     refreshDraft() {
         this.draftListByDynamic = getDraftList("dynamic", this.userId)
@@ -339,7 +344,10 @@ export default class ClassName extends BaseNode {
             const picArr: any = await Upload.getInstance().uploadSocialImgs(1, "userCover/", ["album"])
             if (picArr.length) {
                 app.http.Post("cardCircle/edit/backPic", { back_pic: picArr[0] }, (res: any) => {
-                    this.userInfo.back_pic = picArr[0]
+                    uni.showToast({
+                        title: res.msg,
+                        icon: 'none'
+                    })
                 })
             }
         }
@@ -394,6 +402,12 @@ export default class ClassName extends BaseNode {
 </script>
 
 <style lang="scss">
+@mixin fontSfTR($fontSize) {
+    font-family: SfTR;
+    color: #fff;
+    font-size: $fontSize;
+    text-align: center;
+}
 page {
     background-color: #f6f7fb;
 }
@@ -406,28 +420,123 @@ page {
     align-items: center;
     display: flex;
     // background-color: #333333;
-    padding-bottom: 71rpx;
     position: relative;
     // background-size: 100% 100%;
 }
 
 .userBack {
     width: 750rpx;
-    position: absolute;
-    height: 100%;
-    left: 0;
-    top: 0;
+    height: 415rpx;
 }
 
 .back_shadow {
     width: 750rpx;
     position: absolute;
-    height: 100%;
+    height: 415rpx;
     left: 0;
     top: 0;
     background: rgba(0, 0, 0, 0.39)
 }
+.userinfo-box{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 35rpx;
+    background:#fff;
+    .userinfo-header{
+        width: 100%;
+        height:100rpx;
+        box-sizing: border-box;
+        padding-top: 30rpx;
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+    }
+    .userInfo_avatar{
+        width: 121rpx;
+        height:121rpx;
+        border-radius: 50%;
+        position: absolute;
+        top:-42rpx;
+        left:0;
+    }
+    .userInfo_name{
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        margin-left:145rpx;
+        .userInfo_name_text{
+            @include fontSfTR(30rpx);
+            color:#333333;
+        }
+    }
+    .level {
+        width: 50.37rpx;
+        height: 23rpx;
+        margin-left: 12rpx;
+    }
+    .userData_follow{
+        width: 133rpx;
+        height: 49rpx;
+        background: #FA1545;
+        border-radius: 3rpx;
+        @include fontSfTR(22rpx);
+        line-height: 49rpx;
+    }
+    .userData_follow_dis{
+        width: 133rpx;
+        height: 49rpx;
+        border-radius: 3rpx;
+        background: none;
+        border: 0.8px solid #E6E6E6;
+        @include fontSfTR(22rpx);
+        color:#606060;
+        line-height: 49rpx;
+    }
 
+    .userInfo_ip{
+        width: 100%;
+        height:40rpx;
+        .userInfo_ip_text{
+            display: inline-flex;
+            height:40rpx;
+            line-height: 40rpx;
+            @include fontSfTR(18rpx);
+            color:#8D8D8D;
+            text-align: center;
+            box-sizing: border-box;
+            padding:0 11rpx;
+            margin-right: 26rpx;
+            background: #F3F5F6;
+            border-radius: 3rpx;
+        }
+    }
+    .desc_text{
+        width: 100%;
+        @include fontSfTR(22rpx);
+        color:#333;
+        line-height: 29rpx;
+        text-align: left;
+        margin-top: 19rpx;
+    }
+    .userData_data{
+        width: 100%;
+        display: flex;
+        margin-top: 20rpx;
+        .userData_item{
+            margin-right: 41rpx
+        }
+        .userData_num{
+            @include fontSfTR(24rpx);
+            color:#333333;
+            font-weight: bold;
+            margin-right: 10rpx;
+        }
+        .userData_name{
+            @include fontSfTR(24rpx);
+            color:#8D8D8D;
+        }
+    }
+}
 // .userInfoWrap_back {
 //     background-size: 100% 100%;
 //     background-image: url("@/static/userinfo/v3/banner.png");
@@ -443,149 +552,9 @@ page {
     z-index: 0;
 }
 
-.userInfo {
-    z-index: 1;
-    width: 750rpx;
-    // #ifndef APP-NVUE
-    box-sizing: border-box;
-    // #endif
-    padding: 0 35rpx;
-    display: flex;
-    flex-direction: row;
-    margin-top: 24rpx;
-    flex: 1;
-    position: relative;
-    // background-color: red;
-}
-
-.userInfo_avatar {
-    width: 108rpx;
-    height: 108rpx;
-    border-radius: 50%;
-    margin-right: 25rpx;
-}
-
-.stickyHeader {
-    position: sticky;
-    // top: 0;
-    // background-color: #fff;
-}
-
-.userInfo_msg {
-    flex: 1;
-    flex-direction: column;
-    display: flex;
-    justify-content: center
-}
-
-.userInfo_name {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    margin-bottom: 6rpx;
-    // margin-top: 16rpx;
-    // margin-bottom: 4rpx;
-}
-
-.userInfo_name_text {
-    font-size: 31rpx;
-    font-family: PingFang SC;
-    font-weight: 500;
-    color: #FFFFFF;
-}
-
-.level {
-    width: 50.37rpx;
-    height: 23rpx;
-    margin-left: 12rpx;
-}
-
-.userInfo_name_title {
-    width: 114rpx;
-    height: 33rpx;
-    background: #FFFFFF;
-    border-radius: 3rpx;
-    font-size: 31rpx;
-    font-family: PingFang SC;
-    font-weight: 500;
-    color: #333333;
-    text-align: center;
-    line-height: 33rpx;
-    margin-left: 23rpx;
-}
-
-.userInfo_ip_text {
-    font-size: 21rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
-    color: #a5a5a5;
-}
-
-.descWrap {
-    width: 750rpx;
-    // #ifndef APP-NVUE
-    box-sizing: border-box;
-    // #endif
-    padding: 0 35rpx;
-    margin-top: 38rpx;
-    position: relative;
-    // height: 70rpx;
-}
-
-.desc_text {
-    font-size: 25rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
-    color: #FFFFFF;
-    line-height: 34rpx;
-
-}
-
-.userDataWrap {
-    display: flex;
-    flex-direction: row;
-    width: 750rpx;
-    // #ifndef APP-NVUE
-    box-sizing: border-box;
-    // #endif
-    padding: 0 35rpx;
-    margin-top: 60rpx;
-    position: relative;
-    // justify-content: space-between;
-}
-
-.userData_item {
-    // background-color: red;
-    display: flex;
-    flex-direction: column;
-}
-
-.userData_num {
-    font-size: 25rpx;
-    font-family: PingFang SC;
-    font-weight: bold;
-    color: #FFFFFF;
-    text-align: center;
-}
-
-.userData_name {
-    font-size: 21rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
-    color: #a5a5a5;
-    text-align: center;
-}
-
-.userData_data {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 400rpx;
-}
-
 .tabsWrap {
     width: 750rpx;
-    height: 103rpx;
+    height: 93rpx;
     justify-content: center;
     align-items: center;
 }
@@ -598,35 +567,6 @@ page {
 
 .flex1 {
     flex: 1;
-}
-
-.userData_follow {
-    width: 140rpx;
-    height: 62rpx;
-    background: #FA1545;
-    border-radius: 3rpx;
-    font-size: 29rpx;
-    font-family: PingFang SC;
-    font-weight: bold;
-    color: #FFFFFF;
-    text-align: center;
-    line-height: 62rpx;
-}
-
-.userData_follow_dis {
-    background-color: #c9d0d7;
-}
-
-.userData_edit {
-    width: 159rpx;
-    height: 55rpx;
-    background: rgba(0, 0, 0, 0.38);
-    border: 1rpx solid #E6E6E6;
-    border-radius: 3rpx;
-    font-size: 27rpx;
-    font-family: PingFang SC;
-    font-weight: bold;
-    color: #FFFFFF;
 }
 
 .draftWrap {

@@ -57,8 +57,7 @@
 			
 			if (process.env.NODE_ENV === "development") {
 				//   console.log("开发环境"); 
-				// app.localTest = true;  
-				// app.bussinessApiDomain = `http://192.168.8.63:8701${app.requestVersion}`;
+				// app.bussinessApiDomain = `http://192.168.8.35:8701${app.requestVersion}`;
 				// app.bussinessApiDomain = `http://server.ssltest.ka-world.com${app.requestVersion}`; 
 				// app.launch_url = ['http://service.s777.ka-world.com']
 				// app.funcApiDomain = "http://functest.ssl.ka-world.com/api/v2/";
@@ -345,6 +344,26 @@
 	@font-face {
 		font-family: "HYLiLiangHeiJ";
 		src: url("~@/common/Tao/HYLiLiangHeiJ.ttf");
+	}
+	@font-face {
+		font-family: "SfTR";
+		src: url("~@/common/SFPro/SF-Pro-Text-Regular.otf");
+	}
+	@font-face {
+		font-family: "SfTM";
+		src: url("~@/common/SFPro/SF-Pro-Text-Medium.otf");
+	}
+	@font-face {
+		font-family: "SfTL";
+		src: url("~@/common/SFPro/SF-Pro-Text-Light.otf");
+	}
+	@font-face {
+		font-family: "SfTU";
+		src: url("~@/common/SFPro/SF-Pro-Text-Ultralight.otf");
+	}
+	@font-face {
+		font-family: "SfTB";
+		src: url("~@/common/SFPro/SF-Pro-Text-Bold.otf");
 	}
 	// #endif
 	.content {

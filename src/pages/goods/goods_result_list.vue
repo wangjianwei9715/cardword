@@ -27,7 +27,10 @@
 			<view v-if="teamDataList.length==0" class="empty">暂无数据</view>
 			<view class="card-index" v-for="(item,index) in teamDataList" :key="index">
 				<view class="left" :style="{width:chooseId==0?'100%':''}">
-					<view class="title"><muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit" :borderRadius="'50%'"></muqian-lazyLoad> {{item.userName}}</view>
+					<view class="title">
+						<muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit" :borderRadius="'50%'"></muqian-lazyLoad> {{item.userName}}
+						<medalIcon v-if="!item.anonymous && item.medal" :src="item.medal.pic" :userId="0"/>
+					</view>
 					<view class="desc">{{item.no}}</view>
 					<view class="time">{{$u.timeFormat(item.time,'yyyy-mm-dd hh:MM:ss')}}</view>
 				</view>
@@ -116,7 +119,7 @@
 				if(res.list){
 					const list = res.list.map(({anonymous,dicKey,...rest}:any)=>{
 						const {userName,avatar} = anonymous ? anonymousInfo : res.dic[dicKey];
-						return {...rest,userName,avatar}
+						return {...rest,userName,avatar,anonymous}
 					})
 					this.teamDataList = this.teamDataList.concat(list)
 				}

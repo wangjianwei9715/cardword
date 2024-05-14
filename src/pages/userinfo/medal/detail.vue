@@ -1,0 +1,192 @@
+<template>
+	<view class="box-content">
+		<transitionNav :needIconShadow="false" navColor="29,30,34" title="" style="z-index: 999;">
+        </transitionNav>
+		<view class="detail-content" @touchstart="detailTouchStart" @touchend="detailTouchEnd">
+			<image class="pic" :src="currentLevelData.pic"/>
+			<view class="name">{{currentLevelData.name}}</view>
+			<view class="explain">{{currentLevelData.unlock_txt}}</view>
+			<view class="level">
+				<view class="level-index" v-for="(item,index) in levelList" :key="index" @click="currentLevel=index">
+					<view class="pic-box">
+						<image class="level-pic" :class="{'current-level':currentLevel==index}" :src="item.pic"/>
+						<view v-if="item.reward" class="icon-reward"></view>
+					</view>
+					<view v-if="index<levelList.length-1" class="icon-next"></view>
+				</view>
+			</view>
+			<view v-if="currentLevelData.reward">
+				<view class="reward-title">- 点亮奖励 -</view>
+				<image class="reward-pic" :style="{'width':currentLevelData.isGet?'158rpx':'147rpx'}" :src="`/static/medal/detail/coupon${currentLevelData.isGet?'_':''}.png`"/>
+				<view class="reward-name">30元优惠券</view>
+			</view>
+		</view>
+		<view class="bottom">
+			<view class="have-got" v-if="currentLevelData.isGet">{{$u.timeFormat(currentLevelData.getAt,'yyyy-mm-dd')}} 获得</view>
+			<view class="button">{{currentLevelData.isGet?"":"暂未获得"}}</view>
+		</view>
+	</view>
+</template>
+
+<script lang="ts">
+	import { app } from "@/app";
+	import { Component } from "vue-property-decorator";
+	import BaseNode from '@/base/BaseNode.vue';
+	@Component({
+		components:{}
+	})
+	export default class ClassName extends BaseNode {
+		app = app;
+		medalNumberId = 0;
+		levelList = [];
+		currentLevel = 0;
+		startClientX = 0;
+		onLoad(query:any) {
+			this.medalNumberId = +query.id
+		}
+		get currentLevelData(){
+			return this.levelList[this.currentLevel];
+		}
+		medalDetail(){
+			app.http.Get(`medal/medal/detail/${this.medalNumberId}`,{},(res:any)=>{
+				this.levelList = res.list;
+			})
+		}
+		detailTouchStart(event:any){
+			this.startClientX = event.changedTouches[0].clientX;
+		}
+		detailTouchEnd(event:any){
+			const moveX = this.startClientX - event.changedTouches[0].clientX;
+			if(moveX > 50 && this.currentLevel < this.levelList.length-1){
+				this.currentLevel+=1;
+			}else if(moveX < -50 && this.currentLevel > 0){
+				this.currentLevel-=1;
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	@mixin fontSfTR($fontSize) {
+		width: 100%;
+		font-family: SfTR;
+		color: #C0C0C0;
+		font-size: $fontSize;
+		letter-spacing: 2rpx;
+		text-align: center;
+	}
+	page{
+		width: 100%;
+		height:100%;
+		background:#1D1E22
+	}
+	.detail-content{
+		width: 100%;
+		min-height: 1311rpx;
+		background:url(@/static/medal/detail/bg.png) no-repeat top / 100% 1311rpx;
+		box-sizing: border-box;
+		padding-top: 206rpx;
+		display: flex;
+		justify-content: center;
+		align-content: baseline;
+		flex-wrap: wrap;
+		.pic{
+			width: 336rpx;
+			height:336rpx;
+			border-radius: 50%;
+			margin-bottom: 47rpx;
+		}
+		.name{
+			@include fontSfTR(34rpx);
+			font-weight: bold;
+			margin-bottom: 37rpx;
+		}
+		.explain{
+			@include fontSfTR(22rpx);
+			box-sizing: border-box;
+			padding:0 73rpx;
+			line-height: 31rpx;
+			text{
+				color:#fff;
+			}
+		}
+		.level{
+			width: 100%;
+			height:190rpx;
+			display: flex;
+			justify-content: center;
+			box-sizing: border-box;
+			padding-top: 44rpx;
+			.level-index{
+				height:55rpx;
+				display: flex;
+				align-items: center;
+			}
+			.pic-box{
+				width: 55rpx;
+				height:55rpx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				position: relative;
+			}
+			.level-pic{
+				width: 44rpx;
+				height:44rpx;
+				border-radius: 50%;
+			}
+			.current-level{
+				width: 100%;
+				height:100%;
+			}
+			.icon-next{
+				width: 20rpx;
+				height:20rpx;
+				background: url(@/static/medal/detail/next.png) no-repeat center / 100% 100%;
+				margin:0 20rpx;
+			}
+			.icon-reward{
+				width: 19rpx;
+				height: 18rpx;
+				position: absolute;
+				right:2rpx;
+				top:2rpx;
+				background: url(@/static/medal/detail/reward.png) no-repeat center / 100% 100%;
+			}
+		}
+		.reward-title{
+			@include fontSfTR(22rpx);
+			margin-bottom: 20rpx;
+		}
+		.reward-pic{
+			width: 147rpx;
+			height:132rpx;
+			margin-bottom: 18rpx;
+		}
+		.reward-name{
+			@include fontSfTR(22rpx);
+			color:#fff;
+			font-weight: bold;
+		}
+	}
+	.bottom{
+		width: 100%;
+		position: fixed;
+		bottom:50rpx;
+		.button{
+			@include fontSfTR(28rpx);
+			width: 674rpx !important;
+			height: 86rpx;
+			background: rgba(176, 176, 176, 0.3);
+			border-radius: 3rpx;
+			margin:0 auto;
+			text-align: center;
+			line-height: 86rpx;
+		}
+		.have-got{
+			@include fontSfTR(19rpx);
+			margin-bottom: 10rpx;
+			color: #707070;
+		}
+	}
+</style>

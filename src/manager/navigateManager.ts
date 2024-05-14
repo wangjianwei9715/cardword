@@ -105,6 +105,12 @@ export default class navigateManager {
 	goMallIndex(){
 		uni.navigateTo({ url:"/pages/mall/mallIndex" })
 	}
+	goMedalIndex(userId:string|number){
+		this.pageJump(`/pages/userinfo/medal/index?userId=${userId}`)
+	}
+	goPersonHome(userId:string|number){
+		this.pageJump( `/pages/cardForum/personHomePage?userId=${userId}`)
+	}
 	/**
 	 * 跳转tabbar
 	 * @param index  0:首页,1:图鉴,2:卡圈,3:消息,4:我的

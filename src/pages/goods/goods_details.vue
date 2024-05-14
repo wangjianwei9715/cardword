@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-02-05 15:37:27
+ * @LastEditTime: 2024-05-14 11:39:57
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -140,7 +140,10 @@
 					<view class="goods-desc-explain">
 						<view class='goods-desc-explain-text flex-between' style="margin-bottom:20rpx" v-for="(item,index) in buyRecordList" :key="index">
 							<image class="record-item-avatar" :src="decodeURIComponent(item.avatar||defaultAvatar)" />
-							<view class="record-item-name u-line-1">{{item.userName}}</view>
+							<view class="record-item-name-box">
+								<view class="record-item-name u-line-1">{{item.userName}}</view>
+								<medalIcon v-if="!item.anonymous && item.medal" :src="item.medal.pic" :userId="0"/>
+							</view>
 							<view class="record-item-title u-line-1">{{goodsData.title}}</view>
 							<view class="record-item-num u-line-1">x{{item.num}}</view>
 							<view class="record-item-time u-line-1">{{$u.timeFrom(item.time)}}</view>
@@ -998,13 +1001,12 @@
 		&-title {
 			width: 100%;
 			font-size: 32rpx;
-			font-family: PingFangSC-Medium ;
+			font-family: PingFangSC-Regular;
 			font-weight: 500;
 			color: #333333;
 			line-height: 44rpx;
 			word-break:break-all;
 		}
-
 		&-right {
 			width: 50rpx;
 			box-sizing: border-box;
@@ -1663,13 +1665,18 @@
 		margin-right: 18rpx;
 		border-radius: 50%;
 	}
+	.record-item-name-box{
+		width: 120rpx;
+		display: flex;
+        align-items: center;
+		margin-right: 10rpx;
+	}
 	.record-item-name{
-		width: 85rpx;
+		max-width: 80rpx;
 		font-size: 21rpx;
 		font-family: PingFang SC;
 		font-weight: 400;
 		color: #333333;
-		margin-right: 20rpx;
 	}
 	.record-item-title{
 		width: 252rpx;
