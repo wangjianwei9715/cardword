@@ -142,6 +142,7 @@
             </navigator>
         </view>
         <paymentSuccess :showPaySuccess.sync="showPaySuccess" :showJoin="true" />
+        <medalPopup :show.sync="medalPopupData.show" :newMedalList="medalPopupData.list"/>
     </view>
 </template>
 
@@ -150,6 +151,7 @@ import { Component } from "vue-property-decorator";
 import BaseNode from '../../base/BaseNode.vue';
 import { formatNumber } from "@/tools/util"
 import { app } from "@/app";
+import medalPopup from "./component/index/medalPopup.vue"
 let toolsMap = {
     "设置": {
         action: "",
@@ -163,7 +165,9 @@ let toolsMap = {
 
     }
 }
-@Component({})
+@Component({
+    components:{medalPopup}
+})
 export default class ClassName extends BaseNode {
     formatNumber = formatNumber
     toolsMapCustomNew = toolsMap
@@ -276,6 +280,10 @@ export default class ClassName extends BaseNode {
     }
     navHeight: number = app.statusBarHeight + uni.upx2px(88)
     userInfo: any = {}
+    medalPopupData:any={
+        show:false,
+        list:[]
+    }
     onLoad(query: any) {
         this.onEventUI('updateToken', () => {
             this.initPageData();
@@ -337,6 +345,14 @@ export default class ClassName extends BaseNode {
                     this.invoice.open = res.open
                 })
             }
+            // 勋章
+            if(data.newMedalList){
+                this.medalPopupData = {
+                    show:true,
+                    list:data.newMedalList
+                };	
+            }
+            
             if (cb) cb()
         });
     }

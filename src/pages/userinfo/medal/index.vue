@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-11 13:34:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-14 14:37:47
+ * @LastEditTime: 2024-05-14 16:09:14
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -105,7 +105,7 @@
 			});
 			this.medalHome();
 			this.getMedalList();
-			if(query.medalId){
+			if(query.medalId>0){
 				this.goMedalDetail(query.medalId)
 			}
 

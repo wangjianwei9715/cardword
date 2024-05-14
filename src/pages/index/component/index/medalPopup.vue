@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-13 16:14:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-14 14:22:34
+ * @LastEditTime: 2024-05-14 16:12:26
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -13,13 +13,13 @@
 		<view class="medalPopup-box">
 			<view class="medalPopup-index" :class="{'show':showImg}">
 				<image @click="onClickClose" class="close" src="@/static/index/close.png"/>
-				<image class="icon-medal" :src="data.pic"/>
+				<image class="icon-medal" :src="medalPopupData.pic"/>
 				<view class="name-line">
-					<view class="medal-name">{{data.name}}</view>
+					<view class="medal-name">{{medalPopupData.name}}</view>
 				</view>
-				<view class="medal-title">恭喜，获得勋章点亮奖励！</view>
+				<view class="medal-title">{{medalPopupData.title}}</view>
 			</view>
-			<view class="medal-btn" v-show="showImg" @click="onClickGoDetail">前往领取优惠券</view>
+			<view class="medal-btn" v-show="showImg" @click="onClickGoDetail">{{medalPopupData.btnMsg}}</view>
 		</view>
 	</view>
 </template>
@@ -34,7 +34,9 @@
 			type:Boolean
 		}) showSync!: Boolean;
 		@Prop({default:''})
-		data!:any;
+		data?:any;
+		@Prop({default:()=>[]})
+		newMedalList?:any;
 		showImg = false;
 		@Watch('show')
 		onGoodsDataChanged(val: any, oldVal: any) {
@@ -42,6 +44,17 @@
 				setTimeout(()=>{
 					this.showImg = true;
 				},100)
+			}
+		}
+		public get medalPopupData() : any {
+			const newMedalLength = this.newMedalList.length;
+			const noReward = newMedalLength>0;
+			const medal = noReward ? this.newMedalList[0] : this.data;
+			return {
+				title:noReward?`恭喜您获得了${newMedalLength}枚勋章`:"恭喜，获得勋章点亮奖励！",
+				name:`${medal.name} ${newMedalLength>1?`等${newMedalLength}枚`:""}`,
+				pic:medal.pic,
+				btnMsg:noReward?"去看看":"前往领取优惠券"
 			}
 		}
 		close(){
@@ -52,7 +65,8 @@
 			this.close()
 		}
 		onClickGoDetail(){
-			app.navigateTo.goMedalIndex(0,this.data.id)
+			this.onClickClose()
+			app.navigateTo.goMedalIndex(0,this.data.id||0)
 		}
 	}
 </script>
