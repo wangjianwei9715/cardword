@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-11 13:34:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-14 16:09:14
+ * @LastEditTime: 2024-05-15 10:41:17
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -12,7 +12,7 @@
 		<transitionNav :needIconShadow="false" :slotLeftReverseSide="true" ref="transitionNav" :whiteBack="true" navColor="29,30,34" title="" style="z-index: 999;">
 			<template slot="slotLeft">
                 <view class="nav-left">
-					<image class="left-avatar" :src="userInfo.avatar"/>
+					<image class="left-avatar" :src="userInfo.avatar ? $parsePic(userInfo.avatar) : defaultAvatar"/>
 					<view class="left-username">{{userInfo.userName}}</view>
 				</view>
             </template>
@@ -29,7 +29,7 @@
 			</view>
 			<view class="medal-userinfo">
 				<view class="avatar-box">
-					<image class="avatar" :src="userInfo.avatar"/>
+					<image class="avatar" :src="userInfo.avatar ? $parsePic(userInfo.avatar) : defaultAvatar"/>
 				</view>
 				<view class="info-box">
 					<view class="info-name">{{userInfo.userName}}</view>
@@ -41,7 +41,7 @@
 				<view class="rank-tips">勋章数</view>
 			</view>
 		</view>
-		<u-sticky :customNavHeight="navHeight">
+		<u-sticky :customNavHeight="navHeight" style="margin-top:-20rpx">
 			<view class="sticky-content">
 				<u-tabs class="sticky-tabs" :list="typeTabs" :current="tabCurrent" :lineColor="`url(${lineBg}) 100% 100%`" lineHeight="5rpx"  @click="onClickTabs" 	:itemStyle="{ width: '134rpx', height: '64rpx', padding: 0 }" :inactiveStyle="{fontSize:'26rpx',color:'#B0B0B0',padding:'0 0'}" :activeStyle="{fontSize:'28rpx',color:'#FFFFFF',fontWeight:600,padding:'0 0'}"
 				></u-tabs>
@@ -56,7 +56,7 @@
 					:key="index"
 					@click="goMedalDetail(item.id)"
 				>
-					<image class="grid-pic" :src="item.pic"/>
+					<image class="grid-pic" :class="{'nohas':!item.isGet}" :src="item.pic"/>
 					<text class="grid-text">{{ item.name }}</text>
 				</u-grid-item>
 			</u-grid>
@@ -87,6 +87,7 @@
 	})
 	export default class ClassName extends BaseNode {
 		app = app;
+		defaultAvatar = app.defaultAvatar;
 		listParams = new ListParams()
 		pageJump = app.navigateTo.pageJump;
 		userId = 0;
@@ -298,6 +299,9 @@
 		height:141rpx;
 		margin-bottom: 18rpx
 	}
+	.nohas{
+		filter: grayscale(1)
+	}
 	.grid-text{
 		@include fontSfTR(24rpx);
 	}
@@ -306,8 +310,8 @@
 		display: flex;
 		align-items: center;
 		.left-avatar{
-			width: 80rpx;
-			height:80rpx;
+			width: 50rpx;
+			height:50rpx;
 			border-radius: 50%;
 			margin-right: 10rpx;
 		}

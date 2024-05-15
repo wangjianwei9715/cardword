@@ -51,7 +51,7 @@
                     </view>
                 </view>
                 <view class="goodsItem_bottom">
-                    <view class="goodsName">{{ item.title }}</view>
+                    <view class="goodsName u-line-2">{{ item.title }}</view>
                     <view class="goodsPriceBlock">
                         <view class="goodsPriceBlock_bottom">
                             <view class="money">{{item.price}}{{ item.pay_type==payTypeMap.money ? '元' : '积分' }}</view>

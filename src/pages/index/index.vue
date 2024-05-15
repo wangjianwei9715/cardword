@@ -252,13 +252,13 @@
 			
 			if(app.token.accessToken != ''){
 				// 获取是否中卡信息
-				app.http.Get('me/greet', {}, (res: any) => {
-					if (res.data.broadcastActor) app.broadcastActor = res.data.broadcastActor
-					if (res.data.newHitNum > 0) {
+				app.http.Get('me/greet', {}, ({data}: any) => {
+					if (data.broadcastActor) app.broadcastActor = data.broadcastActor
+					if (data.newHitNum > 0) {
 						this.showWinningCrad = true;
 						uni.hideTabBar()
 					};
-					if(res.data.logomanReceive){
+					if(data.logomanReceive){
 						const date=(new Date().getMonth()+1)+"-"+new Date().getDate()
 						if (uni.getStorageSync("flawImmTipsDay")!=date){
 							uni.setStorageSync("flawImmTipsDay",date)
@@ -266,10 +266,10 @@
 							uni.hideTabBar()
 						}
 					}
-					if(res.data.medalReceive){
+					if(data.medalReceive&&data.medalReceive.id>0){
 						this.medalPopupData = {
 							show:true,
-							data:res.data.medalReceive
+							data:data.medalReceive
 						};	
 					}
 				})

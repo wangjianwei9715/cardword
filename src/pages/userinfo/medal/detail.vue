@@ -3,13 +3,18 @@
 		<transitionNav :needIconShadow="false" navColor="29,30,34" title="" style="z-index: 999;">
         </transitionNav>
 		<view class="detail-content" @touchstart="detailTouchStart" @touchend="detailTouchEnd">
-			<image class="pic" :src="currentLevelData.pic"/>
+			<view class="top-ray" v-show="currentLevelData.isGet"></view>
+			<image class="pic" :class="{'nohas':!currentLevelData.isGet}" :src="currentLevelData.pic"/>
 			<view class="name">{{currentLevelData.name}}</view>
-			<view class="explain">{{currentLevelData.unlock_txt}}</view>
+			<view class="explain">
+				{{currentLevelUnlockList[0]}}
+				<text>{{currentLevelData.progressNum}}/{{currentLevelData.satisfy_num}}</text>
+				{{currentLevelUnlockList[1]}}
+			</view>
 			<view class="level">
 				<view class="level-index" v-for="(item,index) in levelList" :key="index" @click="currentLevel=index">
 					<view class="pic-box">
-						<image class="level-pic" :class="{'current-level':currentLevel==index}" :src="item.pic"/>
+						<image class="level-pic" :class="{'current-level':currentLevel==index,'nohas':!item.isGet}" :src="item.pic"/>
 						<view v-if="item.reward" class="icon-reward"></view>
 					</view>
 					<view v-if="index<levelList.length-1" class="icon-next"></view>
@@ -42,10 +47,17 @@
 		currentLevel = 0;
 		startClientX = 0;
 		onLoad(query:any) {
-			this.medalId = +query.id
+			this.medalId = +query.id;
+			this.medalDetail()
 		}
 		get currentLevelData(){
 			return this.levelList[this.currentLevel] || {};
+		}
+		get currentLevelUnlockList(){
+			const { unlock_txt, satisfy_num }:any = this.currentLevelData;
+			const regex = new RegExp(`${satisfy_num}(?=[^${satisfy_num}]*$)`);
+			const list = unlock_txt.split(regex)
+			return list
 		}
 		medalDetail(){
 			app.http.Get(`medal/medal/detail/${this.medalId}`,{},(res:any)=>{
@@ -90,6 +102,15 @@
 		justify-content: center;
 		align-content: baseline;
 		flex-wrap: wrap;
+		position: relative;
+		.top-ray{
+			width: 750rpx;
+			height:540rpx;
+			position: absolute;
+			top:0;
+			left:0;
+			background:url(@/static/medal/detail/top_ray.png) no-repeat top / 100% 100%;
+		}
 		.pic{
 			width: 336rpx;
 			height:336rpx;
@@ -99,13 +120,13 @@
 		.name{
 			@include fontSfTR(34rpx);
 			font-weight: bold;
-			margin-bottom: 37rpx;
+			margin-bottom: 27rpx;
 		}
 		.explain{
-			@include fontSfTR(22rpx);
+			@include fontSfTR(24rpx);
 			box-sizing: border-box;
 			padding:0 73rpx;
-			line-height: 31rpx;
+			line-height: 34rpx;
 			text{
 				color:#fff;
 			}
@@ -116,23 +137,23 @@
 			display: flex;
 			justify-content: center;
 			box-sizing: border-box;
-			padding-top: 44rpx;
+			padding-top: 38rpx;
 			.level-index{
-				height:55rpx;
+				height:76rpx;
 				display: flex;
 				align-items: center;
 			}
 			.pic-box{
-				width: 55rpx;
-				height:55rpx;
+				width: 76rpx;
+				height:76rpx;
 				display: flex;
 				align-items: center;
 				justify-content: center;
 				position: relative;
 			}
 			.level-pic{
-				width: 44rpx;
-				height:44rpx;
+				width: 58rpx;
+				height:58rpx;
 				border-radius: 50%;
 			}
 			.current-level{
@@ -161,10 +182,10 @@
 		.reward-pic{
 			width: 147rpx;
 			height:132rpx;
-			margin-bottom: 18rpx;
+			margin-bottom: 10rpx;
 		}
 		.reward-name{
-			@include fontSfTR(22rpx);
+			@include fontSfTR(24rpx);
 			color:#fff;
 			font-weight: bold;
 		}
@@ -188,5 +209,8 @@
 			margin-bottom: 10rpx;
 			color: #707070;
 		}
+	}
+	.nohas{
+		filter: grayscale(1)
 	}
 </style>

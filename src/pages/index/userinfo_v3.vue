@@ -346,7 +346,7 @@ export default class ClassName extends BaseNode {
                 })
             }
             // 勋章
-            if(data.newMedalList){
+            if(data.newMedalList&&data.newMedalList.length){
                 this.medalPopupData = {
                     show:true,
                     list:data.newMedalList

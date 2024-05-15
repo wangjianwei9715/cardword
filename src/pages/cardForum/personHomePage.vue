@@ -514,9 +514,9 @@ page {
         width: 100%;
         @include fontSfTR(22rpx);
         color:#333;
-        line-height: 29rpx;
+        line-height: 32rpx;
         text-align: left;
-        margin-top: 19rpx;
+        margin-top: 22rpx;
     }
     .userData_data{
         width: 100%;
