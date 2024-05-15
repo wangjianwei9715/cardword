@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-13 09:43:42
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-14 10:46:45
+ * @LastEditTime: 2024-05-15 15:13:55
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -22,6 +22,10 @@
                     <view class="btn" :style="{'background':hasWear(item.name)?'#B0B0B0':'#FA1545'}" @click="onClickWear(item)">{{hasWear(item.name)?"取消佩戴":"佩戴"}}</view>
 				</u-grid-item>
 			</u-grid>
+			<view v-show="listParams.isFetchEnd && medalList.length==0" class="empty-box">
+				<view class="empty"></view>
+				<view class="empty-text">- 暂无勋章 -</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -55,12 +59,13 @@
             return this.wearName === name
         }
 		getMedalList(){
-			if(this.listParams.isFetchEnd) return;
+			const { pageIndex, pageSize, isFetchEnd } = this.listParams;
+			if(isFetchEnd) return;
 			app.http.Get('dataApi/medal/userMedal/get/list',this.listParams,(res:any)=>{
 				if(res.list){
-					this.medalList = this.listParams.pageIndex==1 ? res.list : [...this.medalList,...res.list];
+					this.medalList = pageIndex==1 ? res.list : [...this.medalList,...res.list];
 				};
-				this.listParams.isFetchEnd = res.isFetchEnd;
+				this.listParams.isFetchEnd = (pageIndex*pageSize) > this.medalList.length;
 				this.listParams.pageIndex ++;
 			})
 		}
@@ -112,4 +117,24 @@
         margin-top: 20rpx;
         @include fontSfTR(22rpx);
     }
+	.empty-box{
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		box-sizing: border-box;
+		padding: 90rpx 0 200rpx 0;
+		.empty{
+			width: 514rpx;
+			height:227rpx;
+			background: url(@/static/medal/empty.png) no-repeat center /100% 100%;
+		}
+		.empty-text{
+			width: 100%;
+			text-align: center;
+			@include fontSfTR(22rpx);
+			color:#C0C0C0;
+			margin-top: 68rpx;
+		}
+	}
 </style>

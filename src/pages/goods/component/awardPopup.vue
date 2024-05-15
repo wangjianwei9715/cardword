@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-31 16:32:18
+ * @LastEditTime: 2024-05-15 11:37:14
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -16,7 +16,7 @@
 						<text class="hy-title">搓卡密 实时掉落好物</text>
 						<image @click="ruleShow=true" class="icon-help" src="@/static/goods/detail/noAward-help.png"/>
 					</view>
-					<view class="popup-desc">{{awardNum.sole}}份指定卡密奖励 {{awardNum.random}}份随机卡密奖励</view>
+					<view class="popup-desc">{{awardDesc}}</view>
 					<view class="popup-close" @click="popupShow=false"></view>
 				</view>
 				<u-list @scrolltolower="getAwardList" height="1200rpx" >
@@ -99,6 +99,17 @@
 		mounted(){
 		}
 		destroyed(){
+		}
+		get awardDesc(){
+			const { sole, random } = this.awardNum;
+			let desc = '';
+			if (sole > 0) {
+				desc += `${sole}份指定卡密奖励 `;
+			}
+			if (random > 0) {
+				desc += `${random}份随机卡密奖励`;
+			}
+			return desc.trim();
 		}
 		showAwardPopup(goodCode:string){
 			this.goodCode = goodCode;

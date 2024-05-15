@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-11 13:34:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-15 10:41:17
+ * @LastEditTime: 2024-05-15 15:12:48
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -60,6 +60,10 @@
 					<text class="grid-text">{{ item.name }}</text>
 				</u-grid-item>
 			</u-grid>
+			<view v-show="listParams.isFetchEnd && medalList.length==0" class="empty-box">
+				<view class="empty"></view>
+				<view class="empty-text">- 暂无勋章 -</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -142,9 +146,8 @@
 				if(res.list){
 					this.medalList = this.listParams.pageIndex==1 ? res.list : [...this.medalList,...res.list];
 				};
-				this.listParams.isFetchEnd = res.isFetchEnd;
 				this.listParams.pageIndex ++;
-				
+				this.listParams.isFetchEnd = this.listParams.pageIndex > res.totalPage;
 			})
 		}
 		onClickTabs({index}:any){
@@ -317,6 +320,26 @@
 		}
 		.left-username{
 			@include fontSfTR(20rpx);
+		}
+	}
+	.empty-box{
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		box-sizing: border-box;
+		padding: 90rpx 0 200rpx 0;
+		.empty{
+			width: 514rpx;
+			height:227rpx;
+			background: url(@/static/medal/empty.png) no-repeat center /100% 100%;
+		}
+		.empty-text{
+			width: 100%;
+			text-align: center;
+			@include fontSfTR(22rpx);
+			color:#C0C0C0;
+			margin-top: 68rpx;
 		}
 	}
 </style>
