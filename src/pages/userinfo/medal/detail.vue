@@ -4,12 +4,12 @@
         </transitionNav>
 		<view class="detail-content" @touchstart="detailTouchStart" @touchend="detailTouchEnd">
 			<view class="top-ray" v-show="currentLevelData.isGet"></view>
-			<image class="pic" :class="{'nohas':!currentLevelData.isGet}" :src="currentLevelData.pic"/>
+			<image class="pic" :src="currentLevelData.pic"/>
 			<view class="name">{{currentLevelData.name}}</view>
 			<view class="explain">
-				{{currentLevelUnlockList[0]}}
-				<text>{{currentLevelData.progressNum}}/{{currentLevelData.satisfy_num}}</text>
-				{{currentLevelUnlockList[1]}}
+				{{currenUnlockData.front}}
+				<text>{{currenUnlockData.progress}}</text>
+				{{currenUnlockData.after}}
 			</view>
 			<view class="level">
 				<view class="level-index" v-for="(item,index) in levelList" :key="index" @click="currentLevel=index">
@@ -53,11 +53,15 @@
 		get currentLevelData(){
 			return this.levelList[this.currentLevel] || {};
 		}
-		get currentLevelUnlockList(){
-			const { unlock_txt, satisfy_num }:any = this.currentLevelData;
+		get currenUnlockData(){
+			const { unlock_txt, satisfy_num, progressNum }:any = this.currentLevelData;
 			const regex = new RegExp(`${satisfy_num}(?=[^${satisfy_num}]*$)`);
-			const list = unlock_txt.split(regex)
-			return list
+			const txt = unlock_txt.split(regex)
+			return {
+				front:txt[0],
+				progress:`${progressNum}/${satisfy_num}`,
+				after:txt[1] || ""
+			}
 		}
 		medalDetail(){
 			app.http.Get(`medal/medal/detail/${this.medalId}`,{},(res:any)=>{

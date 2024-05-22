@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-13 09:43:42
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-15 15:13:55
+ * @LastEditTime: 2024-05-15 17:30:51
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -128,6 +128,7 @@
 			width: 514rpx;
 			height:227rpx;
 			background: url(@/static/medal/empty.png) no-repeat center /100% 100%;
+			opacity: 0.4;
 		}
 		.empty-text{
 			width: 100%;

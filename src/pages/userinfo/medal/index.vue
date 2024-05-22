@@ -333,6 +333,7 @@
 			width: 514rpx;
 			height:227rpx;
 			background: url(@/static/medal/empty.png) no-repeat center /100% 100%;
+			opacity: 0.4;
 		}
 		.empty-text{
 			width: 100%;
