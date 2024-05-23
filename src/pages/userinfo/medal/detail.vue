@@ -20,7 +20,7 @@
 					<view v-if="index<levelList.length-1" class="icon-next"></view>
 				</view>
 			</view>
-			<view v-if="currentLevelData.reward">
+			<view v-if="currentLevelData.reward" @click="onClickGerReward">
 				<view class="reward-title">- 点亮奖励 -</view>
 				<image class="reward-pic" :style="{'width':currentLevelData.isGet?'158rpx':'147rpx'}" :src="`/static/medal/detail/coupon${currentLevelData.isGet?'_':''}.png`"/>
 				<view class="reward-name">30元优惠券</view>
@@ -78,6 +78,18 @@
 			}else if(moveX < -50 && this.currentLevel > 0){
 				this.currentLevel-=1;
 			}
+		}
+		onClickGerReward(){
+			const { satisfy_num, progressNum, id }:any = this.currentLevelData;
+			if( progressNum < satisfy_num ) return;
+
+			app.http.Post(`medal/user/coupon/receive/${id}`,{},(res:any)=>{
+				this.medalDetail();
+				uni.showToast({
+					title:"领取成功",
+					icon:"none"
+				})
+			})
 		}
 	}
 </script>

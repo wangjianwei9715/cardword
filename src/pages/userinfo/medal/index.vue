@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-11 13:34:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-15 15:12:48
+ * @LastEditTime: 2024-05-23 11:15:05
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -24,7 +24,7 @@
 			<view class="medal-ray">
 				<view class="medal-platform">
 					<image class="platform-pic" :src="userInfo.medal?userInfo.medal.pic:''"/>
-					<view v-if="isMine" class="platform-btn" @click="pageJump(`/pages/userinfo/medal/wear?medalName=${userInfo.medal?userInfo.medal.name:''}`)">勋章管理</view>
+					<view v-if="isMine" class="platform-btn" @click="pageJump('/pages/userinfo/medal/wear')">勋章管理</view>
 				</view>
 			</view>
 			<view class="medal-userinfo">

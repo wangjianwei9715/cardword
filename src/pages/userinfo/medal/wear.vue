@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-13 09:43:42
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-15 17:30:51
+ * @LastEditTime: 2024-05-23 11:23:11
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -19,7 +19,7 @@
 				>
 					<image class="grid-pic" :src="item.pic"/>
 					<text class="grid-text">{{ item.name }}</text>
-                    <view class="btn" :style="{'background':hasWear(item.name)?'#B0B0B0':'#FA1545'}" @click="onClickWear(item)">{{hasWear(item.name)?"取消佩戴":"佩戴"}}</view>
+                    <view class="btn" :style="{'background':item.wear?'#B0B0B0':'#FA1545'}" @click="onClickWear(item)">{{item.wear?"取消佩戴":"佩戴"}}</view>
 				</u-grid-item>
 			</u-grid>
 			<view v-show="listParams.isFetchEnd && medalList.length==0" class="empty-box">
@@ -44,20 +44,15 @@
 	})
 	export default class ClassName extends BaseNode {
 		app = app;
-		wearName = "";
 		listParams = new ListParams()
 		medalList = []
 		onLoad(query:any) {
-			this.wearName = query.medalName;
 			this.getMedalList();
 		}
 		//   加载更多数据
 		onReachBottom() {
 			this.getMedalList()
 		}
-        hasWear(name:string){
-            return this.wearName === name
-        }
 		getMedalList(){
 			const { pageIndex, pageSize, isFetchEnd } = this.listParams;
 			if(isFetchEnd) return;
@@ -70,11 +65,11 @@
 			})
 		}
         onClickWear(item:any){
-			const unwear = this.wearName === item.name;
-			const url = unwear ? 'medal/userMedal/unwear' : `medal/userMedal/wear/${item.number_id}`
+			const unwear = item.wear;
+			const url = unwear ? 'medal/userMedal/unwear' : `medal/userMedal/wear/${item.id}`
 			app.http.Post(url,{},(res:any)=>{
 				uni.showToast({ title: '操作成功', icon: 'none' });
-				this.wearName = unwear ? "" : item.name;
+				item.wear = unwear ? 0 : 1;
 			})
             
             uni.$emit('wearChange',unwear?"unwear":item);
