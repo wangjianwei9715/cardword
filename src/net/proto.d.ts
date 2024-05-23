@@ -1,4 +1,5 @@
 import * as $protobuf from "protobufjs";
+import Long = require("long");
 /** Namespace message. */
 export namespace message {
 
@@ -84,6 +85,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RequestChatOn
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a RequestChatOff. */
@@ -168,6 +176,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RequestChatOff
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a SendChatMessage. */
@@ -270,6 +285,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for SendChatMessage
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a ChatMessage. */
@@ -390,6 +412,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for ChatMessage
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a BucketInfo. */
@@ -498,6 +527,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BucketInfo
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     namespace BucketInfo {
@@ -620,6 +656,13 @@ export namespace message {
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for Good
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
         }
 
         /** Properties of a Talker. */
@@ -722,6 +765,13 @@ export namespace message {
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for Talker
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
         }
     }
 
@@ -819,6 +869,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for PushChatMessage
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a BackSendMessage. */
@@ -915,6 +972,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BackSendMessage
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     namespace BackSendMessage {
@@ -1017,6 +1081,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RequestBidOn
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a RequestBidOff. */
@@ -1101,6 +1172,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RequestBidOff
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a PushGoodBidList. */
@@ -1197,6 +1275,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for PushGoodBidList
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     namespace PushGoodBidList {
@@ -1313,6 +1398,13 @@ export namespace message {
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for UserBid
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
         }
     }
 
@@ -1404,6 +1496,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for HeartBeat
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a LoginBroadCastRoom1001. */
@@ -1506,6 +1605,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for LoginBroadCastRoom1001
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a LogoutBroadCastRoom1001. */
@@ -1596,6 +1702,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for LogoutBroadCastRoom1001
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a BackHeartBeat. */
@@ -1686,6 +1799,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BackHeartBeat
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a BackLoginBroadCastRoom1001. */
@@ -1800,6 +1920,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BackLoginBroadCastRoom1001
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     namespace BackLoginBroadCastRoom1001 {
@@ -1901,6 +2028,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for Message
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a SendMyPoint. */
@@ -1991,6 +2125,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for SendMyPoint
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a KickOut. */
@@ -2081,6 +2222,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for KickOut
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** NODE enum. */
@@ -2199,6 +2347,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for Ipacket
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a RpcHead. */
@@ -2325,6 +2480,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RpcHead
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a RpcPacket. */
@@ -2433,6 +2595,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RpcPacket
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a RequestLike. */
@@ -2523,6 +2692,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RequestLike
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a RequestSendGift. */
@@ -2625,6 +2801,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RequestSendGift
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a RequestSendHongbao. */
@@ -2721,6 +2904,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RequestSendHongbao
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a RequestGrabHongbao. */
@@ -2811,6 +3001,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RequestGrabHongbao
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a RequestSendChatMessage. */
@@ -2901,6 +3098,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RequestSendChatMessage
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a RequestSendMerchantCoupon. */
@@ -3027,6 +3231,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RequestSendMerchantCoupon
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a RequestGetMerchantCoupon. */
@@ -3117,6 +3328,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RequestGetMerchantCoupon
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a RequestSwitchLianmaiAllow. */
@@ -3201,6 +3419,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RequestSwitchLianmaiAllow
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a RequestApplyLianmai. */
@@ -3285,6 +3510,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RequestApplyLianmai
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of an ActorRequestLianmaiData. */
@@ -3369,6 +3601,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for ActorRequestLianmaiData
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of an ActorAgreeLianmaiApply. */
@@ -3459,6 +3698,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for ActorAgreeLianmaiApply
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of an ActorTerminateLianmai. */
@@ -3543,6 +3789,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for ActorTerminateLianmai
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a SelfTerminateLianmai. */
@@ -3627,6 +3880,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for SelfTerminateLianmai
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a GmChatBid. */
@@ -3723,6 +3983,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for GmChatBid
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a GmKickOutRoom. */
@@ -3819,6 +4086,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for GmKickOutRoom
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a BackLike. */
@@ -3909,6 +4183,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BackLike
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a BroadCastLike. */
@@ -4005,6 +4286,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BroadCastLike
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     namespace BroadCastLike {
@@ -4109,6 +4397,13 @@ export namespace message {
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for UserLike
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
         }
     }
 
@@ -4200,6 +4495,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BroadCastBilibili_Send
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     namespace BroadCastBilibili_Send {
@@ -4328,6 +4630,13 @@ export namespace message {
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for Bilibili_Send
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
         }
     }
 
@@ -4419,6 +4728,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BackSendGift
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a SendGiftUpdated. */
@@ -4509,6 +4825,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for SendGiftUpdated
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     namespace SendGiftUpdated {
@@ -4613,6 +4936,13 @@ export namespace message {
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for GiftUpdated
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
         }
     }
 
@@ -4704,6 +5034,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BackSendHongbao
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** HongbaoState enum. */
@@ -4802,6 +5139,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BroadCastHongbao
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     namespace BroadCastHongbao {
@@ -4930,6 +5274,13 @@ export namespace message {
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for Hongbao
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
         }
     }
 
@@ -5021,6 +5372,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BroadCastHongbaoUpdated
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     namespace BroadCastHongbaoUpdated {
@@ -5125,6 +5483,13 @@ export namespace message {
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for HongbaoUpdated
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
         }
     }
 
@@ -5222,6 +5587,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BackGrabHongbao
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a BackSendChatMessage. */
@@ -5312,6 +5684,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BackSendChatMessage
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a BroadCastChatMessage. */
@@ -5402,6 +5781,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BroadCastChatMessage
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     namespace BroadCastChatMessage {
@@ -5423,6 +5809,12 @@ export namespace message {
 
             /** Chat action */
             action?: (string|null);
+
+            /** Chat medalName */
+            medalName?: (string|null);
+
+            /** Chat medalPic */
+            medalPic?: (string|null);
         }
 
         /** Represents a Chat. */
@@ -5448,6 +5840,12 @@ export namespace message {
 
             /** Chat action. */
             public action: string;
+
+            /** Chat medalName. */
+            public medalName: string;
+
+            /** Chat medalPic. */
+            public medalPic: string;
 
             /**
              * Creates a new Chat instance using the specified properties.
@@ -5518,6 +5916,13 @@ export namespace message {
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for Chat
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
         }
     }
 
@@ -5615,6 +6020,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BackSendMerchantCoupon
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a BroadCastMerchantCoupon. */
@@ -5705,6 +6117,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BroadCastMerchantCoupon
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     namespace BroadCastMerchantCoupon {
@@ -5809,6 +6228,13 @@ export namespace message {
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for Coupon
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
         }
     }
 
@@ -5918,6 +6344,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BackGetMerchantCoupon
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     namespace BackGetMerchantCoupon {
@@ -6034,6 +6467,13 @@ export namespace message {
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for Coupon
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
         }
     }
 
@@ -6125,6 +6565,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BroadCastLianmaiAllowed
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a SendLianmaiApply. */
@@ -6227,6 +6674,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for SendLianmaiApply
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a BackApplyLianmai. */
@@ -6323,6 +6777,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BackApplyLianmai
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a BroadCastLianmaiOn. */
@@ -6431,6 +6892,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BroadCastLianmaiOn
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a BroadCastLianmaiOff. */
@@ -6515,6 +6983,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BroadCastLianmaiOff
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a BackActorLianmaiData. */
@@ -6611,6 +7086,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BackActorLianmaiData
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     namespace BackActorLianmaiData {
@@ -6727,6 +7209,13 @@ export namespace message {
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for Lianmai
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
         }
     }
 
@@ -6824,6 +7313,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BackActorAgreeLianmaiApply
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a BackTerminateLianmai. */
@@ -6920,6 +7416,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BackTerminateLianmai
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a BackGmChatBid. */
@@ -7016,6 +7519,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BackGmChatBid
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a BackGmKickOutRoom. */
@@ -7112,6 +7622,13 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for BackGmKickOutRoom
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** RoomState enum. */
@@ -7216,5 +7733,12 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for SendRoomData
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 }
