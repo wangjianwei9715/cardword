@@ -15,20 +15,20 @@
 				<view class="level-index" v-for="(item,index) in levelList" :key="index" @click="currentLevel=index">
 					<view class="pic-box">
 						<image class="level-pic" :class="{'current-level':currentLevel==index,'nohas':!item.isGet}" :src="item.pic"/>
-						<view v-if="item.reward" class="icon-reward"></view>
+						<view v-if="item.amount" class="icon-reward"></view>
 					</view>
 					<view v-if="index<levelList.length-1" class="icon-next"></view>
 				</view>
 			</view>
-			<view v-if="currentLevelData.reward" @click="onClickGerReward">
+			<view v-if="currentLevelData.amount" @click="onClickGerReward">
 				<view class="reward-title">- 点亮奖励 -</view>
 				<image class="reward-pic" :style="{'width':currentLevelData.isGet?'158rpx':'147rpx'}" :src="`/static/medal/detail/coupon${currentLevelData.isGet?'_':''}.png`"/>
-				<view class="reward-name">30元优惠券</view>
+				<view class="reward-name">{{currentLevelData.amount}}元优惠券</view>
 			</view>
 		</view>
 		<view class="bottom">
 			<view class="have-got" v-if="currentLevelData.isGet">{{$u.timeFormat(currentLevelData.getAt,'yyyy-mm-dd')}} 获得</view>
-			<view class="button">{{currentLevelData.isGet?"":"暂未获得"}}</view>
+			<view class="button" v-if="isMine">{{buttonTxt}}</view>
 		</view>
 	</view>
 </template>
@@ -43,11 +43,16 @@
 	export default class ClassName extends BaseNode {
 		app = app;
 		medalId = 0;
+		detailData:any = {};
 		levelList = [];
 		currentLevel = 0;
 		startClientX = 0;
+		isMine = false;
+		homeUserId = 0;
 		onLoad(query:any) {
 			this.medalId = +query.id;
+			this.isMine = query.isMine==1;
+			this.homeUserId = +query.homeUserId;
 			this.medalDetail()
 		}
 		get currentLevelData(){
@@ -55,6 +60,14 @@
 		}
 		get currenUnlockData(){
 			const { unlock_txt, satisfy_num, progressNum }:any = this.currentLevelData;
+			if(!this.isMine){
+				return {
+					front:unlock_txt,
+					progress:"",
+					after:""
+				}
+			}
+
 			const regex = new RegExp(`${satisfy_num}(?=[^${satisfy_num}]*$)`);
 			const txt = unlock_txt.split(regex)
 			return {
@@ -63,9 +76,19 @@
 				after:txt[1] || ""
 			}
 		}
+		get buttonTxt(){
+			const { isGet } = this.currentLevelData
+			return isGet ? (this.detailData.wear?"取消佩戴":"佩戴") : "暂未获得"
+		}
+		get paramsUserId(){
+			return {
+				userId:this.isMine?null:this.homeUserId
+			}
+		}
 		medalDetail(){
-			app.http.Get(`medal/medal/detail/${this.medalId}`,{},(res:any)=>{
-				this.levelList = res.list;
+			app.http.Get(`medal/medal/detail/${this.medalId}`,this.paramsUserId,({list,...rest}:any)=>{
+				this.detailData = rest
+				this.levelList = list;
 			})
 		}
 		detailTouchStart(event:any){

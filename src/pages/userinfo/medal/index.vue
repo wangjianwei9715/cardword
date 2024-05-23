@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-11 13:34:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-23 11:15:05
+ * @LastEditTime: 2024-05-23 14:10:23
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -107,12 +107,12 @@
 			app.user.getAppDataUserId().then((res:any)=>{
 				this.userId = res;
 				if(query.userId==0) this.homeUserId = this.userId; 
+				this.medalHome();
+				this.getMedalList();
+				if(query.medalId>0){
+					this.goMedalDetail(query.medalId)
+				}
 			});
-			this.medalHome();
-			this.getMedalList();
-			if(query.medalId>0){
-				this.goMedalDetail(query.medalId)
-			}
 
 			uni.$on("wearChange",(res:any)=>{
 				this.$set(this.userInfo,'medal',res=="unwear"?{}:res)
@@ -129,20 +129,31 @@
 		get isMine(){
 			return this.userId!=0 && (this.userId==this.homeUserId)
 		}
+		get paramsUserId(){
+			return {
+				userId:this.isMine?null:this.homeUserId
+			}
+		}
 		get tabCurrentType(){
 			return typeTabs[this.tabCurrent].type
 		}
 		goMedalDetail(id:number){
-			this.pageJump(`/pages/userinfo/medal/detail?id=${id}`)
+			this.pageJump(`/pages/userinfo/medal/detail?id=${id}&isMine=${this.isMine?1:0}&homeUserId=${this.homeUserId}`)
 		}
 		medalHome(){
-			app.http.Get('dataApi/medal/user/home',{},(res:any)=>{
+			app.http.Get('dataApi/medal/user/home',this.paramsUserId,(res:any)=>{
 				this.userInfo = res.data
 			})
 		}
 		getMedalList(){
 			if(this.listParams.isFetchEnd) return;
-			app.http.Get('dataApi/medal/userMedal/list',{...this.listParams,type:this.tabCurrentType},(res:any)=>{
+			
+			const params = {
+				...this.listParams,
+				...this.paramsUserId,
+				type:this.tabCurrentType
+			}
+			app.http.Get('dataApi/medal/userMedal/list',params,(res:any)=>{
 				if(res.list){
 					this.medalList = this.listParams.pageIndex==1 ? res.list : [...this.medalList,...res.list];
 				};
