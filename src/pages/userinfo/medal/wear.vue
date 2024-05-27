@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-13 09:43:42
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-23 11:23:11
+ * @LastEditTime: 2024-05-27 17:18:51
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -73,6 +73,7 @@
 			})
             
             uni.$emit('wearChange',unwear?"unwear":item);
+			app.platform.UIClickFeedBack(); 
         }
 	}
 </script>

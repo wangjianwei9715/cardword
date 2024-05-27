@@ -22,7 +22,7 @@
 			</view>
 			<view v-if="currentLevelData.amount" @click="onClickGerReward">
 				<view class="reward-title">- 点亮奖励 -</view>
-				<image class="reward-pic" :style="{'width':currentLevelData.receive?'158rpx':'147rpx'}" :src="`/static/medal/detail/coupon${currentLevelData.receive?'_':''}.png`"/>
+				<image class="reward-pic" :style="{'width':currentLevelData.receive==receiveState.received?'158rpx':'147rpx'}" :src="`/static/medal/detail/coupon${currentLevelData.receive==receiveState.received?'_':''}.png`"/>
 				<view class="reward-name">{{currentLevelData.amount}}元优惠券</view>
 			</view>
 		</view>
@@ -37,10 +37,16 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '@/base/BaseNode.vue';
+	const receiveState = { // 0未获得 1待领取 2已领取 
+		notGet:0,
+		waitGet:1,	
+		received:2
+	}
 	@Component({
 		components:{}
 	})
 	export default class ClassName extends BaseNode {
+		receiveState = receiveState
 		app = app;
 		medalId = 0;
 		detailData:any = {};
@@ -103,8 +109,8 @@
 			}
 		}
 		onClickGerReward(){
-			const { satisfy_num, progressNum, id, receive }:any = this.currentLevelData;
-			if( receive || progressNum < satisfy_num ) return;
+			const { id, receive }:any = this.currentLevelData;
+			if( receive!=receiveState.waitGet ) return;
 
 			app.http.Post(`medal/user/coupon/receive/${id}`,{},(res:any)=>{
 				this.medalDetail();
@@ -121,8 +127,10 @@
 			const { wear, maxGetId } = this.detailData
 			const url = wear ? 'medal/userMedal/unwear' : `medal/userMedal/wear/${maxGetId}`
 			app.http.Post(url,{},(res:any)=>{
+				uni.$emit('wearChange',wear?"unwear":this.currentLevelData);
 				this.detailData.wear = wear ? 0 : 1;
 			})
+			app.platform.UIClickFeedBack(); 
 		}
 	}
 </script>

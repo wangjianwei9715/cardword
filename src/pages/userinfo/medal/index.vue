@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-11 13:34:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-27 13:48:52
+ * @LastEditTime: 2024-05-27 17:16:26
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -57,7 +57,10 @@
 					@click="goMedalDetail(item.id)"
 				>
 					<image class="grid-pic" :class="{'nohas':!item.isGet}" :src="item.pic"/>
-					<text class="grid-text">{{ item.name }}</text>
+					<view>
+						<image class="grid-reward" :class="{'nohas':item.receive==0}" v-if="item.max_level_amount>0&&item.receive!=2" src="/static/medal/detail/reward.png"/>
+						<text class="grid-text">{{ item.name }}</text>
+					</view>
 				</u-grid-item>
 			</u-grid>
 			<view v-show="listParams.isFetchEnd && medalList.length==0" class="empty-box">
@@ -115,7 +118,7 @@
 			});
 
 			uni.$on("wearChange",(res:any)=>{
-				this.$set(this.userInfo,'medal',res=="unwear"?{}:res)
+				this.$set(this.userInfo,'medal',res=="unwear" ? { pic:"", name:"" } : res)
 			})
 		}
 		onPageScroll(data: any) {
@@ -147,7 +150,7 @@
 		}
 		getMedalList(){
 			if(this.listParams.isFetchEnd) return;
-			
+
 			const params = {
 				...this.listParams,
 				...this.paramsUserId,
@@ -315,6 +318,11 @@
 	}
 	.nohas{
 		filter: grayscale(1)
+	}
+	.grid-reward{
+		width: 19rpx;
+		height:18rpx;
+		margin-right: 6rpx
 	}
 	.grid-text{
 		@include fontSfTR(24rpx);
