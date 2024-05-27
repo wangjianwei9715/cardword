@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-14 11:22:49
+ * @LastEditTime: 2024-05-27 14:19:52
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -145,12 +145,12 @@
                         hold: onClickTap && touchId == son.id
                     }">
                     <muqian-lazyLoad class="avatar" :src="son.avatar ? $parsePic(son.avatar) : app.defaultAvatar"
-                        borderRadius="50%" @click="app.navigateTo.goPersonHome(item.userId)"/>
+                        borderRadius="50%" @click="app.navigateTo.goPersonHome(son.userId)"/>
                     <view class="rightWrap">
                         <view class="msgInfo">
                             <view class="top">
-                                <view class="name u-line-1" @click="app.navigateTo.goPersonHome(item.userId)">{{ son.userName }}</view>
-                                <medalIcon v-if="item.medal" :src="item.medal.pic" :userId="item.userId"/>
+                                <view class="name u-line-1" @click="app.navigateTo.goPersonHome(son.userId)">{{ son.userName }}</view>
+                                <medalIcon v-if="son.medal" :src="son.medal.pic" :userId="son.userId"/>
                                 <!-- <view class="time">{{ getDateDiff(son.created_at * 1000) }}</view> -->
 
                             </view>

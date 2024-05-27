@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-11 13:34:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-23 14:10:23
+ * @LastEditTime: 2024-05-27 13:48:52
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -243,8 +243,8 @@
 				align-items: center;
 				justify-content: center;
 				.avatar{
-					width: 75rpx;
-					height:75rpx;
+					width: 82rpx;
+					height:82rpx;
 					border-radius: 50%;
 				}
 			}

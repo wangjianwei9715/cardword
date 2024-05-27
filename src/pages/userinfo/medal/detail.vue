@@ -6,7 +6,7 @@
 			<view class="top-ray" v-show="currentLevelData.isGet"></view>
 			<image class="pic" :src="currentLevelData.pic"/>
 			<view class="name">{{currentLevelData.name}}</view>
-			<view class="explain">
+			<view class="explain" v-if="levelList.length">
 				{{currenUnlockData.front}}
 				<text>{{currenUnlockData.progress}}</text>
 				{{currenUnlockData.after}}
@@ -22,13 +22,13 @@
 			</view>
 			<view v-if="currentLevelData.amount" @click="onClickGerReward">
 				<view class="reward-title">- 点亮奖励 -</view>
-				<image class="reward-pic" :style="{'width':currentLevelData.isGet?'158rpx':'147rpx'}" :src="`/static/medal/detail/coupon${currentLevelData.isGet?'_':''}.png`"/>
+				<image class="reward-pic" :style="{'width':currentLevelData.receive?'158rpx':'147rpx'}" :src="`/static/medal/detail/coupon${currentLevelData.receive?'_':''}.png`"/>
 				<view class="reward-name">{{currentLevelData.amount}}元优惠券</view>
 			</view>
 		</view>
 		<view class="bottom">
 			<view class="have-got" v-if="currentLevelData.isGet">{{$u.timeFormat(currentLevelData.getAt,'yyyy-mm-dd')}} 获得</view>
-			<view class="button" v-if="isMine">{{buttonTxt}}</view>
+			<view class="button" v-if="isMine" @click="onClickWear">{{buttonTxt}}</view>
 		</view>
 	</view>
 </template>
@@ -103,8 +103,8 @@
 			}
 		}
 		onClickGerReward(){
-			const { satisfy_num, progressNum, id }:any = this.currentLevelData;
-			if( progressNum < satisfy_num ) return;
+			const { satisfy_num, progressNum, id, receive }:any = this.currentLevelData;
+			if( receive || progressNum < satisfy_num ) return;
 
 			app.http.Post(`medal/user/coupon/receive/${id}`,{},(res:any)=>{
 				this.medalDetail();
@@ -112,6 +112,16 @@
 					title:"领取成功",
 					icon:"none"
 				})
+			})
+		}
+		onClickWear(){
+			const { isGet } = this.currentLevelData;
+			if(!isGet) return;
+
+			const { wear, maxGetId } = this.detailData
+			const url = wear ? 'medal/userMedal/unwear' : `medal/userMedal/wear/${maxGetId}`
+			app.http.Post(url,{},(res:any)=>{
+				this.detailData.wear = wear ? 0 : 1;
 			})
 		}
 	}

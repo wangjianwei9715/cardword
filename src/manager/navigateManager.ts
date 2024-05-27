@@ -106,10 +106,10 @@ export default class navigateManager {
 		uni.navigateTo({ url:"/pages/mall/mallIndex" })
 	}
 	goMedalIndex(userId:string|number,medalId?:number){
-		this.pageJump(`/pages/userinfo/medal/index?userId=${userId||0}&medalId=${medalId||0}`)
+		uni.navigateTo({url:`/pages/userinfo/medal/index?userId=${userId||0}&medalId=${medalId||0}`})
 	}
 	goPersonHome(userId:string|number){
-		this.pageJump( `/pages/cardForum/personHomePage?userId=${userId}`)
+		uni.navigateTo({url:`/pages/cardForum/personHomePage?userId=${userId}`})
 	}
 	/**
 	 * 跳转tabbar

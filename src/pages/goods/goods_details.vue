@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-14 11:39:57
+ * @LastEditTime: 2024-05-27 14:21:23
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -139,9 +139,9 @@
 					</view>
 					<view class="goods-desc-explain">
 						<view class='goods-desc-explain-text flex-between' style="margin-bottom:20rpx" v-for="(item,index) in buyRecordList" :key="index">
-							<image class="record-item-avatar" :src="decodeURIComponent(item.avatar||defaultAvatar)" />
+							<image class="record-item-avatar" @click="goPersonHome(item.userId)" :src="decodeURIComponent(item.avatar||defaultAvatar)" />
 							<view class="record-item-name-box">
-								<view class="record-item-name u-line-1">{{item.userName}}</view>
+								<view class="record-item-name u-line-1" @click="goPersonHome(item.userId)">{{item.userName}}</view>
 								<medalIcon v-if="!item.anonymous && item.medal" :src="item.medal.pic" :userId="0"/>
 							</view>
 							<view class="record-item-title u-line-1">{{goodsData.title}}</view>
@@ -283,6 +283,7 @@
 		parsePic = parsePic;
 		navigateBack = app.navigateTo.navigateBack;
 		isPullDown = app.platform.isPullDown;
+		goPersonHome = app.navigateTo.goPersonHome;
 		defaultAvatar = app.defaultAvatar;
 		goodsManaager:any = app.goods;
 		goodsDetailRules = goodsDetailRules

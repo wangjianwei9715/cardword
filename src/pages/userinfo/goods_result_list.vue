@@ -33,7 +33,8 @@
 			<view class="card-index" v-for="(item,index) in teamDataList" :key="index">
 				<view class="left" style="width:100%">
 					<view class="title">
-						<muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit" :borderRadius="'50%'"></muqian-lazyLoad> {{item.userName}}
+						<muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit" :borderRadius="'50%'" @click="goPersonHome(item.userId)"></muqian-lazyLoad>
+						<text @click="goPersonHome(item.userId)">{{item.userName}}</text>
 						<medalIcon v-if="!item.anonymous && item.medal" :src="item.medal.pic" :userId="0"/>
 					</view>
 					<view class="desc">{{item.no}}</view>
@@ -52,7 +53,8 @@
 				<view class="card-index" >
 					<view class="left">
 						<view class="title">
-							<muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit" :borderRadius="'50%'"></muqian-lazyLoad> {{item.userName}}
+							<muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit" :borderRadius="'50%'" @click="goPersonHome(item.userId)"></muqian-lazyLoad>
+							<text @click="goPersonHome(item.userId)">{{item.userName}}</text>
 							<medalIcon v-if="!item.anonymous && item.medal" :src="item.medal.pic" :userId="0"/>
 						</view>
 						<view class="desc">{{item.no}}</view>
@@ -84,6 +86,7 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		defaultAvatar = app.defaultAvatar;
+		goPersonHome = app.navigateTo.goPersonHome;
 		chooseId = 0; //0代表选中拼团结果，展示下划线； 1代表选中拆卡报告，展示下划线 ；
 		goodCode = '';
 		orderCode = '';

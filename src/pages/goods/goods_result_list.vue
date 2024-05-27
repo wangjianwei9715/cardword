@@ -28,7 +28,8 @@
 			<view class="card-index" v-for="(item,index) in teamDataList" :key="index">
 				<view class="left" :style="{width:chooseId==0?'100%':''}">
 					<view class="title">
-						<muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit" :borderRadius="'50%'"></muqian-lazyLoad> {{item.userName}}
+						<muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit" :borderRadius="'50%'" @click="goPersonHome(item.userId)"></muqian-lazyLoad>
+						<text @click="goPersonHome(item.userId)">{{item.userName}}</text>
 						<medalIcon v-if="!item.anonymous && item.medal" :src="item.medal.pic" :userId="0"/>
 					</view>
 					<view class="desc">{{item.no}}</view>
@@ -77,6 +78,7 @@
 		navigateBack = app.navigateTo.navigateBack;
 		parsePic = parsePic;
 		getGoodsImg = getGoodsImg;
+		goPersonHome = app.navigateTo.goPersonHome;
 		defaultAvatar = app.defaultAvatar;
 		tabList = Tab;
 		chooseId = 0;
