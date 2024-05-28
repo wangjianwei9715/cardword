@@ -268,7 +268,7 @@ export default class ClassName extends BaseNode {
             uni.setStorageSync("ksjUserId", data.data.userId);
             uni.$emit('loginSuccess');
             console.log("data=>data", data);
-
+            app.platform.loginRecord()
             if (url == "user/login/wechat/app" && data.data.showBindPhone) {
                 uni.redirectTo({
                     url: `/pages/login/checkPhone?type=${PhoneCodeType.BIND_PHONE}&toIndex=1`
