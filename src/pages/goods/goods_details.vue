@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-28 11:12:21
+ * @LastEditTime: 2024-05-28 11:43:29
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -142,7 +142,7 @@
 							<image class="record-item-avatar" @click="goPersonHome(item.userId,item.anonymous)" :src="decodeURIComponent(item.avatar||defaultAvatar)" />
 							<view class="record-item-name-box">
 								<view class="record-item-name u-line-1" @click="goPersonHome(item.userId,item.anonymous)">{{item.userName}}</view>
-								<medalIcon v-if="!item.anonymous && item.medal" :src="item.medal.pic" :userId="0"/>
+								<medalIcon v-if="!item.anonymous && item.medal" :src="item.medal.pic" :userId="item.userId"/>
 							</view>
 							<view class="record-item-title u-line-1">{{goodsData.title}}</view>
 							<view class="record-item-num u-line-1">x{{item.num}}</view>
@@ -180,12 +180,17 @@
 				</view>
 			</view>
 			<view class="detail-title">购买须知</view>
-			<view class="detail-bottom-explain">商家所拆商品全部为原封，上架前会提交原箱/原盒视频，同时也会在直播之前展示原箱/原盒包装。卡片生产商在生产过程中，有机率出现装箱误差，商品详情描述仅供参考，最终拆卡结果以商品实物为准，希望各位用户悉知这种情况的发生。产品宣传图均为发行商官方制作，最终该系列卡片以箱内拆出的实物为准，请各位玩家在购买前知悉。</view>
+			<view class="detail-bottom-explain">商家所拆商品全部为原封，上架前会提交原箱/原盒视频，同时也会在直播之前展示原箱/原盒包装。卡片生产商在生产过程中，有机率出现装箱误差，商品详情描述仅供参考，最终拆卡结果以商品实物为准，如若对商品规格和卡片张数有疑义，请在购买前联系客服或商家，也可进入首页发售日志查看对应的商品规格和卡片张数，未咨询后购买即认为已了解商品的规格及卡片张数，希望各位用户悉知这种情况的发生。产品宣传图均为发行商官方制作，最终该系列卡片以箱内拆出的实物为准，请各位玩家在购买前知悉。</view>
 			<view class="detail-title">常见问题</view>
 			<view class="detail-bottom-explain" v-for="(item,index) in goodsDetailRules" :key="index">
 				<view class="detail-bottom-explain-title">{{item.title}}</view>
 				{{item.desc}}
 			</view>
+			<view class="detail-title">中卡概率</view>
+			<view class="detail-bottom-explain margin-bootom0">f=每份卡密的中卡概率</view>
+            <view class="detail-bottom-explain margin-bootom0">P=【拼团份数】</view>
+            <view class="detail-bottom-explain margin-bootom0">Q=【拼团配置】中的卡片总张数</view>
+            <view class="detail-bottom-explain">f=1-[(P-1)/P]^Q</view>
 		</view>
 		<!-- 猜你喜欢 -->
 		<guessYouLikeIt v-if="goodCode" :goodCode="goodCode" />
@@ -1001,7 +1006,7 @@
 
 		&-title {
 			width: 100%;
-			font-size: 32rpx;
+			font-size: 30rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 500;
 			color: #333333;
@@ -1881,5 +1886,8 @@
 				overflow:hidden;
 			}
 		}
+	}
+	.margin-bootom0{
+		margin-bottom: 0;
 	}
 </style>
