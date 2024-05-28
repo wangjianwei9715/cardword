@@ -108,7 +108,8 @@ export default class navigateManager {
 	goMedalIndex(userId:string|number,medalId?:number){
 		uni.navigateTo({url:`/pages/userinfo/medal/index?userId=${userId||0}&medalId=${medalId||0}`})
 	}
-	goPersonHome(userId:string|number){
+	goPersonHome(userId:string|number,anonymous=false){
+		if(anonymous) return;
 		uni.navigateTo({url:`/pages/cardForum/personHomePage?userId=${userId}`})
 	}
 	/**
