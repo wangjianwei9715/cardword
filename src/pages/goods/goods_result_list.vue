@@ -120,8 +120,8 @@
 			app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/result`,{...cardNoParams,q:this.searchQ},(res:any)=>{
 				if(res.list){
 					const list = res.list.map(({anonymous,dicKey,...rest}:any)=>{
-						const {userName,avatar} = anonymous ? anonymousInfo : res.dic[dicKey];
-						return {...rest,userName,avatar,anonymous}
+						const userData = anonymous ? anonymousInfo : res.dic[dicKey];
+						return {...rest,anonymous,...userData}
 					})
 					this.teamDataList = this.teamDataList.concat(list)
 				}
