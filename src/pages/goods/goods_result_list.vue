@@ -30,7 +30,7 @@
 					<view class="title">
 						<muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit" :borderRadius="'50%'" @click="goPersonHome(item.userId,item.anonymous)"></muqian-lazyLoad>
 						<text @click="goPersonHome(item.userId,item.anonymous)">{{item.userName}}</text>
-						<medalIcon v-if="!item.anonymous && item.medal" :src="item.medal.pic" :userId="0"/>
+						<medalIcon v-if="!item.anonymous && item.medal" :src="item.medal.pic" :userId="item.userId"/>
 					</view>
 					<view class="desc">{{item.no}}</view>
 					<view class="time">{{$u.timeFormat(item.time,'yyyy-mm-dd hh:MM:ss')}}</view>

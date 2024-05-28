@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-28 11:23:31
+ * @LastEditTime: 2024-05-28 11:43:29
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -142,7 +142,7 @@
 							<image class="record-item-avatar" @click="goPersonHome(item.userId,item.anonymous)" :src="decodeURIComponent(item.avatar||defaultAvatar)" />
 							<view class="record-item-name-box">
 								<view class="record-item-name u-line-1" @click="goPersonHome(item.userId,item.anonymous)">{{item.userName}}</view>
-								<medalIcon v-if="!item.anonymous && item.medal" :src="item.medal.pic" :userId="0"/>
+								<medalIcon v-if="!item.anonymous && item.medal" :src="item.medal.pic" :userId="item.userId"/>
 							</view>
 							<view class="record-item-title u-line-1">{{goodsData.title}}</view>
 							<view class="record-item-num u-line-1">x{{item.num}}</view>
