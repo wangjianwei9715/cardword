@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-11 13:34:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-27 17:16:26
+ * @LastEditTime: 2024-05-28 14:00:04
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -56,7 +56,7 @@
 					:key="index"
 					@click="goMedalDetail(item.id)"
 				>
-					<image class="grid-pic" :class="{'nohas':!item.isGet}" :src="item.pic"/>
+					<image class="grid-pic" :class="{'nohas':!item.isGet&&isMine}" :src="item.pic"/>
 					<view>
 						<image class="grid-reward" :class="{'nohas':item.receive==0}" v-if="item.max_level_amount>0&&item.receive!=2" src="/static/medal/detail/reward.png"/>
 						<text class="grid-text">{{ item.name }}</text>
