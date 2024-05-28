@@ -73,11 +73,16 @@ export default class PlatformManager {
 	// 登录记录
 	loginRecord(){
 		const loginToken = uni.getStorageSync("token");
+		if(!loginToken) return;
+
 		const currentDate = new Date().toDateString();
-		if(!loginToken || uni.getStorageSync("loginRecordDate") === currentDate) return;
-		
-		uni.setStorageSync("loginRecordDate",currentDate);
-		app.http.Post("medal/login/record",{})
+		const loginRecordDate = uni.getStorageSync("loginRecordDate")
+		app.user.getAppDataUserId().then((userId:any)=>{
+			if(loginRecordDate[userId]==currentDate) return;
+
+			uni.setStorageSync("loginRecordDate",{...loginRecordDate,[userId]:currentDate});
+			app.http.Post("medal/login/record",{})
+		});
 	}
 	// 微信直播间
 	goWeChatLive(item: any) {
