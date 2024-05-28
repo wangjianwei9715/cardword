@@ -12,7 +12,7 @@
 				{{currenUnlockData.after}}
 			</view>
 			<view class="level">
-				<view class="level-index" v-for="(item,index) in levelList" :key="index" @click="currentLevel=index">
+				<view class="level-index" v-show="levelList.length>1" v-for="(item,index) in levelList" :key="index" @click="currentLevel=index">
 					<view class="pic-box">
 						<image class="level-pic" :class="{'current-level':currentLevel==index,'nohas':!item.isGet}" :src="item.pic"/>
 						<view v-if="item.amount&&isMine" class="icon-reward"></view>
