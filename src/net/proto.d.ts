@@ -5810,11 +5810,17 @@ export namespace message {
             /** Chat action */
             action?: (string|null);
 
+            /** Chat medalId */
+            medalId?: (number|Long|null);
+
             /** Chat medalName */
             medalName?: (string|null);
 
             /** Chat medalPic */
             medalPic?: (string|null);
+
+            /** Chat userId */
+            userId?: (number|Long|null);
         }
 
         /** Represents a Chat. */
@@ -5841,11 +5847,17 @@ export namespace message {
             /** Chat action. */
             public action: string;
 
+            /** Chat medalId. */
+            public medalId: (number|Long);
+
             /** Chat medalName. */
             public medalName: string;
 
             /** Chat medalPic. */
             public medalPic: string;
+
+            /** Chat userId. */
+            public userId: (number|Long);
 
             /**
              * Creates a new Chat instance using the specified properties.

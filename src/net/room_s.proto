@@ -101,8 +101,10 @@ message BroadCastChatMessage {
         string senderAvatar = 3;  //头像 空则使用默认头像
         string content = 4;  // content 和 action 二选一
         string action = 5; //  action = 来了、走了 如果内容是gm:xx已禁言 则有当前用户是gm的时候来显示该条记录
-        string medalName = 6;
-        string medalPic = 7;
+        int64  medalId = 6;
+        string medalName = 7;
+        string medalPic = 8 ;
+        int64  userId = 9;
     }
     repeated Chat list = 1;
 }

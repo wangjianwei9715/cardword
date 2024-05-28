@@ -13446,8 +13446,10 @@ $root.message = (function() {
              * @property {string|null} [senderAvatar] Chat senderAvatar
              * @property {string|null} [content] Chat content
              * @property {string|null} [action] Chat action
+             * @property {number|Long|null} [medalId] Chat medalId
              * @property {string|null} [medalName] Chat medalName
              * @property {string|null} [medalPic] Chat medalPic
+             * @property {number|Long|null} [userId] Chat userId
              */
 
             /**
@@ -13506,6 +13508,14 @@ $root.message = (function() {
             Chat.prototype.action = "";
 
             /**
+             * Chat medalId.
+             * @member {number|Long} medalId
+             * @memberof message.BroadCastChatMessage.Chat
+             * @instance
+             */
+            Chat.prototype.medalId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+            /**
              * Chat medalName.
              * @member {string} medalName
              * @memberof message.BroadCastChatMessage.Chat
@@ -13520,6 +13530,14 @@ $root.message = (function() {
              * @instance
              */
             Chat.prototype.medalPic = "";
+
+            /**
+             * Chat userId.
+             * @member {number|Long} userId
+             * @memberof message.BroadCastChatMessage.Chat
+             * @instance
+             */
+            Chat.prototype.userId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
             /**
              * Creates a new Chat instance using the specified properties.
@@ -13555,10 +13573,14 @@ $root.message = (function() {
                     writer.uint32(/* id 4, wireType 2 =*/34).string(message.content);
                 if (message.action != null && Object.hasOwnProperty.call(message, "action"))
                     writer.uint32(/* id 5, wireType 2 =*/42).string(message.action);
+                if (message.medalId != null && Object.hasOwnProperty.call(message, "medalId"))
+                    writer.uint32(/* id 6, wireType 0 =*/48).int64(message.medalId);
                 if (message.medalName != null && Object.hasOwnProperty.call(message, "medalName"))
-                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.medalName);
+                    writer.uint32(/* id 7, wireType 2 =*/58).string(message.medalName);
                 if (message.medalPic != null && Object.hasOwnProperty.call(message, "medalPic"))
-                    writer.uint32(/* id 7, wireType 2 =*/58).string(message.medalPic);
+                    writer.uint32(/* id 8, wireType 2 =*/66).string(message.medalPic);
+                if (message.userId != null && Object.hasOwnProperty.call(message, "userId"))
+                    writer.uint32(/* id 9, wireType 0 =*/72).int64(message.userId);
                 return writer;
             };
 
@@ -13614,11 +13636,19 @@ $root.message = (function() {
                             break;
                         }
                     case 6: {
-                            message.medalName = reader.string();
+                            message.medalId = reader.int64();
                             break;
                         }
                     case 7: {
+                            message.medalName = reader.string();
+                            break;
+                        }
+                    case 8: {
                             message.medalPic = reader.string();
+                            break;
+                        }
+                    case 9: {
+                            message.userId = reader.int64();
                             break;
                         }
                     default:
@@ -13671,12 +13701,18 @@ $root.message = (function() {
                 if (message.action != null && message.hasOwnProperty("action"))
                     if (!$util.isString(message.action))
                         return "action: string expected";
+                if (message.medalId != null && message.hasOwnProperty("medalId"))
+                    if (!$util.isInteger(message.medalId) && !(message.medalId && $util.isInteger(message.medalId.low) && $util.isInteger(message.medalId.high)))
+                        return "medalId: integer|Long expected";
                 if (message.medalName != null && message.hasOwnProperty("medalName"))
                     if (!$util.isString(message.medalName))
                         return "medalName: string expected";
                 if (message.medalPic != null && message.hasOwnProperty("medalPic"))
                     if (!$util.isString(message.medalPic))
                         return "medalPic: string expected";
+                if (message.userId != null && message.hasOwnProperty("userId"))
+                    if (!$util.isInteger(message.userId) && !(message.userId && $util.isInteger(message.userId.low) && $util.isInteger(message.userId.high)))
+                        return "userId: integer|Long expected";
                 return null;
             };
 
@@ -13702,10 +13738,28 @@ $root.message = (function() {
                     message.content = String(object.content);
                 if (object.action != null)
                     message.action = String(object.action);
+                if (object.medalId != null)
+                    if ($util.Long)
+                        (message.medalId = $util.Long.fromValue(object.medalId)).unsigned = false;
+                    else if (typeof object.medalId === "string")
+                        message.medalId = parseInt(object.medalId, 10);
+                    else if (typeof object.medalId === "number")
+                        message.medalId = object.medalId;
+                    else if (typeof object.medalId === "object")
+                        message.medalId = new $util.LongBits(object.medalId.low >>> 0, object.medalId.high >>> 0).toNumber();
                 if (object.medalName != null)
                     message.medalName = String(object.medalName);
                 if (object.medalPic != null)
                     message.medalPic = String(object.medalPic);
+                if (object.userId != null)
+                    if ($util.Long)
+                        (message.userId = $util.Long.fromValue(object.userId)).unsigned = false;
+                    else if (typeof object.userId === "string")
+                        message.userId = parseInt(object.userId, 10);
+                    else if (typeof object.userId === "number")
+                        message.userId = object.userId;
+                    else if (typeof object.userId === "object")
+                        message.userId = new $util.LongBits(object.userId.low >>> 0, object.userId.high >>> 0).toNumber();
                 return message;
             };
 
@@ -13728,8 +13782,18 @@ $root.message = (function() {
                     object.senderAvatar = "";
                     object.content = "";
                     object.action = "";
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, false);
+                        object.medalId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    } else
+                        object.medalId = options.longs === String ? "0" : 0;
                     object.medalName = "";
                     object.medalPic = "";
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, false);
+                        object.userId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    } else
+                        object.userId = options.longs === String ? "0" : 0;
                 }
                 if (message.uid != null && message.hasOwnProperty("uid"))
                     object.uid = message.uid;
@@ -13741,10 +13805,20 @@ $root.message = (function() {
                     object.content = message.content;
                 if (message.action != null && message.hasOwnProperty("action"))
                     object.action = message.action;
+                if (message.medalId != null && message.hasOwnProperty("medalId"))
+                    if (typeof message.medalId === "number")
+                        object.medalId = options.longs === String ? String(message.medalId) : message.medalId;
+                    else
+                        object.medalId = options.longs === String ? $util.Long.prototype.toString.call(message.medalId) : options.longs === Number ? new $util.LongBits(message.medalId.low >>> 0, message.medalId.high >>> 0).toNumber() : message.medalId;
                 if (message.medalName != null && message.hasOwnProperty("medalName"))
                     object.medalName = message.medalName;
                 if (message.medalPic != null && message.hasOwnProperty("medalPic"))
                     object.medalPic = message.medalPic;
+                if (message.userId != null && message.hasOwnProperty("userId"))
+                    if (typeof message.userId === "number")
+                        object.userId = options.longs === String ? String(message.userId) : message.userId;
+                    else
+                        object.userId = options.longs === String ? $util.Long.prototype.toString.call(message.userId) : options.longs === Number ? new $util.LongBits(message.userId.low >>> 0, message.userId.high >>> 0).toNumber() : message.userId;
                 return object;
             };
 
