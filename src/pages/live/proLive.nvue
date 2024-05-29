@@ -367,6 +367,7 @@ import { Md5 } from "ts-md5";
 import { PackageBase } from "@/net/PackageBase";
 import { Message } from "@/net/NetDefine";
 import * as proto from "../../net/proto";
+import {followActionByUser} from "../cardForum/func/index.js"
 let UIImpactFeedbackGenerator = null;
 let impact = null;
 const app = getApp().globalData.app;
@@ -421,8 +422,9 @@ const engineListen = [
   { name: "apiCalledResult", cnName: "接口回调" },
   { name: "roomStreamExtraInfoUpdate", cnName: "房间内流附加信息" },
   { name: "publisherQualityUpdate", cnName: "推流质量回调" },
+  { name: "publisherStateUpdate", cnName: "推流状态回调" },
   { name: "roomStateUpdate", cnName: '房间状态变化通知' },
-  { name: "IMRecvCustomCommand", cnName: "接收自定义信令通知" }
+  { name: "IMRecvCustomCommand", cnName: "接收自定义信令通知" },
   // {name:"playerQualityUpdate",cnName:'拉流质量'}
 ];
 export default {
@@ -581,6 +583,7 @@ export default {
     this.stopPublishingStream(true);
     uni.$off("socketClose", this.socketClose);
     uni.$off("loginSuccess", this.loginSuccess)
+    uni.$off("userFollow",this.userFollowChange)
     uni.offKeyboardHeightChange(this.keyBoardHeightChange);
     this.leaveRoom();
     this.offEngineListen();
@@ -610,6 +613,7 @@ export default {
     //监听socket状态
     uni.$on("socketClose", this.socketClose);
     uni.$on("loginSuccess", this.loginSuccess)
+    uni.$on("userFollow",this.userFollowChange)
     this.roomID = query.roomID;
     this.streamID = query.streamID;
     //获取直播间数据
@@ -730,7 +734,7 @@ export default {
     },
     //判断推流是否正常
     checkPushFlowIsNormal(val) {
-      console.log('正在直播中，距离上次推流质量回调获取时间', val - this.pushFlowStamp,);
+      // console.log('正在直播中，距离上次推流质量回调获取时间', val - this.pushFlowStamp,);
       if (val - this.pushFlowStamp >= 15) {
         this.onLive = false
         uni.showModal({
@@ -782,6 +786,13 @@ export default {
           console.log("跳转失败", err);
         }
       });
+    },
+    onClickUserFollow(userId,isFollow){
+      followActionByUser(userId,isFollow).then(res=>{
+      })
+    },
+    userFollowChange(res){
+      this.informH5Action("userFollowChange", {userId:res.userId,isFollow:res.nowIsFollow});
     },
     back() {
       uni.navigateBack({ delta: 1 });
@@ -1934,7 +1945,7 @@ export default {
       uni.setStorageSync('liveShieldEffects', bol)
     },
     publisherQualityUpdate(streamID, quality) {
-      console.log(quality);
+      // console.log(quality);
       this.pushFlowStamp = Math.round(+new Date() / 1000)
       if (quality.level == 3) {
         uni.showToast({
@@ -1943,12 +1954,23 @@ export default {
           duration: 2500
         });
       }
-      if (quality.level == 4) {
-        uni.showToast({
-          title: "推流中断,请检查是否连接至互联网",
-          icon: "none",
-          duration: 2500
-        });
+      // if (quality.level == 4) {
+      //   uni.showToast({
+      //     title: "推流中断,请检查是否连接至互联网",
+      //     icon: "none",
+      //     duration: 2500
+      //   });
+      // }
+    },
+    publisherStateUpdate(streamID,state){
+      // console.log("推流状态回调",streamID,state);
+      if (state==1){
+        this.UIClickFeedBack()
+        uni.showLoading({
+          title:"重新推流中..."
+        })
+      }else{
+        uni.hideLoading()
       }
     },
     playerQualityUpdate(streamID, quality) {

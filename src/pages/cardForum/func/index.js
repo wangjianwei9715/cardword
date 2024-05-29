@@ -74,6 +74,7 @@ export function followActionByUser(userId, isFollow) {
         app.http.Post(`cardCircle/${isFollow ? 'un/' : ''}follow/user/${userId}`, {}, (res) => {
             uni.$emit("userFollow", {
                 userId: userId,
+                nowIsFollow:!isFollow,
                 data: res.data || {}
             })
             resolve(true)
