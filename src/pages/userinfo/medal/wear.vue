@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-13 09:43:42
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-27 17:18:51
+ * @LastEditTime: 2024-05-29 09:22:00
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -36,7 +36,7 @@
 	import BaseNode from '@/base/BaseNode.vue';
 	class ListParams {
 		pageIndex=1;
-		pageSize=10;
+		pageSize=30;
 		isFetchEnd=false
 	}
 	@Component({

@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-11 13:34:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-28 14:00:04
+ * @LastEditTime: 2024-05-29 09:19:22
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -77,7 +77,7 @@
 	import BaseNode from '@/base/BaseNode.vue';
 	class ListParams {
 		pageIndex=1;
-		pageSize=10;
+		pageSize=18;
 		isFetchEnd=false
 	}
 	const navHeight = app.statusBarHeight + uni.upx2px(88);
