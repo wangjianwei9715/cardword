@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-13 09:43:42
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-29 09:22:00
+ * @LastEditTime: 2024-05-29 15:51:13
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -69,6 +69,7 @@
 			const url = unwear ? 'medal/userMedal/unwear' : `medal/userMedal/wear/${item.id}`
 			app.http.Post(url,{},(res:any)=>{
 				uni.showToast({ title: '操作成功', icon: 'none' });
+				this.medalList.forEach((x:any)=>x.wear=0)
 				item.wear = unwear ? 0 : 1;
 			})
             

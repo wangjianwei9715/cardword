@@ -22,7 +22,7 @@
 			</view>
 			<view v-if="currentLevelData.amount" @click="onClickGerReward">
 				<view class="reward-title">- 点亮奖励 -</view>
-				<image class="reward-pic" :style="{'width':currentLevelData.receive==receiveState.received?'158rpx':'147rpx'}" :src="`/static/medal/detail/coupon${currentLevelData.receive==receiveState.received?'_':''}.png`"/>
+				<image class="reward-pic" :style="rewardPicData.style" :src="rewardPicData.src"/>
 				<view class="reward-name">{{currentLevelData.amount}}元优惠券</view>
 			</view>
 		</view>
@@ -49,7 +49,6 @@
 		receiveState = receiveState
 		app = app;
 		medalId = 0;
-		detailData:any = {};
 		levelList = [];
 		currentLevel = 0;
 		startClientX = 0;
@@ -61,7 +60,7 @@
 			this.homeUserId = +query.homeUserId;
 			this.medalDetail()
 		}
-		get currentLevelData(){
+		get currentLevelData():any{
 			return this.levelList[this.currentLevel] || {};
 		}
 		get currenUnlockData(){
@@ -83,17 +82,23 @@
 			}
 		}
 		get buttonTxt(){
-			const { isGet } = this.currentLevelData
-			return isGet ? (this.detailData.wear?"取消佩戴":"佩戴") : "暂未获得"
+			const { isGet, wear } = this.currentLevelData
+			return isGet ? (wear?"取消佩戴":"佩戴") : "暂未获得"
 		}
 		get paramsUserId(){
 			return {
 				userId:this.isMine?null:this.homeUserId
 			}
 		}
+		get rewardPicData() {
+			const received = this.currentLevelData.receive==receiveState.received;
+			return {
+				style:{'width':received?'158rpx':'147rpx'},
+				src:`/static/medal/detail/coupon${received?'_':''}.png`
+			}
+		}
 		medalDetail(){
-			app.http.Get(`medal/medal/detail/${this.medalId}`,this.paramsUserId,({list,...rest}:any)=>{
-				this.detailData = rest
+			app.http.Get(`medal/medal/detail/${this.medalId}`,this.paramsUserId,({list}:any)=>{
 				this.levelList = list;
 			})
 		}
@@ -121,14 +126,14 @@
 			})
 		}
 		onClickWear(){
-			const { isGet } = this.currentLevelData;
+			const { isGet, wear, id } = this.currentLevelData;
 			if(!isGet) return;
 
-			const { wear, maxGetId } = this.detailData
-			const url = wear ? 'medal/userMedal/unwear' : `medal/userMedal/wear/${maxGetId}`
+			const url = wear ? 'medal/userMedal/unwear' : `medal/userMedal/wear/${id}`
 			app.http.Post(url,{},(res:any)=>{
 				uni.$emit('wearChange',wear?"unwear":this.currentLevelData);
-				this.detailData.wear = wear ? 0 : 1;
+				this.levelList.forEach((x:any)=>x.wear=0)
+				this.currentLevelData.wear = wear ? 0 : 1;
 			})
 			app.platform.UIClickFeedBack(); 
 		}
