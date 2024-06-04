@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-11 13:34:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-29 09:19:22
+ * @LastEditTime: 2024-06-04 10:32:23
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -12,7 +12,7 @@
 		<transitionNav :needIconShadow="false" :slotLeftReverseSide="true" ref="transitionNav" :whiteBack="true" navColor="29,30,34" title="" style="z-index: 999;">
 			<template slot="slotLeft">
                 <view class="nav-left">
-					<image class="left-avatar" :src="userInfo.avatar ? $parsePic(userInfo.avatar) : defaultAvatar"/>
+					<image class="left-avatar" :src="userAvatar"/>
 					<view class="left-username">{{userInfo.userName}}</view>
 				</view>
             </template>
@@ -29,7 +29,7 @@
 			</view>
 			<view class="medal-userinfo">
 				<view class="avatar-box">
-					<image class="avatar" :src="userInfo.avatar ? $parsePic(userInfo.avatar) : defaultAvatar"/>
+					<image class="avatar" :src="userAvatar"/>
 				</view>
 				<view class="info-box">
 					<view class="info-name">{{userInfo.userName}}</view>
@@ -94,7 +94,6 @@
 	})
 	export default class ClassName extends BaseNode {
 		app = app;
-		defaultAvatar = app.defaultAvatar;
 		listParams = new ListParams()
 		pageJump = app.navigateTo.pageJump;
 		userId = 0;
@@ -139,6 +138,11 @@
 		}
 		get tabCurrentType(){
 			return typeTabs[this.tabCurrent].type
+		}
+		get userAvatar() : string { 
+			const { avatar } = this.userInfo
+			//@ts-ignore
+			return avatar ? this.$parsePic(avatar) : app.defaultAvatar
 		}
 		goMedalDetail(id:number){
 			this.pageJump(`/pages/userinfo/medal/detail?id=${id}&isMine=${this.isMine?1:0}&homeUserId=${this.homeUserId}`)
