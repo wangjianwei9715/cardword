@@ -1,5 +1,14 @@
+<!--
+ * @FilePath: \jichao_app_2\src\components\medalIcon\medalIcon.vue
+ * @Author: wjw
+ * @Date: 2024-05-28 09:06:53
+ * @LastEditors: 
+ * @LastEditTime: 2024-06-04 14:18:11
+ * Copyright: 2024 .
+ * @Descripttion: 
+-->
 <template>
-	<image class="medal-icon" :src="src" @click="onClickIcon"></image>
+	<image class="medal-icon" v-show="src" :src="src" @click="onClickIcon"></image>
 </template>
 
 <script lang="ts">
