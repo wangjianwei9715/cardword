@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 10:58:55
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-13 15:12:03
+ * @LastEditTime: 2024-06-04 09:53:42
  * @FilePath: \jichao_app_2\src\pages.json
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -405,61 +405,6 @@
 			"root": "pages/act",
 			"pages": [
 				{
-					"path": "dewu/index",
-					"style": {
-						"navigationStyle": "custom",
-						"navigationBarTitleText": "得物卡牌评级",
-						"enablePullDownRefresh": true,
-						"backgroundColorTop": "#000",
-						"backgroundColorBottom": "#000",
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
-					"path": "dewu/rule",
-					"style": {
-						"navigationBarBackgroundColor": "#000000",
-						"navigationBarTitleText": "规则说明",
-						"navigationBarTextStyle": "white",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#000",
-						"backgroundColorBottom": "#000",
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
-					"path": "dewu/topicRule",
-					"style": {
-						"navigationStyle": "custom",
-						"navigationBarBackgroundColor": "#000000",
-						"navigationBarTitleText": "规则说明",
-						"navigationBarTextStyle": "white",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#000",
-						"backgroundColorBottom": "#000",
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
-					"path": "dewu/list",
-					"style": {
-						"navigationStyle": "custom",
-						"navigationBarTitleText": "得物卡牌评级",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#000",
-						"backgroundColorBottom": "#000",
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
 					"path": "ref/ref",
 					"style": {
 						"navigationStyle": "custom",
@@ -630,48 +575,6 @@
 					}
 				},
 				{
-					"path": "collectSpCard/index",
-					"style": {
-						"navigationBarTitleText": "收集特卡",
-						"navigationBarBackgroundColor": "#ffffff",
-						"transparentTitle": "auto",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": true,
-						"backgroundColorTop": "#201921", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#000", //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-						"app-plus": {
-							"bounce": "none",
-							"pullToRefresh":{
-								"support":true
-							}
-						}
-					}
-				},
-				{
-					"path": "collectSpCard/rule",
-					"style": {
-						"navigationBarTitleText": "活动规则",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
-					"path": "collectSpCard/record",
-					"style": {
-						"navigationBarTitleText": "奖品记录",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
 					"path": "forumDraw/index",
 					"style": {
 						"navigationStyle": "custom",
@@ -703,43 +606,6 @@
 					"style": {
 						"navigationStyle": "custom",
 						"navigationBarTitleText": "我的背包",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
-					"path": "luckyBag/index",
-					"style": {
-						"navigationStyle": "custom",
-						"navigationBarTitleText": "福袋主页",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": true,
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
-					"path": "luckyBag/log",
-					"style": {
-						"navigationBarTitleText": "福袋记录",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
-					"path": "luckyBag/rule",
-					"style": {
-						"navigationBarTitleText": "规则说明",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,

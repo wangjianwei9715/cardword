@@ -4,10 +4,6 @@
 		<view class="winning-popup">
 			<view class="winning-img"  :class="{'img-show':showImg}">
 				<muqian-lazyLoad @click="onClickGoGoods" class="img" :style="goodData.style || ''" :src="decodeURIComponent(goodData.pic_url)" />
-				<!-- 得物活动特殊处理 -->
-				<view class="dewuButton" v-if="goodData.act&&goodData.act==='dewu'" @click="onClickGoGoods">
-					18卡币立即兑换
-				</view>
 			</view>
 			<view class="close-box">
 				<image @click="onClickClose" class="close-img" src="@/static/index/close.png"/>
@@ -159,17 +155,5 @@
     font-family: "FZLanTingHeiS-H-GB";
     src: url("@/common/Tao/FZLanTingHeiSH.ttf");
 }
-.dewuButton{
-	width:400rpx;height:113rpx;margin: 0 auto;display: block;margin-top: -50rpx;
-	background-size: 100% 100%;
-	background-image: url("@/static/act/dewu/adButton.png" );
-	font-size: 38rpx;
-    font-family: FZLanTingHeiS-H-GB;
-    font-weight: 400;
-    color: #2C2C2C;
-	text-align: center;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
+
 </style>

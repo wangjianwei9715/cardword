@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-11-13 16:59:19
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-11-15 15:40:17
+ * @LastEditTime: 2024-06-04 09:54:50
  * @FilePath: \jichao_app_2\src\pages\drawCard\components\popup\popup.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -12,9 +12,7 @@
 			<view class="tipsTitle" v-if="type == 1">温馨提示</view>
 			<view class="title" v-if="type == 1">您有{{ num }}个福袋待开启</view>
 			<view class="title" v-if="type == 0">恭喜，您得到了一个福袋！</view>
-			<image class="image" src="/static/act/luckyBag/bag_open.png"></image>
 			<view class="tips" v-if="type==0">
-				<image class="icon" src="/static/act/luckyBag/i.png" />
 				请在拼团完成后前往活动页面开启奖励
 			</view>
 			<view class="tips" v-if="type==1" style="position:relative;bottom:40rpx;" @click.stop="onClose">
@@ -41,11 +39,6 @@ export default class ClassName extends BaseComponent {
 	num!: number;
 
 	onClickBtn(){
-		if(this.type==1){
-			uni.navigateTo({
-				url: `/pages/act/luckyBag/index`
-			})
-		}
 		this.onClose()
 	}
 	onClickNoShow(){
