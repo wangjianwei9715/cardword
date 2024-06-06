@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-06-04 10:48:35
+ * @LastEditTime: 2024-06-06 13:45:14
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -15,13 +15,13 @@
                 <view class="back" @click="goBack">
                     <image src="@/static/index/v3/icon_back.png"></image>
                 </view>
-                <view @click="goPersonHome" style="display:flex">
+                <view style="display:flex;align-items: center">
                     <image
                         :src="forumDetail.avatar ? $parsePic(forumDetail.avatar) : (isColumn ? '/static/userinfo/logo.png' : app.defaultAvatar)"
-                        class="topAvatar">
+                        class="topAvatar" @click="goPersonHome">
                     </image>
-                    </image>
-                    <view class="topName u-line-1">{{ forumDetail.userName || "获取中" }}</view>
+                    <view class="topName u-line-1" @click="goPersonHome">{{ forumDetail.userName || "获取中" }}</view>
+                    <medalIcon v-if="forumDetail.medal" :src="forumDetail.medal.pic" :userId="forumDetail.userId"/>
                 </view>
                 <view class="flex1"></view>
                 <view class="follow flexCenter" v-if="!isPerson && !isColumn" :class="{ follow_dis: isFollow }"
