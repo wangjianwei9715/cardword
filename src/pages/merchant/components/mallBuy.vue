@@ -192,7 +192,7 @@ export default class ClassName extends BaseComponent {
 	border-radius: 5rpx;
 	color: #fff;
 	font-size: 25rpx;
-	font-weight: 500;
+	font-weight: 600;
 	margin: 14rpx auto;
 	display: flex;
 	align-items: center;

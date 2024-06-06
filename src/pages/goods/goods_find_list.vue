@@ -469,7 +469,7 @@ page {
 //       align-items: center;
 //       font-size: $font-24;
 //       
-//       font-weight: 500;
+//       font-weight: 600;
 //       color: #14151a;
 //     }
 

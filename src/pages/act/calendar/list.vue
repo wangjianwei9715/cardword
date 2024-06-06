@@ -255,7 +255,7 @@
 	}
 	.header-center{
 		font-size: 36rpx;
-		font-weight: 500;
+		font-weight: 600;
 		color: #5D5D5D;
 		display: flex;
 		align-items: center;

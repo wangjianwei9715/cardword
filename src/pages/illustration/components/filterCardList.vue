@@ -437,7 +437,7 @@
             width: 100%;
             font-size: 25rpx;
             
-            font-weight: 500;
+            font-weight: 600;
             color: #959695;
             display: flex;
             justify-content: center;
@@ -606,7 +606,7 @@
                 width: 100%;
                 font-size: 29rpx;
                 
-                font-weight: 500;
+                font-weight: 600;
                 color: #959695;
                 display: flex;
                 justify-content: center;

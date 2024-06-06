@@ -705,7 +705,7 @@
 		background-size: 100% 100%;
 		font-size: 20rpx;
 		
-		font-weight: 500;
+		font-weight: 600;
 		color: #ffffff;
 		text-align: center;
 		line-height: 22rpx;

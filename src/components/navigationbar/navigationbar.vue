@@ -115,7 +115,7 @@ export default class navigationbar extends BaseComponent {
 		line-height: 88rpx;
 		font-size: 18px;
 		
-		font-weight: 500;
+		font-weight: 600;
 		color: #333;
 	}
 

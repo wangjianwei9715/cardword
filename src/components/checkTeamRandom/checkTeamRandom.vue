@@ -362,7 +362,7 @@
 	.teamtion-header-title .text-price{
 		font-size: 25rpx;
 		
-		font-weight: 500;
+		font-weight: 600;
 		color: #333333;
 	}
 	.teamtion-header-title .teamtion-price{
@@ -717,7 +717,7 @@
 		
 		line-height: 30rpx;
 		text-align: center;
-		font-weight: 500;
+		font-weight: 600;
 		color: #333333;
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 2;

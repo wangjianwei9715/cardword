@@ -161,7 +161,7 @@
 			bottom:24rpx;
 			font-size: 32rpx;
 			
-			font-weight: 500;
+			font-weight: 600;
 			color: #FFFFFF;
 			text-align: center;
 			line-height: 90rpx;

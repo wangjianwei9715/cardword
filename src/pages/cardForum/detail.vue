@@ -892,7 +892,7 @@ export default class ClassName extends BaseNode {
     .topName {
         font-size: 27rpx;
         
-        font-weight: 500;
+        font-weight: 600;
         color: #333333;
         flex: 1;
         line-height: 61rpx;
@@ -987,7 +987,7 @@ export default class ClassName extends BaseNode {
         .goodsInfo {
             font-size: 22rpx;
             
-            font-weight: 500;
+            font-weight: 600;
             color: #333333;
             line-height: 25rpx;
             flex: 1;

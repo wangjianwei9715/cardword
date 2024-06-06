@@ -561,7 +561,7 @@ page {
   .luckyNum {
     font-size: 26rpx;
     
-    font-weight: 500;
+    font-weight: 600;
     color: #FCF1E3;
     margin-top: 238rpx;
   }

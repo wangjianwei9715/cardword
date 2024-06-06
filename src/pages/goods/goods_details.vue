@@ -979,7 +979,7 @@
 		text-align: right;
 		font-size: 21rpx;
 		
-		font-weight: 500;
+		font-weight: 600;
 		color: #FFFFFF;
 		margin-bottom: 10rpx;
 		margin-top: 5rpx;
@@ -1008,7 +1008,7 @@
 			width: 100%;
 			font-size: 30rpx;
 			
-			font-weight: 500;
+			font-weight: 600;
 			color: #333333;
 			line-height: 44rpx;
 			word-break:break-all;
@@ -1143,7 +1143,7 @@
 			text-align: end;
 			font-size: $font-20;
 			
-			font-weight: 500;
+			font-weight: 600;
 			color: #A9ABB4;
 		}
 
@@ -1532,7 +1532,7 @@
 	.detail-title text {
 		
 		font-size: 23rpx;
-		font-weight: 500;
+		font-weight: 600;
 		color: #818080;
 	}
 
@@ -1553,7 +1553,7 @@
 	.detail-bottom-explain {
 		
 		font-size: 26rpx;
-		font-weight: 500;
+		font-weight: 600;
 		color: #818080;
 		line-height: 40rpx;
 		margin-bottom: 30rpx;
@@ -1562,7 +1562,7 @@
 	.detail-bottom-explain-title {
 		
 		font-size: 27rpx;
-		font-weight: 500;
+		font-weight: 600;
 		color: #333;
 		line-height: 40rpx;
 		margin-bottom: 10rpx;

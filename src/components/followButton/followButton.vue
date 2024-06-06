@@ -109,7 +109,7 @@ export default class ClassName extends BaseComponent {
   border-radius: 3rpx;
   font-size: 29rpx;
   
-  font-weight: 500;
+  font-weight: 600;
   color: #F6F7FB;
 }
 

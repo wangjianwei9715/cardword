@@ -327,7 +327,7 @@
     .swiper-number{
       font-size: 42rpx;
       
-      font-weight: 500;
+      font-weight: 600;
       color: #333333;
     }
     .swiper-number text{

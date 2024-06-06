@@ -90,7 +90,7 @@
 	width: 100%;
 	font-size: 32rpx;
 	
-	font-weight: 500;
+	font-weight: 600;
 	color: rgba(0,0,0,0.9);
 }
 .address-tips {

@@ -182,7 +182,7 @@ page {
             margin-left: 16rpx;
             font-size: 25rpx;
             
-            font-weight: 500;
+            font-weight: 600;
             color: #333333;
         }
     }
@@ -407,7 +407,7 @@ page {
     justify-content: center;
     font-size: 25rpx;
     
-    font-weight: 500;
+    font-weight: 600;
     line-height: 52rpx;
     background: #FA1545;
     color:#FFFFFF;

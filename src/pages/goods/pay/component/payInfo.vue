@@ -304,7 +304,7 @@
 			margin-top: 58rpx;
 			font-size: 28rpx;
 			
-			font-weight: 500;
+			font-weight: 600;
 			color: rgba(0,0,0,0.9);
 			line-height: 28rpx;
 		}

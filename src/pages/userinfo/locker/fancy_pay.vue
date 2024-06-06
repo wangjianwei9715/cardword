@@ -176,7 +176,7 @@
 		height:40rpx;
 		font-size: 29rpx;
 		
-		font-weight: 500;
+		font-weight: 600;
 		color: $btn-red;
 		line-height: 40rpx;
 		margin-left: 12rpx;
@@ -184,7 +184,7 @@
 	.money-price text{
 		font-size: 42rpx;
 		
-		font-weight: 500;
+		font-weight: 600;
 	}
 	.btn-payment {
 		width:428rpx;

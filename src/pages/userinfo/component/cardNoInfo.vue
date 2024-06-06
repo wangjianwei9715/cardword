@@ -91,7 +91,7 @@
 		.cname{
 			font-size: 24rpx;
 			
-			font-weight: 500;
+			font-weight: 600;
 			color: #333333;
 		}
 		.ename{

@@ -692,7 +692,7 @@
 						align-items: center;
 						font-size: 25rpx;
 						
-						font-weight: 500;
+						font-weight: 600;
 						color: #EBBF7C;
 					}
 					&-count{
@@ -899,7 +899,7 @@
 				height:40rpx;
 				font-size: 28rpx;
 				
-				font-weight: 500;
+				font-weight: 600;
 				color: #000000;
 				line-height: 30rpx;
 				margin-left: 6rpx;
@@ -907,13 +907,13 @@
 			.total-price .price-text{
 				font-size: 36rpx;
 				font-family: Impact;
-				font-weight: 500;
+				font-weight: 600;
 				margin-left:2rpx;
 			}
 			.total-price .decimal{
 				font-size: 28rpx;
 				font-family: Impact;
-				font-weight: 500;
+				font-weight: 600;
 			}
 			.info{
 				font-weight: bold;

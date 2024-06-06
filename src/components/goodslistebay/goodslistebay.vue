@@ -96,7 +96,7 @@
 			line-height: 20rpx;
 			font-size: 16rpx;
 			
-			font-weight: 500;
+			font-weight: 600;
 			color: #FFFFFF;
 		}
 		&-plan-now{

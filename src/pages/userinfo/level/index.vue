@@ -354,7 +354,7 @@ page {
     .userName {
         font-size: 31rpx;
         
-        font-weight: 500;
+        font-weight: 600;
         color: #FFFFFF;
     }
 
@@ -367,7 +367,7 @@ page {
         border-radius: 3rpx;
         font-size: 31rpx;
         
-        font-weight: 500;
+        font-weight: 600;
         color: #333333;
         margin-left: 22rpx;
     }

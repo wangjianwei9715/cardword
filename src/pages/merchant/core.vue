@@ -669,7 +669,7 @@ page {
     background: #f2f2f2;
     border-radius: 3rpx;
     font-size: 29rpx;
-    font-weight: 500;
+    font-weight: 600;
     color: #7c7c7c;
   }
 
@@ -680,7 +680,7 @@ page {
     border-radius: 3rpx;
     font-size: 29rpx;
     
-    font-weight: 500;
+    font-weight: 600;
     color: #f6f7fb;
   }
 
@@ -754,7 +754,7 @@ page {
 
   .rule-name {
     font-size: 27rpx;
-    font-weight: 500;
+    font-weight: 600;
     color: #333333;
   }
 

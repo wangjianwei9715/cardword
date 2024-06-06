@@ -290,7 +290,7 @@
 							flex-wrap: wrap;
 							font-size: 25rpx;
 							
-							font-weight: 500;
+							font-weight: 600;
 							color: #CEE0F5;
 							image{
 								width: 140rpx;

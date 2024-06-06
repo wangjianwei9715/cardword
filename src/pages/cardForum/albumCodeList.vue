@@ -225,7 +225,7 @@
 			.topName {
 				font-size: 27rpx;
 				
-				font-weight: 500;
+				font-weight: 600;
 				color: #fff;
 				flex: 1;
 				line-height: 61rpx;

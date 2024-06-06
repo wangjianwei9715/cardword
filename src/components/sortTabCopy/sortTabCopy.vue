@@ -207,7 +207,7 @@ export default class ClassName extends BaseComponent {
       align-items: center;
       font-size: 24rpx;
       
-      font-weight: 500;
+      font-weight: 600;
       color: #14151a;
     }
     &-index:last-child {

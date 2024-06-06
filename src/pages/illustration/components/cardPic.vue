@@ -439,7 +439,7 @@
 				height:40rpx;
 				font-size: 38rpx;
 				
-				font-weight: 500;
+				font-weight: 600;
 				color: #E6E6E6;
 				display: flex;
 				align-items: center;

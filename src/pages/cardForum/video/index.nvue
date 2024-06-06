@@ -824,7 +824,7 @@ export default {
 .descAuthor {
     font-size: 27rpx;
     
-    font-weight: 500;
+    font-weight: 600;
     color: #FFFFFF;
     margin-left: 14rpx;
 }

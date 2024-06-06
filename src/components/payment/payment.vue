@@ -167,7 +167,7 @@
 			padding-top: 50rpx;
 			font-size: 33rpx;
 			
-			font-weight: 500;
+			font-weight: 600;
 			color: #333333;
 			text-align: center;
 			position: relative;

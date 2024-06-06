@@ -142,7 +142,7 @@ $border-color: #ebeef5;
 	vertical-align: middle;
 	/* #endif */
 	color: #333;
-	font-weight: 500;
+	font-weight: 600;
 	border-bottom: 1px $border-color solid;
 	font-size: 14px;
 	// text-align: center;

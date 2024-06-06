@@ -2506,7 +2506,7 @@ export default {
 
 .packName {
   font-size: 29rpx;
-  font-weight: 500;
+  font-weight: 600;
   color: #ffffff;
   margin-top: 21rpx;
 }
@@ -2668,14 +2668,14 @@ export default {
 /* .chartName {
     font-size: 27rpx;
     
-    font-weight: 500;
+    font-weight: 600;
     color: #A1E4FC;
   }
 
   .chartContxt {
     font-size: 27rpx;
     
-    font-weight: 500;
+    font-weight: 600;
     color: #fff;
   } */
 

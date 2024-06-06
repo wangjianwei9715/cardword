@@ -299,7 +299,7 @@ export default class ClassName extends BaseComponent {
                 margin-left: 10rpx;
                 font-size: 23rpx;
                 
-                font-weight: 500;
+                font-weight: 600;
                 color: #959695;
             }
         }

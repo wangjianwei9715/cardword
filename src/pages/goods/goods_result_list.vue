@@ -281,7 +281,7 @@
 	.title-middle {
 		font-size: $font-22;
 		
-		font-weight: 500;
+		font-weight: 600;
 		color: #FFFFFF;
 		line-height: 32rpx;
 	}
@@ -425,7 +425,7 @@
 		border-radius: 4rpx;
 		font-size: 24rpx;
 		
-		font-weight: 500;
+		font-weight: 600;
 		color: #14151A;
 		
 	}

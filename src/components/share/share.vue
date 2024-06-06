@@ -212,7 +212,7 @@
 		text-align: center;
 		font-size: 28rpx;
 		
-		font-weight: 500;
+		font-weight: 600;
 		color: #A9ABB4;
 		border-top: 1px solid #F4F3F2;
 	}

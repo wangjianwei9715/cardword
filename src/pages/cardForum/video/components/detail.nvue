@@ -646,7 +646,7 @@ export default {
 .goodsInfo {
     font-size: 22rpx;
     
-    font-weight: 500;
+    font-weight: 600;
     color: #333333;
     line-height: 25rpx;
     flex: 1;

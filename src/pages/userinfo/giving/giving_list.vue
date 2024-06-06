@@ -629,7 +629,7 @@
 		justify-content: center;
 		font-size: 29rpx;
 		
-		font-weight: 500;
+		font-weight: 600;
 		color: #959699;
 	}
 	.type-current{

@@ -205,7 +205,7 @@
 							height:40rpx;
 							font-size: 20rpx;
 							
-							font-weight: 500;
+							font-weight: 600;
 							color: #000000;
 							line-height: 38rpx;
 							margin-left: 6rpx;
@@ -213,13 +213,13 @@
 						.total-price .price-text{
 							font-size: 28rpx;
 							font-family: Impact;
-							font-weight: 500;
+							font-weight: 600;
 							margin-left:2rpx;
 						}
 						.total-price .decimal{
 							font-size: 24rpx;
 							font-family: Impact;
-							font-weight: 500;
+							font-weight: 600;
 						}
 
 					}

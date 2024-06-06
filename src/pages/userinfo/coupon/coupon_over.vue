@@ -189,7 +189,7 @@
 				text-align: center;
 				font-size: 23rpx;
 				
-				font-weight: 500;
+				font-weight: 600;
 				color: #FFFFFF;
 			}
 		}
@@ -239,7 +239,7 @@
 					line-height: 47rpx;
 					font-size: 25rpx;
 					
-					font-weight: 500;
+					font-weight: 600;
 					color: #FFFFFF;
 					position: absolute;
 					right:0rpx;

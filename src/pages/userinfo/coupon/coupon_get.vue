@@ -261,7 +261,7 @@ import { Md5 } from "ts-md5";
 					margin-left: -61rpx;
 					font-size: 25rpx;
 					
-					font-weight: 500;
+					font-weight: 600;
 					color: #F6F7FB;
 					display: flex;
 					align-items: center;

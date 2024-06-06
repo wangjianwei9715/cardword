@@ -818,7 +818,7 @@ page {
   margin-top: 58rpx;
   font-size: 25rpx;
   
-  font-weight: 500;
+  font-weight: 600;
   color: #333333;
   line-height: 28rpx;
 }
@@ -1181,7 +1181,7 @@ page {
   height:40rpx;
   font-size: 29rpx;
   
-  font-weight: 500;
+  font-weight: 600;
   color: $btn-red;
   line-height: 40rpx;
   margin-left: 12rpx;
@@ -1189,7 +1189,7 @@ page {
 .heji-money2-b text{
   font-size: 42rpx;
   
-  font-weight: 500;
+  font-weight: 600;
 }
 .bottom-gm {
   width: 100%;

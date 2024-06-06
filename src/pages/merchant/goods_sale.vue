@@ -213,7 +213,7 @@
             text:last-child {
                 font-size: 23rpx;
                 
-                font-weight: 500;
+                font-weight: 600;
                 color: #959695;
             }
         }
@@ -251,7 +251,7 @@
             justify-content: center;
             font-size: 25rpx;
             
-            font-weight: 500;
+            font-weight: 600;
             line-height: 52rpx;
         }
         .btn-details{
@@ -274,7 +274,7 @@
         justify-content: center;
         font-size: 25rpx;
         
-        font-weight: 500;
+        font-weight: 600;
         line-height: 52rpx;
         background: #FA1545;
         color:#FFFFFF

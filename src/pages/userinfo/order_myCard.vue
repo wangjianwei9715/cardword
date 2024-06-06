@@ -415,7 +415,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 32rpx;
-		font-weight: 500;
+		font-weight: 600;
 		color: #DDDDDD;
 	}
 	.type-current{
@@ -450,7 +450,7 @@
 		.title{
 			font-size: 26rpx;
 			
-			font-weight: 500;
+			font-weight: 600;
 			color: #333333;
 		}
 		.cardno{
@@ -561,7 +561,7 @@
 		border-radius: 4rpx;
 		font-size: 24rpx;
 		
-		font-weight: 500;
+		font-weight: 600;
 		color: rgba(255,255,255,0.4);
 		padding-left:48rpx ;
 	}

@@ -624,7 +624,7 @@ export default class ClassName extends BaseNode {
     .taskRule {
       font-size: 22rpx;
       
-      font-weight: 500;
+      font-weight: 600;
       color: #ffffff;
     }
   }
@@ -677,7 +677,7 @@ export default class ClassName extends BaseNode {
       .left {
         font-size: 22rpx;
         
-        font-weight: 500;
+        font-weight: 600;
         color: #626262;
       }
 

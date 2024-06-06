@@ -223,7 +223,7 @@
 		border-radius: 4rpx;
 		font-size: 24rpx;
 		
-		font-weight: 500;
+		font-weight: 600;
 		color: rgba(255,255,255,0.4);
 		padding-left:48rpx ;
 	}

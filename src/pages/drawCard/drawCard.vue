@@ -528,7 +528,7 @@
     align-items: center;
     font-size: 25rpx;
     
-    font-weight: 500;
+    font-weight: 600;
     color: $color;
     margin-left: 29rpx;
     box-sizing: border-box;

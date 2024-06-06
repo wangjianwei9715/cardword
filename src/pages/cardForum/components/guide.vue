@@ -228,7 +228,7 @@ export default {
 .camera_txt {
     font-size: 19rpx;
     
-    font-weight: 500;
+    font-weight: 600;
     color: #333333;
     position: relative;
     // top: 4rpx;
@@ -307,7 +307,7 @@ export default {
     width: 565rpx;
     font-size: 28rpx;
     
-    font-weight: 500;
+    font-weight: 600;
     color: #333333;
     margin-bottom: 12rpx;
 }

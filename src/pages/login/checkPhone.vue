@@ -192,7 +192,7 @@ export default class ClassName extends BaseNode {
         .num {
             font-size: 32rpx;
             
-            font-weight: 500;
+            font-weight: 600;
             color: #333333;
         }
 

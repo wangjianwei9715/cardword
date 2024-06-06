@@ -338,7 +338,7 @@ export default {
     
     color: #333;
     position: absolute;
-    font-weight: 500;
+    font-weight: 600;
     left: 0;
     right: 0;
     margin: auto;
@@ -362,7 +362,7 @@ export default {
 .titleText {
     font-size: 18px;
     
-    font-weight: 500;
+    font-weight: 600;
     color: #333;
 }
 

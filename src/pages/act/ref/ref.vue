@@ -80,7 +80,7 @@
 		border-radius: 4rpx;
 		font-size: 24rpx;
 		
-		font-weight: 500;
+		font-weight: 600;
 		color: #14151A;
 		padding-left:76rpx ;
 	}

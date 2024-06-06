@@ -258,7 +258,7 @@ page {
         view {
             font-size: 25rpx;
             
-            font-weight: 500;
+            font-weight: 600;
             color: #333333;
         }
     }
