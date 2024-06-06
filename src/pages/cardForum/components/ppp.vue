@@ -674,7 +674,7 @@ export default {
                     align-items: center;
                     justify-content: center;
                     font-size: 21rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 400;
                     color: #FFFFFF;
                     position: absolute;
@@ -722,7 +722,7 @@ export default {
 
                 text {
                     font-size: 21rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 400;
                     color: #3E3E3E;
                     display: block;
@@ -750,7 +750,7 @@ export default {
     background: #FA1545;
     border-radius: 3rpx;
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #FFFFFF;
     text-align: center;

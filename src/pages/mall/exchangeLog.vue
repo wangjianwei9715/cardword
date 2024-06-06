@@ -218,7 +218,7 @@ export default class ClassName extends BaseNode {
 
 <style lang="scss">
 page {
-  font-family: PingFang SC;
+  
   background-color: #f6f7fb;
 }
 
@@ -243,7 +243,7 @@ page {
   .searchItem {
     width: 50%;
     font-size: 27rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #333333;
   }
@@ -291,7 +291,7 @@ page {
     &_exchangeTime {
       flex: 1;
       font-size: 23rpx;
-      font-family: PingFang SC;
+      
       font-weight: 400;
       color: #949494;
     }
@@ -303,14 +303,14 @@ page {
       .name {
         flex: 1;
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #333333;
       }
 
       .state {
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #fa1545;
       }
@@ -318,7 +318,7 @@ page {
 
     &_price {
       font-size: 25rpx;
-      font-family: PingFang SC;
+      
       font-weight: 600;
       color: #fa1545;
     }
@@ -337,7 +337,7 @@ page {
       border: 2rpx solid rgba(148, 148, 148, 0.4);
       border-radius: 3rpx;
       font-size: 25rpx;
-      font-family: PingFang SC;
+      
       font-weight: 400;
       color: #333333;
       margin-left: 35rpx;

@@ -120,7 +120,7 @@
 
 		.name {
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 			margin-left: 17rpx;
@@ -151,7 +151,7 @@
 
 		.goodsName {
 			font-size: 29rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 500;
 			color: #333333;
 			white-space: nowrap;
@@ -161,7 +161,7 @@
 
 		.startTime {
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #88878C;
 			margin-top: 18rpx;
@@ -179,7 +179,7 @@
 
 		.state {
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}

@@ -317,7 +317,7 @@ page {
 
     .exchangeText {
         font-size: 29rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #333333;
     }
@@ -328,7 +328,7 @@ page {
         background: #fa1545;
         border-radius: 3rpx;
         font-size: 33rpx;
-        font-family: PingFang SC;
+        
         font-weight: 600;
         letter-spacing: 4rpx;
         color: #ffffff;
@@ -338,7 +338,7 @@ page {
 
     .exchangeTips {
         font-size: 23rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #949494;
         white-space: nowrap;
@@ -360,7 +360,7 @@ page {
 
     .goodsName {
         font-size: 31rpx;
-        font-family: PingFang SC;
+        
         font-weight: 600;
         color: #333333;
     }
@@ -373,7 +373,7 @@ page {
         .goodsInfoBottom_left {
             .price {
                 font-size: 33rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 600;
                 color: #e53b4b;
             }
@@ -385,7 +385,7 @@ page {
                 border-radius: 16rpx;
                 overflow: hidden;
                 font-size: 20rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 400;
                 color: #ffffff;
                 display: flex;
@@ -412,7 +412,7 @@ page {
         .goodsInfoBottom_right {
             .tips {
                 font-size: 21rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 400;
                 color: #515151;
                 text-align: right;
@@ -430,7 +430,7 @@ page {
                     background: #000000;
                     border-radius: 3rpx;
                     font-size: 21rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 400;
                     color: #ffffff;
                     margin-left: 4rpx;
@@ -456,7 +456,7 @@ page {
 
     .title {
         font-size: 31rpx;
-        font-family: PingFang SC;
+        
         font-weight: 600;
         color: #333333;
         margin-bottom: 18rpx;
@@ -465,7 +465,7 @@ page {
     .desContent {
         text-align: left;
         font-size: 23rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #333333;
         white-space: pre-wrap
@@ -485,7 +485,7 @@ page {
 
     .title {
         font-size: 31rpx;
-        font-family: PingFang SC;
+        
         font-weight: 600;
         color: #333333;
         margin-bottom: 18rpx;
@@ -524,7 +524,7 @@ page {
 
             .price {
                 font-size: 33rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 600;
                 color: #333333;
                 margin-bottom: 10rpx;
@@ -533,7 +533,7 @@ page {
 
             .myPoint {
                 font-size: 23rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 400;
                 color: #949494;
             }
@@ -545,7 +545,7 @@ page {
             background: #fa1545;
             border-radius: 3rpx;
             font-size: 33rpx;
-            font-family: PingFang SC;
+            
             font-weight: 600;
             letter-spacing: 4rpx;
             color: #ffffff;

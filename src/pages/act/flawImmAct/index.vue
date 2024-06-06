@@ -188,7 +188,7 @@
 <style lang="scss">
 	@mixin font($size,$weight:400) {
 		font-size: $size;
-		font-family: PingFang SC;
+		
 		font-weight: $weight;
 		color: #FDFFFF;
 	}
@@ -223,7 +223,7 @@
 				width: 42rpx;
 				height: 44rpx;
 				font-size: 21rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #060807;
 				line-height: 24rpx;

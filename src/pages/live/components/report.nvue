@@ -187,7 +187,7 @@ export default {
 
 .title_text {
     font-size: 32rpx;
-    font-family: PingFangSC;
+    
     font-weight: bold;
     color: #FFFFFF;
     text-align: center;
@@ -225,7 +225,7 @@ export default {
 
 .menuItem_text {
     font-size: 25rpx;
-    font-family: PingFangSC;
+    
     font-weight: 500;
     color: #FFFFFF;
 }
@@ -259,7 +259,7 @@ export default {
 
 .submit_text {
     font-size: 33rpx;
-    font-family: PingFangSC;
+    
     font-weight: bold;
     color: #FFFFFF;
 }
@@ -284,7 +284,7 @@ export default {
 
 .reason_title {
     font-size: 23rpx;
-    font-family: PingFangSC;
+    
     font-weight: 300;
     color: #C0C0C0;
 }
@@ -299,14 +299,14 @@ export default {
 
 .select_reason {
     font-size: 25rpx;
-    font-family: PingFangSC;
+    
     font-weight: 400;
     color: #FFFFFF;
 }
 
 .reset {
     font-size: 25rpx;
-    font-family: Adobe Heiti Std;
+    
     font-weight: normal;
     color: #FA1545;
 }

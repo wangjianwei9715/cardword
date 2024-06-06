@@ -295,7 +295,7 @@
 		.phone-type{
 			height:80rpx;
 			font-size: 28rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
+			
 			font-weight: 400;
 			color: #14151B;
 			line-height: 78rpx;
@@ -307,7 +307,7 @@
 			line-height: 78rpx;
 			border-bottom: 2rpx solid #E6E3E3;
 			font-size: 28rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
+			
 			font-weight: 400;
 			color: #14151B;
 		}
@@ -326,7 +326,7 @@
 				height:78rpx;
 				line-height: 78rpx;
 				font-size: 28rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
+				
 				font-weight: 400;
 				color: #14151B;
 			}
@@ -341,7 +341,7 @@
 				right:0;
 				bottom:16rpx;
 				font-size: 24rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
+				
 				font-weight: 400;
 				color: #14151A;
 			}
@@ -371,7 +371,7 @@
 				height:32rpx;
 				line-height: 32rpx;
 				font-size: 24rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
+				
 				font-weight: 400;
 				color: #9397A7;
 			}
@@ -388,7 +388,7 @@
 			text-align: center;
 			line-height: 88rpx;
 			font-size: 28rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 600;
 			color: #FFFFFF;
 		}
@@ -402,7 +402,7 @@
 			align-items: center;
 			justify-content: space-between;
 			font-size: 24rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
+			
 			font-weight: 400;
 			color: #14151A;
 			margin-top: 32rpx;
@@ -441,7 +441,7 @@
 				height:40rpx;
 				line-height: 40rpx;
 				font-size: 24rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
+				
 				font-weight: 400;
 				color: #9397A7;
 				text-align: center;
@@ -496,7 +496,7 @@
 			text-align: center;
 			margin-bottom: 34rpx;
 			font-size: 30rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 600;
 			color: #454952;
 		}
@@ -515,7 +515,7 @@
 			text-align: center;
 			line-height: 94rpx;
 			font-size: 28rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: bold;
 			color: #14151B;
 			position: absolute;

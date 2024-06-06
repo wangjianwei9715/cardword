@@ -203,7 +203,7 @@
 		box-sizing: border-box;
 		padding-left: 25rpx;
 		font-size: 34rpx;
-		font-family: Microsoft YaHei;
+		
 		font-weight: bold;
 		color: #000;
 		margin-bottom:20rpx
@@ -263,7 +263,6 @@
 	.scroll-price{
 		width: 100%;
 		font-size: 32rpx;
-		font-family: Adobe Fan Heiti Std;
 		font-weight: normal;
 		color: #3A3A3A;
 	}

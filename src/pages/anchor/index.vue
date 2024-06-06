@@ -152,7 +152,7 @@
 			left:40rpx;
 			top:0;
 			font-size: 33rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #FFFFFF;
 			.avatar-bg{
@@ -173,7 +173,7 @@
 		}
 		.navigation-title{
 			font-size: 46rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #FFFFFF;
 			line-height: 97rpx;
@@ -195,7 +195,7 @@
 			padding-top: 10rpx;
 			.back-tips{
 				font-size: 28rpx;
-				font-family: Avenir;
+				
 				font-weight: normal;
 				color: #FFFFFF;
 				margin-right: 19rpx;
@@ -203,7 +203,7 @@
 			}
 			.back-text{
 				font-size: 36rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #FFFFFF;
 				margin-left: 19rpx;
@@ -255,7 +255,7 @@
 				height:78rpx;
 				margin:0 auto;
 				font-size: 29rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #FFFFFF;
 				line-height: 40rpx;
@@ -317,7 +317,7 @@
 						align-items: center;
 						justify-content: center;
 						font-size: 23rpx;
-						font-family: PingFang SC;
+						
 						font-weight: 600;
 						color: #FFFFFF;		
 						box-sizing: border-box;				
@@ -344,7 +344,7 @@
 					justify-content: center;
 					padding:0 14rpx;
 					font-size: 27rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 400;
 					color: #EAEAEA;
 				}
@@ -361,7 +361,7 @@
 					text-align: center;
 					line-height: 38rpx;
 					font-size: 27rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 400;
 					color: #FFFFFF;
 					position: absolute;

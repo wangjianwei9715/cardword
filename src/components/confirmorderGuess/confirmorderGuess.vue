@@ -114,7 +114,7 @@
 		height:91rpx;
 		line-height:91rpx;
 		font-size: 29rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #333333;
 	}
@@ -135,7 +135,7 @@
 		display: flex;
 		align-items: center;
 		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: normal;
 		color: rgba(101, 98, 98, 0.84);
 	}
@@ -143,7 +143,7 @@
 		height:67rpx;
 		line-height: 67rpx;
 		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: normal;
 		color: rgba(101, 98, 98, 0.84);
 		margin-right: 10rpx;
@@ -193,7 +193,7 @@
 				line-height: 30rpx;
 				text-align: center;
 				font-size: 20rpx;
-				font-family: PingFangSC-Regular;
+				
 				font-weight: normal;
 				color: #656262;
 			}
@@ -218,7 +218,7 @@
 		left:0;
 		text-align: center;
 		font-size: 20rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: normal;
 		color: #656262;
 	}
@@ -263,7 +263,7 @@
 	}
 	.drawer-help-title{
 		font-size: 27rpx;
-		font-family: PingFangSC-Medium;
+		
 		font-weight: bold;
 		color:#333333;
 		margin:15rpx 0rpx;
@@ -271,7 +271,7 @@
 	.drawer-help-content{
 		width: 100%;
 		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #7D8288;
 		white-space: pre-wrap;

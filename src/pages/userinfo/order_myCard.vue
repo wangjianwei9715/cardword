@@ -307,7 +307,7 @@
 
 <style lang="scss">
 	@mixin fontSfTR {
-		font-family: PingFangSC-Regular;
+		
 	}
 	.card-pic{
 		width: 100rpx;
@@ -449,7 +449,7 @@
 		padding-bottom: 40rpx;
 		.title{
 			font-size: 26rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 500;
 			color: #333333;
 		}
@@ -491,7 +491,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 21rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color:#fff;
 		margin-right: 8rpx;
@@ -560,7 +560,7 @@
 		height:64rpx;
 		border-radius: 4rpx;
 		font-size: 24rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 500;
 		color: rgba(255,255,255,0.4);
 		padding-left:48rpx ;

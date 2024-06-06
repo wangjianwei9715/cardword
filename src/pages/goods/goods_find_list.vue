@@ -288,7 +288,7 @@ page {
     .seriesText {
       text-align: center;
       font-size: 22rpx;
-      font-family: PingFangSC-Regular;
+      
       font-weight: 400;
       color: #333333;
       white-space: nowrap;
@@ -337,7 +337,7 @@ page {
   border-radius: 40rpx;
   position: relative;
   font-size: 28rpx;
-  font-family: PingFangSC-Regular;
+  
   font-weight: 400;
   color: #a3a3a3;
   line-height: 65rpx;
@@ -403,7 +403,7 @@ page {
 //     align-items: center;
 //     box-sizing: border-box;
 //     font-size: 26rpx;
-//     font-family: PingFangSC-Regular, PingFang SC;
+//     
 //     font-weight: 400;
 //     color: #333333;
 //   }
@@ -468,7 +468,7 @@ page {
 //       display: flex;
 //       align-items: center;
 //       font-size: $font-24;
-//       font-family: PingFangSC-Medium, PingFang SC;
+//       
 //       font-weight: 500;
 //       color: #14151a;
 //     }

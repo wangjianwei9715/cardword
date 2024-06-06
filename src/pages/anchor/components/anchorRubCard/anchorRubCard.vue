@@ -349,7 +349,7 @@
 				text-align: center;
 				line-height: 38rpx;
 				font-size: 27rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #FFFFFF;
 				position: absolute;
@@ -380,7 +380,7 @@
 				.cut-box-name{
 					max-width: 150rpx;
 					font-size: 33rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 400;
 					color: #333333;
 				}
@@ -408,7 +408,7 @@
 			padding-top: 10rpx;
 			.back-tips{
 				font-size: 28rpx;
-				font-family: Avenir;
+				
 				font-weight: normal;
 				color: #FFFFFF;
 				margin-right: 19rpx;
@@ -416,7 +416,7 @@
 			}
 			.back-text{
 				font-size: 36rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #FFFFFF;
 				margin-left: 19rpx;
@@ -492,7 +492,7 @@
 							align-items: center;
 							justify-content: center;
 							font-size: 23rpx;
-							font-family: PingFang SC;
+							
 							font-weight: 600;
 							color: #FFFFFF;		
 							box-sizing: border-box;				
@@ -760,7 +760,7 @@
 				width: 100%;
 				height:50rpx;
 				font-size: 40rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #FFFFFF;
 				text-align: center;
@@ -768,7 +768,7 @@
 			}
 			.CarMy-title text{
 				font-size: 36rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #FFFFFF;
 			}
@@ -781,7 +781,7 @@
 				width: 100%;
 				text-align: center;
 				font-size: 33rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #FFFFFF;
 				line-height: 42rpx;
@@ -817,7 +817,7 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 42rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #FFFFFF;
 			.ulist-close{
@@ -885,7 +885,7 @@
 							height:43rpx;
 							line-height: 43rpx;
 							font-size: 27rpx;
-							font-family: PingFang SC;
+							
 							font-weight: 600;
 							color: #FFFFFF;
 							overflow: hidden;
@@ -898,7 +898,7 @@
 							height:43rpx;
 							line-height: 43rpx;
 							font-size: 27rpx;
-							font-family: PingFang SC;
+							
 							font-weight: 400;
 							color: #FFFFFF;
 							box-sizing: border-box;
@@ -910,7 +910,7 @@
 					}
 					.ulist-time{
 						font-size: 21rpx;
-						font-family: PingFang SC;
+						
 						font-weight: 400;
 						color: #FFFFFF;
 					}
@@ -925,7 +925,7 @@
 						height:78rpx;
 						background: url(@/static/anchor/popup_btn.png) no-repeat center / 100% 100%;
 						font-size: 27rpx;
-						font-family: PingFang SC;
+						
 						font-weight: 600;
 						color: #FFFFFF;
 						text-shadow: 1px 2px 2px #313132;

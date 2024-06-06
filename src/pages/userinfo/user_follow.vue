@@ -265,7 +265,7 @@ export default class ClassName extends BaseNode {
 	.tabs {
 		width: 25%;
 		font-size: 27rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #959695;
 		text-align: center;
@@ -274,7 +274,7 @@ export default class ClassName extends BaseNode {
 
 	.tabs_select {
 		font-size: 27rpx;
-		font-family: PingFang SC;
+		
 		font-weight: bold;
 		color: #333333;
 		border-bottom: 6rpx solid #FA1545;
@@ -310,7 +310,7 @@ export default class ClassName extends BaseNode {
 
 		.userName {
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: bold;
 			color: #333333;
 			margin-bottom: 8rpx;
@@ -318,7 +318,7 @@ export default class ClassName extends BaseNode {
 
 		.userData {
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #C0C0C0;
 		}
@@ -332,7 +332,7 @@ export default class ClassName extends BaseNode {
 		border: 1rpx solid #C0C0C0;
 		border-radius: 3rpx;
 		font-size: 25rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #C0C0C0;
 	}
@@ -357,7 +357,7 @@ export default class ClassName extends BaseNode {
 
 		.name {
 			font-size: 29rpx;
-			font-family: PingFangSC-Regular;
+			
 			font-weight: 400;
 			color: #333333;
 			margin-bottom: 24rpx;
@@ -365,7 +365,7 @@ export default class ClassName extends BaseNode {
 
 		.num {
 			font-size: 25rpx;
-			font-family: PingFangSC-Regular;
+			
 			font-weight: 400;
 			color: #88878c;
 		}

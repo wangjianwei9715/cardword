@@ -201,7 +201,7 @@
 			line-height: 62rpx;
 			padding:0 38rpx;
 			font-size: 20rpx;
-			font-family: Microsoft YaHei;
+			
 			font-weight: 400;
 			color: #BDBEC5;
 		}
@@ -211,7 +211,7 @@
 			display: flex;
 			align-items: center;
 			font-size: 20rpx;
-			font-family: Microsoft YaHei;
+			
 			font-weight: 400;
 			color: #BDBEC5;
 			justify-content: flex-end;
@@ -266,7 +266,7 @@
 			height:88rpx;
 			line-height: 88rpx;
 			font-size: 34rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}

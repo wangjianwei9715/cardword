@@ -289,7 +289,7 @@
 							overflow: hidden;
 							flex-wrap: wrap;
 							font-size: 25rpx;
-							font-family: PingFang SC;
+							
 							font-weight: 500;
 							color: #CEE0F5;
 							image{

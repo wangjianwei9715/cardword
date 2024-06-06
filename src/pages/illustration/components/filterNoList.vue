@@ -425,7 +425,7 @@
     .player-title{
         width: 100%;
         font-size: 27rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #707070;
     }
@@ -475,7 +475,7 @@
         width: 100%;
         height: 69rpx;
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
     }
     .search-icon{
@@ -492,7 +492,7 @@
         display: flex;
         align-items: center;
         font-size: 27rpx;
-        font-family: PingFang SC;
+        
         font-weight: 600;
         color: #707070;
     }
@@ -513,7 +513,7 @@
     .line-title{
         width: 94rpx;
         font-size: 27rpx;
-        font-family: PingFang SC;
+        
         font-weight: 600;
         color: #333333;
         word-break: keep-all;
@@ -533,7 +533,7 @@
         line-height: 44rpx;
         padding:0 18rpx;
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #959695;
         display: inline-block;
@@ -566,7 +566,7 @@
         }
         .team{
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #333333;
         }
@@ -586,14 +586,14 @@
         }
         .player{
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: 600;
             color: #333333;
             margin-top: 16rpx;
         }
         .cardset{
             font-size: 23rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #959695;
             margin-top: 23rpx;
@@ -619,14 +619,14 @@
                 .name{
                     width: 100%;
                     font-size: 25rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 400;
                     color: #333333;
                     margin-bottom: 15rpx;
                 }
                 .num{
                     font-size: 25rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 400;
                     color: #333333;
                 }
@@ -701,7 +701,7 @@
             align-items: center;
             justify-content: center;
             font-size: 33rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #333333;
         }
@@ -715,7 +715,7 @@
             align-items: center;
             justify-content: center;
             font-size: 33rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #FFFFFF;
         }
@@ -729,7 +729,7 @@
         .header{
             width: 100%;
             font-size: 33rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color:#000;
             text-align: center;
@@ -774,7 +774,7 @@
                 .msg{
                     width: 100%;
                     font-size: 23rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 400;
                     color: #959695;
                     text-align: center;
@@ -791,7 +791,7 @@
                 align-items: center;
                 justify-content: center;
                 font-size: 33rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 400;
                 color: #FFFFFF;
             }
@@ -801,7 +801,7 @@
         height: 34rpx;
         border: 1px solid #D8D8D8;
         font-size: 17rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #aaaaaa;
         box-sizing: border-box;

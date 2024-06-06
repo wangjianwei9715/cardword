@@ -100,7 +100,7 @@
 				padding: 0 8rpx;
 				background: linear-gradient(90deg, #FFE2E7 0%, #F1D4FA 100%);
 				font-size: 24rpx;
-				font-family: PingFangSC, PingFang SC;
+				
 				font-weight: 400;
 				color: #FA1545;
 				display: flex;
@@ -113,7 +113,7 @@
 			display: flex;
 			align-items: center;
 			font-size: 24rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: rgba(255,255,255,0.9);
 			box-sizing: border-box;

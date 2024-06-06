@@ -59,7 +59,7 @@
 
 <style lang="scss">
 	@mixin fontSfTR {
-		font-family: PingFangSC-Regular;
+		
 	}
 	.cardno-info{
 		.cardno-box{
@@ -90,7 +90,7 @@
 		}
 		.cname{
 			font-size: 24rpx;
-			font-family: PingFangSC-Medium;
+			
 			font-weight: 500;
 			color: #333333;
 		}

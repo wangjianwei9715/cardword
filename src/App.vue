@@ -340,14 +340,9 @@
 		src: url("~@/common/Tao/Futura.ttf");
 	}
 	@font-face {
-		font-family: "MINI";
-		src: url("~@/common/Tao/MINI.ttf");
-	}
-	@font-face {
 		font-family: "HYLiLiangHeiJ";
 		src: url("~@/common/Tao/HYLiLiangHeiJ.ttf");
 	}
-	
 	// #endif
 	.content {
 		display: flex;
@@ -358,7 +353,7 @@
 		box-sizing: border-box;
 	}
 	.uni-page-head__title{
-		font-family: PingFangSC-Medium, PingFang SC !important;
+		font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji, BlinkMacSystemFont, Helvetica Neue, Arial, PingFang SC, PingFang TC, PingFang HK, Microsoft Yahei, Microsoft JhengHei !important;
 		font-weight: 500 !important;
 	}
 	[type="search"]::-webkit-search-decoration {

@@ -191,7 +191,7 @@
             align-items: center;
             margin-left: 24rpx;
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #333333;
         }
@@ -226,7 +226,7 @@
 
     .sendCoupon-left {
         font-size: 29rpx;
-        font-family: PingFang SC;
+        
         font-weight: 600;
         color: #000;
         flex: 1;
@@ -234,7 +234,7 @@
 
     .couponInput {
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #000;
         text-align: right;
@@ -259,7 +259,7 @@
 
     .placeholder {
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #ffffff;
     }

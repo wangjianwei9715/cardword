@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-13 16:14:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-14 16:12:26
+ * @LastEditTime: 2024-06-06 10:10:59
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -131,7 +131,6 @@
 				align-items: center;
 			}
 			.medal-name{
-				font-family: SfTR;
 				color:#fff;
 				font-size: 22rpx;
 			}

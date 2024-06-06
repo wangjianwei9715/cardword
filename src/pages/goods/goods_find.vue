@@ -244,7 +244,7 @@
 		background: #F5F5F5;
 		border-radius: 3rpx;
 		font-size: 26rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #14151A;
 		padding-left:76rpx
@@ -263,7 +263,7 @@
 		height:50rpx;
 		line-height: 50rpx;
 		font-size: 26rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
+		
 		font-weight: 400;
 		color: #14151A;
 	}
@@ -282,7 +282,7 @@
 		height:40rpx;
 		box-sizing: border-box;
 		font-size: 32rpx;
-		font-family: HYQiHei;
+		
 		font-weight: bold;
 		color: #3B3B3B;
 		display: flex;
@@ -313,7 +313,7 @@
 		border-radius: 4rpx;
 		text-align: center;
 		font-size: 24rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
+		
 		font-weight: 400;
 		color: #767880;
 		margin-right: 16rpx;
@@ -350,7 +350,7 @@
 		display: flex;
 		align-items: flex-end;
 		font-size: 26rpx;
-		font-family: HYQiHei;
+		
 		font-weight: bold;
 		color: #FFFFFF;
 	}
@@ -359,7 +359,7 @@
 		display: flex;
 		align-items: flex-end;
 		font-size: 24rpx;
-		font-family: HYQiHei;
+		
 		font-weight: bold;
 		color: #FFFFFF;
 	}
@@ -383,7 +383,7 @@
 		display: flex;
 		align-items: center;
 		font-size: 26rpx;
-		font-family: Adobe Heiti Std;
+		
 		font-weight: normal;
 		color: #3B3B3B;
 	}
@@ -392,7 +392,7 @@
 		height: 80rpx;
 		line-height: 80rpx;
 		font-size: 20rpx;
-		font-family: Adobe Heiti Std;
+		
 		font-weight: normal;
 		color: #7B7B7B;
 	}
@@ -405,7 +405,7 @@
 		text-align: center;
 		line-height: 26rpx;
 		font-size: 22rpx;
-		font-family: HYQiHei;
+		
 		font-weight: normal;
 		color: #FFFFFF;
 	}
@@ -418,7 +418,7 @@
 		text-align: center;
 		line-height: 26rpx;
 		font-size: 22rpx;
-		font-family: HYQiHei;
+		
 		font-weight: normal;
 		color: #FFFFFF;
 	}
@@ -431,7 +431,7 @@
 		text-align: center;
 		line-height: 26rpx;
 		font-size: 22rpx;
-		font-family: HYQiHei;
+		
 		font-weight: normal;
 		color: #FFFFFF;
 	}
@@ -444,7 +444,7 @@
 		text-align: center;
 		line-height: 26rpx;
 		font-size: 22rpx;
-		font-family: HYQiHei;
+		
 		font-weight: normal;
 		color: #FFFFFF;
 	}
@@ -523,7 +523,7 @@
 		height:70rpx;
 		margin-left: 20rpx;
 		font-size: 26rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #333333;
 		overflow: hidden;
@@ -539,7 +539,7 @@
 		background: linear-gradient(25deg, #61A178 0%, #88CD5A 99%);
 		border-radius: 3rpx;
 		font-size: 21rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #FFFFFF;
 		box-sizing: border-box;
@@ -556,7 +556,7 @@
 	}
 	.merchant-desc{
 		font-size: 26rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #333333;
 		margin-left: 22rpx;
@@ -604,7 +604,7 @@
 	.swiper-fbtn{
 		height:35rpx;
 		font-size: 29rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #757575;
 		display: flex;

@@ -471,7 +471,7 @@ export default class ClassName extends BaseNode {
   padding-right: 30rpx;
 }
 page {
-  font-family: PingFang SC;
+  
 }
 @font-face {
   font-family: BDZongYi-A001;
@@ -520,7 +520,7 @@ page {
     font-size: 32rpx;
     color: #3c3c3c;
     position: absolute;
-    font-family: HYQiHei;
+    
     font-weight: bold;
     left: 0;
     right: 0;
@@ -679,7 +679,7 @@ page {
     background: #fa1545;
     border-radius: 3rpx;
     font-size: 29rpx;
-    font-family: PingFang SC;
+    
     font-weight: 500;
     color: #f6f7fb;
   }
@@ -784,7 +784,7 @@ page {
   .more-right {
     position: relative;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     padding-right: 28rpx;
     color: #7b7a7a;
@@ -834,7 +834,7 @@ page {
     width: 70rpx;
     height: 38rpx;
     font-size: 24rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #FFFFFF;
     background-color: #fa1545;

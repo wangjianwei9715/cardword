@@ -250,7 +250,7 @@ export default class ClassName extends BaseNode {
 
         .name {
             font-size: 24rpx;
-            font-family: PingFangSC-Medium, PingFang SC;
+            
             font-weight: 600;
             color: #14151a;
             flex: 1;
@@ -258,7 +258,7 @@ export default class ClassName extends BaseNode {
 
         .grayText {
             font-size: 24rpx;
-            font-family: PingFangSC-Medium, PingFang SC;
+            
             // font-weight: 600;
             color: #aaaaaa;
             margin-right: 6rpx;
@@ -270,7 +270,7 @@ export default class ClassName extends BaseNode {
             align-items: center;
             justity-content: flex-end;
             font-size: 24rpx;
-            font-family: PingFangSC-Regular, PingFang SC;
+            
             font-weight: 400;
             color: #aaaabb;
         }
@@ -291,7 +291,7 @@ uni-switch .uni-switch-input {
     text-align: center;
     line-height: 88rpx;
     font-size: 28rpx;
-    font-family: PingFangSC-Medium, PingFang SC;
+    
     font-weight: 600;
     color: #ffffff;
 }

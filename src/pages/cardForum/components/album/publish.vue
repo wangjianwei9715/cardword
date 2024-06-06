@@ -311,7 +311,7 @@
 		height:62rpx;
 		background: #272727;
 		font-size: 23rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #C0C0C0;
 		padding:0 20rpx;
@@ -349,7 +349,7 @@
 			top:0;
 			z-index: 2;
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #FFFFFF;
 			text-align: center;
@@ -372,7 +372,7 @@
 		background:#000;
 		color:#fff;
 		font-size: 21rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		border: 2rpx dashed rgba(230, 230, 230, 0.6);
 		align-items: center;
@@ -389,7 +389,7 @@
 		width: 100%;
 		height:86rpx;
 		font-size: 23rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #959695;
 		display: flex;
@@ -425,7 +425,7 @@
 		padding: 30rpx 0 20rpx 0;
 		.msg{
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #707070;
 			margin-top: 18rpx;
@@ -451,7 +451,7 @@
 			width: 100%;
 			text-align: center;
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #3E3E3E;
 			position: absolute;

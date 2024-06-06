@@ -147,7 +147,7 @@
 		height:150rpx;
 		text-align: center;
 		font-size: 25rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #333333;
 		line-height: 150rpx;
@@ -172,7 +172,7 @@
 			height:80rpx;
 			line-height: 85rpx;
 			font-size: 29rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 			box-sizing: border-box;
@@ -214,7 +214,7 @@
 			text-overflow:ellipsis;
 			white-space: nowrap;
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #333333;
 			text-align: center;
@@ -223,7 +223,7 @@
 			width: 100%;
 			text-align: center;
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #C0C0C0;
 		}
@@ -235,7 +235,7 @@
 		justify-content: center;
 		align-items: center;
 		font-size: 21rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #8D8D8D;
 		margin-bottom: 30rpx;

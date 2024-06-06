@@ -230,7 +230,7 @@ page {
 
     .title {
         font-size: 27rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #333333;
         margin-right: 16rpx;
@@ -238,7 +238,7 @@ page {
 
     .titleTip {
         font-size: 19rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #C0C0C0;
     }
@@ -254,7 +254,7 @@ page {
 
     .someText {
         font-size: 23rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #333333;
         margin-left: 37rpx;
@@ -279,7 +279,7 @@ page {
     text {
         line-height: 33rpx;
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
     }
 }
@@ -306,14 +306,14 @@ page {
 
     .tab {
         font-size: 31rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #C0C0C0;
     }
 
     .tab_select {
         font-size: 33rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #FFFFFF;
     }
@@ -353,7 +353,7 @@ page {
 
     .userName {
         font-size: 31rpx;
-        font-family: PingFang SC;
+        
         font-weight: 500;
         color: #FFFFFF;
     }
@@ -366,7 +366,7 @@ page {
         background: #FFFFFF;
         border-radius: 3rpx;
         font-size: 31rpx;
-        font-family: PingFang SC;
+        
         font-weight: 500;
         color: #333333;
         margin-left: 22rpx;
@@ -374,7 +374,7 @@ page {
 
     .xzs {
         font-size: 21rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #FFFFFF;
     }
@@ -390,7 +390,7 @@ page {
     .level_num {
         height: 34rpx;
         font-size: 29rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #FFFFFF;
         margin-right: 22rpx;
@@ -399,7 +399,7 @@ page {
 
     .tips {
         font-size: 19rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #959695;
         // line-height: 40rpx;
@@ -412,14 +412,14 @@ page {
 
     .gap1 {
         font-size: 23rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #FFFFFF;
     }
 
     .gap2 {
         font-size: 23rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #959695;
     }
@@ -474,7 +474,7 @@ page {
 
         .taskName {
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #333333;
             margin-bottom: 10rpx;
@@ -482,7 +482,7 @@ page {
 
         .taskNum {
             font-size: 21rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #C0C0C0;
         }
@@ -494,14 +494,14 @@ page {
 
         .stateText {
             font-size: 23rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #959695;
         }
 
         .stateTextSuccess {
             font-size: 23rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #C0C0C0;
         }
@@ -521,7 +521,7 @@ page {
         background: #FA1545;
         border-radius: 3rpx;
         font-size: 23rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #FFFFFF;
         margin-bottom: 8rpx;
@@ -529,7 +529,7 @@ page {
 
     .tips {
         font-size: 19rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #C0C0C0;
     }
@@ -537,7 +537,7 @@ page {
 
 .ruleContainer {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #959695;
     display: flex;

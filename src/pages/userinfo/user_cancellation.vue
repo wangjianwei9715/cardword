@@ -61,13 +61,13 @@
 	.title{
 		width: 100%;
 		font-size: 36rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 600;
 		color: #000;
 	}
 	.desc{
 		font-size: 30rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color: #000;
 		margin:30rpx 0;
@@ -81,7 +81,7 @@
 		background:#FF2728;
 		border-radius: 5rpx;
 		font-size: 34rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color: #FFFFFF;
 		margin:0 auto;

@@ -183,7 +183,7 @@ page{
   height: 50rpx;
   line-height: 50rpx;
   font-size: 26rpx;
-  font-family: PingFangSC-Regular, PingFang SC;
+  
   font-weight: 400;
   color: #14151a;
 }
@@ -209,7 +209,7 @@ page{
     align-items: center;
     box-sizing: border-box;
     font-size: $font-24;
-    font-family: PingFangSC-Regular, PingFang SC;
+    
     font-weight: 400;
     color: #14151a;
   }
@@ -263,7 +263,7 @@ page{
       display: flex;
       align-items: center;
       font-size: $font-24;
-      font-family: PingFangSC-Medium, PingFang SC;
+      
       font-weight: 500;
       color: #14151a;
     }
@@ -286,7 +286,7 @@ page{
   border-radius: 40rpx;
   position: relative;
   font-size: 28rpx;
-  font-family: PingFangSC-Regular;
+  
   font-weight: 400;
   color: #A3A3A3;
   line-height: 65rpx;
@@ -314,7 +314,7 @@ page{
   text-align: center;
   line-height: 54rpx;
   font-size: 28rpx;
-  font-family: Microsoft YaHei;
+  
   font-weight: 400;
   color: #FFFFFF;
   box-sizing: border-box;

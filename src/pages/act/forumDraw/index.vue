@@ -52,7 +52,7 @@
     </view>
     <view class="taskContainer">
       <view class="taskTop">
-        <view class="taskTitle" style="display: flex;align-items: center;">任务进度<text style="font-size: 24rpx;color:#fff;margin-left: 10rpx;font-family: PingFang SC;">(活动截止至9/16 0:00)</text></view>
+        <view class="taskTitle" style="display: flex;align-items: center;">任务进度<text style="font-size: 24rpx;color:#fff;margin-left: 10rpx;">(活动截止至9/16 0:00)</text></view>
         <view class="taskRule" @click="pageJump('/pages/act/forumDraw/rule')">规则说明</view>
       </view>
       <view class="taskWrap">
@@ -547,7 +547,7 @@ export default class ClassName extends BaseNode {
 
   .drawButton {
     font-size: 30rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #ffffff;
     width: 186rpx;
@@ -561,7 +561,7 @@ export default class ClassName extends BaseNode {
 
   .num {
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #000000;
     // margin-bottom: 8rpx;
@@ -576,7 +576,7 @@ export default class ClassName extends BaseNode {
 
 .detailButton {
   font-size: 22rpx;
-  font-family: PingFang SC;
+  
   font-weight: 400;
   color: #ffffff;
   width: 110rpx;
@@ -623,7 +623,7 @@ export default class ClassName extends BaseNode {
 
     .taskRule {
       font-size: 22rpx;
-      font-family: PingFang SC;
+      
       font-weight: 500;
       color: #ffffff;
     }
@@ -650,7 +650,7 @@ export default class ClassName extends BaseNode {
       // margin-top: 31rpx;
       .taskTitle {
         font-size: 27rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #626262;
       }
@@ -661,7 +661,7 @@ export default class ClassName extends BaseNode {
         background: #ffc937;
         border-radius: 5rpx;
         font-size: 24rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #ffffff;
       }
@@ -676,14 +676,14 @@ export default class ClassName extends BaseNode {
 
       .left {
         font-size: 22rpx;
-        font-family: PingFang SC;
+        
         font-weight: 500;
         color: #626262;
       }
 
       .right {
         font-size: 22rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #626262;
 
@@ -804,7 +804,7 @@ export default class ClassName extends BaseNode {
     text-align: center;
     font-size: 40rpx;
     font-weight: 600;
-    font-family: PingFang SC;
+    
     color: #fff;
     margin-top: 8rpx;
   }

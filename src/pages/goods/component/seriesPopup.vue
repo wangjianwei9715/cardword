@@ -84,7 +84,7 @@
 				line-height: 80rpx;
 				color:#333;
 				font-size: 32rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 			}
 			.list{
@@ -112,7 +112,7 @@
 				height:50rpx;
 				box-sizing: border-box;
 				font-size: 24rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #333333;
 				line-height: 50rpx;

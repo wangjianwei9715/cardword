@@ -54,13 +54,13 @@
 		height:90rpx;
 		line-height: 90rpx;
 		font-size: 28rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #959699;
 	}
 	.current{
 		font-size: 30rpx;
-		font-family: PingFangSC-Medium;
+		
 		font-weight: bold;
 		color: #333;
 	}

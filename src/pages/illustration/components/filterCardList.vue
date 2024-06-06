@@ -310,7 +310,7 @@
         width: 100%;
         height: 69rpx;
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
     }
     .search-icon{
@@ -327,7 +327,7 @@
         display: flex;
         align-items: center;
         font-size: 27rpx;
-        font-family: PingFang SC;
+        
         font-weight: 600;
         color: #707070;
     }
@@ -360,7 +360,7 @@
     .line-title{
         width: 94rpx;
         font-size: 27rpx;
-        font-family: PingFang SC;
+        
         font-weight: 600;
         color: #333333;
         word-break: keep-all;
@@ -380,7 +380,7 @@
         line-height: 44rpx;
         padding:0 18rpx;
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #959695;
         display: inline-block;
@@ -436,7 +436,7 @@
         .wait-bc{
             width: 100%;
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: 500;
             color: #959695;
             display: flex;
@@ -452,7 +452,7 @@
         .wait-kb{
             width: 100%;
             font-size: 23rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #C0C0C0;
             margin-top: 10rpx;
@@ -485,14 +485,14 @@
     }
     .card-player{
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 600;
         color: #333333;
         margin-bottom: 20rpx;
     }
     .card-set{
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #767880;
         word-break: break-all;
@@ -514,7 +514,7 @@
         box-sizing: border-box;
         line-height: 31rpx;
         font-size: 21rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         text-align: center;
         border-radius: 3rpx;
@@ -564,7 +564,7 @@
                 .player{
                     width: 100%;
                     font-size: 25rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 600;
                     color: #333333;
                     margin-bottom: 20rpx;
@@ -572,7 +572,7 @@
                 .setcard{
                     display: flex;
                     font-size: 25rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 400;
                     color: #767880;
                     word-break: break-all;
@@ -605,7 +605,7 @@
             .wait-bc{
                 width: 100%;
                 font-size: 29rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 500;
                 color: #959695;
                 display: flex;
@@ -621,7 +621,7 @@
             .wait-kb{
                 width: 100%;
                 font-size: 25rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 400;
                 color: #C0C0C0;
                 margin-top: 10rpx;

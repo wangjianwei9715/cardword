@@ -86,7 +86,7 @@ export default class ClassName extends BaseComponent {
         align-items: center;
         .seriesMore-msg{
             font-size: 24rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #C0C0C0;
         }

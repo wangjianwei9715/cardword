@@ -80,7 +80,7 @@
 
 <style lang="scss">
 	page {
-		font-family: PingFang SC;
+		
 		background-color: #f6f7fb;
 	}
 
@@ -95,7 +95,7 @@
 		text-align: center;
 		line-height: 96rpx;
 		font-size: 29rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #333333;
 	}

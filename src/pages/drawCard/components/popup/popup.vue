@@ -61,7 +61,7 @@ export default class ClassName extends BaseComponent {
 
 @mixin font($size) {
 	font-size: $size;
-	font-family: PingFang SC;
+	
 	font-weight: 600;
 	color: #FFFFFF;
 }
@@ -103,7 +103,7 @@ export default class ClassName extends BaseComponent {
 	.tips {
 		@include lineBox;
 		font-size: 24rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #E6E6E6;
 		justify-content: center;

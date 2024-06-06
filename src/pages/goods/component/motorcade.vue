@@ -181,7 +181,7 @@
 				align-items: center;
 				box-sizing: border-box;
 				font-size: 24rpx;
-				font-family: PingFangSC, PingFang SC;
+				
 				font-weight: 400;
 				color: #A27339;
 				padding-left: 16rpx;
@@ -208,14 +208,14 @@
 		height:40rpx;
 		line-height: 40rpx;
 		font-size: 27rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #C0C0C0;
 	}
 	.detail-act-desc{
 		width: 550rpx;
 		font-size: 26rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #333333;
 		overflow: hidden;
@@ -237,7 +237,7 @@
 		border:1px solid #F4919F;
 		margin-right: 24rpx;
 		font-size: 24rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #EA4055;
 	}
@@ -248,7 +248,7 @@
 	}
 	.drawer-help-title{
 		font-size: 27rpx;
-		font-family: PingFangSC-Medium;
+		
 		font-weight: bold;
 		color:#333333;
 		margin:15rpx 0rpx;
@@ -256,7 +256,7 @@
 	.drawer-help-content{
 		width: 100%;
 		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #7D8288;
 		white-space: pre-wrap;
@@ -266,7 +266,7 @@
 	.drawer-help-cd{
 		width: 100%;
 		font-size: 25rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #333333;
 		line-height: 46rpx;
@@ -287,7 +287,7 @@
 	}
 	.drawer-header-name{
 		font-size: 23rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #959695;
 	}
@@ -383,7 +383,7 @@
 	.chedui-rank-n{
 		width: 100%;
 		font-size: 25rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #333333;
 		margin-bottom: 5rpx;
@@ -391,13 +391,13 @@
 	.chedui-rank-jf{
 		width: 100%;
 		font-size: 21rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #C0C0C0;
 	}
 	.chedui-rank-item-reward{
 		font-size: 25rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #333333;
 	}

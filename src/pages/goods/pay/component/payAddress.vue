@@ -82,14 +82,14 @@
 .address-desc {
 	width: 100%;
 	font-size: 24rpx;
-	font-family: PingFangSC-Regular;
+	
 	font-weight: 400;
 	color: rgba(0,0,0,0.9);
 }
 .address-name {
 	width: 100%;
 	font-size: 32rpx;
-	font-family: PingFangSC-Medium;
+	
 	font-weight: 500;
 	color: rgba(0,0,0,0.9);
 }
@@ -97,7 +97,7 @@
 	height: 100rpx;
 	line-height: 100rpx;
 	font-size: 28rpx;
-	font-family: HYQiHei;
+	
 	font-weight: bold;
 	color: #3b3b3b;
 }

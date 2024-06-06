@@ -274,14 +274,14 @@ export default class ClassName extends BaseNode {
 			.desc-title {
 				width: 100%;
 				font-size: 28rpx;
-				font-family: PingFangSC-Medium, PingFang SC;
+				
 				font-weight: 600;
 			}
 
 			.desc-message {
 				width: 100%;
 				font-size: 24rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
+				
 				font-weight: 400;
 				color: #767880;
 			}
@@ -299,7 +299,7 @@ export default class ClassName extends BaseNode {
 		.time {
 			width: 100%;
 			font-size: 24rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
+			
 			font-weight: 400;
 			color: #AAAABB;
 			margin-bottom: 6rpx;
@@ -316,7 +316,7 @@ export default class ClassName extends BaseNode {
 			align-items: center;
 			justify-content: center;
 			font-size: 20rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
+			
 			font-weight: 400;
 			color: #FFFFFF;
 		}
@@ -329,7 +329,7 @@ export default class ClassName extends BaseNode {
 
 .desc-message /deep/ p {
 	font-size: 24rpx;
-	font-family: PingFangSC-Regular, PingFang SC;
+	
 	font-weight: 400;
 	color: #767880;
 }

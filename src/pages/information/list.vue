@@ -204,7 +204,7 @@ page {
   background: #f5f5f8;
   border-radius: 4rpx;
   font-size: 24rpx;
-  font-family: PingFangSC-Medium, PingFang SC;
+  
   font-weight: 500;
   color: #14151a;
 }

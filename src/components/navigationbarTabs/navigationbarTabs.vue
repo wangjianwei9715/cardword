@@ -158,7 +158,7 @@ export default class navigationbar extends BaseComponent {
 		height: 88rpx;
 		line-height: 80rpx;
 		font-size: 18px;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 500;
 		color: #333;
 	}
@@ -176,7 +176,7 @@ export default class navigationbar extends BaseComponent {
 
 	.right-text {
 		font-size: 28rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #333333;
 		position: absolute;

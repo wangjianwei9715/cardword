@@ -157,7 +157,7 @@
 		width: 100%;
 		text-align: center;
 		font-size: 43rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #FFFFFF;
 	}
@@ -165,7 +165,6 @@
 		width: 100%;
 		text-align: center;
 		font-size: 24rpx;
-		font-family: FZLanTingHeiS-B-GB;
 		font-weight: 400;
 		color: #FFFFFF;
 	}
@@ -205,7 +204,7 @@
 		width: 100%;
 		text-align: center;
 		font-size: 18rpx;
-		font-family: Adobe Heiti Std;
+		
 		font-weight: normal;
 		color: #C0C0C0;
 		margin-top: 18rpx;

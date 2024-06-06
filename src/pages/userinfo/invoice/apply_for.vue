@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-03-24 11:12:43
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-03-29 13:42:34
+ * @LastEditTime: 2024-06-06 10:09:29
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -78,7 +78,6 @@
 		width: 710rpx;
 		background: $btn-red;
 		text-align: center;
-		font-family: PingFangSC-Semibold;
 		color: #FFFFFF;
 		height: $btn-height;
 		line-height: $btn-height;
@@ -97,13 +96,13 @@
 	.search-input{
 		text-align: right;
 		font-size: 25rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #333333;
 	}
 	.cell-value{
 		font-size: 25rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #333333;
 	}

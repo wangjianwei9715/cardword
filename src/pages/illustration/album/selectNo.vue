@@ -138,14 +138,14 @@
 	.series-info-name{
 		width: 100%;
 		font-size: 33rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #FFFFFF;
 	}
 	.series-info-num{
 		width: 100%;
 		font-size: 21rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #FFFFFF;
 	}
@@ -157,7 +157,7 @@
 		text-align: center;
 		line-height: 51rpx;
 		font-size: 25rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #FFFFFF;
 		box-sizing: border-box;
@@ -221,7 +221,7 @@
 		.search-input{
 			width: 100%;
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #333;
 		}

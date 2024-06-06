@@ -72,13 +72,13 @@
 			height:100rpx;
 			line-height: 100rpx;
 			font-size: 24rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 600;
 			color: #14151A;
 		}
 		.tips{
 			font-size: 24rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
+			
 			font-weight: 400;
 			color: #AAAABB;
 		}
@@ -87,7 +87,7 @@
 		width: 688rpx;
 		margin:0 auto;
 		font-size: 24rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
+		
 		font-weight: 400;
 		color: #C4C4CF;
 	}

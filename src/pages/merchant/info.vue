@@ -212,7 +212,7 @@ page {
         font-size: 32rpx;
         color: #3C3C3C;
         position: absolute;
-        font-family: HYQiHei;
+        
         font-weight: bold;
         left: 0;
         right: 0;
@@ -255,7 +255,7 @@ page {
 
 .infoItem-name {
     font-size: 29rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #7c7c7c;
     margin-right: 52rpx;
@@ -280,7 +280,7 @@ page {
 
 .infoItem-label {
     font-size: 29rpx;
-    font-family: PingFang SC;
+    
     font-weight: 500;
     color: #333333;
     overflow: hidden;

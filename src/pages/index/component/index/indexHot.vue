@@ -110,7 +110,7 @@ $swiperHeight:180rpx;
 		.hot-desc{
 			margin-top: 5rpx;
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #C0C0C0;
 		}
@@ -141,7 +141,7 @@ $swiperHeight:180rpx;
 		}
 		.live-desc{
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #C0C0C0;
 			margin-top: 6rpx;
@@ -166,7 +166,7 @@ $swiperHeight:180rpx;
 			border: 2rpx solid #FFFFFF;
 			border-radius: 5rpx;
 			font-size: 16rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #FFFFFF;
 			display: flex;

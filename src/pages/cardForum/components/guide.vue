@@ -227,7 +227,7 @@ export default {
 
 .camera_txt {
     font-size: 19rpx;
-    font-family: PingFang SC;
+    
     font-weight: 500;
     color: #333333;
     position: relative;
@@ -306,7 +306,7 @@ export default {
 .title{
     width: 565rpx;
     font-size: 28rpx;
-    font-family: PingFangSC-Medium;
+    
     font-weight: 500;
     color: #333333;
     margin-bottom: 12rpx;
@@ -316,7 +316,7 @@ export default {
 }
 .msg{
     font-size: 24rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #999999;
 }
@@ -348,7 +348,7 @@ export default {
     width: 167rpx;
     text-align: center;
     font-size: 28rpx;
-    font-family: PingFang;
+    
     font-weight: bold;
     color: #FFFFFF;
     margin-top: 4rpx;
@@ -357,7 +357,7 @@ export default {
     width: 167rpx;
     text-align: center;
     font-size: 20rpx;
-    font-family: PingFang;
+    
     font-weight: bold;
     color: #FFFFFF;
 }
@@ -465,7 +465,7 @@ $uvui-nvue-style: true !default;
 
 .waterfall-item__ft__title__value {
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
     line-height: 33rpx;
@@ -498,7 +498,7 @@ $uvui-nvue-style: true !default;
 
 .waterfall-item__bottom__userName {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #707070;
     flex: 1;
@@ -518,7 +518,7 @@ $uvui-nvue-style: true !default;
 
 .likeNum {
     font-size: 23rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #8D8D8D;
     margin-left: 8rpx;

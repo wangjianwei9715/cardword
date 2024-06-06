@@ -213,7 +213,7 @@ export default class ClassName extends BaseNode {
 
 <style lang="scss">
 page {
-    font-family: PingFang SC;
+    
     background-color: #000000;
     width: 750rpx;
     overflow-x: hidden;
@@ -292,7 +292,7 @@ page {
 
             .txt {
                 font-size: 21rpx;
-                font-family: PingFang SC;
+                
                 font-weight: bold;
                 color: #060807;
             }
@@ -319,7 +319,7 @@ page {
 
     //         .txt {
     //             font-size: 21rpx;
-    //             font-family: PingFang SC;
+    //             
     //             font-weight: bold;
     //             color: #FFFFFF;
     //             line-height: 24rpx;
@@ -411,7 +411,7 @@ page {
 
     .get {
         font-size: 23rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #C4232B;
         margin-bottom: 10rpx;
@@ -419,7 +419,7 @@ page {
 
     .freeze {
         font-size: 23rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #A0BED8;
     }
@@ -431,7 +431,7 @@ page {
     padding: 0 30rpx;
     display: flex;
     font-size: 23rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #FEFEFE;
     margin-top: 28rpx;
@@ -508,7 +508,7 @@ page {
 
     .saleText {
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #333333;
         text-align: center;
@@ -541,7 +541,7 @@ page {
                 right: 0;
                 background-color: rgba(0, 0, 0, .61);
                 font-size: 25rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 400;
                 color: #FFE400;
             }
@@ -597,7 +597,7 @@ page {
         // padding: 0 50rpx;
         .tips {
             font-size: 20rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             text-decoration: underline;
             color: #ffffff;
@@ -605,7 +605,7 @@ page {
 
         .lookDetail {
             font-size: 20rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             text-decoration: underline;
             color: #ffffff;
@@ -640,13 +640,13 @@ page {
 
     .tag_title {
         font-size: 33rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
     }
 
     .tag_time {
         font-size: 21rpx;
-        font-family: PingFang SC;
+        
     }
 
     .tag_left {
@@ -672,7 +672,7 @@ page {
 
 .rank_normal {
     font-size: 26rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #FFFFFF;
 }
@@ -721,7 +721,7 @@ page {
 
         view {
             font-size: 23rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
         }
     }
@@ -741,7 +741,7 @@ page {
         // background-color: #950101;
         background-image: url("@/static/act/merchantRank/hammer/tag.png");
         font-size: 21rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #F3BD79;
     }
@@ -767,7 +767,7 @@ page {
 
     view {
         font-size: 33rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #D21F25;
         letter-spacing: 2rpx;

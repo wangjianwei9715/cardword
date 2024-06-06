@@ -172,7 +172,7 @@
 		background: #FA1545;
 		border-radius: 5rpx;
 		font-size: 29rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #FFFFFF;
 		text-align: center;
@@ -209,7 +209,7 @@
 		text-align: center;
 		line-height: 54rpx;
 		font-size: 28rpx;
-		font-family: Microsoft YaHei;
+		
 		font-weight: 400;
 		color: #FFFFFF;
 		box-sizing: border-box;

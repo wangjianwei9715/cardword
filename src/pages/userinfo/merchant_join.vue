@@ -489,7 +489,7 @@ export default class ClassName extends BaseNode {
 .title {
   width: 100%;
   font-size: 34rpx;
-  font-family: HYQiHei;
+  
   font-weight: bold;
   color: #1b1b1d;
 }
@@ -506,7 +506,7 @@ export default class ClassName extends BaseNode {
 
 .tips {
   font-size: 24rpx;
-  font-family: Microsoft YaHei;
+  
   font-weight: 400;
   color: #c7c8c8;
 }
@@ -543,7 +543,7 @@ export default class ClassName extends BaseNode {
   height: 60rpx;
   text-align: center;
   font-size: 24rpx;
-  font-family: Microsoft YaHei;
+  
   font-weight: 400;
   color: #34363a;
 }
@@ -568,7 +568,7 @@ export default class ClassName extends BaseNode {
   display: flex;
   align-items: center;
   font-size: 30rpx;
-  font-family: Microsoft YaHei;
+  
   font-weight: 400;
   color: #34363a;
 }
@@ -579,7 +579,7 @@ export default class ClassName extends BaseNode {
   height: 80rpx;
   line-height: 80rpx;
   font-size: 30rpx;
-  font-family: Microsoft YaHei;
+  
   font-weight: 400;
   color: #34363a;
 }
@@ -593,7 +593,7 @@ export default class ClassName extends BaseNode {
 .info-tip {
   margin-top: 30rpx;
   font-size: 24rpx;
-  font-family: Microsoft YaHei;
+  
   font-weight: 400;
   color: #c7c8c8;
 }
@@ -610,7 +610,7 @@ export default class ClassName extends BaseNode {
   width: 668rpx;
   background: #fb4e3e;
   text-align: center;
-  font-family: Microsoft YaHei;
+  
   color: #ffffff;
   position: fixed;
   bottom: 64rpx;
@@ -666,7 +666,7 @@ export default class ClassName extends BaseNode {
   // background: #c8c8c8;
   // border-radius: 50%;
   // font-size: 42rpx;
-  // font-family: HYQiHei;
+  // 
   // font-weight: normal;
   // color: #ffffff;
   margin-top: 265rpx;
@@ -686,7 +686,7 @@ export default class ClassName extends BaseNode {
 
 .alreadyTips {
   font-size: 30rpx;
-  font-family: HYQiHei;
+  
   font-weight: normal;
   color: #010000;
   text-align: center;

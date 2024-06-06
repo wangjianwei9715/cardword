@@ -222,14 +222,14 @@ page {
         text-align: center;
         // margin-right: 10rpx;
         font-size: 28rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #959699;
     }
 
     .menu_select {
         // color: #fb374e;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #FA1545;
         font-size: 31rpx;
@@ -273,7 +273,7 @@ page {
 
         .name {
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #333333;
             margin-bottom: 20rpx;
@@ -285,7 +285,7 @@ page {
 
             .type {
                 font-size: 20rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 400;
                 color: #949494;
                 padding: 0rpx 6rpx;
@@ -320,7 +320,7 @@ page {
 
                 .text {
                     font-size: 20rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 400;
                     color: #333333;
                     // line-height: 28rpx;
@@ -337,7 +337,7 @@ page {
 
             .merchantName {
                 font-size: 23rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 400;
                 color: #333333;
                 margin-left: 10rpx;
@@ -346,7 +346,7 @@ page {
 
             .goodsPriceContainer {
                 // font-size: 33rpx;
-                font-family: PingFang SC;
+                
                 font-weight: bold;
                 color: #333333;
                 font-size: 31rpx;
@@ -367,7 +367,7 @@ page {
                 .priceTips {
                     margin-left: 10rpx;
                     font-size: 23rpx;
-                    font-family: PingFangSC-Regular;
+                    
                     font-weight: 500;
                     color: #959695;
                 }

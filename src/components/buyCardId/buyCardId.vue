@@ -78,7 +78,6 @@
 				display: flex;
 				align-items: center;
 				font-size: 22rpx;
-				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 				line-height: 32rpx;
@@ -94,7 +93,6 @@
 				align-items: center;
 				justify-content: center;
 				font-size: 24rpx;
-				font-family:PingFang SC;
 				font-weight: 400;
 				color: #AAAABB;
 				.show-img{

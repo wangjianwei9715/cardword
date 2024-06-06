@@ -303,7 +303,7 @@
 		height:150rpx;
 		text-align: center;
 		font-size: 25rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #333333;
 		line-height: 150rpx;
@@ -341,7 +341,7 @@
 			height:80rpx;
 			line-height: 80rpx;
 			font-size: 29rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}
@@ -360,7 +360,7 @@
 			width: 100%;
 			height: 73rpx;
 			font-size: 23rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 		}
 		.search-icon{
@@ -393,7 +393,7 @@
 			box-sizing: border-box;
 			padding:10rpx 20rpx;
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #333333;
 			background: #F2F2F2;
@@ -409,7 +409,7 @@
 			width: 246rpx;
 			height:66rpx;
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #333333;
 			line-height: 66rpx;
@@ -424,7 +424,7 @@
 			width: 246rpx;
 			height:66rpx;
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #333333;
 			line-height: 66rpx;
@@ -438,7 +438,7 @@
 			width: 246rpx;
 			height:66rpx;
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #333333;
 			text-align: center;
@@ -473,7 +473,7 @@
 			padding:  0 16rpx ;
 			margin-right: 29rpx;
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #333333;
 			display: inline-flex;
@@ -500,7 +500,7 @@
 			border-radius: 5rpx;
 			box-sizing: border-box;
 			font-size: 33rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #333333;
 			display: flex;
@@ -513,7 +513,7 @@
 			background: #FA1545;
 			border-radius: 5rpx;
 			font-size: 33rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #FFFFFF;
 			display: flex;

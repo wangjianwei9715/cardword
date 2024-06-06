@@ -218,7 +218,7 @@
 
 		.header-title {
 			font-size: $font-32;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 600;
 			color: #14151A;
 			line-height: 88rpx;
@@ -237,7 +237,7 @@
 
 		.header-title2 {
 			font-size: $font-32;
-			font-family: PingFangSC-Regular, PingFang SC;
+			
 			font-weight: 400;
 			color: #A9ABB4;
 			line-height: 88rpx;
@@ -280,7 +280,7 @@
 
 	.title-middle {
 		font-size: $font-22;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 500;
 		color: #FFFFFF;
 		line-height: 32rpx;
@@ -295,7 +295,7 @@
 		justify-content: space-around;
 
 		font-size: $font-24;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 		line-height: 34rpx;
@@ -310,7 +310,7 @@
 		justify-content: space-around;
 
 		font-size: $font-24;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 		line-height: 34rpx;
@@ -364,7 +364,7 @@
 		justify-content: space-around;
 
 		font-size: $font-24;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 		line-height: 34rpx;
@@ -381,7 +381,7 @@
 		justify-content: space-around;
 
 		font-size: $font-24;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 		line-height: 34rpx;
@@ -424,7 +424,7 @@
 		background: #F5F5F8;
 		border-radius: 4rpx;
 		font-size: 24rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 500;
 		color: #14151A;
 		
@@ -454,7 +454,7 @@
 			padding:20rpx 22rpx 20rpx 32rpx;
 			.title{
 				font-size: 24rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
+				
 				font-weight: 400;
 				color: #7F7F8E;
 				margin-bottom: 8rpx;
@@ -469,7 +469,7 @@
 			}
 			.desc{
 				font-size: 24rpx;
-				font-family: PingFangSC-Medium, PingFang SC;
+				
 				font-weight: 600;
 				color: #14151A;
 				line-height: 34rpx;
@@ -483,7 +483,7 @@
 			}
 			.time{
 				font-size: 24rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
+				
 				font-weight: 400;
 				color: #AAAABB;
 			}
@@ -497,7 +497,7 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 24rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 600;
 			color: #828292;
 			.right-img{
@@ -568,7 +568,7 @@
 		margin-bottom: 80rpx;
 		text-align: center;
 		font-size: 34rpx;
-		font-family: Microsoft YaHei;
+		
 		font-weight: bold;
 		color: #34363A;
 	}
@@ -577,7 +577,7 @@
 		box-sizing: border-box;
 		padding:0 50rpx;
 		font-size: 28rpx;
-		font-family: Microsoft YaHei;
+		
 		font-weight: 400;
 		color: #34363A;
 		line-height: 50rpx;
@@ -596,7 +596,7 @@
 		margin-left:-231rpx;
 		border-radius: 30rpx;
 		font-size: 30rpx;
-		font-family: Adobe Heiti Std;
+		
 		font-weight: normal;
 		color: #FFFFFF;
 	}
@@ -629,7 +629,7 @@
 			margin-bottom: 40rpx;
 			text-align: center;
 			font-size: 34rpx;
-			font-family: Microsoft YaHei;
+			
 			font-weight: bold;
 			color: #34363A;
 		}
@@ -666,7 +666,7 @@
 			margin-bottom: 40rpx;
 			text-align: center;
 			font-size: 34rpx;
-			font-family: Microsoft YaHei;
+			
 			font-weight: bold;
 			color: #34363A;
 		}
@@ -686,7 +686,7 @@
 		box-sizing: border-box;
 		padding:20rpx 0;
 		font-size: 26rpx;
-		font-family: Microsoft YaHei;
+		
 		font-weight: 400;
 		color: #34363A;
 		line-height: 40rpx;

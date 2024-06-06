@@ -286,7 +286,7 @@
 			height:62rpx;
 			background: #272727;
 			font-size: 23rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #C0C0C0;
 			padding:0 20rpx;
@@ -304,7 +304,7 @@
 		}
 		.card-box{
 			width: 341rpx;
-			font-family: PingFang SC;
+			
 			margin-bottom: 20rpx;
 			box-sizing: border-box;
 		}
@@ -312,7 +312,7 @@
 			width: 100%;
 			box-sizing: border-box;
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #C0C0C0;
 			margin-top: 20rpx;
@@ -321,7 +321,7 @@
 			width: 100%;
 			box-sizing: border-box;
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #707070;
 			line-height: 38rpx;
@@ -386,7 +386,7 @@
 		.upload-msg{
 			width: 100%;
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #8D8D8D;
 			text-align: center;

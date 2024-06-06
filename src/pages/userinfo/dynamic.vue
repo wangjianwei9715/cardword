@@ -338,7 +338,7 @@ page {
 .dynamic-item .left .name {
 	width: 100%;
 	font-size: 30rpx;
-	font-family: HYQiHei;
+	
 	font-weight: bold;
 	color: #3B3B3B;
 }
@@ -346,7 +346,7 @@ page {
 .dynamic-item .left .des {
 	width: 100%;
 	font-size: 24rpx;
-	font-family: Microsoft YaHei;
+	
 	font-weight: bold;
 	color: #7B7B7B;
 }
@@ -365,7 +365,7 @@ page {
 	width: 100%;
 	text-align: right;
 	font-size: 24rpx;
-	font-family: HYQiHei;
+	
 	font-weight: normal;
 	color: #7B7B7B;
 }
@@ -384,7 +384,7 @@ page {
 	align-items: center;
 	justify-content: flex-end;
 	font-size: 24rpx;
-	font-family: HYQiHei;
+	
 	font-weight: normal;
 	color: #7B7B7B;
 	position: relative;
@@ -395,7 +395,7 @@ page {
 	height: 94rpx;
 	line-height: 104rpx;
 	font-size: 22rpx;
-	font-family: Microsoft YaHei;
+	
 	font-weight: 400;
 	color: #ababbb;
 	text-align: right;
@@ -436,7 +436,7 @@ page {
 
 		.name {
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: bold;
 			color: #333333;
 			margin-bottom: 8rpx;
@@ -446,14 +446,14 @@ page {
 			display: flex;
 			align-items: center;
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #333333;
 			margin-bottom: 20rpx;
 
 			.source_time {
 				font-size: 19rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #C0C0C0;
 				margin-left: 22rpx;
@@ -462,7 +462,7 @@ page {
 
 		.info_content {
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			text-align: left;
 			color: #333333;
@@ -476,14 +476,14 @@ page {
 			display: inline-block;
 			background-color: #F5F5F5;
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #707070;
 
 			text {
 				margin-left: 10rpx;
 				font-size: 21rpx;
-				font-family: PingFang SC;
+				
 				font-weight: bold;
 				color: #707070;
 			}
@@ -498,7 +498,7 @@ page {
 			border-radius: 3rpx;
 			border: 1rpx solid #FA1545;
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #FFFFFF;
 		}
@@ -510,7 +510,7 @@ page {
 			background-color: #fff;
 			border-radius: 3rpx;
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #333333;
 		}
@@ -545,7 +545,7 @@ page {
 
 		.name {
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #959695;
 			flex: 1;
@@ -573,14 +573,14 @@ page {
 
 		.title {
 			font-size: 29rpx;
-			font-family: PingFang SC;
+			
 			font-weight: bold;
 			color: #333333;
 		}
 
 		.time {
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #C0C0C0;
 		}
@@ -591,7 +591,7 @@ page {
 
 		.content {
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #767880;
 			flex: 1;

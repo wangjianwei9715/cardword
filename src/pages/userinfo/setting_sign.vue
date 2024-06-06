@@ -57,7 +57,7 @@
 		width: 686rpx;
 		height: 240rpxrpx !important;
 		font-size: 24rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 		margin: 20rpx auto;
@@ -69,7 +69,7 @@
 		width: 688rpx;
 		margin:0 auto;
 		font-size: 24rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
+		
 		font-weight: 400;
 		color: #C4C4CF;
 	}

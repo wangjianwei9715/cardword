@@ -290,7 +290,7 @@ page {
 
 .topicsItem_title {
     font-size: 33rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
     margin-right: 14rpx;
@@ -302,7 +302,7 @@ page {
     background: #FA1545;
     border-radius: 5rpx;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     text-align: center;
     line-height: 51rpx;
@@ -314,14 +314,14 @@ page {
     background-color: #ffffff;
     border: 1rpx solid #C0C0C0;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #C0C0C0;
 }
 
 .desc {
     font-size: 23rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #959695;
     margin-top: 10rpx;
@@ -342,7 +342,7 @@ page {
     border-radius: 3rpx;
     text-align: center;
     font-size: 20rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #FFFFFF;
     line-height: 32rpx;
@@ -360,7 +360,7 @@ page {
 
 .num {
     font-size: 23rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #C0C0C0;
 }
@@ -373,7 +373,7 @@ page {
     background: #FA1545;
     border-radius: 3rpx;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #FFFFFF;
     text-align: center;
@@ -408,7 +408,7 @@ page {
     top: 75rpx;
     right: 48rpx;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     text-align: center;
     line-height: 57rpx;

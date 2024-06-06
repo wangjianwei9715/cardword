@@ -93,7 +93,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 33rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #FFFFFF;
 			.scene-close{
@@ -139,7 +139,7 @@
 				text-align: center;
 				line-height: 62rpx;
 				font-size: 25rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #FFFFFF;
 			}
@@ -153,7 +153,7 @@
 				align-items: center;
 				justify-content: center;
 				font-size: 25rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #FFFFFF;
 				text-shadow: 2rpx 2rpx #C62B4F;

@@ -270,14 +270,14 @@ page {
 
   .bigState {
     font-size: 33rpx;
-    font-family: PingFang SC;
+    
     font-weight: 600;
     color: #ffffff;
   }
 
   .smallTips {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #ffffff;
   }
@@ -312,14 +312,14 @@ page {
 
     .goodsName {
       font-size: 25rpx;
-      font-family: PingFang SC;
+      
       font-weight: 400;
       color: #333333;
       display: flex;
 
       .name {
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #333333;
         flex: 1;
@@ -327,7 +327,7 @@ page {
 
       .state {
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #fa1545;
         margin-left: 10rpx;
@@ -336,7 +336,7 @@ page {
 
     .goodsPrice {
       font-size: 29rpx;
-      font-family: PingFang SC;
+      
       font-weight: 600;
       color: #333333;
 
@@ -358,7 +358,7 @@ page {
     display: flex;
     justify-content: space-between;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #333333;
   }
@@ -390,7 +390,7 @@ page {
 
     &_lineone {
       font-size: 29rpx;
-      font-family: PingFang SC;
+      
       font-weight: 400;
       color: #333333;
     }
@@ -398,7 +398,7 @@ page {
     &_linetwo {
       font-size: 25rpx;
       color: #999999;
-      font-family: PingFang SC;
+      
       font-weight: 400;
     }
   }
@@ -440,7 +440,7 @@ page {
       height: 83rpx;
       border: 2rpx solid rgba(148, 148, 148, 0.4);
       font-size: 33rpx;
-      font-family: PingFang SC;
+      
       font-weight: 600;
       color: #333333;
       border-radius: 3rpx;

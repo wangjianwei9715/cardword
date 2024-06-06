@@ -117,7 +117,7 @@ export default class ClassName extends BaseNode {
     margin-top: 10rpx;
     width: inherit;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
     box-sizing: border-box;
@@ -140,7 +140,7 @@ export default class ClassName extends BaseNode {
         border-radius: 3rpx;
         margin-bottom: 10rpx;
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #707070;
     }

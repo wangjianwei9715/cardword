@@ -106,7 +106,7 @@
 	.title{
 		width: 100%;
 		font-size: 28rpx;
-		font-family: PingFangSC-Medium;
+		
 		font-weight: 500;
 		color: #333333;
 		margin-bottom: 12rpx;
@@ -116,12 +116,12 @@
 	}
 	.title text{
 		font-size: 32rpx;
-		font-family: PingFangSC-Medium;
+		
 		color:#FA1545
 	}
 	.msg{
 		font-size: 24rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #999999;
 		margin-bottom: 20rpx;
@@ -145,7 +145,7 @@
 		width: 100%;
 		text-align: center;
 		font-size: 28rpx;
-		font-family: PingFang;
+		
 		font-weight: bold;
 		color: #FFFFFF;
 		margin-top: 4rpx;
@@ -154,7 +154,7 @@
 		width: 100%;
 		text-align: center;
 		font-size: 20rpx;
-		font-family: PingFang;
+		
 		font-weight: bold;
 		color: #FFFFFF;
 	}

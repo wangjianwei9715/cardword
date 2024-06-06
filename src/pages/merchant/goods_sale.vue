@@ -148,13 +148,13 @@
         justify-content: space-between;
         .item-time{
             font-size: 23rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #88878C;
         }
         .item-status{
             font-size: 23rpx;
-            font-family: PingFang SC;
+            
             font-weight: 600;
             color: #333333;
         }
@@ -180,7 +180,7 @@
             width: 100%;
             font-size: 25rpx;
             height:68rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #333333;
             line-height: 32rpx;
@@ -212,14 +212,14 @@
 
             text:last-child {
                 font-size: 23rpx;
-                font-family: PingFangSC-Regular;
+                
                 font-weight: 500;
                 color: #959695;
             }
         }
         .item-num{
             font-size: 23rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #959695;
         }
@@ -232,7 +232,7 @@
         justify-content: space-between;
         .item-rank{
             font-size: 20rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #383838;
         }
@@ -250,7 +250,7 @@
             align-items: center;
             justify-content: center;
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: 500;
             line-height: 52rpx;
         }
@@ -273,7 +273,7 @@
         align-items: center;
         justify-content: center;
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 500;
         line-height: 52rpx;
         background: #FA1545;

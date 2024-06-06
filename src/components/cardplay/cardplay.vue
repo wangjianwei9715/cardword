@@ -171,7 +171,7 @@
 		&-title{
 			width:100%;
 			font-size: 28rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 600;
 			color: #14151A;
 			margin-bottom: 20rpx;
@@ -179,7 +179,7 @@
 		&-desc{
 			width: 100%;
 			font-size: 24rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
+			
 			font-weight: 400;
 			color: #7D8288;
 			line-height: 36rpx;
@@ -192,7 +192,7 @@
 		&-title{
 			width:100%;
 			font-size: 28rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 600;
 			color: #14151A;
 			margin-bottom: 20rpx;
@@ -200,7 +200,7 @@
 		&-desc{
 			width: 100%;
 			font-size: 24rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
+			
 			font-weight: 400;
 			color: #7D8288;
 			line-height: 36rpx;

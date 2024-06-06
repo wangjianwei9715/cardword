@@ -534,7 +534,7 @@ export default {
 .vd-name {
     width: 670rpx;
     font-size: 29rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
     margin-bottom: 5rpx;
@@ -543,7 +543,7 @@ export default {
 .vd-time {
     width: 670rpx;
     font-size: 23rpx;
-    font-family: Microsoft YaHei;
+    
     font-weight: 400;
     color: #7C7C7C;
 }
@@ -554,7 +554,7 @@ export default {
     box-sizing: border-box;
     // #endif
     font-size: 29rpx;
-    font-family: Microsoft YaHei;
+    
     font-weight: 400;
     color: #14151A;
     line-height: 36rpx;
@@ -564,7 +564,7 @@ export default {
 // .vd-desc {
 //     width: 670rpx;
 //     font-size: 28rpx;
-//     font-family: Microsoft YaHei;
+//     
 //     font-weight: 400;
 //     color: #14151A;
 //     line-height: 36rpx;
@@ -589,7 +589,7 @@ export default {
 .topicsItem {
     margin-right: 10rpx;
     font-size: 29rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
     line-height: 42rpx;
@@ -645,7 +645,7 @@ export default {
 
 .goodsInfo {
     font-size: 22rpx;
-    font-family: PingFang SC;
+    
     font-weight: 500;
     color: #333333;
     line-height: 25rpx;
@@ -664,7 +664,7 @@ export default {
 
 .voteTitle {
     font-size: 29rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #333333;
     line-height: 25rpx;
@@ -691,7 +691,7 @@ export default {
 
 .voteFont {
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #333333;
     flex: 1;
@@ -700,7 +700,7 @@ export default {
 
 .voteNum {
     font-size: 23rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
     z-index: 4;
@@ -749,7 +749,7 @@ export default {
 
 .commentNum {
     font-size: 29rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
     flex: 1;
@@ -788,14 +788,14 @@ export default {
 
 .name {
     font-size: 27rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #959695;
 }
 
 .time {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #AAAAAA;
     // margin-left: 22rpx;
@@ -805,7 +805,7 @@ export default {
 
 .contentMsg {
     font-size: 27rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #333333;
     margin-top: 20rpx;
@@ -848,7 +848,7 @@ export default {
 
 .loaction {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #AAAAAA;
     margin-left: 22rpx;
@@ -856,7 +856,7 @@ export default {
 
 .reply_text {
     font-size: 23rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #707070;
     margin-left: 28rpx;
@@ -885,7 +885,7 @@ export default {
 
 .loadMore_wrap {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #636363;
     width: 160rpx;
@@ -905,7 +905,7 @@ export default {
 
 .loadMore_text {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #959695;
 }
@@ -919,7 +919,7 @@ export default {
 
 .replayUserName {
     font-size: 27rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #959695;
     margin-top: 20rpx;
@@ -967,7 +967,7 @@ export default {
     display: flex;
     align-items: center;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #333333;
 }
@@ -977,7 +977,7 @@ export default {
     height: 54rpx;
     color: #fff;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     border-radius: 3rpx;
     text-align: center;

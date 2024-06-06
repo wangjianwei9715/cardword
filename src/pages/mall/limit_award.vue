@@ -207,7 +207,7 @@
 
 <style lang="scss">
 	page {
-		font-family: PingFang SC;
+		
 		background-color: #f6f7fb;
 	}
 
@@ -265,7 +265,7 @@
 
 		.normal {
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #333333;
 		}

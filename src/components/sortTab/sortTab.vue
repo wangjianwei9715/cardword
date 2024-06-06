@@ -79,7 +79,7 @@
 			align-items: center;
 			box-sizing: border-box;
 			font-size: 26rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
+			
 			font-weight: 400;
 			color: #333333;
 		}
@@ -136,7 +136,7 @@
 				display: flex;
 				align-items: center;
 				font-size: 24rpx;
-				font-family: PingFangSC-Medium, PingFang SC;
+				
 				font-weight: 500;
 				color: #14151A;
 			}

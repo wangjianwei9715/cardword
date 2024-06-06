@@ -187,7 +187,7 @@ export default {
 
 .reward_top_title {
     font-size: 33rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
     text-align: center;
@@ -368,7 +368,7 @@ export default {
 
 .reward_text {
     font-size: 27rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
     margin-right: 17rpx;
@@ -383,7 +383,7 @@ export default {
 
 .desc {
     font-size: 20rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #C0C0C0;
     margin-top: 10rpx;

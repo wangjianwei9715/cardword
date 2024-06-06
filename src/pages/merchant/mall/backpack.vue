@@ -181,7 +181,7 @@ page {
         &_font {
             margin-left: 16rpx;
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: 500;
             color: #333333;
         }
@@ -234,7 +234,7 @@ page {
         width: 25%;
         text-align: center;
         font-size: 28rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #333333;
         white-space: nowrap;
@@ -261,7 +261,7 @@ page {
 
 .leftTitle {
     font-size: 35rpx;
-    font-family: PingFang SC;
+    
     font-weight: 600;
     color: #FFFFFF;
 }
@@ -311,7 +311,7 @@ page {
         align-items: center;
         padding: 0 14rpx;
         font-size: 21rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #FFFFFF;
         justify-content: space-between;
@@ -326,7 +326,7 @@ page {
                 background: #FFFFFF;
                 border-radius: 3rpx;
                 font-size: 21rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 400;
                 color: #515151;
                 margin-left: 4rpx;
@@ -341,7 +341,7 @@ page {
 
         &_leftFont {
             font-size: 21rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #FFFFFF;
         }
@@ -360,7 +360,7 @@ page {
 
     .goodsName {
         font-size: 27rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #333333;
     }
@@ -378,7 +378,7 @@ page {
 
         .leftNum {
             font-size: 21rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #999999;
         }
@@ -391,7 +391,7 @@ page {
 
     .money {
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #F91E44;
         position: relative;
@@ -406,7 +406,7 @@ page {
     align-items: center;
     justify-content: center;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 500;
     line-height: 52rpx;
     background: #FA1545;

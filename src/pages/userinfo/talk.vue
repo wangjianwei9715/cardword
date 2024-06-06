@@ -646,7 +646,7 @@ import { formatDateToHour, formatDateToYear } from "@/tools/util";
 	.detail-title {
 		width: 100%;
 		font-size: 24rpx;
-		font-family: Adobe Heiti Std;
+		
 		font-weight: normal;
 		color: #3B3B3B;
 		margin-bottom: 10rpx;
@@ -661,7 +661,7 @@ import { formatDateToHour, formatDateToYear } from "@/tools/util";
 	.detail-oricost {
 		width: 100%;
 		font-size: 24rpx;
-		font-family: HYQiHei;
+		
 		font-weight: normal;
 		color: #7B7B7B;
 	}
@@ -673,7 +673,7 @@ import { formatDateToHour, formatDateToYear } from "@/tools/util";
 		border-radius: 24rpx;
 
 		font-size: 24rpx;
-		font-family: HYQiHei;
+		
 		font-weight: bold;
 		color: #FFFFFF;
 		line-height: 48rpx;
@@ -710,7 +710,7 @@ import { formatDateToHour, formatDateToYear } from "@/tools/util";
 		width: 100%;
 		height: 22rpx;
 		font-size: 22rpx;
-		font-family: HYQiHei;
+		
 		font-weight: bold;
 		color: #D3D3D3;
 		line-height: 22rpx;
@@ -763,7 +763,7 @@ import { formatDateToHour, formatDateToYear } from "@/tools/util";
 		border-radius: 10rpx;
 
 		font-size: 24rpx;
-		font-family: Adobe Heiti Std;
+		
 		font-weight: normal;
 		color: #3B3B3B;
 		line-height: 36rpx;
@@ -800,7 +800,7 @@ import { formatDateToHour, formatDateToYear } from "@/tools/util";
 		box-sizing: border-box;
 
 		font-size: 24rpx;
-		font-family: Adobe Heiti Std;
+		
 		font-weight: normal;
 		color: #7D7D7D;
 		line-height: 30rpx;
@@ -925,7 +925,7 @@ import { formatDateToHour, formatDateToYear } from "@/tools/util";
 		width: 100%;
 		text-align: center;
 		font-size: 22rpx;
-		font-family: HYQiHei;
+		
 		font-weight: normal;
 		color: #3B3B3B;
 	}
@@ -935,7 +935,7 @@ import { formatDateToHour, formatDateToYear } from "@/tools/util";
 		line-height: 120rpx;
 		text-align: center;
 		font-size: 24rpx;
-		font-family: Adobe Heiti Std;
+		
 		font-weight: normal;
 		color: #7B7B7B;
 		border-top: 1px solid #F4F3F2;

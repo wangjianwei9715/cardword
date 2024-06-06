@@ -32,7 +32,7 @@
 	.header-base{
 		height:40rpx;
 		font-size: 24rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #FFFFFF;
 		display: flex;
@@ -51,7 +51,7 @@
 			text-align: center;
 			line-height: 100rpx;
 			font-size: 36rpx;
-			font-family: PingFangSC, PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}
@@ -61,20 +61,20 @@
 			padding: 0 36rpx 100rpx 36rpx;
 			.base-popup-name{
 				font-size: 28rpx;
-				font-family: PingFangSC, PingFang SC;
+				
 				font-weight: 600;
 				color: #333333;
 			}
 			.item-title{
 				font-size: 30rpx;
-				font-family: PingFangSC, PingFang SC;
+				
 				font-weight: 600;
 				color: #333333;
 				margin-top: 34rpx;
 			}
 			.item-desc{
 				font-size: 24rpx;
-				font-family: PingFangSC, PingFang SC;
+				
 				font-weight: 400;
 				color: #666666;
 				margin-top: 12rpx;

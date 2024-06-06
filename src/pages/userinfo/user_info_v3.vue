@@ -234,7 +234,7 @@ export default class ClassName extends BaseNode {
 
         .name {
             font-size: 24rpx;
-            font-family: PingFangSC-Medium, PingFang SC;
+            
             font-weight: bold;
             color: #14151a;
         }
@@ -250,7 +250,7 @@ export default class ClassName extends BaseNode {
             align-items: center;
             justify-content: flex-end;
             font-size: 24rpx;
-            font-family: PingFangSC-Regular, PingFang SC;
+            
             font-weight: 400;
             color: #aaaabb;
 

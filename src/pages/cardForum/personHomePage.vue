@@ -403,7 +403,6 @@ export default class ClassName extends BaseNode {
 
 <style lang="scss">
 @mixin fontSfTR($fontSize) {
-    font-family: SfTR;
     color: #fff;
     font-size: $fontSize;
     text-align: center;
@@ -610,7 +609,7 @@ page {
 
 .caogaoTitle {
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #ECEFF6;
     margin-top: 17rpx;
@@ -619,7 +618,7 @@ page {
 
 .caogaoText {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #ECEFF6;
 }

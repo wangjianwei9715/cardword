@@ -118,7 +118,7 @@
 			height: 100%;
 			box-sizing: border-box;
 			font-size: 22rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #999898;
 			display: inline-flex;

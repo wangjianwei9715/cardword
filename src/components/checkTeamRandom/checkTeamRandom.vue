@@ -321,7 +321,7 @@
 		box-sizing: border-box;
 		padding: 0 21rpx;
 		font-size: 22rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 300;
 		display: flex;
 		align-items: center;
@@ -336,7 +336,7 @@
 	.teamtion-header-card-name{
 		width: 170rpx;
 		font-size: 25rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 300;
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
@@ -354,27 +354,27 @@
 	.teamtion-header-title{
 		width: 100%;
 		font-size: 22rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #88878C;
 		margin-bottom: 5rpx;
 	}
 	.teamtion-header-title .text-price{
 		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 500;
 		color: #333333;
 	}
 	.teamtion-header-title .teamtion-price{
 		font-size: 33rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #333333;
 	}
 	.teamtion-header-name{
 		width: 100%;
 		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #88878C;
 	}
@@ -404,7 +404,7 @@
 			width: 250rpx;
 			height:30rpx;
 			font-size: 20rpx;
-			font-family: PingFangSC-Regular;
+			
 			font-weight: 400;
 			color: #88878C;
 			line-height: 30rpx;
@@ -418,7 +418,7 @@
 			height:30rpx;
 			font-size: 20rpx;
 			line-height: 30rpx;
-			font-family: PingFangSC-Regular;
+			
 			font-weight: 400;
 			color: #88878C;
 			text-align: right;
@@ -440,7 +440,7 @@
 		display: flex;
 		align-items: center;
 		font-size: 23rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #88878C;
 	}
@@ -466,7 +466,7 @@
 	.drawer-help{
 		width: 100%;
 		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #7D8288;
 		line-height: 38rpx;
@@ -476,14 +476,14 @@
 		.drawer-random-title{
 			width: 100%;
 			font-size: 28rpx;
-			font-family: PingFangSC-Regular;
+			
 			font-weight: 400;
 			color: #333333;
 			margin-bottom: 30rpx;
 		}
 		.drawer-random-title text,.drawer-random-explain-title{
 			font-size: 25rpx;
-			font-family: PingFangSC-Regular;
+			
 			font-weight: 400;
 			color: #7D8288;
 			margin-left: 20rpx;
@@ -505,7 +505,7 @@
 			background: #F6F7FB;
 			border-radius: 3rpx;
 			font-size: 25rpx;
-			font-family: PingFangSC-Regular;
+			
 			font-weight: 400;
 			color: #333333;
 			overflow: hidden;
@@ -522,14 +522,14 @@
 		}
 		.drawer-random-list text{
 			font-size: 25rpx;
-			font-family: PingFangSC-Regular;
+			
 			font-weight: 400;
 			color: #7D8288;
 		}
 		.drawer-random-total{
 			width: 100%;
 			font-size: 25rpx;
-			font-family: PingFangSC-Regular;
+			
 			font-weight: 400;
 			color: #333333;
 			margin-top: 10rpx;
@@ -551,7 +551,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		font-size: 27rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 600;
 		color: #333333;
 		margin-bottom: 12rpx;
@@ -592,7 +592,6 @@
 		box-sizing: border-box;
 		padding-top: 50rpx;
 		font-size: 24rpx;
-		font-family: Lantinghei SC;
 		font-weight: 600;
 		color: #333333;
 		text-align: center;
@@ -607,7 +606,7 @@
 		text-align: center;
 		font-size: 25rpx;
 		line-height: 30rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #88878C;
 		position: relative;
@@ -680,7 +679,7 @@
 		height:195rpx;
 		box-sizing: border-box;
 		font-size: 26rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #333333;
 		display: flex;
@@ -696,7 +695,7 @@
 		margin:0 auto;
 		height:76rpx;
 		font-size: 24rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 300;
 		color: #333333;
 		line-height: 25rpx;
@@ -715,7 +714,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 25rpx;
-		font-family: PingFang SC;
+		
 		line-height: 30rpx;
 		text-align: center;
 		font-weight: 500;
@@ -731,7 +730,7 @@
 		text-align: center;
 		font-size: 25rpx;
 		line-height: 40rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #88878C;
 		position: relative;
@@ -809,7 +808,7 @@
 		height:$btn-height;
 		margin-left: 18rpx;
 		font-size: 29rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #333333;
 		line-height:$btn-height ;
@@ -829,7 +828,7 @@
 		justify-content: center;
 		background: #fff;
 		border:1px solid #DCDCDC;
-		font-family: PingFangSC-Regular;
+		
 		color: #5E5D5D;
 		height: $btn-height;
 		font-size: $btn-fontSize;
@@ -847,7 +846,7 @@
 		background-size: 100% 100%;
 		z-index: 2;
 		font-size: 23rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #FFFFFF;
 		line-height: 32rpx;

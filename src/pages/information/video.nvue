@@ -667,7 +667,7 @@ export default {
 
 .descAuthor {
 	font-size: 27rpx;
-	font-family: PingFang SC;
+	
 	font-weight: 500;
 	color: #FFFFFF;
 	margin-left: 14rpx;
@@ -756,7 +756,7 @@ export default {
 .vd-name {
 	width: 670rpx;
 	font-size: 29rpx;
-	font-family: PingFang SC;
+	
 	font-weight: 600;
 	color: #333333;
 	margin-bottom: 5rpx;
@@ -765,7 +765,7 @@ export default {
 .vd-time {
 	width: 670rpx;
 	font-size: 23rpx;
-	font-family: Microsoft YaHei;
+	
 	font-weight: 400;
 	color: #7C7C7C;
 }
@@ -786,7 +786,7 @@ export default {
 .upslide-name {
 	width: 220rpx;
 	font-size: 25rpx;
-	font-family: PingFang SC;
+	
 	font-weight: 400;
 	color: #FFFEFE;
 	text-align: center;

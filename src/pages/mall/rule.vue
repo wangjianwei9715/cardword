@@ -43,7 +43,7 @@ page {
 .ruleContainer {
     padding: 30rpx 33rpx 0 33rpx;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #7D8288;
     .rule{

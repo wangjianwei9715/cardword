@@ -177,7 +177,7 @@ export default {
 
 .columnWrap_message_left_title {
     font-size: 27rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
     line-height: 33rpx;
@@ -190,7 +190,7 @@ export default {
 
 .columnWrap_message_left_type {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #AAAAAA;
     margin-top: 19rpx;
@@ -224,7 +224,7 @@ export default {
 
 .infoNum {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #AAAAAA;
 }
@@ -236,7 +236,7 @@ export default {
     display: block;
     //#endif 
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #AAAAAA;
 }

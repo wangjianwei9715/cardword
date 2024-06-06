@@ -167,7 +167,7 @@
 	}
 	.money-total {
 		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #88878C;
 		line-height: 28rpx;
@@ -175,7 +175,7 @@
 	.money-price {
 		height:40rpx;
 		font-size: 29rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 500;
 		color: $btn-red;
 		line-height: 40rpx;
@@ -183,7 +183,7 @@
 	}
 	.money-price text{
 		font-size: 42rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 500;
 	}
 	.btn-payment {
@@ -195,7 +195,7 @@
 		height: $btn-height;
 		line-height: $btn-height;
 		font-size: 33rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #FFFFFF;
 		border-radius:$btn-radius;
@@ -223,7 +223,7 @@
 		}
 		.order-info-title{
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}
@@ -232,7 +232,7 @@
 			display: flex;
 			align-items: center;
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #959695;
 			margin-top: 15rpx;
@@ -245,7 +245,7 @@
 		}
 		.order-info-num{
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}
@@ -267,7 +267,7 @@
 			display: flex;
 			align-items: center;
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #FFFFFF;
 		}
@@ -284,19 +284,19 @@
 		}
 		.pay-info-name{
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #959695;
 		}
 		.pay-info-desc{
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #333333;
 		}
 		.pay-info-price{
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}

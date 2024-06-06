@@ -47,7 +47,7 @@
 		width: 100%;
 		height:78rpx;
 		font-size: 28rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color: #88878C;
 		box-sizing: border-box;
@@ -64,7 +64,7 @@
 		background:#FF2728;
 		border-radius: 5rpx;
 		font-size: 36rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color: #FFFFFF;
 	}

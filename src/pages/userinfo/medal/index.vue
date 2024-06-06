@@ -179,7 +179,6 @@
 
 <style lang="scss">
 	@mixin fontSfTR($fontSize) {
-		font-family: SfTR;
 		color:#fff;
 		font-size: $fontSize;
 		letter-spacing: 2rpx;

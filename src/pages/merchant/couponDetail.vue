@@ -235,7 +235,7 @@
 
         .good-name {
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #333333;
             text-overflow: -o-ellipsis-lastline;
@@ -252,7 +252,7 @@
 
         .good-cumulative {
             font-size: 23rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #88878C;
 
@@ -273,7 +273,7 @@
 
         .tag {
             font-size: 28rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #959699;
             width: 33.33%;
@@ -282,7 +282,7 @@
 
         .selectTag {
             font-size: 31rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #333333;
         }
@@ -311,7 +311,7 @@
 
         .coupon-name {
             font-size: 27rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #333333;
             margin-right: 17rpx;
@@ -323,7 +323,7 @@
             background: #EA424A;
             border-radius: 3rpx;
             font-size: 21rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #FFFFFF;
             width: 88rpx;
@@ -358,7 +358,7 @@
                 width: 100%;
                 height: 53rpx;
                 font-size: 23rpx;
-                font-family: PingFang SC;
+                
                 font-weight: bold;
                 color: #333333;
             }
@@ -372,7 +372,7 @@
 
     .couponItem-message {
         font-size: 20rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #88878C;
         margin-top: 16rpx;
@@ -382,7 +382,7 @@
         display: flex;
         align-items: center;
         font-size: 21rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #333333;
         margin-top: 20rpx;

@@ -125,7 +125,7 @@ export default class ClassName extends BaseComponent {
 
     .rankTop {
         font-size: 16rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #333333;
         margin-top: 4rpx;
@@ -133,7 +133,7 @@ export default class ClassName extends BaseComponent {
 
     .rankNum {
         font-size: 33rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #333333;
         position: relative;
@@ -185,7 +185,7 @@ export default class ClassName extends BaseComponent {
 
         .goodsName {
             // font-size: 25rpx;
-            // font-family: PingFang SC;
+            // 
             // font-weight: 400;
             // color: #333333;
             overflow: hidden;
@@ -196,7 +196,6 @@ export default class ClassName extends BaseComponent {
             line-height: 34rpx;
             -webkit-line-clamp: 2;
             font-size: 25rpx;
-            font-family: PingFangSC-Light;
             font-weight: 400;
             color: #333333;
         }
@@ -213,7 +212,7 @@ export default class ClassName extends BaseComponent {
 
         .startTime {
             font-size: 21rpx;
-            font-family: PingFang SC;
+            
             font-weight: 600;
             color: #454645;
             margin-top: 17rpx;
@@ -236,7 +235,7 @@ export default class ClassName extends BaseComponent {
         .progressPercnet {
             margin-left: 18rpx;
             font-size: 23rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             width: 86rpx;
             // background-color: red;
@@ -247,7 +246,7 @@ export default class ClassName extends BaseComponent {
 
         .goodsType {
             font-size: 21rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #959695;
             display: flex;
@@ -272,7 +271,7 @@ export default class ClassName extends BaseComponent {
         .goodsPriceContainer {
             flex: 1;
             // font-size: 33rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #333333;
             font-size: 31rpx;
@@ -294,12 +293,12 @@ export default class ClassName extends BaseComponent {
 
             .priceTips {
                 // font-size: 23rpx;
-                // font-family: PingFang SC;
+                // 
                 // font-weight: 400;
                 // color: #959695;
                 margin-left: 10rpx;
                 font-size: 23rpx;
-                font-family: PingFangSC-Regular;
+                
                 font-weight: 500;
                 color: #959695;
             }
@@ -315,7 +314,7 @@ export default class ClassName extends BaseComponent {
 
             .merchantName {
                 font-size: 23rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 400;
                 color: #333333;
             }

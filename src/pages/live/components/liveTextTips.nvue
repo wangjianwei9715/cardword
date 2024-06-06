@@ -75,7 +75,7 @@ export default {
 
 .liveTitle {
     font-size: 38rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #ffffff;
     /* margin-top: 382rpx; */
@@ -84,7 +84,7 @@ export default {
 
 .liveTips {
     font-size: 29rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #c7c7c7;
     margin-top: 50rpx;
@@ -93,7 +93,7 @@ export default {
 
 .liveCountDown {
     font-size: 63rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #ffffff;
     margin-bottom: 30rpx;
@@ -108,7 +108,7 @@ export default {
     text-align: center;
     line-height: 59rpx;
     font-size: 33rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #fffefe;
 }

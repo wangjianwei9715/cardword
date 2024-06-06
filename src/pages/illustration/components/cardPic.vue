@@ -172,7 +172,7 @@
 			width: 100%;
 			text-align: center;
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #FFFFFF;
 			margin-top: 8rpx;
@@ -211,7 +211,7 @@
 			height:42rpx;
 			line-height: 42rpx;
 			font-size: 33rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #FFFFFF;
 		}
@@ -241,7 +241,7 @@
 		.card-set{
 			width: 100%;
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #C0C0C0;
 			margin-top: 15rpx;
@@ -257,7 +257,7 @@
 			height: 31rpx;
 			border-radius: 1rpx;
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			text-align: center;
 			line-height: 31rpx;
@@ -278,7 +278,7 @@
 		align-items: center;
 		justify-content: flex-end;
 		font-size: 19rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #FFFFFF;
 		margin-top: 29rpx;
@@ -297,7 +297,7 @@
 		background: #C0C0C0;
 		border-radius: 5rpx;
 		font-size: 33rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #FFFFFF;
 		line-height: 92rpx;
@@ -325,7 +325,7 @@
 			border-radius: 1rpx;
 			box-sizing: border-box;
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #F5F5F5;
 			margin-bottom: 46rpx;
@@ -372,7 +372,7 @@
 				height: 42rpx;
 				background: #707070;
 				font-size: 23rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #FFFFFF;
 				text-align: center;
@@ -438,7 +438,7 @@
 				width: 100%;
 				height:40rpx;
 				font-size: 38rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 500;
 				color: #E6E6E6;
 				display: flex;
@@ -456,7 +456,7 @@
 				width: 100%;
 				height:31rpx;
 				font-size: 27rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #E6E6E6;
 				display: flex;

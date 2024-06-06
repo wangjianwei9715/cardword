@@ -67,7 +67,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		font-size: 28rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color: #545659;
 		line-height: 48rpx;
@@ -80,7 +80,7 @@
 		box-sizing: border-box;
 		padding:0 22rpx;
 		font-size: 28rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color: #545659;
 		margin-top: 30rpx;
@@ -94,7 +94,7 @@
 		text-align: center;
 		line-height: 60rpx;
 		font-size: 28rpx;
-		font-family: Microsoft YaHei;
+		
 		font-weight: 400;
 		color: #FFFFFF;
 		margin-top: 57rpx;

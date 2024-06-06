@@ -79,14 +79,14 @@
 			padding:20rpx 22rpx 20rpx 32rpx;
 			.title{
 				font-size: 24rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
+				
 				font-weight: 400;
 				color: #7F7F8E;
 				margin-bottom: 8rpx;
 			}
 			.desc{
 				font-size: 24rpx;
-				font-family: PingFangSC-Medium, PingFang SC;
+				
 				font-weight: 600;
 				color: #14151A;
 				line-height: 34rpx;
@@ -94,7 +94,7 @@
 			}
 			.time{
 				font-size: 24rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
+				
 				font-weight: 400;
 				color: #AAAABB;
 			}
@@ -108,7 +108,7 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 24rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 600;
 			color: #828292;
 		}

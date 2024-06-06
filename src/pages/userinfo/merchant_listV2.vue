@@ -302,7 +302,7 @@ page {
 
             .name {
                 font-size: 29rpx;
-                font-family: PingFang SC;
+                
                 font-weight: bold;
                 color: #FFFFFF;
                 margin-bottom: 16rpx;
@@ -310,7 +310,7 @@ page {
 
             .msg {
                 font-size: 21rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 400;
                 color: #FFFFFF;
             }
@@ -338,7 +338,7 @@ page {
             width: inherit;
             height: inherit;
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #959695;
         }
@@ -359,7 +359,7 @@ page {
 
         .goodsName {
             // font-size: 25rpx;
-            // font-family: PingFang SC;
+            // 
             // font-weight: 400;
             height: 65rpx;
             // color: #333333;
@@ -371,14 +371,13 @@ page {
             line-height: 33rpx;
             -webkit-line-clamp: 2;
             font-size: 25rpx;
-            font-family: PingFangSC-Light;
             font-weight: 400;
             color: #333333;
         }
 
         .goodsPrice {
             // font-size: 33rpx;
-            // font-family: PingFang SC;
+            // 
             // font-weight: bold;
             // color: #333333;
             margin-top: 10rpx;
@@ -397,7 +396,7 @@ page {
 
         .goodsSpell {
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #959695;
             margin-top: 10rpx;
@@ -439,7 +438,7 @@ page {
     .hot_name {
 
         font-size: 23rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #333333;
         white-space: nowrap;
@@ -458,7 +457,7 @@ page {
 
         .top {
             font-size: 15rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #333333;
             text-align: center;
@@ -466,7 +465,7 @@ page {
 
         .rank {
             font-size: 27rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #333333;
             text-align: center;
@@ -491,7 +490,7 @@ page {
 
 .merchant_title {
     font-size: 31rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
     padding: 0 25rpx;
@@ -516,7 +515,7 @@ page {
     border: 1rpx solid #C0C0C0;
     border-radius: 3rpx;
     font-size: 22.92rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #333333;
 }
@@ -584,7 +583,7 @@ page {
 
 .merchantName {
     font-size: 22rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #333333;
     width: 126rpx;

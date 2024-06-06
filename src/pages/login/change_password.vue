@@ -181,7 +181,7 @@ import { app } from "@/app";
 		box-sizing: border-box;
 		line-height: 100rpx;
 		font-size: 26rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 	}
@@ -192,7 +192,7 @@ import { app } from "@/app";
 		box-sizing: border-box;
 		color:#14151A;
 		font-size: 26rpx;
-		font-family: HYQiHei;
+		
 	}
 	.input-code{
 		width: 160rpx;
@@ -205,7 +205,7 @@ import { app } from "@/app";
 		right:0;
 		bottom:16rpx;
 		font-size: 24rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
+		
 		font-weight: 400;
 		color: #14151A;
 	}
@@ -220,7 +220,7 @@ import { app } from "@/app";
 		text-align: center;
 		line-height: 94rpx;
 		font-size: 40rpx;
-		font-family: HYQiHei;
+		
 		font-weight: bold;
 		color: #FFFFFF;
 	}
@@ -270,7 +270,7 @@ import { app } from "@/app";
 			text-align: center;
 			margin-bottom: 34rpx;
 			font-size: 30rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 600;
 			color: #454952;
 		}
@@ -289,7 +289,7 @@ import { app } from "@/app";
 			text-align: center;
 			line-height: 94rpx;
 			font-size: 28rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: bold;
 			color: #14151B;
 			position: absolute;

@@ -170,7 +170,7 @@ page {
 	width: 100%;
 	height: 85rpx;
 	font-size: 27rpx;
-	font-family: PingFangSC-Regular;
+	
 	font-weight: 400;
 	color: #333333;
 	line-height: 38rpx;
@@ -195,14 +195,14 @@ page {
 
 .list-bottom-time {
 	font-size: 23rpx;
-	font-family: PingFangSC-Regular;
+	
 	font-weight: 400;
 	color: #595959;
 }
 
 .list-bottom-num {
 	font-size: 23rpx;
-	font-family: PingFangSC-Regular;
+	
 	font-weight: 400;
 	color: #595959;
 }
@@ -239,7 +239,7 @@ page {
 
 			text {
 				font-size: 21rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #C0C0C0;
 			}
@@ -247,7 +247,7 @@ page {
 
 		.shareText {
 			font-size: 28rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #333333;
 		}
@@ -258,7 +258,7 @@ page {
 			background: #FA1545;
 			border-radius: 5rpx;
 			font-size: 29rpx;
-			font-family: PingFang SC;
+			
 			font-weight: bold;
 			color: #FFFFFF;
 			letter-spacing: 2rpx;

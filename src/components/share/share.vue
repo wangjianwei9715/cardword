@@ -201,7 +201,7 @@
 		width: 100%;
 		text-align: center;
 		font-size: 22rpx;
-		font-family: HYQiHei;
+		
 		font-weight: normal;
 		color: #3B3B3B;
 	}
@@ -211,7 +211,7 @@
 		line-height: 106rpx;
 		text-align: center;
 		font-size: 28rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 500;
 		color: #A9ABB4;
 		border-top: 1px solid #F4F3F2;

@@ -88,7 +88,7 @@ export default {
 }
 .tips {
     font-size: 24rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #C0C0C0;
     margin-top: 31rpx;
@@ -103,7 +103,7 @@ export default {
     text-align: center;
     line-height: 61rpx;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #FA1545;
     margin-top: 25rpx;

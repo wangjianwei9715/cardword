@@ -81,7 +81,7 @@
 
 	.order-status text {
 		font-size: $font-26;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #DAAC61;
 		margin-left: 32rpx;
@@ -103,7 +103,7 @@
 
 	.order-info text {
 		font-size: $font-24;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 		line-height: 34rpx;
@@ -124,7 +124,7 @@
 		border: 2rpx solid #D2D2DB;
 
 		font-size: $font-20;
-		font-family: PingFangSC-Regular, PingFang SC;
+		
 		font-weight: 400;
 		color: #828292;
 		line-height: 28rpx;
@@ -164,7 +164,7 @@
 		margin-left: 28rpx;
 		margin-right: 50rpx;
 		font-size: $font-24;
-		font-family: PingFangSC-Regular, PingFang SC;
+		
 		font-weight: 400;
 		color: #AAAABB;
 		line-height: 34rpx;
@@ -184,7 +184,7 @@
 
 	.address-name text {
 		font-size: $font-24;
-		font-family: PingFangSC-Regular, PingFang SC;
+		
 		font-weight: 400;
 		color: #FFFFFF;
 		line-height: 34rpx;
@@ -205,7 +205,7 @@
 
 	.order-receive {
 		font-size: $font-24;
-		font-family: PingFangSC-Regular, PingFang SC;
+		
 		font-weight: 400;
 		color: #FFFFFF;
 		line-height: 34rpx;
@@ -239,7 +239,7 @@
 
 	.transport-status {
 		font-size: $font-28;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 		line-height: 40rpx;
@@ -248,7 +248,7 @@
 
 	.transport-time {
 		font-size: $font-22;
-		font-family: PingFangSC-Regular, PingFang SC;
+		
 		font-weight: 400;
 		color: #14151A;
 		line-height: 32rpx;
@@ -277,7 +277,7 @@
 	.transport-desc {
 		margin: 0 28rpx;
 		font-size: $font-24;
-		font-family: PingFangSC-Regular, PingFang SC;
+		
 		font-weight: 400;
 		color: #14151A;
 		line-height: 34rpx;
@@ -307,7 +307,7 @@
 
 	.transport-status2 {
 		font-size: $font-28;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #AAAABB;
 		line-height: 40rpx;
@@ -316,7 +316,7 @@
 
 	.transport-time2 {
 		font-size: $font-22;
-		font-family: PingFangSC-Regular, PingFang SC;
+		
 		font-weight: 400;
 		color: #AAAABB;
 		line-height: 32rpx;
@@ -325,7 +325,7 @@
 
 	.transport-time3 {
 		font-size: $font-22;
-		font-family: PingFangSC-Regular, PingFang SC;
+		
 		font-weight: 400;
 		color: #AAAABB;
 		line-height: 32rpx;
@@ -334,7 +334,7 @@
 
 	.transport-desc2 {
 		font-size: $font-24;
-		font-family: PingFangSC-Regular, PingFang SC;
+		
 		font-weight: 400;
 		color: #AAAABB;
 		line-height: 34rpx;

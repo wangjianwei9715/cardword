@@ -137,7 +137,7 @@ export default class ClassName extends BaseComponent {
 
         .input {
             font-size: 23rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #ffffff;
             flex: 1;
@@ -147,7 +147,7 @@ export default class ClassName extends BaseComponent {
 
     .cancel {
         font-size: 27rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #E6E6E6;
     }
@@ -184,14 +184,14 @@ export default class ClassName extends BaseComponent {
 
         .title {
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #FFFFFF;
         }
 
         .num {
             font-size: 21rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #FFFFFF;
         }
@@ -203,7 +203,7 @@ export default class ClassName extends BaseComponent {
 
         text {
             font-size: 21rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #C0C0C0;
         }

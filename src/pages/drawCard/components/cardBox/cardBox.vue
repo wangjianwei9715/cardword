@@ -105,7 +105,7 @@
 		line-height: 90rpx;
 		color:#fff;
 		font-size: 41rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		position: absolute;
 		z-index: 4;

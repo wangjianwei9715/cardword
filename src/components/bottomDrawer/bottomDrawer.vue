@@ -95,7 +95,7 @@
 		left:0;
 		background:#fff;
 		font-size: 38rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #333333;
 		z-index: 3;

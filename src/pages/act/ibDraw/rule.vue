@@ -102,7 +102,7 @@ page {
 
     .des_title {
         font-size: 30rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #333333;
         margin-bottom: 10rpx;
@@ -110,7 +110,7 @@ page {
 
     .des_content {
         font-size: 23rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #333333;
         line-height: 36rpx;
@@ -126,7 +126,7 @@ page {
     .sTitle {
         color: #333333;
         font-weight: bold;
-        font-family: PingFang SC;
+        
         font-size: 23rpx;
         letter-spacing: 2rpx;
         margin-top: 20rpx;
@@ -134,7 +134,7 @@ page {
 
     .des_gray {
         font-size: 19rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #949494;
         margin-top: 25rpx;

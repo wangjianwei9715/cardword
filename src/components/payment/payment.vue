@@ -166,7 +166,7 @@
 			box-sizing: border-box;
 			padding-top: 50rpx;
 			font-size: 33rpx;
-			font-family: PingFangSC-Medium;
+			
 			font-weight: 500;
 			color: #333333;
 			text-align: center;
@@ -178,7 +178,7 @@
 			margin-top: 46rpx;
 			line-height: 84rpx;
 			font-size: 50rpx;
-			font-family: PingFangSC-Regular;
+			
 			font-weight: 600;
 			color: #333333;
 			text-align: center;
@@ -192,7 +192,7 @@
 			margin:0 auto;
 			box-sizing: border-box;
 			font-size: 27rpx;
-			font-family: PingFangSC-Regular;
+			
 			font-weight: 400;
 			color: #333333;
 			padding-bottom: 30rpx;
@@ -220,7 +220,7 @@
 				box-sizing: border-box;
 				align-items: center;
 				font-size: 31rpx;
-				font-family: PingFangSC-Regular;
+				
 				font-weight: 400;
 				color: #333333;
 			}
@@ -259,7 +259,7 @@
 			text-align: center;
 			box-sizing: border-box;
 			margin:0 auto;
-			font-family: PingFangSC-Regular;
+			
 			color: #FFFFFF;
 			position:absolute;
 			bottom:calc(18rpx );

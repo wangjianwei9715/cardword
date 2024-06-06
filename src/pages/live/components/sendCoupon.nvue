@@ -333,7 +333,7 @@ export default {
 
 .sendCoupon-left {
   font-size: 29rpx;
-  font-family: PingFang SC;
+  
   font-weight: 600;
   color: #ffffff;
   flex: 1;
@@ -341,7 +341,7 @@ export default {
 
 .couponInput {
   font-size: 25rpx;
-  font-family: PingFang SC;
+  
   font-weight: 400;
   color: #ffffff;
   text-align: right;
@@ -357,7 +357,7 @@ export default {
 
 .placeholder {
   font-size: 25rpx;
-  font-family: PingFang SC;
+  
   font-weight: 400;
   color: #ffffff;
 }
@@ -449,7 +449,7 @@ export default {
 .goodsTitle {
  width: 406rpx;
   font-size: 25rpx;
-  font-family: PingFang SC;
+  
   font-weight: 400;
   color: #ffffff;
   text-align: left;
@@ -463,7 +463,7 @@ export default {
   background-color: #ec5e58;
   border-radius: 3rpx;
   font-size: 25rpx;
-  font-family: PingFang SC;
+  
   font-weight: 400;
   color: #ffffff;
   text-align: center;

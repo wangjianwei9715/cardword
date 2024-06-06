@@ -71,7 +71,7 @@
 				width: 100%;
 				text-align: center;
 				font-size: 32rpx;
-				font-family: Microsoft YaHei;
+				
 				font-weight: bold;
 				color: #34363A;
 				margin-bottom: 47rpx;
@@ -80,7 +80,7 @@
 				width: 100%;
 				text-align: center;
 				font-size: 24rpx;
-				font-family: Microsoft YaHei;
+				
 				font-weight: bold;
 				color: #34363A;
 				margin-bottom: 18rpx;
@@ -89,7 +89,7 @@
 				width: 100%;
 				text-align: center;
 				font-size: 24rpx;
-				font-family: Microsoft YaHei;
+				
 				font-weight: bold;
 				color: #FB4E3E;
 			}

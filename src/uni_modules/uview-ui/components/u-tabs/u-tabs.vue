@@ -27,7 +27,7 @@
 								<image :src="item.pic_url" mode="aspectFill"
 									style="position: absolute;top:0;left: 0;bottom: 0;right: 0;margin: auto;width: 186rpx;height: 100rpx;z-index: 1;border-radius: 3rpx;">
 								</image>
-								<text v-if="innerCurrent != index" style="font-size: 30rpx;font-family: PingFang SC;font-weight: bold;color: #FFFFFF;z-index: 3;
+								<text v-if="innerCurrent != index" style="font-size: 30rpx;font-weight: bold;color: #FFFFFF;z-index: 3;
 								">{{ item[keyName] }}</text>
 							</view>
 						</template>

@@ -90,7 +90,7 @@
 				.title{
 					width: 100%;
 					font-size: 27rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 400;
 					color: #333333;
 					line-height: 33rpx;
@@ -107,7 +107,7 @@
 					height:20rpx;
 					line-height: 20rpx;
 					font-size: 22rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 400;
 					color: #AAAAAA;
 				}
@@ -120,7 +120,7 @@
 					display: flex;
 					align-items: center;
 					font-size: 22rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 400;
 					color: #AAAAAA;
 					margin-left: 34rpx;
@@ -181,7 +181,7 @@
 				bottom:0;
 				left:0;
 				font-size: 20rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #FFFFFF;
 				display: flex;

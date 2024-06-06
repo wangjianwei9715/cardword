@@ -149,7 +149,7 @@
 }
 .item-name {
 	font-size: 26rpx;
-	font-family: PingFangSC-Regular;
+	
 	font-weight: 400;
 	color: #333333;
 	line-height: 34rpx;
@@ -158,7 +158,7 @@
 }
 .coupon-num {
 	font-size: 26rpx;
-	font-family: PingFangSC-Medium, PingFang SC;
+	
 	font-weight: 600;
 	color: #FA1545;
 }

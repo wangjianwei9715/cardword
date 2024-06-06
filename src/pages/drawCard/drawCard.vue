@@ -436,7 +436,7 @@
       width: 100%;
       margin-top: 30rpx;
       font-size: 24rpx;
-      font-family: PingFangSC-Regular;
+      
       font-weight: 400;
       color: #a3a3a3;
       text-align: center;
@@ -527,7 +527,7 @@
     line-height: $height;
     align-items: center;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 500;
     color: $color;
     margin-left: 29rpx;
@@ -620,7 +620,7 @@
   }
   .cardname-clamp{
     font-size: 26rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #FFFFFF;
     line-height: 38rpx;
@@ -663,7 +663,7 @@
     text-align: center;
     margin-top: 18rpx;
     font-size: 19rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #FFFFFF;
   }
@@ -681,7 +681,7 @@
     height: 40rpx;
     line-height: 40rpx;
     font-size: 24rpx;
-    font-family: PingFangSC-Regular;
+    
     font-weight: 400;
     color: #9b9b9b;
     margin-right: 15rpx;
@@ -702,7 +702,7 @@
   }
   .drawer-box-header-check {
     color: #333333;
-    font-family: PingFangSC-Regular;
+    
     font-size: 30rpx;
   }
   .drawer-box-item {
@@ -720,7 +720,7 @@
   .drawer-box-item-left {
     width: 580rpx;
     font-size: 20rpx;
-    font-family: PingFangSC-Regular;
+    
     font-weight: 400;
     color: #333333;
     line-height: 30rpx;
@@ -731,7 +731,7 @@
     align-items: center;
     justify-content: center;
     font-size: 88rpx;
-    font-family: PingFangSC-Medium;
+    
     font-weight: bold;
     color: #333333;
   }

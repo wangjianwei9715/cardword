@@ -921,7 +921,7 @@ page {
 .input_title {
     width: 100%;
     font-size: 33rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #ffffff;
     padding-bottom: 20rpx;
@@ -972,7 +972,7 @@ page {
     background-color: #111111;
     width: 100%;
     font-size: 29rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     margin-top: 24rpx;
     height: 513rpx;
@@ -994,7 +994,7 @@ page {
 
     .ass_title {
         font-size: 29rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #888888;
         margin-left: 11rpx;
@@ -1002,7 +1002,7 @@ page {
 
     .voteTitle {
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #959695;
         margin-right: 6rpx;
@@ -1037,7 +1037,7 @@ page {
         border-radius: 3rpx;
         margin-right: 20rpx;
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #C0C0C0;
 
@@ -1073,7 +1073,7 @@ page {
 
         .goodsInfo {
             font-size: 23rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #E6E6E6;
             line-height: 25rpx;
@@ -1120,7 +1120,7 @@ page {
 
             text {
                 font-size: 21rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 400;
                 color: #C0C0C0;
             }
@@ -1132,7 +1132,7 @@ page {
             background: #FA1545;
             border-radius: 5rpx;
             font-size: 33rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #FFFFFF;
             letter-spacing: 2rpx;
@@ -1153,7 +1153,7 @@ page {
         color: #ff003d;
         font-size: 28rpx;
         font-weight: bold;
-        font-family: PingFang SC;
+        
         margin-right: 8rpx;
         margin-bottom: 4rpx;
     }
@@ -1189,7 +1189,7 @@ page {
 
     .private_text {
         font-size: 21rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #C0C0C0;
     }

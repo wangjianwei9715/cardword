@@ -163,7 +163,7 @@ export default class ClassName extends BaseNode {
 
 <style lang="scss">
 page {
-    font-family: PingFang SC;
+    
 }
 
 .buyReadTop {
@@ -174,7 +174,7 @@ page {
 
     text {
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #333333;
         // margin-left: 8rpx;
@@ -183,7 +183,7 @@ page {
 
 .readContent {
     font-size: 24rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #9A9A9E;
     // margin-top: 22rpx;

@@ -224,7 +224,7 @@ export default class ClassName extends BaseComponent {
 .title {
 	width: 100%;
 	font-size: 38rpx;
-	font-family: PingFang SC;
+	
 	font-weight: 600;
 	color: #333333;
 	line-height: 48rpx;
@@ -247,7 +247,7 @@ export default class ClassName extends BaseComponent {
 
 	.name {
 		font-size: 29rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #333333;
 		margin-bottom: 5rpx;
@@ -257,7 +257,7 @@ export default class ClassName extends BaseComponent {
 .time {
 	width: 100%;
 	font-size: 23rpx;
-	font-family: Microsoft YaHei;
+	
 	font-weight: 400;
 	color: #7C7C7C;
 }
@@ -265,7 +265,7 @@ export default class ClassName extends BaseComponent {
 .desc {
 	width: 100%;
 	font-size: 32rpx;
-	font-family: Microsoft YaHei;
+	
 	font-weight: 400;
 	color: #14151A;
 	line-height: 60rpx;
@@ -303,7 +303,7 @@ export default class ClassName extends BaseComponent {
 	.chat-header {
 		width: 100%;
 		font-size: 29rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #333333;
 	}
@@ -337,7 +337,7 @@ export default class ClassName extends BaseComponent {
 
 			.chat-name {
 				font-size: 25rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #636363;
 				margin-right: 22rpx;
@@ -345,14 +345,14 @@ export default class ClassName extends BaseComponent {
 
 			.chat-time {
 				font-size: 21rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #AAAAAA;
 			}
 
 			.chat-msg {
 				font-size: 25rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #333333;
 				line-height: 33rpx;
@@ -384,7 +384,7 @@ export default class ClassName extends BaseComponent {
 					height: 30rpx;
 					line-height: 30rpx;
 					font-size: 21rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 400;
 					color: #AAAAAA;
 					margin-left: 12rpx;
@@ -408,7 +408,7 @@ export default class ClassName extends BaseComponent {
 
 		.chat-hf {
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #333333;
 			line-height: 33rpx;
@@ -417,7 +417,7 @@ export default class ClassName extends BaseComponent {
 		.hf-name {
 			color: #636363;
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			line-height: 33rpx;
 			margin: 0 10rpx
@@ -434,7 +434,7 @@ export default class ClassName extends BaseComponent {
 			align-items: center;
 			justify-content: center;
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #636363;
 			margin-bottom: 20rpx;
@@ -456,7 +456,7 @@ export default class ClassName extends BaseComponent {
 	width: 100%;
 	text-align: center;
 	font-size: 21rpx;
-	font-family: PingFang SC;
+	
 	font-weight: 400;
 	color: #D2D2D2;
 	margin: 30rpx 0rpx 10rpx 0;

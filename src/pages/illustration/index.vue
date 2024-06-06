@@ -76,7 +76,6 @@
 			color:'#333',
 			fontWeight:600,
 			fontSize:'29rpx',
-			fontFamily: 'PingFang SC',
 			padding:'0'
 		}
 		listParams = new ListParams()
@@ -195,7 +194,7 @@
 	}
 	.cell-value{
 		font-size: 23rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #C0C0C0;
 		background: #fff;
@@ -239,7 +238,7 @@
 			height:30rpx;
 			text-align: center;
 			font-size: 23rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #333333;
 			margin-bottom: 2rpx;
@@ -249,14 +248,14 @@
 		}
 		.desc-name{
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 		}
 		.hot-percent{
 			width: 100%;
 			text-align: center;
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #C0C0C0;
 			margin-top: 10rpx;
@@ -290,7 +289,7 @@
 		.series-card{
 			width: 100%;
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #767880;
 			margin-top: 10rpx;

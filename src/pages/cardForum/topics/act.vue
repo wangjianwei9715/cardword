@@ -163,7 +163,7 @@ export default class ClassName extends BaseNode {
 
     .title {
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #333333;
         margin-right: 4rpx;
@@ -173,7 +173,7 @@ export default class ClassName extends BaseNode {
 
     .smallTitle {
         font-size: 21rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #333333;
         vertical-align: bottom;
@@ -181,7 +181,7 @@ export default class ClassName extends BaseNode {
 
     .gray {
         font-size: 17rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #C0C0C0;
     }
@@ -220,7 +220,7 @@ export default class ClassName extends BaseNode {
 
     .userName {
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #8D8D8D;
         margin-bottom: 6rpx;
@@ -228,14 +228,14 @@ export default class ClassName extends BaseNode {
 
     .likeNum {
         font-size: 21rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #959695;
     }
 
     .award {
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #333333;
     }
@@ -271,7 +271,7 @@ export default class ClassName extends BaseNode {
     .topicsItem_title {
         .title {
             font-size: 33rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #333333;
             margin-right: 14rpx;
@@ -281,7 +281,7 @@ export default class ClassName extends BaseNode {
 
 .desc {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #959695;
     // width: 500rpx;
@@ -307,7 +307,7 @@ export default class ClassName extends BaseNode {
     border-radius: 3rpx;
     text-align: center;
     font-size: 20rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #FFFFFF;
     line-height: 32rpx;
@@ -325,7 +325,7 @@ export default class ClassName extends BaseNode {
 
 .num {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #C0C0C0;
 }
@@ -338,7 +338,7 @@ export default class ClassName extends BaseNode {
     background: #FA1545;
     border-radius: 3rpx;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #FFFFFF;
     text-align: center;
@@ -347,7 +347,7 @@ export default class ClassName extends BaseNode {
 
 .rule {
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #333333;
     line-height: 38rpx;

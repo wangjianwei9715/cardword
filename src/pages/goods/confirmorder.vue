@@ -750,14 +750,14 @@ page {
 .address-desc {
   width: 100%;
   font-size: 31rpx;
-  font-family: PingFangSC-Regular;
+  
   font-weight: 400;
   color: #333333;
 }
 .address-name {
   width: 100%;
   font-size: 27rpx;
-  font-family: PingFangSC-Regular;
+  
   font-weight: 400;
   color: #88878C;
 }
@@ -765,7 +765,7 @@ page {
   height: 100rpx;
   line-height: 100rpx;
   font-size: 28rpx;
-  font-family: HYQiHei;
+  
   font-weight: bold;
   color: #3b3b3b;
 }
@@ -791,7 +791,7 @@ page {
 
 .goods-info2-title {
   font-size: 28rpx;
-  font-family: PingFangSC-Regular;
+  
   font-weight: 400;
   color: #333333;
   line-height: 40rpx;
@@ -817,14 +817,13 @@ page {
   margin-left: 8rpx;
   margin-top: 58rpx;
   font-size: 25rpx;
-  font-family: PingFangSC-Regular;
+  
   font-weight: 500;
   color: #333333;
   line-height: 28rpx;
 }
 .goods-money text{
   font-size: 32rpx;
-  font-family: PingFangSC-Semibold;
   font-weight: 400;
   color: #333333;
 }
@@ -837,7 +836,7 @@ page {
   align-items: center;
   justify-content: center;
   font-size: 24rpx;
-  font-family: PingFang SC;
+  
   font-weight: 400;
   color: #F6F7FB;
   margin-left: 0;
@@ -884,7 +883,7 @@ page {
   align-items: center;
   justify-content: center;
   font-size: 23rpx;
-  font-family: PingFang SC;
+  
   font-weight: 400;
   color: #88878C;
   margin-right:26rpx;
@@ -907,7 +906,7 @@ page {
   height: 36rpx;
   text-align: center;
   font-size: 25rpx;
-  font-family: PingFangSC-Regular;
+  
   font-weight: 400;
   color: #333333;
   line-height: 36rpx;
@@ -975,7 +974,7 @@ page {
     text-align: center;
 	  line-height: 40rpx;
     font-size: 23rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #333333;
     box-sizing: border-box;
@@ -989,7 +988,7 @@ page {
     height:40rpx;
     line-height: 40rpx;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #333333;
     overflow: hidden;
@@ -1014,7 +1013,7 @@ page {
     align-items: center;
     justify-content: center;
     font-size: 23rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #88878C;
   }
@@ -1050,7 +1049,7 @@ page {
       text-align: center;
       line-height: 39rpx;
       font-size: 25rpx;
-      font-family: PingFang SC;
+      
       font-weight: 400;
       color: #333333;
     }
@@ -1059,7 +1058,7 @@ page {
 // 
 .item-name {
   font-size: 25rpx;
-  font-family: PingFangSC-Regular;
+  
   font-weight: 400;
   color: #333333;
   line-height: 34rpx;
@@ -1068,13 +1067,13 @@ page {
 }
 .coupon-num {
   font-size: $font-24;
-  font-family: PingFangSC-Medium, PingFang SC;
+  
   font-weight: 600;
   color: #ff504f;
 }
 .item-name .item-totalprice{
   font-size: 27rpx;
-  font-family: PingFangSC-Medium;
+  
   font-weight: bold;
   color: #333333;
 }
@@ -1087,7 +1086,7 @@ page {
 }
 .item-title {
   font-size: 25rpx;
-  font-family: PingFang SC;
+  
   font-weight: 400;
   color: #14151a;
   line-height: 34rpx;
@@ -1097,7 +1096,7 @@ page {
 }
 .item-teamname {
   font-size: 25rpx;
-  font-family: PingFangSC-Regular;
+  
   font-weight: 600;
   color: #333333;
   line-height: 34rpx;
@@ -1110,7 +1109,7 @@ page {
   height: 43rpx;
   background: #F1F1F1;
   font-size: 23rpx;
-  font-family: PingFangSC-Regular;
+  
   font-weight: 400;
   color: #88878C;
   padding: 0 22rpx;
@@ -1121,7 +1120,7 @@ page {
 }
 .current-discount{
   font-size: 23rpx;
-  font-family: PingFangSC-Regular;
+  
   font-weight: 400;
   color: #FFFFFF;
   background:#FF0003;
@@ -1155,7 +1154,7 @@ page {
 
 .heji-text {
   font-size: $font-20;
-  font-family: PingFangSC-Regular, PingFang SC;
+  
   font-weight: 400;
   color: #14151a;
   line-height: 28rpx;
@@ -1163,7 +1162,7 @@ page {
 
 .heji-money2 {
   font-size: 26rpx;
-  font-family: PingFangSC-Medium;
+  
   font-weight: bold;
   color: #333333;
   line-height: 28rpx;
@@ -1172,7 +1171,7 @@ page {
 
 .heji-text-b {
   font-size: 25rpx;
-  font-family: PingFangSC-Regular;
+  
   font-weight: 400;
   color: #88878C;
   line-height: 28rpx;
@@ -1181,7 +1180,7 @@ page {
 .heji-money2-b {
   height:40rpx;
   font-size: 29rpx;
-  font-family: PingFangSC-Regular;
+  
   font-weight: 500;
   color: $btn-red;
   line-height: 40rpx;
@@ -1189,7 +1188,7 @@ page {
 }
 .heji-money2-b text{
   font-size: 42rpx;
-  font-family: PingFangSC-Regular;
+  
   font-weight: 500;
 }
 .bottom-gm {
@@ -1204,7 +1203,7 @@ page {
     display: flex;
     align-items: center;
     font-size: 29rpx;
-    font-family: PingFangSC-Regular;
+    
     font-weight: 600;
     color: #333333;
   }
@@ -1225,7 +1224,7 @@ page {
   .bottom-gm-tips {
     width: 100%;
     font-size: 25rpx;
-    font-family: PingFangSC-Regular;
+    
     font-weight: 400;
     color: #88878C;
     line-height: 36rpx;
@@ -1233,14 +1232,14 @@ page {
   }
   .bottom-gm-btn {
     font-size: 25rpx;
-    font-family: PingFangSC-Regular;
+    
     font-weight: 400;
     color: #88878C;
     line-height: 36rpx;
   }
   .bottom-gm-btn text{
     font-size: 25rpx;
-    font-family: PingFangSC-Regular;
+    
     font-weight: 600;
     color: #333333;
   }
@@ -1291,7 +1290,7 @@ page {
   align-items: center;
   justify-content: center;
   font-size: $font-28;
-  font-family: PingFangSC-Medium, PingFang SC;
+  
   font-weight: 600;
   color: #ffffff;
   line-height: 40rpx;
@@ -1300,7 +1299,7 @@ page {
 .btn-payment2 {
   width: 360rpx;
   background: $btn-red;
-  font-family: PingFangSC-Regular;
+  
   color: #FFFFFF;
   box-sizing: border-box;
   text-align: center;

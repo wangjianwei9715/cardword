@@ -70,7 +70,7 @@
 		&-title{
 			width: 100%;
 			font-size: 28rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
+			
 			font-weight: 400;
 			color: #14151A;
 			margin-bottom: 12rpx;
@@ -95,7 +95,7 @@
 			text-align: center;
 			line-height: 20rpx;
 			font-size: 16rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 500;
 			color: #FFFFFF;
 		}
@@ -140,7 +140,7 @@
 		background:url(../../static/goods/paimai@2x.png) no-repeat center;
 		background-size: 100% 100%;
 		font-size: 20rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
+		
 		font-weight: 400;
 		color: #FFFFFF;
 		text-align: center;
@@ -152,7 +152,7 @@
 		background:url(../../static/goods/yikou@2x.png) no-repeat center;
 		background-size: 100% 100%;
 		font-size: 20rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
+		
 		font-weight: 400;
 		color: #FFFFFF;
 		text-align: center;

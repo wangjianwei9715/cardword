@@ -85,7 +85,7 @@ export default {
 	// #endif
 	text-align: center;
 	font-size: 26rpx;
-	font-family: PingFangSC-Regular, PingFang SC;
+	
 	font-weight: 400;
 	color: #BABDC7;
 }

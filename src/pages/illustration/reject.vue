@@ -79,14 +79,14 @@ page {
     margin-bottom: 24rpx;
 
     .label {
-        font-family: PingFang SC;
+        
         font-size: 28rpx;
         margin-right: 20rpx;
     }
 
     .value {
         flex: 1;
-        font-family: PingFang SC;
+        
         font-size: 28rpx;
     }
 }

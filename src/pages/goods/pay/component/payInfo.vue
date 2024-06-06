@@ -236,7 +236,7 @@
 		position: relative;
 		.title{
 			font-size: 26rpx;
-			font-family: PingFangSC-Regular;
+			
 			font-weight: 400;
 			color: #333333;
 			line-height: 40rpx;
@@ -244,7 +244,7 @@
 		.info-desc{
 			width: 100%;
 			font-size: 24rpx;
-			font-family: PingFangSC, PingFang SC;
+			
 			font-weight: 400;
 			color: #999999;
 			margin-top: 8rpx;
@@ -259,7 +259,7 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 20rpx;
-			font-family: PingFangSC;
+			
 			font-weight: 400;
 			color: #FFFFFF;
 			margin-right: 8rpx;
@@ -274,7 +274,7 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 20rpx;
-			font-family: PingFangSC;
+			
 			font-weight: 400;
 			color: #FA1545;
 			margin-right: 8rpx;
@@ -303,14 +303,13 @@
 			margin-right: 4rpx;
 			margin-top: 58rpx;
 			font-size: 28rpx;
-			font-family: PingFangSC-Regular;
+			
 			font-weight: 500;
 			color: rgba(0,0,0,0.9);
 			line-height: 28rpx;
 		}
 		.pay-goods text{
 			font-size: 32rpx;
-			font-family: PingFangSC-Semibold;
 			font-weight: 600;
 			color: rgba(0,0,0,0.9);
 		}
@@ -323,7 +322,7 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 24rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #F6F7FB;
 			margin-left: 0;
@@ -372,7 +371,7 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 23rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #88878C;
 			margin-right:26rpx;
@@ -391,7 +390,7 @@
 			height: 39rpx;
 			text-align: center;
 			font-size: 25rpx;
-			font-family: PingFangSC-Regular;
+			
 			font-weight: 400;
 			color: #333333;
 			line-height: 36rpx;
@@ -426,7 +425,7 @@
 	text-align: center;
 	line-height: 44rpx;
 	font-size: 20rpx;
-	font-family: PingFangSC, PingFang SC;
+	
 	font-weight: 400;
 	color: #AAAAAA;
 }
@@ -442,7 +441,7 @@
 .discount-price text{
 	width: 100%;
 	font-size: 20rpx;
-	font-family: PingFangSC, PingFang SC;
+	
 	font-weight: 400;
 	color: #AAAAAA;
 	text-align: center;
@@ -504,7 +503,7 @@
 		text-align: center;
 			line-height: 40rpx;
 		font-size: 23rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #333333;
 		box-sizing: border-box;
@@ -518,7 +517,7 @@
 		height:40rpx;
 		line-height: 40rpx;
 		font-size: 25rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #333333;
 		overflow: hidden;
@@ -543,7 +542,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 23rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #88878C;
 	}
@@ -579,7 +578,7 @@
 		text-align: center;
 		line-height: 39rpx;
 		font-size: 25rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #333333;
 	}
@@ -607,7 +606,7 @@
 	display: flex;
 	align-items: center;
 	font-size: 30rpx;
-	font-family: PingFang SC;
+	
 	font-weight: 400;
 	color: rgba(0,0,0,0.9);
 	.merchant-avatar{

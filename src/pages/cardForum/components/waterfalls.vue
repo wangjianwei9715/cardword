@@ -1041,7 +1041,7 @@ $uvui-nvue-style: true !default;
 
 .waterfall-item__ft__title__value {
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
     line-height: 33rpx;
@@ -1074,7 +1074,7 @@ $uvui-nvue-style: true !default;
 
 .waterfall-item__bottom__userName {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #707070;
     flex: 1;
@@ -1094,7 +1094,7 @@ $uvui-nvue-style: true !default;
 
 .likeNum {
     font-size: 23rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #8D8D8D;
     margin-left: 8rpx;

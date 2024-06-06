@@ -761,7 +761,7 @@ page {
 
 .nav_search_text {
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     line-height: 49rpx;
     color: #FFFFFF;
@@ -784,7 +784,7 @@ page {
 
 .camera_txt {
     font-size: 19rpx;
-    font-family: PingFang SC;
+    
     font-weight: 500;
     color: #333333;
     position: relative;
@@ -814,7 +814,7 @@ page {
     flex: 1;
     // background-color: red;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     padding: 0 10rpx;
     // color: #C0C0C0;
@@ -864,14 +864,14 @@ page {
 
 .hotTopicRow_title {
     font-size: 27rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #FFFFFF;
 }
 
 .hotTopicRow_all {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #FFFFFF;
     margin-right: 14rpx;
@@ -961,14 +961,14 @@ page {
 
 .columnItem_text {
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #959695;
 }
 
 .columnItem_text_select {
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #FFFFFF;
 }
@@ -997,7 +997,7 @@ page {
     top: 0;
     left: 0;
     font-size: 17rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #FFFFFF;
     text-align: center;
@@ -1033,7 +1033,7 @@ page {
 
 .topicItem_title {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #FFFFFF;
     text-align: center;
@@ -1050,7 +1050,7 @@ page {
     width: 101rpx;
     text-align: center;
     font-size: 19rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #C0C0C0;
     margin-top: 6rpx;

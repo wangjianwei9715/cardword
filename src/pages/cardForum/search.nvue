@@ -423,7 +423,7 @@ $show-lines: 1;
 
 .hideText {
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #757575;
 }
@@ -501,7 +501,7 @@ $show-lines: 1;
 
 .nav_search_text {
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     line-height: 49rpx;
     color: #FFFFFF;
@@ -529,7 +529,7 @@ $show-lines: 1;
 
 .camera_txt {
     font-size: 19rpx;
-    font-family: PingFang SC;
+    
     font-weight: 500;
     color: #333333;
     position: relative;
@@ -567,7 +567,7 @@ $show-lines: 1;
 
 .searchText {
     font-size: 27rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
 }
@@ -583,7 +583,7 @@ $show-lines: 1;
     color: #000;
     flex: 1;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
 }
 
@@ -656,7 +656,7 @@ $show-lines: 1;
 
 .bigText_text {
     font-size: 31rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
 
@@ -689,7 +689,7 @@ $show-lines: 1;
     color: #757575;
     line-height: 48rpx;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     text-align: center;
     // #ifdef APP-NVUE

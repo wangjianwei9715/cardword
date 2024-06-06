@@ -87,7 +87,7 @@
         margin-top: 28rpx;
         position: relative;
         font-size: 27rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
     }
 

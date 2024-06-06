@@ -209,7 +209,7 @@ export default class ClassName extends BaseNode {
 
 <style lang="scss">
 page {
-    font-family: PingFang SC;
+    
     background-color: #950101;
     width: 750rpx;
     overflow-x: hidden;
@@ -301,7 +301,7 @@ page {
 
     //         .txt {
     //             font-size: 21rpx;
-    //             font-family: PingFang SC;
+    //             
     //             font-weight: bold;
     //             color: #FFFFFF;
     //             line-height: 24rpx;
@@ -391,7 +391,7 @@ page {
 
     .get {
         font-size: 23rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #990100;
         margin-bottom: 10rpx;
@@ -399,7 +399,7 @@ page {
 
     .freeze {
         font-size: 23rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #A0BED8;
     }
@@ -411,7 +411,7 @@ page {
     padding: 0 30rpx;
     display: flex;
     font-size: 23rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #FEFEFE;
     margin-top: 28rpx;
@@ -476,7 +476,7 @@ page {
         // padding: 0 50rpx;
         .tips {
             font-size: 20rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             text-decoration: underline;
             color: #333333;
@@ -484,7 +484,7 @@ page {
 
         .lookDetail {
             font-size: 20rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             text-decoration: underline;
             color: #333333;
@@ -519,13 +519,13 @@ page {
 
     .tag_title {
         font-size: 33rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
     }
 
     .tag_time {
         font-size: 21rpx;
-        font-family: PingFang SC;
+        
     }
 
     .tag_left {
@@ -551,7 +551,7 @@ page {
 
 .rank_normal {
     font-size: 26rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #FFFFFF;
 }
@@ -600,7 +600,7 @@ page {
 
         view {
             font-size: 23rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
         }
     }
@@ -620,7 +620,7 @@ page {
         background-color: #950101;
         // background-image: url("@/static/act/merchantRank/shuke/leftA.png");
         font-size: 21rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #FFFFFF
     }
@@ -646,7 +646,7 @@ page {
 
     view {
         font-size: 33rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #FFFFFF;
         letter-spacing: 2rpx;

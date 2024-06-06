@@ -321,7 +321,7 @@ export default class ClassName extends BaseNode {
 <style lang="scss">
 .loginTitle {
     font-size: 40rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #000000;
     margin-top: 10rpx;
@@ -329,7 +329,7 @@ export default class ClassName extends BaseNode {
 
 .loginTips {
     font-size: 24rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     margin-top: 23rpx;
     color: #DDDDDD;
@@ -356,7 +356,7 @@ export default class ClassName extends BaseNode {
 
         .num {
             font-size: 32rpx;
-            font-family: PingFang SC;
+            
             font-weight: 500;
             color: #333333;
         }
@@ -376,7 +376,7 @@ export default class ClassName extends BaseNode {
     .input {
         flex: 1;
         font-size: 30rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #333333;
         height: 54rpx;
@@ -384,7 +384,7 @@ export default class ClassName extends BaseNode {
 
     .getCode {
         font-size: 26rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #263858;
         width: 160rpx;
@@ -413,7 +413,7 @@ export default class ClassName extends BaseNode {
 
 .changeText {
     font-size: 24rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #263858;
 
@@ -427,7 +427,7 @@ export default class ClassName extends BaseNode {
     width: 580rpx;
     height: 88rpx;
     font-size: 32rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     background-color: #eeeeee;
     border-radius: 5rpx;
@@ -459,7 +459,7 @@ export default class ClassName extends BaseNode {
 
     .font {
         font-size: 24rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #999999;
     }
@@ -482,7 +482,7 @@ export default class ClassName extends BaseNode {
 
     .text {
         font-size: 24rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #DDDDDD;
     }

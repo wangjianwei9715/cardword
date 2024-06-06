@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-15 11:37:14
+ * @LastEditTime: 2024-06-06 10:23:49
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -160,7 +160,7 @@
 			margin-left: -348rpx;
 			bottom:24rpx;
 			font-size: 32rpx;
-			font-family: PingFangSC, PingFang SC;
+			
 			font-weight: 500;
 			color: #FFFFFF;
 			text-align: center;
@@ -201,7 +201,7 @@
 		}
 		.popup-desc{
 			font-size: 24rpx;
-			font-family: PingFangSC, PingFang SC;
+			
 			font-weight: 400;
 			color: #7380A1;
 			line-height: 34rpx;
@@ -219,14 +219,14 @@
 		}
 		.popup-header-rank{
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #FFFFFF;
 			text-align: center;
 		}
 		.popup-header-rname{
 			font-size: 27rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #FFFFFF;
 			text-align: center;
@@ -255,14 +255,14 @@
 		.info-name{
 			width: 100%;
 			font-size: 27rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #FFFFFF;
 		}
 		.info-time{
 			width: 100%;
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #FFFFFF;
 		}
@@ -300,7 +300,7 @@
 				width: 100%;
 				font-size: 28rpx;
 				height:40rpx;
-				font-family: PingFangSC, PingFang SC;
+				
 				font-weight: 600;
 				color: #333333;
 			}
@@ -308,7 +308,7 @@
 				width: 100%;
 				font-size: 24rpx;
 				height:40rpx;
-				font-family: PingFangSC, PingFang SC;
+				
 				font-weight: 400;
 				color: #D9D9D9
 			}
@@ -316,7 +316,7 @@
 				width: 100%;
 				min-height: 63rpx;
 				font-size: 24rpx;
-				font-family: PingFangSC, PingFang SC;
+				
 				font-weight: 400;
 				color: #999999;
 				margin-top: 26rpx;
@@ -336,7 +336,7 @@
 			text-align: center;
 			line-height: 100rpx;
 			font-size: 36rpx;
-			font-family: PingFangSC, PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}
@@ -344,14 +344,14 @@
 			margin-bottom: 24rpx;
 			.item-title{
 				font-size: 28rpx;
-				font-family: PingFangSC, PingFang SC;
+				
 				font-weight: 600;
 				color: #333333;
 				margin-bottom: 16rpx;
 			}
 			.item-desc{
 				font-size: 24rpx;
-				font-family: PingFangSC, PingFang SC;
+				
 				font-weight: 400;
 				color: #333333;
 				line-height: 40rpx;

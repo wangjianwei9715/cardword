@@ -129,7 +129,7 @@
 				.title{
 					width: 100%;
 					font-size: 26rpx;
-					font-family: PingFangSC, PingFang SC;
+					
 					font-weight: 400;
 					color: #333333;
 					margin-bottom: 4rpx;
@@ -137,7 +137,7 @@
 				.desc{
 					width: 100%;
 					font-size: 22rpx;
-					font-family: PingFangSC, PingFang SC;
+					
 					font-weight: 400;
 					color: #999999;
 					margin-top: 4rpx;
@@ -146,7 +146,7 @@
 			.num{
 				height:90rpx;
 				font-size: 24rpx;
-				font-family: PingFangSC, PingFang SC;
+				
 				font-weight: 400;
 				color: rgba(153,153,153,0.9);
 				line-height: 90rpx;

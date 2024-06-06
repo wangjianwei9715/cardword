@@ -61,7 +61,7 @@ export default class ClassName extends BaseComponent {
 			height:30rpx;
 			line-height: 30rpx;
 			font-size: 26rpx;
-			font-family: Source Han Sans CN;
+			
 			font-weight: 400;
 			color: #333333;
 		}
@@ -69,7 +69,7 @@ export default class ClassName extends BaseComponent {
 			height:30rpx;
 			line-height: 30rpx;
 			font-size: 24rpx;
-			font-family: Source Han Sans CN;
+			
 			font-weight: 400;
 			color: #88878C;
 		}
@@ -81,7 +81,7 @@ export default class ClassName extends BaseComponent {
 		border-radius: 5rpx;
 		padding: 25rpx 28rpx;
 		font-size: 26rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color: #333333;
 		line-height: 40rpx;
@@ -96,7 +96,7 @@ export default class ClassName extends BaseComponent {
 	}
 	.giving-index-bottom-left{
 		font-size: 24rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color: #88878C;
 	}
@@ -106,7 +106,7 @@ export default class ClassName extends BaseComponent {
 		background: $btn-red;
 		border-radius: 28rpx;
 		font-size: 28rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color: #FFFFFF;
 		line-height: 55rpx;

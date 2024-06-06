@@ -103,7 +103,7 @@ page {
 	height:50rpx;
 	line-height: 40rpx;
 	font-size: 22rpx;
-	font-family: Microsoft YaHei;
+	
 	font-weight: 400;
 	color: #333;
 	text-align: center;

@@ -132,7 +132,7 @@
 			justify-content: center;
 			margin-top: 140rpx;
 			font-size: 29rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #FFFFFF;
 		}
@@ -151,9 +151,5 @@
 			margin-right: 16rpx;
 		}
 	}
-	@font-face {
-    font-family: "FZLanTingHeiS-H-GB";
-    src: url("@/common/Tao/FZLanTingHeiSH.ttf");
-}
 
 </style>

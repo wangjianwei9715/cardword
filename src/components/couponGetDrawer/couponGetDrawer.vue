@@ -97,7 +97,7 @@
                 padding-top: 35rpx;
                 .left-price{
                     font-size: 29rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 600;
                     color: #FFFFFF;
                     text-align: center;
@@ -109,7 +109,7 @@
                     margin-top: 5rpx;
                     text-align: center;
                     font-size: 23rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 400;
                     color: #FFFFFF;
                 }
@@ -128,14 +128,14 @@
                 .right-title{
                     width: 300rpx;
                     font-size: 29rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 600;
                     color: #333333;
                     margin-bottom: 2rpx;
                 }
                 .right-time{
                     font-size: 21rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 400;
                     color: #88878C;
                     margin-top: 2rpx;
@@ -150,7 +150,7 @@
                     align-items: center;
                     justify-content: center;
                     font-size: 25rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 500;
                     color: #FFFFFF;
                     position: absolute;
@@ -169,7 +169,7 @@
                 }
                 .right-b-font{
                     font-size: 21rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 400;
                     color: #88878C;
                 }

@@ -109,7 +109,7 @@
         width: 100%;
         height: 69rpx;
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
     }
     .search-icon{
@@ -146,14 +146,14 @@
                 .name{
                     width: 100%;
                     font-size: 25rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 400;
                     color: #333333;
                     margin-bottom: 15rpx;
                 }
                 .num{
                     font-size: 25rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 400;
                     color: #333333;
                 }

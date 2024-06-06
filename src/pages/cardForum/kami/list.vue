@@ -139,7 +139,7 @@ page {
 
     .merchantName {
         font-size: 21rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #959695;
     }
@@ -165,21 +165,21 @@ page {
 
     .goodsName {
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #333333;
     }
 
     .price {
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #333333;
     }
 
     .font {
         font-size: 21rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #C0C0C0;
         margin-left: 4rpx;
@@ -196,14 +196,14 @@ page {
         background: #FA1545;
         border-radius: 3rpx;
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #FFFFFF;
     }
 
     .kamiNum {
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #333333;
     }

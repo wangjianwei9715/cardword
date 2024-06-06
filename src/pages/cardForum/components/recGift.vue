@@ -162,7 +162,7 @@ export default {
 
 .title {
     font-size: 33rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
 }
@@ -219,7 +219,7 @@ export default {
 
 .userName {
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
 }
@@ -228,7 +228,7 @@ export default {
 
 .name {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #333333;
     margin-right: 21rpx;
@@ -236,7 +236,7 @@ export default {
 
 .time {
     font-size: 19rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #C0C0C0;
 }
@@ -245,7 +245,7 @@ export default {
     background: #F5F5F5;
     padding: 10rpx 12rpx;
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #707070;
     line-height: 25rpx;

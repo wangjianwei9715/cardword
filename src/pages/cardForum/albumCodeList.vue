@@ -224,7 +224,7 @@
 
 			.topName {
 				font-size: 27rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 500;
 				color: #fff;
 				flex: 1;
@@ -241,7 +241,7 @@
 			border-radius: 3rpx;
 			font-size: 28rpx;
 			margin-right: 30rpx;
-			font-family: PingFang SC;
+			
 			border-radius: 5rpx;
 			font-weight: bold;
 			color: #FFFFFF;
@@ -258,7 +258,7 @@
 				width: 100%;
 				background: #1A1A1A;
 				font-size: 27rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #C0C0C0;
 				padding:20rpx 24rpx;
@@ -276,7 +276,7 @@
 			}
 			.card{
 				width: 341rpx;
-				font-family: PingFang SC;
+				
 				margin-bottom: 20rpx;
 				.pic{
 					width: 341rpx;

@@ -141,7 +141,7 @@ export default class ClassName extends BaseNode {
 page {
     // background-color: #1a3439;
     background: linear-gradient(0deg, #3e0b69 0%, rgba(62, 11, 105, .6) 56%, rgba(62, 11, 105, .9) 100%);
-    font-family: PingFang SC;
+    
 }
 
 
@@ -182,7 +182,7 @@ page {
 
             .name {
                 font-size: 29rpx;
-                font-family: PingFang SC;
+                
                 font-weight: bold;
                 color: #333333;
                 margin-bottom: 18rpx;
@@ -190,7 +190,7 @@ page {
 
             .rank {
                 font-size: 23rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 400;
                 color: #333333;
             }
@@ -203,7 +203,7 @@ page {
 
             view {
                 font-size: 23rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 400;
                 color: #333333;
             }
@@ -248,7 +248,7 @@ page {
 
 .noMore {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #D2D2D2;
     margin: 50rpx auto;
@@ -269,7 +269,7 @@ page {
 
         view {
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: 500;
             color: #333333;
         }
@@ -301,7 +301,7 @@ page {
 
         .goodsTitle {
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #333333;
             overflow: hidden;
@@ -317,7 +317,7 @@ page {
 
         .goodsType {
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #949494;
         }
@@ -328,14 +328,14 @@ page {
 
             .time {
                 font-size: 25rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 400;
                 color: #949494;
             }
 
             .point {
                 font-size: 25rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 400;
                 color: #A0BED8;
             }

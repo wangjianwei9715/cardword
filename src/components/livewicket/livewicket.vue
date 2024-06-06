@@ -74,7 +74,7 @@
 				width: 100%;
 				text-align: center;
 				font-size: 28rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
+				
 				font-weight: 400;
 				color: #FFFFFF;
 			}

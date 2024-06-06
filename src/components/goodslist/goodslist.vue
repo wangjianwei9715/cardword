@@ -237,7 +237,7 @@
 				}
 				text:last-child {
 					font-size: 21rpx;
-					font-family: PingFangSC-Regular;
+					
 					font-weight: 500;
 					color: #C0C0C0;
 					margin-left: 6rpx;

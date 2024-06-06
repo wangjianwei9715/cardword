@@ -72,7 +72,7 @@
 <style lang="scss">
 	.count-down{
 		margin-left: 10rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 	}
 	.orderlist{
@@ -105,7 +105,7 @@
 						height:40rpx;
 						line-height: 40rpx;
 						font-size: 28rpx;
-						font-family: PingFangSC-Regular, PingFang SC;
+						
 						font-weight: 400;
 						color: #333333;
 					}
@@ -119,7 +119,7 @@
 						display: flex;
 						align-items: center;
 						font-size: 26rpx;
-						font-family: PingFang SC;
+						
 						font-weight: 400;
 						color: rgba(153,153,153,0.9);
 					}
@@ -155,7 +155,7 @@
 					.title{
 						width: 100%;
 						font-size: 26rpx;
-						font-family: PingFangSC-Regular, PingFang SC;
+						
 						color: #333333;
 						line-height: 34rpx;
 						margin-bottom: 0;
@@ -165,7 +165,7 @@
 						height:35rpx;
 						margin-top: 5rpx;
 						font-size: 23rpx;
-						font-family: PingFangSC-Regular, PingFang SC;
+						
 						font-weight: 400;
 						color: #F63D47;
 						box-sizing: border-box;
@@ -189,7 +189,6 @@
 						left:0;
 						.num{
 							font-size: 22rpx;
-							font-family: PingFangSC, PingFang SC;
 							font-weight: 400;
 							color: #C0C0C0;
 						}
@@ -197,7 +196,7 @@
 							height:40rpx;
 							line-height: 40rpx;
 							font-size: 24rpx;
-							font-family: PingFangSC-Regular, PingFang SC;
+							
 							font-weight: 400;
 							color: rgba(0,0,0,0.9);
 							display: inline-flex
@@ -205,7 +204,7 @@
 						.total-price{
 							height:40rpx;
 							font-size: 20rpx;
-							font-family: PingFang SC;
+							
 							font-weight: 500;
 							color: #000000;
 							line-height: 38rpx;
@@ -251,7 +250,7 @@
 					align-items: center;
 					justify-content: flex-end;
 					font-size: 20rpx;
-					font-family: PingFangSC-Regular, PingFang SC;
+					
 					font-weight: 400;
 					color: #14151A;
 					padding-right: 20rpx;
@@ -283,7 +282,6 @@
 						justify-content: center;
 						border-radius:5rpx;
 						font-size: 24rpx;
-						font-family: PingFangSC;
 						font-weight: 400;
 						margin-right: 26rpx;
 						background:#fff;

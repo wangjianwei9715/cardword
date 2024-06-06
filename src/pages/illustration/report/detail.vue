@@ -87,7 +87,7 @@
 		.title{
 			width: 100%;
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 			margin-bottom: 22rpx;
@@ -103,7 +103,7 @@
 		}
 		.msg{
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #333333;
 		}

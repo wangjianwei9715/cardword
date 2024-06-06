@@ -145,7 +145,7 @@ export default {
 
 .desc {
     font-size: 23rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #959695;
     width: 500rpx;
@@ -172,7 +172,7 @@ export default {
 
 .title {
     font-size: 27rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
     margin-right: 14rpx;
@@ -185,7 +185,7 @@ export default {
     border-radius: 3rpx;
     text-align: center;
     font-size: 20rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #FFFFFF;
     line-height: 32rpx;
@@ -206,7 +206,7 @@ export default {
 
 .num {
     font-size: 23rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #C0C0C0;
 }
@@ -219,7 +219,7 @@ export default {
     background: #FA1545;
     border-radius: 5rpx;
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #FFFFFF;
     text-align: center;

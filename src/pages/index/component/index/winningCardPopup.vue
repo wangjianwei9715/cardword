@@ -88,7 +88,7 @@
 				width: 249rpx;
 				height:64rpx;
 				font-size: 33rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #FEFEFE;
 				text-shadow: 0rpx 0rpx 8rpx #194647;

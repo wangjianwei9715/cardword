@@ -335,7 +335,7 @@ export default {
 /* #ifndef APP-NVUE */
 .pageTitle {
     font-size: 18px;
-    font-family: PingFangSC-Medium, PingFang SC;
+    
     color: #333;
     position: absolute;
     font-weight: 500;
@@ -361,7 +361,7 @@ export default {
 
 .titleText {
     font-size: 18px;
-    font-family: PingFangSC-Medium, PingFang SC;
+    
     font-weight: 500;
     color: #333;
 }

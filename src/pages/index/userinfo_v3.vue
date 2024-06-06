@@ -492,7 +492,7 @@ page {
 
 .userInfo_name_text {
     font-size: 31rpx;
-    font-family: PingFang SC;
+    
     font-weight: 500;
     color: #FFFFFF;
 }
@@ -509,7 +509,7 @@ page {
     background: #FFFFFF;
     border-radius: 3rpx;
     font-size: 31rpx;
-    font-family: PingFang SC;
+    
     font-weight: 500;
     color: #333333;
     text-align: center;
@@ -520,7 +520,7 @@ page {
 
 .userInfo_ip_text {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #a5a5a5;
 }
@@ -537,7 +537,7 @@ page {
 
 .desc_text {
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #FFFFFF;
     line-height: 34rpx;
@@ -567,7 +567,7 @@ page {
 
 .userData_num {
     font-size: 27rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #FFFFFF;
     text-align: center;
@@ -575,7 +575,7 @@ page {
 
 .userData_name {
     font-size: 21rpx;
-    font-family: PingFang SC;
+    
     font-weight: 400;
     color: #a5a5a5;
     text-align: center;
@@ -632,7 +632,7 @@ page {
 
     .label {
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #333333;
         flex: 1;
@@ -640,7 +640,7 @@ page {
 
     .num {
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #959695;
     }
@@ -671,14 +671,14 @@ page {
 
         .title {
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #333333;
         }
 
         .title_tip {
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #E6E6E6;
         }
@@ -702,7 +702,7 @@ page {
 
             &_label {
                 font-size: 23rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 400;
                 color: #333333;
                 margin-top: 14rpx;
@@ -713,7 +713,7 @@ page {
 
 .wrapTitle {
     font-size: 29rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
 }
@@ -759,7 +759,7 @@ page {
 
             &_label {
                 font-size: 23rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 400;
                 color: #333333;
                 margin-top: 15rpx;
@@ -801,7 +801,7 @@ page {
 
         &_label {
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #333333;
             flex: 1;
@@ -840,7 +840,6 @@ page {
             display: flex;
             align-items: center;
             font-size: 33rpx;
-            font-family: PingFangSC-Semibold;
             font-weight: 600;
             color: #FFFFFF;
         }
@@ -881,7 +880,7 @@ page {
                     align-items: center;
                     justify-content: center;
                     font-size: 20rpx;
-                    font-family: PingFangSC-Regular, PingFang SC;
+                    
                     font-weight: 400;
                     color: #FB4E3E;
                     background: #FFFFFF;
@@ -931,7 +930,7 @@ page {
 
         .header-tab-index-num {
             font-size: 33rpx;
-            font-family: PingFangSC-Medium;
+            
             font-weight: bold;
             color: #FFFFFF;
             margin-bottom: 10rpx;
@@ -940,7 +939,7 @@ page {
 
         .header-tab-index-name {
             font-size: 27rpx;
-            font-family: PingFangSC-Regular;
+            
             font-weight: 400;
             color: #FFD2D9;
         }
@@ -976,7 +975,7 @@ page {
             display: flex;
             align-items: center;
             font-size: 29rpx;
-            font-family: PingFangSC-Medium;
+            
             font-weight: 600;
             color: #333333;
 
@@ -992,7 +991,7 @@ page {
             display: flex;
             align-items: center;
             font-size: 25rpx;
-            font-family: PingFangSC-Regular;
+            
             font-weight: 400;
             color: #333333;
 
@@ -1020,7 +1019,7 @@ page {
             height: 40rpx;
             line-height: 40rpx;
             font-size: 31rpx;
-            font-family: PingFangSC-Regular;
+            
             font-weight: 600;
             color: #333333;
         }
@@ -1030,7 +1029,7 @@ page {
             display: flex;
             align-items: center;
             font-size: 25rpx;
-            font-family: PingFangSC-Regular;
+            
             font-weight: 400;
             color: #88878C;
 
@@ -1065,7 +1064,7 @@ page {
                 height: 32rpx;
                 text-align: center;
                 font-size: 23rpx;
-                font-family: PingFangSC-Regular;
+                
                 font-weight: 400;
                 color: #333333;
             }
@@ -1086,7 +1085,7 @@ page {
         align-items: center;
         justify-content: center;
         font-size: 24rpx;
-        font-family: PingFangSC-Medium, PingFang SC;
+        
         font-weight: 600;
         color: #FFFFFF;
         margin-top: 10rpx;
@@ -1123,7 +1122,7 @@ page {
             display: flex;
             align-items: center;
             font-size: 27rpx;
-            font-family: PingFangSC-Regular;
+            
             font-weight: 400;
             color: #5B5B5B;
 

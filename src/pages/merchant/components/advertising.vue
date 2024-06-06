@@ -266,7 +266,7 @@
 	}
 	.drawer-header-name{
 		font-size: 23rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #959695;
 	}
@@ -299,7 +299,7 @@
 			background: #FA1545;
 			border-radius: 5rpx;
 			font-size: 33rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #FFFFFF;
 			text-align: center;
@@ -314,7 +314,7 @@
 	}
 	.good-act-content .upload-btn /deep/ .u-count-down__text{
 		font-size: 33rpx !important;
-		font-family: PingFang SC;
+		
 		font-weight: 600 !important;
 		color: #FFFFFF !important;
 		margin-left: 10rpx;
@@ -356,7 +356,7 @@
 			width: 100%;
 			text-align: center;
 			font-size: 63rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}
@@ -364,7 +364,7 @@
 			width: 100%;
 			text-align: center;
 			font-size: 23rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #959695;
 		}
@@ -379,7 +379,7 @@
 			text-align: center;
 			line-height: 38rpx;
 			font-size: 23rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #FFFFFF;
 		}
@@ -392,7 +392,7 @@
 			bottom:0;
 			left:0;
 			font-size: 20rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #FA1545;
 			display: flex;
@@ -402,7 +402,7 @@
 	}
 	.good-act-content .drawer-item-inuse /deep/ .u-count-down__text{
 		font-size: 20rpx !important;
-		font-family: PingFang SC;
+		
 		font-weight: 400 !important;
 		color: #FA1545 !important;
 		margin-left: 10rpx;
@@ -422,7 +422,7 @@
 		height: 40rpx;
 		background: #F5F5F5;
 		font-size: 25rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #333333;
 		text-align: center;

@@ -122,7 +122,7 @@
 			background: #EFEFEF;
 			border-radius: 3rpx;
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #88878C;
 			line-height: 63rpx;
@@ -161,7 +161,7 @@
 					width: 100%;
 					height:20rpx;
 					font-size: 23rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 400;
 					color: #333333;
 					text-align: center;

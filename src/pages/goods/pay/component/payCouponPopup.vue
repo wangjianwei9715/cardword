@@ -133,7 +133,7 @@
 		box-sizing: border-box;
 		padding: 26rpx 0 20rpx 0;
 		font-size: 26rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 		text-align: center;
@@ -189,7 +189,7 @@
 			.coupon-price{
 				width: 100%;
 				font-size: 29rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #FFFFFF;
 				text-align: center;
@@ -202,7 +202,7 @@
 				width: 100%;
 				text-align: center;
 				font-size: 23rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 500;
 				color: #FFFFFF;
 			}
@@ -232,14 +232,14 @@
 					display: flex;
 					align-items: center;
 					font-size: 30rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 600;
 					color: #333333;
 				}
 				.coupon-time{
 					width: 100%;
 					font-size: 21rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 400;
 					color: #88878C;
 					margin-top: 10rpx;
@@ -255,7 +255,7 @@
 					height:50rpx;
 					line-height: 50rpx;
 					font-size: 20rpx;
-					font-family: Microsoft YaHei;
+					
 					font-weight: 400;
 					color: #B8B7B7;
 				}
@@ -304,7 +304,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 33rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #F6F7FB;
 		line-height: 40rpx;

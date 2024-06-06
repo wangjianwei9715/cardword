@@ -140,7 +140,7 @@ export default class ClassName extends BaseComponent {
 
     .title {
         font-size: 33rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #ffffff;
     }
@@ -161,7 +161,7 @@ export default class ClassName extends BaseComponent {
 .input_title {
     width: 100%;
     font-size: 29rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #ffffff;
     padding-bottom: 17rpx;
@@ -176,7 +176,7 @@ export default class ClassName extends BaseComponent {
 
     .name {
         font-size: 25rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #FFFFFF;
         margin-right: 21rpx;
@@ -191,7 +191,7 @@ export default class ClassName extends BaseComponent {
 
         input {
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #ffffff;
             flex: 1;
@@ -199,7 +199,7 @@ export default class ClassName extends BaseComponent {
 
         .del {
             font-size: 22rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #FFFFFF;
             margin-left: 10rpx;
@@ -225,7 +225,7 @@ export default class ClassName extends BaseComponent {
         border: 1rpx solid #C0C0C0;
         border-radius: 5rpx;
         font-size: 33rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #FFFFFF;
     }
@@ -236,7 +236,7 @@ export default class ClassName extends BaseComponent {
         background: #FA1545;
         border-radius: 5rpx;
         font-size: 33rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #FFFFFF;
         border: 1rpx solid #FA1545;
@@ -258,7 +258,7 @@ export default class ClassName extends BaseComponent {
 
     .addText {
         font-size: 22rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #FFFFFF;
         margin-left: 10rpx;

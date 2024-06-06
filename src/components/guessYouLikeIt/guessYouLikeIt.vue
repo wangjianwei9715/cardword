@@ -81,7 +81,7 @@
 		display: flex;
 		align-items: center;
 		font-size: 23rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #A5A5AA;
 		justify-content: center;
@@ -127,7 +127,7 @@
 			padding:14rpx 18rpx 0rpx 18rpx;
 			font-size: 27rpx;
 			line-height: 34rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #333333;
 			box-sizing: border-box;
@@ -151,7 +151,6 @@
 			justify-content: space-between;
 			.like-price{
 				font-size: 18rpx;
-				font-family: Alibaba PuHuiTi;
 				font-weight: 500;
 				color: #333333;
 			}
@@ -160,7 +159,7 @@
 			}
 			.like-plan{
 				font-size: 24rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #999999;
 			}

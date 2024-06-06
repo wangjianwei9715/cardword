@@ -125,7 +125,7 @@ export default {
 }
 .getUserMsg-tips{
   font-size: 39rpx;
-font-family: PingFang SC;
+
 font-weight: bold;
 color: #FFFFFF;
 }
@@ -135,7 +135,7 @@ color: #FFFFFF;
 }
 .price {
   font-size: 71rpx;
-  font-family: PingFang SC;
+  
   font-weight: 600;
   color: #333333;
   text-align: center;
@@ -159,7 +159,7 @@ color: #FFFFFF;
 .minAm {
   text-align: center;
   font-size: 34rpx;
-  font-family: PingFang SC;
+  
   font-weight: 400;
   color: #333333;
   margin-top: 24rpx;
@@ -172,7 +172,7 @@ color: #FFFFFF;
   background: #e3bd63;
   border-radius: 3rpx;
   font-size: 29rpx;
-  font-family: PingFang SC;
+  
   font-weight: bold;
   color: #fefefe;
   // letter-spacing: 3rpx;
@@ -187,7 +187,7 @@ color: #FFFFFF;
 
 .timeSecion {
   font-size: 24rpx;
-  font-family: PingFang SC;
+  
   font-weight: 400;
   color: #82817f;
   text-align: center;
@@ -199,7 +199,7 @@ color: #FFFFFF;
   background: #ff404d;
   border-radius: 5rpx;
   font-size: 34rpx;
-  font-family: PingFang SC;
+  
   font-weight: bold;
   color: #fff;
   // letter-spacing: 2rpx;

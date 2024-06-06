@@ -48,7 +48,7 @@ export default class ClassName extends BaseNode {
 
 <style lang="scss">
 page {
-    font-family: PingFangSC-Regular;
+    
 }
 
 .guideContent {

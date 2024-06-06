@@ -55,13 +55,11 @@
 	export default class ClassName extends BaseNode {
 		activeStyle={
 			"font-size": "30rpx",
-			"font-family": "PingFangSC-Medium",
 			"font-weight": 500,
 			"color":" #333333",
 		}
 		inactiveStyle={
 			"font-size": "26rpx",
-			"font-family": "PingFang SC",
 			"font-weight": 400,
 			"color":" #999999",
 		}
@@ -352,7 +350,7 @@
 		background: #F6F6F6;
 		border-radius: 4rpx;
 		font-size: 24rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 500;
 		color: #DDDDDD;
 		padding-left: 64rpx;

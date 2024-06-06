@@ -113,13 +113,13 @@
 			justify-content: space-between;
 			.time{
 				font-size: 25rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #959695;
 			}
 			.status{
 				font-size: 25rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #333333;
 			}
@@ -132,7 +132,7 @@
 			padding-top: 25rpx;
 			.desc{
 				font-size: 25rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #333333;
 				line-height: 33rpx;

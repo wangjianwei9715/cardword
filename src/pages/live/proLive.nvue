@@ -192,21 +192,21 @@
           <image style="width:162rpx;height:162rpx;margin-top:70rpx" src="../../static/live/bigCoin.png"
             mode="scaleToFill" />
           <text style="font-size: 34rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #E6A44F;margin-top: 7rpx;">抢到{{ clickPack.myGrabPoint }}卡币</text>
           <text style="font-size: 29rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #E6A44F;margin-top: 15rpx;">{{ clickPack.sender }}的红包</text>
           <text @click="previewHbSq" style="font-size: 34rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #E6A44F;margin-top: 28rpx;">查看大家手气></text>
           <view class="thanksButton" @click='sendTalk(`感谢${clickPack.sender}的红包!`, true)'>
             <image class="bg" style="width:303rpx;height:70rpx" src="/static/live/button.png" mode="scaleToFill" />
             <text style="font-size: 38rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             line-height: 70rpx;
             color: #FFFFFF;">一键感谢</text>
@@ -216,18 +216,18 @@
         <!--  -->
         <template v-if="clickPack.preview">
           <text style="font-size: 34rpx;
-          font-family: PingFang SC;
+          
           font-weight: bold;
           color: #E6A44F;margin-top:65rpx">查看手气</text>
           <scroll-view scroll-y class="sqView">
             <view class="sqItem" v-for="(item, index) in grablist" :key="index">
               <text style="font-size: 29rpx;
-              font-family: PingFang SC;
+              
               font-weight: 400;
               color: #E6A44F;flex:1">{{ item.name }}</text>
               <image style="width: 29rpx;height:29rpx" src="../../static/live/smallCoin.png" mode="scaleToFill" />
               <text style="font-size: 29rpx;
-              font-family: PingFang SC;
+              
               font-weight: 400;
               color: #E6A44F;margin-left:9rpx">{{ item.point }}</text>
             </view>
@@ -237,20 +237,20 @@
           <image style='width:144rpx;height:144rpx;margin-top:58rpx;margin-bottom:24rpx'
             src='../../static/live/foyecao.png' />
           <text style="font-size: 34rpx;
-font-family: PingFang SC;
+
 font-weight: bold;
 color: #E6A44F;">{{ clickPack.tips == '您已抢过红包了' ? clickPack.tips : '红包已抢完' }}</text>
           <text style="font-size: 25rpx;
 color: #E6A44F;">{{ clickPack.tips == '您已抢过红包了' ? `${clickPack.point}卡币` : '下次加油！' }}</text>
           <text style="font-size: 34rpx;
-          font-family: PingFang SC;
+          
           font-weight: bold;
           color: #E6A44F;margin-top:45rpx" @click="previewHbSq">查看大家手气 ></text>
           <!-- :class="{iosThanksButton:deviceInfo.platform=='ios'}" -->
           <view class="thanksButton" @click='hbPackShow = false'>
             <image class="bg" style="width:303rpx;height:70rpx" src="/static/live/button.png" mode="scaleToFill" />
             <text style="font-size: 38rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             line-height: 70rpx;
             color: #FFFFFF;">知道了</text>
@@ -2279,7 +2279,7 @@ export default {
 }
 
 .liveContainer {
-  font-family: PingFang SC;
+  
   width: 750rpx;
   overflow: hidden;
   align-items: center;
@@ -2324,7 +2324,7 @@ export default {
 
 .liveSetText {
   font-size: 29rpx;
-  font-family: PingFang SC;
+  
   font-weight: 400;
   color: #ffffff;
   margin-top: 12rpx;
@@ -2341,7 +2341,7 @@ export default {
   border-radius: 5rpx;
   text-align: center;
   font-size: 33rpx;
-  font-family: PingFang SC;
+  
   font-weight: 600;
   color: #ffffff;
   line-height: 77rpx;
@@ -2367,7 +2367,7 @@ export default {
   text-align: center;
   line-height: 73rpx;
   font-size: 24rpx;
-  font-family: PingFang SC;
+  
   font-weight: bold;
   color: #fffefe;
   /* position: fixed; */
@@ -2401,7 +2401,7 @@ export default {
 
 .liveTitle {
   font-size: 38rpx;
-  font-family: PingFang SC;
+  
   font-weight: 400;
   color: #ffffff;
   /* margin-top: 382rpx; */
@@ -2410,7 +2410,7 @@ export default {
 
 .liveTips {
   font-size: 29rpx;
-  font-family: PingFang SC;
+  
   font-weight: 400;
   color: #c7c7c7;
   margin-top: 50rpx;
@@ -2419,7 +2419,7 @@ export default {
 
 .liveCountDown {
   font-size: 63rpx;
-  font-family: PingFang SC;
+  
   font-weight: bold;
   color: #ffffff;
   margin-bottom: 30rpx;
@@ -2434,7 +2434,7 @@ export default {
   text-align: center;
   line-height: 59rpx;
   font-size: 33rpx;
-  font-family: PingFang SC;
+  
   font-weight: 400;
   color: #fffefe;
 }
@@ -2522,7 +2522,7 @@ export default {
 
 .packS {
   font-size: 53rpx;
-  font-family: PingFang SC;
+  
   font-weight: bold;
   color: #d32e2e;
   text-align: center;
@@ -2530,7 +2530,7 @@ export default {
 
 .packGet {
   font-size: 28rpx;
-  font-family: PingFang SC;
+  
   font-weight: 400;
   text-align: center;
   color: #d32e2e;
@@ -2667,14 +2667,14 @@ export default {
 
 /* .chartName {
     font-size: 27rpx;
-    font-family: PingFang SC;
+    
     font-weight: 500;
     color: #A1E4FC;
   }
 
   .chartContxt {
     font-size: 27rpx;
-    font-family: PingFang SC;
+    
     font-weight: 500;
     color: #fff;
   } */
@@ -2691,7 +2691,7 @@ export default {
   background: rgba(0, 0, 0, 0.28);
   border-radius: 32rpx;
   font-size: 25rpx;
-  font-family: PingFang SC;
+  
   font-weight: 400;
   line-height: 64rpx;
   padding-left: 38rpx;
@@ -2754,7 +2754,7 @@ export default {
 
 .packCountDown {
   font-size: 17rpx;
-  font-family: PingFang SC;
+  
   font-weight: 400;
   color: #ffffff;
   line-height: 83rpx;
@@ -3099,7 +3099,7 @@ export default {
 
 .violation_title {
   font-size: 33rpx;
-  font-family: PingFangSC;
+  
   font-weight: bold;
   color: #333333;
   margin-top: 56rpx;
@@ -3107,7 +3107,7 @@ export default {
 
 .violation_text {
   font-size: 25rpx;
-  font-family: PingFangSC;
+  
   font-weight: 400;
   color: #333333;
   margin-top: 30rpx;
@@ -3126,7 +3126,7 @@ export default {
 
 .violation_confirm_text {
   font-size: 33rpx;
-  font-family: PingFangSC;
+  
   font-weight: bold;
   color: #FFFFFF;
 }

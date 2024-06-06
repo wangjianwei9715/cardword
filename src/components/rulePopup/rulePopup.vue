@@ -130,7 +130,7 @@
 		margin-bottom: 80rpx;
 		text-align: center;
 		font-size: 34rpx;
-		font-family: Microsoft YaHei;
+		
 		font-weight: bold;
 		color: #34363A;
 	}
@@ -139,7 +139,7 @@
 		box-sizing: border-box;
 		padding:0 50rpx;
 		font-size: 28rpx;
-		font-family: Microsoft YaHei;
+		
 		font-weight: 400;
 		color: #34363A;
 		line-height: 50rpx;
@@ -158,7 +158,6 @@
 		margin-left:-231rpx;
 		border-radius: 30rpx;
 		font-size: 30rpx;
-		font-family: Adobe Heiti Std;
 		font-weight: normal;
 		color: #FFFFFF;
 	}
@@ -234,7 +233,7 @@
 		margin-bottom: 40rpx;
 		text-align: center;
 		font-size: 34rpx;
-		font-family: Microsoft YaHei;
+		
 		font-weight: bold;
 		color: #34363A;
 	}
@@ -254,7 +253,7 @@
 		padding:0 50rpx;
 		margin-bottom:20rpx;
 		font-size: 26rpx;
-		font-family: Microsoft YaHei;
+		
 		font-weight: 400;
 		color: #34363A;
 		line-height: 40rpx;

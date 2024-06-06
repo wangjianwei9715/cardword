@@ -144,7 +144,7 @@
 		.title{
 			width: 100%;
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 			margin-bottom: 22rpx;
@@ -190,7 +190,7 @@
 		.upload-msg{
 			width: 100%;
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #C0C0C0;
 			text-align: center;
@@ -201,7 +201,7 @@
 		}
 		.tips{
 			font-size: 21rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #C0C0C0;
 		}
@@ -212,7 +212,7 @@
 			border-radius: 5rpx;
 			margin:0 auto;
 			font-size: 33rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #FFFFFF;
 			text-align: center;

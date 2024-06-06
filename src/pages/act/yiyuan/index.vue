@@ -121,7 +121,7 @@
             height:90rpx;
             line-height: 90rpx;
             font-size: 28rpx;
-            font-family: Microsoft YaHei;
+            
             font-weight: bold;
             color: #FFFFFF;
         }

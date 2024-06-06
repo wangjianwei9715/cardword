@@ -186,7 +186,7 @@
 				height:76rpx;
 				width:82rpx;
 				font-size: 25rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #333333;
 				display: flex;
@@ -206,7 +206,7 @@
 			}
 			.act-box-desc-item{
 				font-size: 25rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 400;
 				color: #333333;
 				margin:22rpx 0;
@@ -233,14 +233,14 @@
 		height:40rpx;
 		line-height: 40rpx;
 		font-size: 27rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #C0C0C0;
 	}
 	.detail-act-desc{
 		width: 550rpx;
 		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #333333;
 		overflow: hidden;
@@ -261,7 +261,7 @@
 		border:1px solid #F4919F;
 		margin-right: 24rpx;
 		font-size: 24rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #EA4055;
 	}
@@ -272,7 +272,7 @@
 	}
 	.drawer-help-title{
 		font-size: 27rpx;
-		font-family: PingFangSC-Medium;
+		
 		font-weight: bold;
 		color:#333333;
 		margin:15rpx 0rpx;
@@ -280,7 +280,7 @@
 	.drawer-help-content{
 		width: 100%;
 		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: 400;
 		color: #7D8288;
 		white-space: pre-wrap;
@@ -290,7 +290,7 @@
 	.drawer-help-cd{
 		width: 100%;
 		font-size: 25rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #333333;
 		line-height: 46rpx;
@@ -317,7 +317,7 @@
 	}
 	.drawer-header-name{
 		font-size: 23rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 400;
 		color: #959695;
 	}
@@ -348,7 +348,7 @@
 			background: #FA1545;
 			border-radius: 5rpx;
 			font-size: 33rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #FFFFFF;
 			text-align: center;
@@ -398,7 +398,7 @@
 			width: 100%;
 			text-align: center;
 			font-size: 63rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}
@@ -406,7 +406,7 @@
 			width: 100%;
 			text-align: center;
 			font-size: 23rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #959695;
 		}
@@ -421,7 +421,7 @@
 			text-align: center;
 			line-height: 38rpx;
 			font-size: 23rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #FFFFFF;
 		}
@@ -434,7 +434,7 @@
 			bottom:0;
 			left:0;
 			font-size: 20rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 400;
 			color: #FA1545;
 			display: flex;
@@ -457,7 +457,7 @@
 		height: 40rpx;
 		background: #F5F5F5;
 		font-size: 25rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #333333;
 		text-align: center;

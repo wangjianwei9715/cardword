@@ -79,7 +79,7 @@
 		background: #F5F5F8;
 		border-radius: 4rpx;
 		font-size: 24rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 500;
 		color: #14151A;
 		padding-left:76rpx ;
@@ -98,7 +98,7 @@
 		height:50rpx;
 		line-height: 50rpx;
 		font-size: 26rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
+		
 		font-weight: 400;
 		color: #14151A;
 	}
@@ -113,7 +113,7 @@
 		height:40rpx;
 		box-sizing: border-box;
 		font-size: 28rpx;
-		font-family: HYQiHei;
+		
 		font-weight: bold;
 		color: #3B3B3B;
 		display: flex;
@@ -142,7 +142,7 @@
 		border-radius: 4rpx;
 		text-align: center;
 		font-size: 24rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
+		
 		font-weight: 400;
 		color: #767880;
 		margin-right: 16rpx;

@@ -418,7 +418,7 @@
 		height:37rpx;
 		box-sizing: border-box;
 		font-size: 28rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color: #666666;
 		display: flex;
@@ -434,7 +434,6 @@
 		height:37rpx;
 		line-height: 37rpx;
 		font-size: 22rpx;
-		font-family: FZLanTingHeiS-R-GB;
 		font-weight: 400;
 		color: #FFFFFF;
 		background:#40444F;
@@ -445,7 +444,7 @@
 		height:37rpx;
 		line-height: 37rpx;
 		font-size: 24rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color: $btn-red;
 		margin-left: 12rpx;
@@ -454,7 +453,7 @@
 		height:66rpx;
 		line-height: 66rpx;
 		font-size: 28rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color: #666666;
 	}
@@ -487,7 +486,6 @@
 		display: flex;
 		align-items: center;
 		font-size: 22rpx;
-		font-family: FZLanTingHeiS-R-GB;
 		font-weight: 400;
 		color: #333333;
 		line-height: 32rpx;
@@ -502,7 +500,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 26rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 	}
 	.red-color{
@@ -574,7 +572,7 @@
 		width: 100%;
 		text-align: center;
 		font-size: 24rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color: #333333;
 	}
@@ -630,7 +628,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 29rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 500;
 		color: #959699;
 	}

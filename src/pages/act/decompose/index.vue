@@ -194,7 +194,7 @@
 		height:70rpx;
 		line-height: 70rpx;
 		font-size: 28rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color: #666666;
 		border-bottom:1rpx solid #E7E7E7;
@@ -241,7 +241,7 @@
 	.index-right-title{
 		width: 100%;
 		font-size: 30rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color: #666666;
 		line-height: 48rpx;
@@ -249,7 +249,7 @@
 	}
 	.index-right-num{
 		font-size: 24rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color: #B8B7B7;
 	}
@@ -272,7 +272,7 @@
 		right:0;
 		bottom:20rpx;
 		font-size: 26rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color: #FFFFFF;
 		background: #FB4E3E;
@@ -288,7 +288,7 @@
 		height:40rpx;
 		line-height: 40rpx;
 		font-size: 28rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: 400;
 		color: #666666;
 	}

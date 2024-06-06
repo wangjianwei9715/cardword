@@ -417,7 +417,7 @@ export default {
 .vd-title {
 	width: 670rpx;
 	font-size: 38rpx;
-	font-family: PingFang SC;
+	
 	font-weight: bold;
 	color: #333333;
 	line-height: 48rpx;
@@ -444,7 +444,7 @@ export default {
 .vd-name {
 	width: 670rpx;
 	font-size: 29rpx;
-	font-family: PingFang SC;
+	
 	font-weight: bold;
 	color: #333333;
 	margin-bottom: 5rpx;
@@ -453,7 +453,7 @@ export default {
 .vd-time {
 	width: 670rpx;
 	font-size: 23rpx;
-	font-family: Microsoft YaHei;
+	
 	font-weight: 400;
 	color: #7C7C7C;
 }
@@ -461,7 +461,7 @@ export default {
 .vd-desc {
 	width: 670rpx;
 	font-size: 28rpx;
-	font-family: Microsoft YaHei;
+	
 	font-weight: 400;
 	color: #14151A;
 	line-height: 36rpx;
@@ -474,7 +474,7 @@ export default {
 .chat-header {
 	width: 670rpx;
 	font-size: 29rpx;
-	font-family: PingFang SC;
+	
 	font-weight: bold;
 	color: #333333;
 }
@@ -505,7 +505,7 @@ export default {
 
 .chat-name {
 	font-size: 25rpx;
-	font-family: PingFang SC;
+	
 	font-weight: 400;
 	color: #949494;
 	margin-right: 22rpx;
@@ -513,7 +513,7 @@ export default {
 
 .chat-time {
 	font-size: 21rpx;
-	font-family: PingFang SC;
+	
 	font-weight: 400;
 	color: #AAAAAA;
 }
@@ -521,7 +521,7 @@ export default {
 .chat-msg {
 	width: 470rpx;
 	font-size: 25rpx;
-	font-family: PingFang SC;
+	
 	font-weight: 400;
 	color: #333333;
 	line-height: 33rpx;
@@ -543,7 +543,7 @@ export default {
 	height: 30rpx;
 	line-height: 30rpx;
 	font-size: 21rpx;
-	font-family: PingFang SC;
+	
 	font-weight: 400;
 	color: #AAAAAA;
 	margin-left: 12rpx;
@@ -568,7 +568,7 @@ export default {
 .chat-hf {
 	width: 390rpx;
 	font-size: 25rpx;
-	font-family: PingFang SC;
+	
 	font-weight: 400;
 	color: #333333;
 	line-height: 33rpx;
@@ -580,7 +580,7 @@ export default {
 
 .chat-text {
 	font-size: 25rpx;
-	font-family: PingFang SC;
+	
 	font-weight: 400;
 	color: #333333;
 	line-height: 33rpx;
@@ -589,7 +589,7 @@ export default {
 .chat-text2 {
 	width: 390rpx;
 	font-size: 25rpx;
-	font-family: PingFang SC;
+	
 	font-weight: 400;
 	color: #333333;
 	line-height: 33rpx;
@@ -598,7 +598,7 @@ export default {
 .hf-name {
 	color: #636363;
 	font-size: 25rpx;
-	font-family: PingFang SC;
+	
 	font-weight: 400;
 	line-height: 33rpx;
 	margin-left: 10rpx;
@@ -623,7 +623,7 @@ export default {
 	height: 41rpx;
 	line-height: 41rpx;
 	font-size: 21rpx;
-	font-family: PingFang SC;
+	
 	font-weight: 600;
 	color: #636363;
 }
@@ -648,7 +648,7 @@ export default {
 .vd-name_zuozhe {
 	width: 670rpx;
 	font-size: 29rpx;
-	font-family: PingFang SC;
+	
 	font-weight: bold;
 	color: #333333;
 	margin-bottom: 5rpx;
@@ -657,7 +657,7 @@ export default {
 .vd-time {
 	width: 670rpx;
 	font-size: 23rpx;
-	font-family: Microsoft YaHei;
+	
 	font-weight: 400;
 	color: #7C7C7C;
 }
@@ -673,7 +673,7 @@ export default {
 .topicsItem {
 	margin-right: 10rpx;
 	font-size: 33rpx;
-	font-family: PingFang SC;
+	
 	font-weight: bold;
 	color: #333333;
 	line-height: 42rpx;
@@ -715,7 +715,7 @@ export default {
 
 .goodsInfo {
 	font-size: 22rpx;
-	font-family: PingFang SC;
+	
 	font-weight: 500;
 	color: #333333;
 	line-height: 25rpx;
@@ -731,7 +731,7 @@ export default {
 
 .voteTitle {
 	font-size: 29rpx;
-	font-family: PingFang SC;
+	
 	font-weight: 400;
 	color: #333333;
 	line-height: 25rpx;
@@ -758,7 +758,7 @@ export default {
 
 .voteFont {
 	font-size: 25rpx;
-	font-family: PingFang SC;
+	
 	font-weight: 400;
 	color: #333333;
 	flex: 1;
@@ -767,7 +767,7 @@ export default {
 
 .voteNum {
 	font-size: 23rpx;
-	font-family: PingFang SC;
+	
 	font-weight: bold;
 	color: #333333;
 	z-index: 4;

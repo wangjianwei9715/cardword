@@ -54,7 +54,7 @@ export default class ClassName extends BaseComponent {
 
 @mixin font($size) {
 	font-size: $size;
-	font-family: PingFang SC;
+	
 	font-weight: 600;
 	color: #FFFFFF;
 }

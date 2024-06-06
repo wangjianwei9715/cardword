@@ -108,7 +108,7 @@
 			width: 100%;
 			text-align: center;
 			font-size: 28rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 600;
 			color: #14151A;
 		}
@@ -127,7 +127,7 @@
 			border-bottom: 1px solid #F1F1F4;
 			.name{
 				font-size: 24rpx;
-				font-family: PingFangSC-Medium, PingFang SC;
+				
 				font-weight: 600;
 				color: #14151A;
 			}
@@ -142,7 +142,7 @@
 			width: 100%;
 			text-align: center;
 			font-size: 20rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
+			
 			font-weight: 400;
 			color: #AAAABB;
 			line-height: 28rpx;

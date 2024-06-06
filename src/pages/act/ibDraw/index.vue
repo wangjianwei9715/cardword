@@ -560,7 +560,7 @@ page {
 
   .luckyNum {
     font-size: 26rpx;
-    font-family: PingFang SC;
+    
     font-weight: 500;
     color: #FCF1E3;
     margin-top: 238rpx;
@@ -593,7 +593,7 @@ page {
     // width: 50%;
     // text-align: center;
     font-size: 34rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #F8D6B7;
     text-shadow: 1rpx 2rpx 4rpx rgba(48, 20, 6, 0.76);
@@ -601,7 +601,7 @@ page {
 
   .tagSelect {
     font-size: 34rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #FFEF68;
     text-shadow: 1rpx 2rpx 4rpx rgba(48, 20, 6, 0.76);
@@ -646,7 +646,7 @@ page {
       .left,
       .right {
         font-size: 24rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #F8D6B7;
       }
@@ -691,7 +691,7 @@ page {
       &_name {
         width: 90rpx;
         font-size: 24rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #F8D6B7;
         margin-right: 28rpx;
@@ -700,7 +700,7 @@ page {
 
       &_point {
         font-size: 24rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #F93042;
         flex: 1;
@@ -708,7 +708,7 @@ page {
 
       &_awardName {
         font-size: 24rpx;
-        font-family: PingFang SC;
+        
         font-weight: 400;
         color: #F8D6B7;
       }
@@ -735,7 +735,7 @@ page {
         .title {
           margin-bottom: 30rpx;
           font-size: 24rpx;
-          font-family: PingFang SC;
+          
           font-weight: bold;
           color: #F8D6B7;
         }
@@ -749,7 +749,7 @@ page {
           &_two,
           &_three {
             font-size: 20rpx;
-            font-family: PingFang SC;
+            
             font-weight: 400;
             color: #A88566;
           }
@@ -793,7 +793,7 @@ page {
           background-color: #FA1545;
           border-radius: 4rpx;
           font-size: 22rpx;
-          font-family: PingFang SC;
+          
           font-weight: 400;
           color: #F8D6B7;
           transition: background-color 0.3s;
@@ -807,7 +807,7 @@ page {
 
         .tips {
           font-size: 20rpx;
-          font-family: PingFang SC;
+          
           font-weight: 400;
           color: #A88566;
           text-align: center;
@@ -926,7 +926,7 @@ page {
 
 .detailButton {
   font-size: 22rpx;
-  font-family: PingFang SC;
+  
   font-weight: 400;
   color: #ffffff;
   width: 76rpx;
@@ -936,7 +936,7 @@ page {
 
   view {
     font-size: 18rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
   }
@@ -1037,7 +1037,7 @@ page {
     text-align: center;
     font-size: 40rpx;
     font-weight: 600;
-    font-family: PingFang SC;
+    
     color: #fff;
     margin-top: 8rpx;
   }
@@ -1049,7 +1049,7 @@ page {
   background: #FA1545;
   position: fixed;
   font-size: 40rpx;
-  font-family: PingFang SC;
+  
   font-weight: bold;
   color: #FEFEFE;
   z-index: 10;
