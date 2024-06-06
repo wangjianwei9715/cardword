@@ -83,19 +83,20 @@
                             }">
                                 <image class="com_avatar"
                                     :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : app.defaultAvatar"
-                                    borderRadius="50%" />
+                                    borderRadius="50%" @click="app.navigateTo.goPersonHome(item.userId)"/>
                                 <view class="rightWrap">
-                                    <view class="msgInfo" @click.stop="onClickCom($event, item, null)">
+                                    <view class="msgInfo">
                                         <view class="msgInfo_top">
-                                            <text class="name u-line-1" style="max-width: 350rpx;">{{ item.userName }}
+                                            <text class="name" style="max-width: 350rpx;" @click="app.navigateTo.goPersonHome(item.userId)">{{ item.userName }}
                                             </text>
+                                            <image class="medal-icon" v-if="item.medal&&item.medal.pic" :src="item.medal.pic" @click="onClickIcon(item.userId)"></image>
                                             <!-- <text class="time">{{ timeFrom(item.created_at * 1000) }}</text> -->
                                             <!-- <view style="display: flex;align-items: center;flex-direction: row;">
                                                 <text class="dz" :class="{ dzs: item.isLiked }"></text>
                                                 <text class="num">{{ formatNumber(item.likeNum, 2, "en") }}</text>
                                             </view> -->
                                         </view>
-                                        <view class="contentInfo" style="width:530rpx">
+                                        <view class="contentInfo" style="width:530rpx" @click.stop="onClickCom($event, item, null)">
                                             <text class="contentMsg">{{ item.content }}</text>
                                         </view>
                                         <view class="timeInfo">
@@ -113,21 +114,22 @@
                                 v-for="(son, sonIndex) in item.lower" :class="{
                                     heightLight_an: queryParams.noteCommentId && son.id == queryParams.noteCommentId && isScrollEnd,
                                     hold: onClickTap && touchId == son.id
-                                }" @click.stop="onClickCom($event, item, son)">
+                                }" >
                                 <image class="com_avatar com_avatar_son"
                                     :src="son.avatar ? parsePic(decodeURIComponent(son.avatar)) : app.defaultAvatar"
-                                    borderRadius="50%" />
+                                    borderRadius="50%" @click="app.navigateTo.goPersonHome(son.userId)"/>
                                 <view class="rightWrap">
                                     <view class="msgInfo">
                                         <view class="msgInfo_top">
-                                            <text class="name u-line-1" style="max-width: 350rpx;">{{ son.userName }}</text>
+                                            <text class="name" style="max-width: 350rpx;" @click="app.navigateTo.goPersonHome(son.userId)">{{ son.userName }}</text>
+                                            <image class="medal-icon" v-if="son.medal&&son.medal.pic" :src="son.medal.pic" @click="onClickIcon(son.userId)"></image>
                                             <!-- <text class="time">{{ timeFrom(son.created_at * 1000) }}</text> -->
                                             <!-- <view style="display: flex;align-items: center;flex-direction: row;">
                                                 <text class="dz" :class="{ dzs: son.isLiked }"></text>
                                                 <text class="num">{{ formatNumber(son.likeNum, 2, "en") }}</text>
                                             </view> -->
                                         </view>
-                                        <view class="sonReply" style="width: 480rpx;">
+                                        <view class="sonReply" style="width: 480rpx;" @click.stop="onClickCom($event, item, son)">
                                             <text class="contentMsg" v-if="son.replyUserName">回复</text>
                                             <text class="replayUserName" v-if="son.replyUserName"> {{ son.replyUserName }}
                                             </text>
@@ -282,6 +284,9 @@ export default {
         // }, 1000)
     },
     methods: {
+        onClickIcon(userId){
+            userId && app.navigateTo.goMedalIndex(userId)
+        },
         onClickUserAvatar(event) {
             // #ifdef APP-NVUE
             event.stopPropagation();
@@ -405,7 +410,7 @@ export default {
         //发布评论或回复
         pushOrReply(id, item) {
             const requestUrl = `cardCircle/comment/${id == 0 ? "issue" : "reply"}/${id || this.forumDetail.code}`
-            app.http.Post(requestUrl, { content: this.sayContent }, (res) => {
+            app.http.Post(requestUrl, { content: this.sayContent }, async (res) => {
                 const same = {
                     id: res.commentId,
                     userName: this.userInfo.userName || "小卡迷",
@@ -415,7 +420,9 @@ export default {
                     created_at: Math.round(+new Date() / 1000),
                     content: res.content,
                     host: true,
-                    location: res.location
+                    location: res.location,
+                    medal:res.medal || {pic:""},
+                    userId:await app.user.getAppDataUserId()
                 }
                 if (id == 0) {
                     this.commList.unshift({
@@ -777,7 +784,6 @@ export default {
     display: flex;
     align-items: center;
     flex-direction: row;
-
 }
 
 .name {
@@ -785,7 +791,6 @@ export default {
     font-family: PingFang SC;
     font-weight: 400;
     color: #959695;
-    flex: 1;
 }
 
 .time {
@@ -978,5 +983,10 @@ export default {
     text-align: center;
     line-height: 54rpx;
     background-color: #FA1545;
+}
+.medal-icon{
+    width: 30rpx;
+    height:30rpx;
+    margin-left: 6rpx;
 }
 </style>

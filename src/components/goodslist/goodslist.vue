@@ -158,7 +158,6 @@
 		&-title {
 			height: 75rpx;
 			font-size: 25rpx;
-			font-family: PingFangSC-Light;
 			font-weight: 400;
 			color: #333333;
 			margin-top: 15rpx;
@@ -179,7 +178,6 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 19rpx;
-			font-family: PingFang SC;
 			font-weight: 400;
 			color: #FFFFFF;
 			margin-right: 10rpx;
@@ -251,7 +249,6 @@
 				display: flex;
 				align-items: flex-end;
 				font-size: 23rpx;
-				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #C0C0C0;
 			}
@@ -272,7 +269,6 @@
 					width: 246rpx;
 					position: relative;
 					font-size: 23rpx;
-					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #707070;
 					overflow: hidden;
@@ -309,7 +305,6 @@
 			height: 40rpx;
 			line-height: 40rpx;
 			font-size: 22rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: bold;
 			color: #fff;
 			text-align: center;
@@ -350,7 +345,6 @@
 
 		&-price-content {
 			font-size: 26rpx;
-			font-family: Microsoft YaHei;
 			font-weight: normal;
 			color: #14151A;
 			margin-top: -10rpx;
@@ -376,7 +370,6 @@
 			border: 1rpx solid #FB4E3E;
 			border-radius: 3rpx;
 			font-size: 20rpx;
-			font-family: Microsoft YaHei;
 			font-weight: 400;
 			color: #FB4E3E;
 			padding: 0 11rpx;
@@ -389,7 +382,6 @@
 	.plan-baifen {
 		font-weight: 0;
 		font-size: 18rpx;
-		font-family: Microsoft YaHei;
 	}
 
 	.select-team {
