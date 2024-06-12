@@ -1,0 +1,314 @@
+<template>
+	<div class="content">
+		<!-- 热更新 S -->
+		<update/>
+		<!-- 热更新 E -->
+		<!-- 顶部 -->
+		<div class="header-div">
+			<div :style="{ height: app.statusBarHeight + 'px' }"></div>
+			<div class="header-box">
+				<div class="search">
+					<image class="search-box" src="@/static/index/search.png"/>
+					<image class="search-icon" src="@/static/index/v3/search.png"></image>
+					<u-notice-bar style="padding-left:80rpx;" @click="onClickSearch" :text="noticeList" direction="column" icon="" color="#A3A3A3" bgColor="rgba(0,0,0,0)" :duration="5000"></u-notice-bar>
+					<div class="search-btn">
+						<text class="btn-text">搜索</text>
+					</div>
+				</div>
+				<div class="icon-live" @click="pageJump('/pages/live/list')">
+					<image class="icon-live" src="@/static/index/v3/icon_live.png"></image>
+				</div>
+			</div>
+		</div>
+		<!-- tabs -->
+		<u-tabs class="tabs-container" :list="goodsTabs" :current="goodsTabCurrent" lineHeight="0" @click="clickGoodsTabs"
+			:itemStyle="{height:'44px'}"
+			:inactiveStyle="{fontSize:'27rpx',color:'#C0C0C0',padding:'0 0'}"
+			:activeStyle="{fontSize:'32rpx',color:'#333333',fontWeight:600,padding:'0 0'}"
+		></u-tabs>
+		
+		<div class="index-container">
+			<!-- 列表 -->
+			<indexList :tabs="goodsTabs" :current.sync="goodsTabCurrent" :addList="addList" @followed="checkFollowed"/>
+		</div>
+		
+		<community :show.sync="showCommunity" :showJoin="true" />
+		<winningCardPopup :show.sync="showWinningCrad" />
+		<openscreenAd :show.sync="openScreenData.show" :goodData="openScreenData.data"/>
+		<medalPopup :show.sync="medalPopupData.show" :data="medalPopupData.data"/>
+	</div>
+</template>
+
+<script>
+	const app = getApp().globalData.app;
+	import { goodsTabs } from "@/tools/DataExchange.js"
+	import update from './component/index_v3/update.vue'
+	import community from './component/index_v3/community.vue'
+	import winningCardPopup from './component/index_v3/winningCardPopup.vue'
+	import openscreenAd from './component/index_v3/openscreenAd.vue'
+	import medalPopup from './component/index_v3/medalPopup.vue'
+	import indexList from './component/index_v3/indexList.vue'
+	export default {
+		components: {
+			update,
+			community,
+			winningCardPopup,
+			openscreenAd,
+			medalPopup,
+			indexList
+		},
+		data() {
+			return{
+				app,
+				noticeList:[''],
+				pageJump:app.navigateTo.pageJump,
+				goodsTabs,
+				goodsTabCurrent:1,
+				tabSwiperCurrent:0,
+				hot:[],
+				broadCastList:[],
+				addList:{
+					top:[],
+					index:[]
+				},
+				showCommunity:false,
+				showWinningCrad:false,
+				greeted:false,
+				openScreenData:{
+					show:false,
+					data:{}
+				},
+				showIndex:false,
+				medalPopupData:{
+					show:false,
+					data:{}
+				}
+			}
+		},
+		onLoad(){
+			uni.$on("showCommunity", (res) => {
+				this.showCommunity = true;
+			});
+			this.onLoadIndex();
+		},
+		onShow(){
+			setTimeout(()=>{
+				this.showIndex = true;
+			},500)
+			uni.showTabBar({ animation: false })
+			// #ifdef APP-NVUE
+			this.networkStatusChange()
+			// #endif
+			// 销毁页面重新加载
+			if (uni.getStorageSync('reLaunch')) {
+				this.initIndex(() => {
+					uni.removeStorageSync('reLaunch')
+				})
+			}
+			app.platform.getNetworkType()
+			this.getHome()
+		},
+		onHide() {
+			this.showIndex = false;
+			uni.offNetworkStatusChange((res) => {})
+		},
+		computed:{
+		},
+		methods:{
+			onLoadIndex() {
+				if (app.dataApiDomain == '' && !app.localTest) {
+					setTimeout(() => {
+						this.onLoadIndex()
+					}, 100);
+					return;
+				}
+				// 获取系列icon
+				app.http.Get('dataApi/advertising/iconSeries/brief',{},(res)=>{
+					this.hot = res.list
+				})
+				this.initIndex()
+			},
+			initIndex(cb) {
+				this.getHome(()=> cb && cb())
+			},
+			getHome(cb){
+				app.http.Get("dataApi/home", {}, (data) => {
+					uni.hideLoading()
+					if(data.addList){
+						this.addList = {
+							top:data.addList.filter(x=>x.location==3) || [],
+							index:data.addList.filter(x=>x.location==0) || []
+						}
+					}
+					this.broadCastList = data.broadCast || [];
+					setTimeout(() => {
+						this.getIndexOrther()
+					}, 300);
+					cb && cb()
+				})
+			},
+			// 获取首页其它只请求一次的接口
+			getIndexOrther() {
+				if (this.greeted) return;
+				this.greeted = true;
+				// 获取搜索轮播
+				app.http.Get('dataApi/advertising/seekRotate/list',{},(res)=>{
+					this.noticeList = res.list
+				})
+				
+				if(app.token.accessToken != ''){
+					// 获取是否中卡信息
+					app.http.Get('me/greet', {}, ({data}) => {
+						if (data.broadcastActor) app.broadcastActor = data.broadcastActor
+						if (data.newHitNum > 0) {
+							this.showWinningCrad = true;
+							uni.hideTabBar()
+						};
+						if(data.medalReceive&&data.medalReceive.id>0){
+							this.medalPopupData = {
+								show:true,
+								data:data.medalReceive
+							};	
+						}
+					})
+					// 我的关注商家是否有新商品
+					app.http.Get('me/fresh/followed_merchant_goods/light',{},(res)=>{
+						this.goodsTabs[0].badge.isDot = res.bright
+					})
+				}
+				setTimeout(()=>{
+					app.platform.getGuideData()
+				},200)
+				// 开屏商品广告
+				const openScreenCode = uni.getStorageSync('openScreenCode') || [];
+				app.http.Post('openscreen/ad/get',{already_good_codes:openScreenCode},(res)=>{
+					if(res.data){
+						const storageCode = app.platform.removeArrRepeat(openScreenCode,res.not_sale_good_codes??[])
+						uni.setStorageSync('openScreenCode',[...storageCode,res.data.good_code]);
+						this.openScreenData = { show:true, data:res.data };
+						uni.hideTabBar()
+					}
+				})
+			},
+			checkFollowed(){
+				if(this.goodsTabs[0].badge.isDot){
+					this.goodsTabs[0].badge.isDot = false;
+					app.http.Post('me/fresh/followed_merchant_goods/light/turnoff',{})
+				}
+			},
+			// 监听网络
+			networkStatusChange() {
+				uni.onNetworkStatusChange((res) => {
+					if (res.isConnected && app.service_url == '') {
+						uni.showLoading({
+							title: '加载中'
+						});
+						app.platform.appLuanch(false);
+						setTimeout(() => {
+							uni.hideLoading();
+						}, 1000)
+					}
+				})
+			},
+			// onClick
+			onClickSearch(index) {
+				const placeholder = this.noticeList[index] || '';
+				// 搜索
+				uni.navigateTo({
+					url: `/pages/goods/goods_find?placeholder=${placeholder}`
+				})
+			},
+			onClickToAD(target){
+				app.navigateTo.navigateToAD(target)
+			},
+			onClickJumpUrl({ needLogin, name, url }) {
+				if (needLogin) {
+					if (app.token.accessToken == '') {
+						app.login.arouseLogin()
+						return;
+					}
+				}
+				if(name=="玩家卡册"){
+					uni.setStorageSync('showKace', true);
+					app.navigateTo.switchTab(2)
+					return;
+				}
+				uni.navigateTo({ url })
+			},
+			clickGoodsTabs({index}){
+				if(this.goodsTabCurrent == index) return;
+				this.goodsTabCurrent = index;
+			}
+		}
+	}
+</script>
+
+<style scoped lang="scss">
+	@mixin flexCenter{
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		justify-content: center;
+		// #ifndef APP-NVUE
+		box-sizing: border-box;
+		// #endif
+	}
+	.content{
+		background:#F6F7FB
+	}
+	.header-div{
+		width: 750rpx;
+		background:#fff
+	}
+	.header-box {
+		height: 104rpx;
+		@include flexCenter;
+		padding: 0 35rpx 0 20rpx;
+		justify-content: space-between;
+	}
+	.search{
+		width: 613rpx;
+		height: 71rpx;
+		@include flexCenter;
+		position: relative;
+		justify-content: space-between;
+		padding-right: 10rpx;
+	}
+	.search-box{
+		width: 613rpx;
+		height: 71rpx;
+		position: absolute;
+		left:0;
+		top:0;
+	}
+	.search-icon {
+		position: absolute;
+		left:32rpx;
+		top:35.5rpx;
+		margin-top: -13rpx;
+		width: 26rpx;
+		height: 26rpx;
+	}
+	.search-btn{
+		width: 98rpx;
+		height: 49rpx;
+		@include flexCenter;
+		background: #FA1545;
+		border-radius: 5rpx;
+	}
+	.btn-text{
+		@include flexCenter;
+		font-size: 25rpx;
+		font-weight: bold;
+		color: #FFFFFF;
+		line-height: 49rpx;
+	}
+	.icon-live{
+		width: 51rpx;
+		height:52rpx;
+	}
+	.tabs-container{
+		width: 750rpx;
+		background:#fff;
+	}
+</style>
