@@ -6,10 +6,10 @@
 				<refresh class="refresh" @refresh="reload(true)" :display="refreshing ? 'show' : 'hide'">
 					<u-loading-icon mode="semicircle"></u-loading-icon>
 				</refresh>
-				<header>
+				<header v-if="index==0">
 					<!-- 首页头部广告 -->
-					<swiper v-if="addList.top.length && index==1" :indicator-dots="true" :indicator-active-color="'#fff'" :indicator-color="'rgba(170, 170, 170, .75)'" class="capsule-box"  :current="capsuleCurrent" autoplay circular @change="e=> capsuleCurrent=e.detail.current">
-						<swiper-item v-for="(item,index) in addList.top" :key="index">
+					<swiper v-if="headerAddList.length" :indicator-dots="true" :indicator-active-color="'#fff'" :indicator-color="'rgba(170, 170, 170, .75)'" class="capsule-box"  :current="capsuleCurrent" autoplay circular @change="e=> capsuleCurrent=e.detail.current">
+						<swiper-item v-for="(item,index) in headerAddList" :key="index">
 							<div class="capsule-content">
 								<image class="capsule-pic" :src="decodeURIComponent(item.pic)" mode="aspectFill" @click="onClickToAD(item.target)"/>
 							</div>
@@ -17,7 +17,7 @@
 					</swiper>
 
 					<!-- 金刚区 -->
-					<div class="golden-container" v-if="index==1">
+					<div class="golden-container">
 						<div class="golden-tab" v-for="(items,indexs) in indexMenu.front" :key="indexs" @click="onClickJumpUrl(items)">
 							<image class="golden-img" :src="items.icon" mode="aspectFit"/>
 							<text class="golden-text u-line-1">{{items.name}}</text>
@@ -30,15 +30,19 @@
 				<cell v-if="goodsList[index]&&goodsList[index].empty">
 					<empty></empty>
 				</cell>
+				<header v-if="goodsList[index]&&goodsList[index].list.length">
+					<u-loadmore :line="true" loadingIcon="semicircle"
+                    lineLength="20rpx" :status="goodsList[index]&&goodsList[index].noMoreData ? 'nomore' : 'loading'" nomore-text="没有更多了" fontSize="24rpx" />
+				</header>
 			</waterfall>
 			<!-- #endif -->
 
 			<!-- #ifndef APP-NVUE -->
 			<scroll-view class="scroll-box" @scrolltolower="reqNewMainList()" :refresher-enabled="true" refresher-default-style="white" @refresherrefresh="reload(true)" :refresher-triggered="refreshing" :scroll-y="true">
-				<div>
+				<div v-if="index==0">
 					<!-- 首页头部广告 -->
-					<swiper v-if="addList.top.length && index==1" :indicator-dots="true" :indicator-active-color="'#fff'" :indicator-color="'rgba(170, 170, 170, .75)'" class="capsule-box"  :current="capsuleCurrent" autoplay circular @change="e=> capsuleCurrent=e.detail.current">
-						<swiper-item v-for="(item,index) in addList.top" :key="index">
+					<swiper v-if="headerAddList.length" :indicator-dots="true" :indicator-active-color="'#fff'" :indicator-color="'rgba(170, 170, 170, .75)'" class="capsule-box"  :current="capsuleCurrent" autoplay circular @change="e=> capsuleCurrent=e.detail.current">
+						<swiper-item v-for="(item,index) in headerAddList" :key="index">
 							<div class="capsule-content">
 								<image class="capsule-pic" :src="decodeURIComponent(item.pic)" mode="aspectFill" @click="onClickToAD(item.target)"/>
 							</div>
@@ -46,7 +50,7 @@
 					</swiper>
 
 					<!-- 金刚区 -->
-					<div class="golden-container" v-if="index==1">
+					<div class="golden-container">
 						<div class="golden-tab" v-for="(items,indexs) in indexMenu.front" :key="indexs" @click="onClickJumpUrl(items)">
 							<image class="golden-img" :src="items.icon" mode="aspectFit"/>
 							<text class="golden-text u-line-1">{{items.name}}</text>
@@ -60,6 +64,10 @@
 				</div>
 				<div v-if="goodsList[index]&&goodsList[index].empty">
 					<empty></empty>
+				</div>
+				<div v-if="goodsList[index]&&goodsList[index].list.length">
+					<u-loadmore :line="true" loadingIcon="semicircle"
+                    lineLength="20rpx" :status="goodsList[index]&&goodsList[index].noMoreData ? 'nomore' : 'loading'" nomore-text="没有更多了" fontSize="24rpx" />
 				</div>
 			</scroll-view>
 			<!-- #endif -->
@@ -86,7 +94,7 @@
 				type:Number,
 				default:0
 			},
-			addList:{
+			homeData:{
 				type:Object,
 				default: () => {}
 			},
@@ -107,16 +115,6 @@
 		watch:{
 			current(val,oldVal){
 				if(val!=oldVal){
-					if(val == 0) {
-						if(app.token.accessToken == ''){
-							this.$emit('update:current', val)
-							setTimeout(()=>{ this.$emit('update:current', oldVal) },500)
-							app.login.arouseLogin()
-							return;
-						}
-						this.$emit('followed')
-						this.$set(this.goodsList, 0, { list:[], ...new ListParams()})
-					}
 					this.reqNewMainList()
 				}
 			}
@@ -134,6 +132,9 @@
 				// swiper高度 = 屏幕高度-状态栏高度-首页tab高度(44)-底部tab高度(52) -搜索栏高度 - 底部安全区高度
 				const height = systemInfo.screenHeight - systemInfo.statusBarHeight - 96 - uni.upx2px(104) - (systemInfo.safeAreaInsets.bottom || 0);
 				return height
+			},
+			headerAddList(){
+				return (this.homeData.addList&&this.homeData.addList.filter( x => x.location==0 )) || []
 			}
 		},
 		methods: {
@@ -163,9 +164,10 @@
 				}
 				app.http.GetWithCrypto(`dataApi/goodlist/forsale/${urlNamr}`, params, (data) => {
 					this.currentItem.noMoreData = data.isFetchEnd;
-					if (fetchFrom == 1 && this.currentItem.list.length) this.currentItem.list = [];
-					if (data.goodList) {
-						const list = fetchFrom == 1 ? data.goodList : [...this.currentItem.list,...data.goodList];
+				
+					const goodList = this.listSort(data.goodList,data.adPlace,fetchFrom);
+					if (goodList) {
+						const list = fetchFrom == 1 ? goodList : [...this.currentItem.list,...goodList];
 						this.currentItem.list = app.platform.removeDuplicate(list,'goodCode');
 					}
 					this.currentItem.empty = this.currentItem.list.length==0;
@@ -173,6 +175,40 @@
 					this.refreshing = false;
 					cb && cb()
 				});
+			},
+			listSort(goodList=[],adPlace={},fetchFrom){
+				if(this.current!=0 || fetchFrom!=1) return goodList;
+
+				const { dyBroadcast=[] } = this.homeData;
+				if(dyBroadcast.length){
+					adPlace[4] = dyBroadcast;
+				}
+				Object.keys(adPlace).forEach(key => {  
+					const data = {
+						special_type:key==4?'dyBroadcast':'ad',
+						goodCode:`ad${key}`,
+						list:adPlace[key]
+					}
+					goodList.splice((key-1), 0, data); 
+				});
+				return goodList
+			},
+			onClickJumpUrl({ needLogin, name, url }) {
+				if (needLogin) {
+					if (app.token.accessToken == '') {
+						app.login.arouseLogin()
+						return;
+					}
+				}
+				if(name=="玩家卡册"){
+					uni.setStorageSync('showKace', true);
+					app.navigateTo.switchTab(2)
+					return;
+				}
+				uni.navigateTo({ url })
+			},
+			onClickToAD(target) {
+				app.navigateTo.navigateToAD(target)
 			}
 		}
 	}

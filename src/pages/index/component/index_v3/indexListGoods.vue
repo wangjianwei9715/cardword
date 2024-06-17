@@ -1,42 +1,48 @@
 <template>
 	<div>
-		<div class="goods-content" @click="goGoodsDetails()">
-			<image class="goods-pic" :src="getGoodsImg(decodeURIComponent(data.pic))"/>
-			<div class="goods-header u-line-2">
-				<div class="cardicon">
-					<image class="icon-image" :src="`/static/goods/icon_b${goodsData.iconSrc}.png`"></image>
-					<text class="icon-text">{{goodsData.typeName}}</text>
-				</div>
-				<!-- #ifdef APP-NVUE -->
-				<rich-text class="richtext" :nodes="nodes"></rich-text>
-				<!-- #endif -->
-				<!-- #ifndef APP-NVUE -->
-				<text class="title-text u-line-2" style="text-indent: 100rpx;">{{data.title}}</text>
-				<!-- #endif -->
-			</div>
-			<div class="goods-priceMsg">
-				<div class="goods-priceMsg-left">
-					<text class="price-icon">￥</text>
-					<text class="price-text">{{ filterPrice(data.price).integer }}</text>
-					<text class="decimal"
-						v-if="filterPrice(data.price).decimal">{{ filterPrice(data.price).decimal }}</text>
-					<text class="lowest">{{hasLowestPrice(data)?'起':''}}</text>
-				</div>
-				<text v-if="[0,-1].includes(data.state)" class="goods-priceMsg-right">
-					{{$u.timeFormat(data.startAt,"mm-dd hh:MM")}}开售
-				</text>
-				<text v-else :id="data.goodCode" class="goods-priceMsg-right">
-					{{listPlan(data,'str')}}
-				</text>
-			</div>
-			<div class="goods-progress" :class="{'goods-progress-select':ifSelectType(data)}">
-				<div class="progressMask" :style="progressStyle"></div>
-			</div>
+		<div v-if="data.special_type" class="goods-container">
+			
 		</div>
-		<div class="goods-bottom" @click="onClickSellerShop(data)">
-			<image class="merchant-logo" mode="aspectFill" :src="decodeURIComponent(data.merchantLogo)"/>
-			<image v-if="data.merchantLevel&&merchantLevelItem['icon']" class="avatar-level" :src="`/static/goods/v2/good_small_${merchantLevelItem['icon']}.png`" />
-			<text class="bussName">{{data.merchantName}}</text>
+		<!-- 普通商品 -->
+		<div v-else class="goods-container">
+			<div class="goods-content" @click="goGoodsDetails()">
+				<image class="goods-pic" :src="getGoodsImg(decodeURIComponent(data.pic))"/>
+				<div class="goods-header u-line-2">
+					<div class="cardicon">
+						<image class="icon-image" :src="`/static/goods/icon_b${goodsData.iconSrc}.png`"></image>
+						<text class="icon-text">{{goodsData.typeName}}</text>
+					</div>
+					<!-- #ifdef APP-NVUE -->
+					<rich-text class="richtext" :nodes="nodes"></rich-text>
+					<!-- #endif -->
+					<!-- #ifndef APP-NVUE -->
+					<text class="title-text u-line-2" style="text-indent: 100rpx;">{{data.title}}</text>
+					<!-- #endif -->
+				</div>
+				<div class="goods-priceMsg">
+					<div class="goods-priceMsg-left">
+						<text class="price-icon">￥</text>
+						<text class="price-text">{{ filterPrice(data.price).integer }}</text>
+						<text class="decimal"
+							v-if="filterPrice(data.price).decimal">{{ filterPrice(data.price).decimal }}</text>
+						<text class="lowest">{{hasLowestPrice(data)?'起':''}}</text>
+					</div>
+					<text v-if="[0,-1].includes(data.state)" class="goods-priceMsg-right">
+						{{$u.timeFormat(data.startAt,"mm-dd hh:MM")}}开售
+					</text>
+					<text v-else :id="data.goodCode" class="goods-priceMsg-right">
+						{{listPlan(data,'str')}}
+					</text>
+				</div>
+				<div class="goods-progress" :class="{'goods-progress-select':ifSelectType(data)}">
+					<div class="progressMask" :style="progressStyle"></div>
+				</div>
+			</div>
+			<div class="goods-bottom" @click="onClickSellerShop(data)">
+				<image class="merchant-logo" mode="aspectFill" :src="decodeURIComponent(data.merchantLogo)"/>
+				<image v-if="data.merchantLevel&&merchantLevelItem['icon']" class="avatar-level" :src="`/static/goods/v2/good_small_${merchantLevelItem['icon']}.png`" />
+				<text class="bussName">{{data.merchantName}}</text>
+			</div>
 		</div>
 	</div>
 	
@@ -167,6 +173,11 @@
 		align-content: baseline;
 		// #endif
 	}
+	.goods-container{
+		width: 349rpx;
+		height:484rpx;
+		margin-bottom: 20rpx;
+	}
 	.goods-content{
 		width: 349rpx;
 		background: #FFFFFF;
@@ -176,7 +187,6 @@
 		padding:0;
 		@include flexCenter;
 		flex-wrap: wrap;
-		
 	}
 	.goods-pic{
 		width: 349rpx;
@@ -300,7 +310,6 @@
 		padding-right: 16rpx;
 		padding-bottom: 18rpx;
 		padding-top: 18rpx;
-		margin-bottom: 20rpx;
 		background:#fff;
 		border-bottom-left-radius: 5rpx;
 		border-bottom-right-radius: 5rpx;

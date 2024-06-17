@@ -14,14 +14,6 @@ export const indexMenu = {
     ]
 };
 export const goodsTabs = [
-    {
-        name:'关注',
-        id:1,
-        url:'from_followed_merchant',
-        badge: {
-            isDot: false
-        }
-    },
     {name:'热门',id:2,url:'main'},
     {name:'篮球',id:3,url:'basketball'},
     {name:'足球',id:4,url:'football'},

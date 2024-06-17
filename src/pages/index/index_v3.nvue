@@ -29,7 +29,7 @@
 		
 		<div class="index-container">
 			<!-- 列表 -->
-			<indexList :tabs="goodsTabs" :current.sync="goodsTabCurrent" :addList="addList" @followed="checkFollowed"/>
+			<indexList :tabs="goodsTabs" :current.sync="goodsTabCurrent" :homeData="homeData"/>
 		</div>
 		
 		<community :show.sync="showCommunity" :showJoin="true" />
@@ -63,14 +63,8 @@
 				noticeList:[''],
 				pageJump:app.navigateTo.pageJump,
 				goodsTabs,
-				goodsTabCurrent:1,
-				tabSwiperCurrent:0,
-				hot:[],
-				broadCastList:[],
-				addList:{
-					top:[],
-					index:[]
-				},
+				goodsTabCurrent:0,
+				homeData:{},
 				showCommunity:false,
 				showWinningCrad:false,
 				greeted:false,
@@ -122,10 +116,6 @@
 					}, 100);
 					return;
 				}
-				// 获取系列icon
-				app.http.Get('dataApi/advertising/iconSeries/brief',{},(res)=>{
-					this.hot = res.list
-				})
 				this.initIndex()
 			},
 			initIndex(cb) {
@@ -134,13 +124,7 @@
 			getHome(cb){
 				app.http.Get("dataApi/home", {}, (data) => {
 					uni.hideLoading()
-					if(data.addList){
-						this.addList = {
-							top:data.addList.filter(x=>x.location==3) || [],
-							index:data.addList.filter(x=>x.location==0) || []
-						}
-					}
-					this.broadCastList = data.broadCast || [];
+					this.homeData = data || {};
 					setTimeout(() => {
 						this.getIndexOrther()
 					}, 300);
@@ -171,10 +155,6 @@
 							};	
 						}
 					})
-					// 我的关注商家是否有新商品
-					app.http.Get('me/fresh/followed_merchant_goods/light',{},(res)=>{
-						this.goodsTabs[0].badge.isDot = res.bright
-					})
 				}
 				setTimeout(()=>{
 					app.platform.getGuideData()
@@ -189,12 +169,6 @@
 						uni.hideTabBar()
 					}
 				})
-			},
-			checkFollowed(){
-				if(this.goodsTabs[0].badge.isDot){
-					this.goodsTabs[0].badge.isDot = false;
-					app.http.Post('me/fresh/followed_merchant_goods/light/turnoff',{})
-				}
 			},
 			// 监听网络
 			networkStatusChange() {
@@ -220,20 +194,6 @@
 			},
 			onClickToAD(target){
 				app.navigateTo.navigateToAD(target)
-			},
-			onClickJumpUrl({ needLogin, name, url }) {
-				if (needLogin) {
-					if (app.token.accessToken == '') {
-						app.login.arouseLogin()
-						return;
-					}
-				}
-				if(name=="玩家卡册"){
-					uni.setStorageSync('showKace', true);
-					app.navigateTo.switchTab(2)
-					return;
-				}
-				uni.navigateTo({ url })
 			},
 			clickGoodsTabs({index}){
 				if(this.goodsTabCurrent == index) return;
