@@ -140,7 +140,7 @@
 				line-height: 62rpx;
 				font-size: 25rpx;
 				
-				font-weight: 400;
+				
 				color: #FFFFFF;
 			}
 			.scene-btn{

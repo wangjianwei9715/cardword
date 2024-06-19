@@ -165,7 +165,7 @@
 		width: 500rpx;
 		text-align: center;
 		font-size: 43rpx;
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		@include flexCenter
 	}
@@ -173,7 +173,7 @@
 		width: 500rpx;
 		text-align: center;
 		font-size: 24rpx;
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		@include flexCenter
 	}

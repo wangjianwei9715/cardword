@@ -521,7 +521,7 @@ page {
 .userInfo_ip_text {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #a5a5a5;
 }
 
@@ -538,7 +538,7 @@ page {
 .desc_text {
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     color: #FFFFFF;
     line-height: 34rpx;
 
@@ -576,7 +576,7 @@ page {
 .userData_name {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #a5a5a5;
     text-align: center;
 }
@@ -641,7 +641,7 @@ page {
     .num {
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #959695;
     }
 
@@ -679,7 +679,7 @@ page {
         .title_tip {
             font-size: 25rpx;
             
-            font-weight: 400;
+            
             color: #E6E6E6;
         }
     }
@@ -703,7 +703,7 @@ page {
             &_label {
                 font-size: 23rpx;
                 
-                font-weight: 400;
+                
                 color: #333333;
                 margin-top: 14rpx;
             }
@@ -760,7 +760,7 @@ page {
             &_label {
                 font-size: 23rpx;
                 
-                font-weight: 400;
+                
                 color: #333333;
                 margin-top: 15rpx;
             }
@@ -802,7 +802,7 @@ page {
         &_label {
             font-size: 25rpx;
             
-            font-weight: 400;
+            
             color: #333333;
             flex: 1;
         }
@@ -881,7 +881,7 @@ page {
                     justify-content: center;
                     font-size: 20rpx;
                     
-                    font-weight: 400;
+                    
                     color: #FB4E3E;
                     background: #FFFFFF;
                     position: absolute;
@@ -940,7 +940,7 @@ page {
         .header-tab-index-name {
             font-size: 27rpx;
             
-            font-weight: 400;
+            
             color: #FFD2D9;
         }
     }
@@ -992,7 +992,7 @@ page {
             align-items: center;
             font-size: 25rpx;
             
-            font-weight: 400;
+            
             color: #333333;
 
         }
@@ -1030,7 +1030,7 @@ page {
             align-items: center;
             font-size: 25rpx;
             
-            font-weight: 400;
+            
             color: #88878C;
 
         }
@@ -1065,7 +1065,7 @@ page {
                 text-align: center;
                 font-size: 23rpx;
                 
-                font-weight: 400;
+                
                 color: #333333;
             }
 
@@ -1123,7 +1123,7 @@ page {
             align-items: center;
             font-size: 27rpx;
             
-            font-weight: 400;
+            
             color: #5B5B5B;
 
             .setting-icon {

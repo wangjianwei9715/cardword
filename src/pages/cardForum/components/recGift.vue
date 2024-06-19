@@ -229,7 +229,7 @@ export default {
 .name {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #333333;
     margin-right: 21rpx;
 }
@@ -237,7 +237,7 @@ export default {
 .time {
     font-size: 19rpx;
     
-    font-weight: 400;
+    
     color: #C0C0C0;
 }
 
@@ -246,7 +246,7 @@ export default {
     padding: 10rpx 12rpx;
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #707070;
     line-height: 25rpx;
     margin-top: 28rpx;

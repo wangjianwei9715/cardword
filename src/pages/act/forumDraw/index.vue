@@ -417,7 +417,7 @@ export default class ClassName extends BaseNode {
   .title {
     font-size: 45rpx;
     font-family: YouSheBiaoTiHei;
-    font-weight: 400;
+    
     color: #ffffff;
     margin-left: 23rpx;
     white-space: nowrap;
@@ -562,7 +562,7 @@ export default class ClassName extends BaseNode {
   .num {
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     color: #000000;
     // margin-bottom: 8rpx;
     margin-top: 4rpx;
@@ -577,7 +577,7 @@ export default class ClassName extends BaseNode {
 .detailButton {
   font-size: 22rpx;
   
-  font-weight: 400;
+  
   color: #ffffff;
   width: 110rpx;
   height: 40rpx;
@@ -617,7 +617,7 @@ export default class ClassName extends BaseNode {
     .taskTitle {
       font-size: 45rpx;
       font-family: YouSheBiaoTiHei;
-      font-weight: 400;
+      
       color: #ffffff;
     }
 

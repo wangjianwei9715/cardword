@@ -258,7 +258,7 @@
 			border-radius: 1rpx;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			text-align: center;
 			line-height: 31rpx;
 		}
@@ -279,7 +279,7 @@
 		justify-content: flex-end;
 		font-size: 19rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		margin-top: 29rpx;
 		.upload-author-avatar{
@@ -326,7 +326,7 @@
 			box-sizing: border-box;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #F5F5F5;
 			margin-bottom: 46rpx;
 			float: right;
@@ -373,7 +373,7 @@
 				background: #707070;
 				font-size: 23rpx;
 				
-				font-weight: 400;
+				
 				color: #FFFFFF;
 				text-align: center;
 				line-height: 42rpx;
@@ -457,7 +457,7 @@
 				height:31rpx;
 				font-size: 27rpx;
 				
-				font-weight: 400;
+				
 				color: #E6E6E6;
 				display: flex;
 				align-items: center;

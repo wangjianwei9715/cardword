@@ -123,7 +123,7 @@
 			border-radius: 3rpx;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #88878C;
 			line-height: 63rpx;
 			padding:0 30rpx;
@@ -162,7 +162,7 @@
 					height:20rpx;
 					font-size: 23rpx;
 					
-					font-weight: 400;
+					
 					color: #333333;
 					text-align: center;
 				}

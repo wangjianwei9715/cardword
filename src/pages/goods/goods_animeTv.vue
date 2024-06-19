@@ -286,7 +286,7 @@ page {
             .type {
                 font-size: 20rpx;
                 
-                font-weight: 400;
+                
                 color: #949494;
                 padding: 0rpx 6rpx;
                 height: 28rpx;
@@ -321,7 +321,7 @@ page {
                 .text {
                     font-size: 20rpx;
                     
-                    font-weight: 400;
+                    
                     color: #333333;
                     // line-height: 28rpx;
                     z-index: 2;
@@ -338,7 +338,7 @@ page {
             .merchantName {
                 font-size: 23rpx;
                 
-                font-weight: 400;
+                
                 color: #333333;
                 margin-left: 10rpx;
                 flex: 1;
@@ -351,7 +351,7 @@ page {
                 color: #333333;
                 font-size: 31rpx;
                 font-family: ArialBold !important;
-                font-weight: 400;
+                
                 color: #333333;
                 letter-spacing: -2rpx;
 

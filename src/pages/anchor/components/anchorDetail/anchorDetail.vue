@@ -127,7 +127,7 @@
 			top:0;
 			font-size: 33rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 			.avatar-bg{
 				width: 46rpx;
@@ -227,7 +227,7 @@
 						height:65rpx;
 						font-size: 27rpx;
 						
-						font-weight: 400;
+						
 						color: #E3E1DF;
 						text-align: center;
 						line-height: 65rpx;
@@ -269,7 +269,7 @@
 						padding:0 14rpx;
 						font-size: 27rpx;
 						
-						font-weight: 400;
+						
 						color: #EAEAEA;
 					}
 					.info-num{

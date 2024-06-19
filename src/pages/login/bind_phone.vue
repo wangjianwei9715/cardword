@@ -159,7 +159,7 @@
 		bottom:16rpx;
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #14151A;
 	}
 	.login-btn{

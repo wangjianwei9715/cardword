@@ -621,7 +621,7 @@
 			padding: 0 100rpx;
 			font-size: 24rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 		}
 		&-state{
@@ -636,7 +636,7 @@
 			width: 100%;
 			font-size: 27rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 		}
 	}
@@ -678,7 +678,7 @@
 						line-height: 40rpx;
 						font-size: 30rpx;
 						
-						font-weight: 400;
+						
 						color: rgba(0,0,0,0.9);
 					}
 				}
@@ -762,7 +762,7 @@
 						width: 100%;
 						font-size: 26rpx;
 						
-						font-weight: 400;
+						
 						color: #333333;
 						margin-bottom: 20rpx;
 						word-break:break-all;
@@ -791,7 +791,7 @@
 							justify-content: center;
 							font-size: 24rpx;
 							
-							font-weight: 400;
+							
 							color: #F6F7FB;
 							margin-left: 0;
 						}
@@ -800,7 +800,7 @@
 							line-height: 40rpx;
 							font-size: 25rpx;
 							
-							font-weight: 400;
+							
 							color: #333333;
 						}
 						.price text{
@@ -813,7 +813,7 @@
 							line-height: 40rpx;
 							font-size: 25rpx;
 							
-							font-weight: 400;
+							
 							color: #88878C;
 						}
 					}
@@ -834,7 +834,7 @@
 					justify-content: flex-end;
 					font-size: 20rpx;
 					
-					font-weight: 400;
+					
 					color: #14151A;
 					padding-right: 20rpx;
 					box-sizing: border-box;
@@ -878,19 +878,19 @@
 			justify-content: space-between;
 			height:68rpx;
 			font-size: 26rpx;
-			font-weight: 400;
+			
 			color: #333333;
 			.name{
 				font-size: 26rpx;
 				
-				font-weight: 400;
+				
 				color: #333333;
 			}
 			.price{
 				height:40rpx;
 				font-size: 26rpx;
 				
-				font-weight: 400;
+				
 				color: rgba(0,0,0,0.9);
 				line-height: 40rpx;
 				display: inline-flex;
@@ -948,7 +948,7 @@
 			border-top: 1px solid #F1F1F4;
 			font-size: 20rpx;
 			
-			font-weight: 400;
+			
 			color: #14151A;
 			.price{
 				&-index{
@@ -989,7 +989,7 @@
 				line-height: 40rpx;
 				font-size: 25rpx;
 				
-				font-weight: 400;
+				
 				color: #88878C;
 				margin-left: 17rpx;
 			}
@@ -1005,7 +1005,7 @@
 			align-items: center;
 			font-size: 23rpx;
 			
-			font-weight: 400;
+			
 			color: #A9ABB4;
 			.icon-right{
 				width: 10rpx;
@@ -1055,7 +1055,7 @@
 				width: 620rpx;
 				font-size: 31rpx;
 				
-				font-weight: 400;
+				
 				color: #333333;
 				line-height: 34rpx;
 			}
@@ -1066,7 +1066,7 @@
 			padding-left: 56rpx;
 			font-size: 27rpx;
 			
-			font-weight: 400;
+			
 			color: #88878C;
 			display: flex;
 			align-items: center;
@@ -1105,7 +1105,7 @@
 				align-items: center;
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #333333;
 			}
 			.index-right{
@@ -1114,7 +1114,7 @@
 				align-items: center;
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #666666;
 				flex-wrap: wrap;
 				justify-content: flex-end;
@@ -1122,7 +1122,7 @@
 			.index-right-address{
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #666666;
 			}
 		}
@@ -1153,7 +1153,7 @@
 			align-items: center;
 			font-size: 24rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			.icon-lianxi{
 				width: 28rpx;
@@ -1217,7 +1217,7 @@
 				line-height: 72rpx;
 				font-size: 28rpx;
 				border-radius:$btn-radius;
-				font-weight: 400;
+				
 			}
 			.right{
 				width: 168rpx;
@@ -1296,7 +1296,7 @@
 	line-height: 40rpx;
 	font-size: 23rpx;
 	
-	font-weight: 400;
+	
 	color: #333333;
 	box-sizing: border-box;
 	padding:0 12rpx;
@@ -1315,7 +1315,7 @@
 	height:40rpx;
 	font-size: 25rpx;
 	
-	font-weight: 400;
+	
 	color: #333333;
 	display: flex;
 	align-items: center;
@@ -1329,7 +1329,7 @@
 	justify-content: flex-end;
 	font-size: 25rpx;
 	
-	font-weight: 400;
+	
 	color: #88878C;
   }
 }

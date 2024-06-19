@@ -192,7 +192,7 @@
             margin-left: 24rpx;
             font-size: 25rpx;
             
-            font-weight: 400;
+            
             color: #333333;
         }
 
@@ -235,7 +235,7 @@
     .couponInput {
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #000;
         text-align: right;
         width: 340rpx;
@@ -260,7 +260,7 @@
     .placeholder {
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #ffffff;
     }
 </style>

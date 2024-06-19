@@ -33,7 +33,7 @@
 		height:40rpx;
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		display: flex;
 		align-items: center;
@@ -75,7 +75,7 @@
 			.item-desc{
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #666666;
 				margin-top: 12rpx;
 			}

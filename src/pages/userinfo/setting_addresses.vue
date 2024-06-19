@@ -99,7 +99,7 @@
 		width: 100%;
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #7F7F8E;
 		line-height: 30rpx;
 		text-align: left;
@@ -122,7 +122,7 @@
 		background-size: 100% 100%;
 		font-size: 20rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		margin-right: 12rpx;
 		text-align: center;

@@ -187,7 +187,7 @@
         .item-time{
             font-size: 23rpx;
             
-            font-weight: 400;
+            
             color: #88878C;
         }
         .item-status{
@@ -219,7 +219,7 @@
             font-size: 25rpx;
             height:68rpx;
             
-            font-weight: 400;
+            
             color: #333333;
             line-height: 32rpx;
         }
@@ -241,7 +241,7 @@
             text.text-price {
                 font-size: 33rpx;
                 font-family: Impact !important;
-                font-weight: 400;
+                
                 color: #333333;
                 line-height: 38rpx;
                 margin-right: 10rpx;
@@ -258,7 +258,7 @@
         .item-num{
             font-size: 23rpx;
             
-            font-weight: 400;
+            
             color: #959695;
         }
     }
@@ -271,7 +271,7 @@
         .item-rank{
             font-size: 20rpx;
             
-            font-weight: 400;
+            
             color: #383838;
         }
         .item-btn-box{
@@ -351,7 +351,7 @@
             .slogan-title{
                 width: 100%;
                 @include font(28rpx);
-                font-weight: 400;
+                
             }
             .slogan-input{
                 @include font(28rpx);
@@ -385,7 +385,7 @@
             @include lineBox;
             font-size: 24rpx;
             
-            font-weight: 400;
+            
             color: #E6E6E6;
             justify-content: center;
             align-items: center;

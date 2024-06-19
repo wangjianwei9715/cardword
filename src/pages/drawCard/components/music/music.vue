@@ -148,7 +148,7 @@
 				.music-index-singer{
 					font-size: 23rpx;
 					
-					font-weight: 400;
+					
 					color: #949494;
 				}
 				.music-index-right{

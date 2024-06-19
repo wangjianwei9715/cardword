@@ -496,7 +496,7 @@ page {
   .title {
     font-size: 45rpx;
     font-family: YouSheBiaoTiHei;
-    font-weight: 400;
+    
     color: #ffffff;
     margin-left: 23rpx;
     white-space: nowrap;
@@ -647,7 +647,7 @@ page {
       .right {
         font-size: 24rpx;
         
-        font-weight: 400;
+        
         color: #F8D6B7;
       }
     }
@@ -664,7 +664,7 @@ page {
         background-size: 100% 100%;
         font-size: 34rpx;
         font-family: Impact;
-        font-weight: 400;
+        
         color: #F8D6B7;
         margin-right: 18rpx;
       }
@@ -692,7 +692,7 @@ page {
         width: 90rpx;
         font-size: 24rpx;
         
-        font-weight: 400;
+        
         color: #F8D6B7;
         margin-right: 28rpx;
         white-space: nowrap;
@@ -701,7 +701,7 @@ page {
       &_point {
         font-size: 24rpx;
         
-        font-weight: 400;
+        
         color: #F93042;
         flex: 1;
       }
@@ -709,7 +709,7 @@ page {
       &_awardName {
         font-size: 24rpx;
         
-        font-weight: 400;
+        
         color: #F8D6B7;
       }
     }
@@ -750,7 +750,7 @@ page {
           &_three {
             font-size: 20rpx;
             
-            font-weight: 400;
+            
             color: #A88566;
           }
 
@@ -794,7 +794,7 @@ page {
           border-radius: 4rpx;
           font-size: 22rpx;
           
-          font-weight: 400;
+          
           color: #F8D6B7;
           transition: background-color 0.3s;
         }
@@ -808,7 +808,7 @@ page {
         .tips {
           font-size: 20rpx;
           
-          font-weight: 400;
+          
           color: #A88566;
           text-align: center;
           position: absolute;
@@ -927,7 +927,7 @@ page {
 .detailButton {
   font-size: 22rpx;
   
-  font-weight: 400;
+  
   color: #ffffff;
   width: 76rpx;
   height: 76rpx;

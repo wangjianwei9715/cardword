@@ -166,7 +166,7 @@
 		text-align: center;
 		font-size: 23rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 	}
 	.swiper-name{
@@ -174,7 +174,7 @@
 		text-align: center;
 		font-size: 23rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 	}
 	.swiper-desc-text{

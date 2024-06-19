@@ -355,7 +355,7 @@
 		width: 100%;
 		font-size: 22rpx;
 		
-		font-weight: 400;
+		
 		color: #88878C;
 		margin-bottom: 5rpx;
 	}
@@ -368,14 +368,14 @@
 	.teamtion-header-title .teamtion-price{
 		font-size: 33rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 	}
 	.teamtion-header-name{
 		width: 100%;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #88878C;
 	}
 
@@ -405,7 +405,7 @@
 			height:30rpx;
 			font-size: 20rpx;
 			
-			font-weight: 400;
+			
 			color: #88878C;
 			line-height: 30rpx;
 			text-align: right;
@@ -419,7 +419,7 @@
 			font-size: 20rpx;
 			line-height: 30rpx;
 			
-			font-weight: 400;
+			
 			color: #88878C;
 			text-align: right;
 		}
@@ -441,7 +441,7 @@
 		align-items: center;
 		font-size: 23rpx;
 		
-		font-weight: 400;
+		
 		color: #88878C;
 	}
 	.icon-help{
@@ -467,7 +467,7 @@
 		width: 100%;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #7D8288;
 		line-height: 38rpx;
 		margin-bottom: 50rpx;
@@ -477,14 +477,14 @@
 			width: 100%;
 			font-size: 28rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			margin-bottom: 30rpx;
 		}
 		.drawer-random-title text,.drawer-random-explain-title{
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #7D8288;
 			margin-left: 20rpx;
 		}
@@ -506,7 +506,7 @@
 			border-radius: 3rpx;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			overflow: hidden;
 			text-overflow:ellipsis;
@@ -523,14 +523,14 @@
 		.drawer-random-list text{
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #7D8288;
 		}
 		.drawer-random-total{
 			width: 100%;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			margin-top: 10rpx;
 			margin-bottom: 50rpx;
@@ -607,7 +607,7 @@
 		font-size: 25rpx;
 		line-height: 30rpx;
 		
-		font-weight: 400;
+		
 		color: #88878C;
 		position: relative;
 		z-index: 6;
@@ -731,7 +731,7 @@
 		font-size: 25rpx;
 		line-height: 40rpx;
 		
-		font-weight: 400;
+		
 		color: #88878C;
 		position: relative;
 		z-index: 6;
@@ -809,7 +809,7 @@
 		margin-left: 18rpx;
 		font-size: 29rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		line-height:$btn-height ;
 	}
@@ -847,7 +847,7 @@
 		z-index: 2;
 		font-size: 23rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		line-height: 32rpx;
 		text-align: center;

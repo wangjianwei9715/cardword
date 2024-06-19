@@ -244,7 +244,7 @@ page {
     width: 50%;
     font-size: 27rpx;
     
-    font-weight: 400;
+    
     color: #333333;
   }
 }
@@ -292,7 +292,7 @@ page {
       flex: 1;
       font-size: 23rpx;
       
-      font-weight: 400;
+      
       color: #949494;
     }
 
@@ -304,14 +304,14 @@ page {
         flex: 1;
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #333333;
       }
 
       .state {
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #fa1545;
       }
     }
@@ -338,7 +338,7 @@ page {
       border-radius: 3rpx;
       font-size: 25rpx;
       
-      font-weight: 400;
+      
       color: #333333;
       margin-left: 35rpx;
     }

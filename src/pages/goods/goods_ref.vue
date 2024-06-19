@@ -184,7 +184,7 @@ page{
   line-height: 50rpx;
   font-size: 26rpx;
   
-  font-weight: 400;
+  
   color: #14151a;
 }
 
@@ -210,7 +210,7 @@ page{
     box-sizing: border-box;
     font-size: $font-24;
     
-    font-weight: 400;
+    
     color: #14151a;
   }
   .header-sort-icon {
@@ -287,7 +287,7 @@ page{
   position: relative;
   font-size: 28rpx;
   
-  font-weight: 400;
+  
   color: #A3A3A3;
   line-height: 65rpx;
   box-sizing: border-box;
@@ -315,7 +315,7 @@ page{
   line-height: 54rpx;
   font-size: 28rpx;
   
-  font-weight: 400;
+  
   color: #FFFFFF;
   box-sizing: border-box;
 }

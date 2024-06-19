@@ -125,7 +125,7 @@
 
 		font-size: $font-20;
 		
-		font-weight: 400;
+		
 		color: #828292;
 		line-height: 28rpx;
 		display: flex;
@@ -165,7 +165,7 @@
 		margin-right: 50rpx;
 		font-size: $font-24;
 		
-		font-weight: 400;
+		
 		color: #AAAABB;
 		line-height: 34rpx;
 	}
@@ -185,7 +185,7 @@
 	.address-name text {
 		font-size: $font-24;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		line-height: 34rpx;
 	}
@@ -206,7 +206,7 @@
 	.order-receive {
 		font-size: $font-24;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		line-height: 34rpx;
 	}
@@ -249,7 +249,7 @@
 	.transport-time {
 		font-size: $font-22;
 		
-		font-weight: 400;
+		
 		color: #14151A;
 		line-height: 32rpx;
 		margin-left: 28rpx;
@@ -278,7 +278,7 @@
 		margin: 0 28rpx;
 		font-size: $font-24;
 		
-		font-weight: 400;
+		
 		color: #14151A;
 		line-height: 34rpx;
 		margin-top: 8rpx;
@@ -317,7 +317,7 @@
 	.transport-time2 {
 		font-size: $font-22;
 		
-		font-weight: 400;
+		
 		color: #AAAABB;
 		line-height: 32rpx;
 		margin-left: 28rpx;
@@ -326,7 +326,7 @@
 	.transport-time3 {
 		font-size: $font-22;
 		
-		font-weight: 400;
+		
 		color: #AAAABB;
 		line-height: 32rpx;
 		margin-left: 16rpx;
@@ -335,7 +335,7 @@
 	.transport-desc2 {
 		font-size: $font-24;
 		
-		font-weight: 400;
+		
 		color: #AAAABB;
 		line-height: 34rpx;
 		margin: 8rpx 28rpx 0 28rpx;

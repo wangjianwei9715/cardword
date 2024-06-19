@@ -111,7 +111,7 @@ $swiperHeight:180rpx;
 			margin-top: 5rpx;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #C0C0C0;
 		}
 	}
@@ -142,7 +142,7 @@ $swiperHeight:180rpx;
 		.live-desc{
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #C0C0C0;
 			margin-top: 6rpx;
 		}
@@ -167,7 +167,7 @@ $swiperHeight:180rpx;
 			border-radius: 5rpx;
 			font-size: 16rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 			display: flex;
 			align-items: center;

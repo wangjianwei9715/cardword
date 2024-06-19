@@ -175,7 +175,7 @@ page {
     text {
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #333333;
         // margin-left: 8rpx;
     }
@@ -184,7 +184,7 @@ page {
 .readContent {
     font-size: 24rpx;
     
-    font-weight: 400;
+    
     color: #9A9A9E;
     // margin-top: 22rpx;
 
@@ -199,7 +199,7 @@ page {
     background: #CBCBD1;
     border-radius: 5rpx;
     font-size: 36rpx;
-    font-weight: 400;
+    
     color: #FFFFFF;
     margin-top: 45rpx;
     transition: all 0.5s;
@@ -229,7 +229,7 @@ page {
     font-size: 28rpx;
     box-sizing: border-box;
     padding: 0 55rpx;
-    font-weight: 400;
+    
     color: #FFFFFF;
     line-height: 48rpx;
 }
@@ -312,7 +312,7 @@ page {
 
 .tips {
     font-size: 24rpx;
-    font-weight: 400;
+    
     color: #9A9A9E;
 }
 </style>

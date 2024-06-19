@@ -193,7 +193,7 @@
 			box-sizing: border-box;
 			font-size: 27rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			padding-bottom: 30rpx;
 			border-bottom: 1px solid #EDEDED;
@@ -221,7 +221,7 @@
 				align-items: center;
 				font-size: 31rpx;
 				
-				font-weight: 400;
+				
 				color: #333333;
 			}
 			.icon-zfb{

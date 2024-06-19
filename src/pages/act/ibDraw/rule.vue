@@ -111,7 +111,7 @@ page {
     .des_content {
         font-size: 23rpx;
         
-        font-weight: 400;
+        
         color: #333333;
         line-height: 36rpx;
         letter-spacing: 2rpx;
@@ -135,7 +135,7 @@ page {
     .des_gray {
         font-size: 19rpx;
         
-        font-weight: 400;
+        
         color: #949494;
         margin-top: 25rpx;
     }

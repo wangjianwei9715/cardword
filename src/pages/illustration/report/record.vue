@@ -114,13 +114,13 @@
 			.time{
 				font-size: 25rpx;
 				
-				font-weight: 400;
+				
 				color: #959695;
 			}
 			.status{
 				font-size: 25rpx;
 				
-				font-weight: 400;
+				
 				color: #333333;
 			}
 			.status-error{
@@ -133,7 +133,7 @@
 			.desc{
 				font-size: 25rpx;
 				
-				font-weight: 400;
+				
 				color: #333333;
 				line-height: 33rpx;
 			}

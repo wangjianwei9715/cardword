@@ -239,7 +239,7 @@ page {
     .titleTip {
         font-size: 19rpx;
         
-        font-weight: 400;
+        
         color: #C0C0C0;
     }
 }
@@ -255,7 +255,7 @@ page {
     .someText {
         font-size: 23rpx;
         
-        font-weight: 400;
+        
         color: #333333;
         margin-left: 37rpx;
         line-height: 38rpx;
@@ -375,7 +375,7 @@ page {
     .xzs {
         font-size: 21rpx;
         
-        font-weight: 400;
+        
         color: #FFFFFF;
     }
 }
@@ -400,7 +400,7 @@ page {
     .tips {
         font-size: 19rpx;
         
-        font-weight: 400;
+        
         color: #959695;
         // line-height: 40rpx;
     }
@@ -413,14 +413,14 @@ page {
     .gap1 {
         font-size: 23rpx;
         
-        font-weight: 400;
+        
         color: #FFFFFF;
     }
 
     .gap2 {
         font-size: 23rpx;
         
-        font-weight: 400;
+        
         color: #959695;
     }
 
@@ -483,7 +483,7 @@ page {
         .taskNum {
             font-size: 21rpx;
             
-            font-weight: 400;
+            
             color: #C0C0C0;
         }
     }
@@ -495,14 +495,14 @@ page {
         .stateText {
             font-size: 23rpx;
             
-            font-weight: 400;
+            
             color: #959695;
         }
 
         .stateTextSuccess {
             font-size: 23rpx;
             
-            font-weight: 400;
+            
             color: #C0C0C0;
         }
 
@@ -530,7 +530,7 @@ page {
     .tips {
         font-size: 19rpx;
         
-        font-weight: 400;
+        
         color: #C0C0C0;
     }
 }
@@ -538,7 +538,7 @@ page {
 .ruleContainer {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #959695;
     display: flex;
     align-items: center;

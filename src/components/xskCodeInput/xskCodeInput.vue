@@ -67,7 +67,7 @@
 			height:82rpx;
 			background:#fff;
 			font-size: 48rpx;
-			font-weight: 400;
+			
 			color: #333333;
 			border-radius: 10rpx;
 			margin-right: 20rpx;

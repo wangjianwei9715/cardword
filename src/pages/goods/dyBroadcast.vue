@@ -96,7 +96,7 @@ page {
     .tag {
         font-size: 28rpx;
         
-        font-weight: 400;
+        
         color: #959695;
         margin-right: 61rpx;
     }
@@ -162,7 +162,7 @@ page {
         -webkit-line-clamp: 2;
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #E6E6E6;
         position: relative;bottom: 2rpx;
     }

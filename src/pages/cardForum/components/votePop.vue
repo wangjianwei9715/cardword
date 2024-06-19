@@ -192,7 +192,7 @@ export default class ClassName extends BaseComponent {
         input {
             font-size: 25rpx;
             
-            font-weight: 400;
+            
             color: #ffffff;
             flex: 1;
         }

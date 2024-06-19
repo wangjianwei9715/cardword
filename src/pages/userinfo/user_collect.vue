@@ -188,7 +188,7 @@ import { Component } from "vue-property-decorator";
 	.header-title{
 		font-size: 34rpx;
 		
-		font-weight: 400;
+		
 		color: #000000;
 	}
 	.header-del{
@@ -207,7 +207,7 @@ import { Component } from "vue-property-decorator";
 	.del-text{
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #14151A;
 	}
 	.del-bottom{

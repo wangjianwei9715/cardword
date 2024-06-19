@@ -237,7 +237,7 @@
 		.title{
 			font-size: 26rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			line-height: 40rpx;
 		}
@@ -245,7 +245,7 @@
 			width: 100%;
 			font-size: 24rpx;
 			
-			font-weight: 400;
+			
 			color: #999999;
 			margin-top: 8rpx;
 		}
@@ -260,7 +260,7 @@
 			justify-content: center;
 			font-size: 20rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 			margin-right: 8rpx;
 		}
@@ -275,7 +275,7 @@
 			justify-content: center;
 			font-size: 20rpx;
 			
-			font-weight: 400;
+			
 			color: #FA1545;
 			margin-right: 8rpx;
 		}
@@ -323,7 +323,7 @@
 			justify-content: center;
 			font-size: 24rpx;
 			
-			font-weight: 400;
+			
 			color: #F6F7FB;
 			margin-left: 0;
 		}
@@ -372,7 +372,7 @@
 			justify-content: center;
 			font-size: 23rpx;
 			
-			font-weight: 400;
+			
 			color: #88878C;
 			margin-right:26rpx;
 		}
@@ -391,7 +391,7 @@
 			text-align: center;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			line-height: 36rpx;
 			background:#F6F7FB;
@@ -426,7 +426,7 @@
 	line-height: 44rpx;
 	font-size: 20rpx;
 	
-	font-weight: 400;
+	
 	color: #AAAAAA;
 }
 .discount-price{
@@ -442,7 +442,7 @@
 	width: 100%;
 	font-size: 20rpx;
 	
-	font-weight: 400;
+	
 	color: #AAAAAA;
 	text-align: center;
 }
@@ -504,7 +504,7 @@
 			line-height: 40rpx;
 		font-size: 23rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		box-sizing: border-box;
 		padding:0 12rpx;
@@ -518,7 +518,7 @@
 		line-height: 40rpx;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		overflow: hidden;
 		text-overflow:ellipsis;
@@ -543,7 +543,7 @@
 		justify-content: center;
 		font-size: 23rpx;
 		
-		font-weight: 400;
+		
 		color: #88878C;
 	}
 	.randomh-num-box{
@@ -579,7 +579,7 @@
 		line-height: 39rpx;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 	}
 	}
@@ -607,7 +607,7 @@
 	align-items: center;
 	font-size: 30rpx;
 	
-	font-weight: 400;
+	
 	color: rgba(0,0,0,0.9);
 	.merchant-avatar{
 		width: 40rpx;

@@ -150,7 +150,7 @@
 .item-name {
 	font-size: 26rpx;
 	
-	font-weight: 400;
+	
 	color: #333333;
 	line-height: 34rpx;
 	display: flex;

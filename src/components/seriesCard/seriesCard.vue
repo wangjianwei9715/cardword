@@ -87,7 +87,7 @@ export default class ClassName extends BaseComponent {
         .seriesMore-msg{
             font-size: 24rpx;
             
-            font-weight: 400;
+            
             color: #C0C0C0;
         }
         .seriesMore-dot {

@@ -195,7 +195,7 @@
 	.cell-value{
 		font-size: 23rpx;
 		
-		font-weight: 400;
+		
 		color: #C0C0C0;
 		background: #fff;
 	}
@@ -239,7 +239,7 @@
 			text-align: center;
 			font-size: 23rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			margin-bottom: 2rpx;
 			overflow: hidden;
@@ -256,7 +256,7 @@
 			text-align: center;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #C0C0C0;
 			margin-top: 10rpx;
 		}
@@ -290,7 +290,7 @@
 			width: 100%;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #767880;
 			margin-top: 10rpx;
 		}

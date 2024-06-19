@@ -284,7 +284,7 @@
 				text-align: center;
 				line-height:50rpx;
 				font-family: Impact;
-				font-weight: 400;
+				
 				font-size: 44rpx;
 				color: #EEDA94;
 			}

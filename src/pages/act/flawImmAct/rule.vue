@@ -104,7 +104,7 @@ page {
 	line-height: 40rpx;
 	font-size: 22rpx;
 	
-	font-weight: 400;
+	
 	color: #333;
 	text-align: center;
 	padding:10rpx ;

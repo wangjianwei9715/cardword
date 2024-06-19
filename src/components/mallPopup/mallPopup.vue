@@ -102,7 +102,7 @@
 			width: 100%;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			margin-top: 25rpx;
 			line-height: 30rpx;
@@ -111,7 +111,7 @@
 			width: 100%;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #E34B4B;
 			line-height: 30rpx;
 			margin-top: 15rpx;
@@ -125,7 +125,7 @@
 			margin-top: 44rpx;
 			font-size: 27rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 			line-height: 69rpx;
 			text-align: center;

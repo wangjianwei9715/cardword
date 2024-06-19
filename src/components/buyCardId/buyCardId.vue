@@ -78,7 +78,7 @@
 				display: flex;
 				align-items: center;
 				font-size: 22rpx;
-				font-weight: 400;
+				
 				color: #333333;
 				line-height: 32rpx;
 				padding:10rpx 0;
@@ -93,7 +93,7 @@
 				align-items: center;
 				justify-content: center;
 				font-size: 24rpx;
-				font-weight: 400;
+				
 				color: #AAAABB;
 				.show-img{
 					width: 100rpx;

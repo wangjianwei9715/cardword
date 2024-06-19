@@ -390,7 +390,7 @@
 			width: 100%;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 			margin-top: 15rpx;
 			height:70rpx;
@@ -407,7 +407,7 @@
 			border-radius: 1rpx;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			text-align: center;
 			line-height: 31rpx;
 		}
@@ -442,7 +442,7 @@
 		justify-content: flex-end;
 		font-size: 19rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		margin:0 auto;
 		margin-top: 30rpx;

@@ -146,7 +146,7 @@ export default {
 .desc {
     font-size: 23rpx;
     
-    font-weight: 400;
+    
     color: #959695;
     width: 500rpx;
     // #ifdef APP-NVUE
@@ -186,7 +186,7 @@ export default {
     text-align: center;
     font-size: 20rpx;
     
-    font-weight: 400;
+    
     color: #FFFFFF;
     line-height: 32rpx;
     padding: 0 10rpx;
@@ -207,7 +207,7 @@ export default {
 .num {
     font-size: 23rpx;
     
-    font-weight: 400;
+    
     color: #C0C0C0;
 }
 

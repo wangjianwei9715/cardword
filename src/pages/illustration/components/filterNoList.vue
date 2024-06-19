@@ -426,7 +426,7 @@
         width: 100%;
         font-size: 27rpx;
         
-        font-weight: 400;
+        
         color: #707070;
     }
     .player-select{
@@ -476,7 +476,7 @@
         height: 69rpx;
         font-size: 25rpx;
         
-        font-weight: 400;
+        
     }
     .search-icon{
 		width: 28rpx;
@@ -534,7 +534,7 @@
         padding:0 18rpx;
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #959695;
         display: inline-block;
         margin-right: 24rpx;
@@ -567,7 +567,7 @@
         .team{
             font-size: 25rpx;
             
-            font-weight: 400;
+            
             color: #333333;
         }
         .team-right{
@@ -594,7 +594,7 @@
         .cardset{
             font-size: 23rpx;
             
-            font-weight: 400;
+            
             color: #959695;
             margin-top: 23rpx;
             line-height: 36rpx;
@@ -620,14 +620,14 @@
                     width: 100%;
                     font-size: 25rpx;
                     
-                    font-weight: 400;
+                    
                     color: #333333;
                     margin-bottom: 15rpx;
                 }
                 .num{
                     font-size: 25rpx;
                     
-                    font-weight: 400;
+                    
                     color: #333333;
                 }
                 .num-text{
@@ -702,7 +702,7 @@
             justify-content: center;
             font-size: 33rpx;
             
-            font-weight: 400;
+            
             color: #333333;
         }
         .btn-confirm{
@@ -716,7 +716,7 @@
             justify-content: center;
             font-size: 33rpx;
             
-            font-weight: 400;
+            
             color: #FFFFFF;
         }
         .red-btn{
@@ -730,7 +730,7 @@
             width: 100%;
             font-size: 33rpx;
             
-            font-weight: 400;
+            
             color:#000;
             text-align: center;
             height:100rpx;
@@ -775,7 +775,7 @@
                     width: 100%;
                     font-size: 23rpx;
                     
-                    font-weight: 400;
+                    
                     color: #959695;
                     text-align: center;
                 }
@@ -792,7 +792,7 @@
                 justify-content: center;
                 font-size: 33rpx;
                 
-                font-weight: 400;
+                
                 color: #FFFFFF;
             }
         }
@@ -802,7 +802,7 @@
         border: 1px solid #D8D8D8;
         font-size: 17rpx;
         
-        font-weight: 400;
+        
         color: #aaaaaa;
         box-sizing: border-box;
         padding:0 10rpx;

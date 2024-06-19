@@ -202,7 +202,7 @@
 			padding:0 38rpx;
 			font-size: 20rpx;
 			
-			font-weight: 400;
+			
 			color: #BDBEC5;
 		}
 		.desc-index{
@@ -212,7 +212,7 @@
 			align-items: center;
 			font-size: 20rpx;
 			
-			font-weight: 400;
+			
 			color: #BDBEC5;
 			justify-content: flex-end;
 		}

@@ -195,7 +195,7 @@
 		line-height: 70rpx;
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #666666;
 		border-bottom:1rpx solid #E7E7E7;
 		margin-bottom: 22rpx;
@@ -242,7 +242,7 @@
 		width: 100%;
 		font-size: 30rpx;
 		
-		font-weight: 400;
+		
 		color: #666666;
 		line-height: 48rpx;
 		margin-bottom: 20rpx;
@@ -250,7 +250,7 @@
 	.index-right-num{
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #B8B7B7;
 	}
 	.index-right-icon{
@@ -273,7 +273,7 @@
 		bottom:20rpx;
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		background: #FB4E3E;
 		border-radius: 30rpx;
@@ -289,7 +289,7 @@
 		line-height: 40rpx;
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #666666;
 	}
 	.index-bottom-reward-box{

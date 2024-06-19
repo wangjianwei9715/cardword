@@ -223,7 +223,7 @@ page {
         &_lineone {
             font-size: 29rpx;
             
-            font-weight: 400;
+            
             color: #333333;
         }
 
@@ -231,7 +231,7 @@ page {
             font-size: 25rpx;
             color: #999999;
             
-            font-weight: 400;
+            
         }
     }
 
@@ -265,7 +265,7 @@ page {
         .goodsName {
             font-size: 25rpx;
             
-            font-weight: 400;
+            
             color: #333333;
         }
 
@@ -298,7 +298,7 @@ page {
 
     &-desc {
         font-size: 24rpx;
-        font-weight: 400;
+        
         color: #7D8288;
         line-height: 40rpx;
     }
@@ -315,7 +315,7 @@ page {
     padding: 0 30rpx;
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     color: #333333;
 }
 
@@ -323,7 +323,7 @@ page {
     padding: 36rpx 30rpx 30rpx 30rpx;
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     color: #333333;
 
     .buyReadTop {
@@ -334,7 +334,7 @@ page {
         text {
             font-size: 25rpx;
             
-            font-weight: 400;
+            
             color: #333333;
             margin-left: 8rpx;
         }
@@ -343,7 +343,7 @@ page {
     .readContent {
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #333333;
         margin-top: 22rpx;
 
@@ -397,7 +397,7 @@ page {
             .all {
                 font-size: 25rpx;
                 
-                font-weight: 400;
+                
                 color: #949494;
                 margin-right: 18rpx;
             }
@@ -421,7 +421,7 @@ page {
             // .myPoint {
             //     font-size: 23rpx;
             //     
-            //     font-weight: 400;
+            //     
             //     color: #949494
             // }
         }

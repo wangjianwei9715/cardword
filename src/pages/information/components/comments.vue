@@ -258,7 +258,7 @@ export default class ClassName extends BaseComponent {
 	width: 100%;
 	font-size: 23rpx;
 	
-	font-weight: 400;
+	
 	color: #7C7C7C;
 }
 
@@ -266,7 +266,7 @@ export default class ClassName extends BaseComponent {
 	width: 100%;
 	font-size: 32rpx;
 	
-	font-weight: 400;
+	
 	color: #14151A;
 	line-height: 60rpx;
 	letter-spacing: 2rpx;
@@ -338,7 +338,7 @@ export default class ClassName extends BaseComponent {
 			.chat-name {
 				font-size: 25rpx;
 				
-				font-weight: 400;
+				
 				color: #636363;
 				margin-right: 22rpx;
 			}
@@ -346,14 +346,14 @@ export default class ClassName extends BaseComponent {
 			.chat-time {
 				font-size: 21rpx;
 				
-				font-weight: 400;
+				
 				color: #AAAAAA;
 			}
 
 			.chat-msg {
 				font-size: 25rpx;
 				
-				font-weight: 400;
+				
 				color: #333333;
 				line-height: 33rpx;
 				margin-top: 10rpx;
@@ -385,7 +385,7 @@ export default class ClassName extends BaseComponent {
 					line-height: 30rpx;
 					font-size: 21rpx;
 					
-					font-weight: 400;
+					
 					color: #AAAAAA;
 					margin-left: 12rpx;
 				}
@@ -409,7 +409,7 @@ export default class ClassName extends BaseComponent {
 		.chat-hf {
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			line-height: 33rpx;
 		}
@@ -418,7 +418,7 @@ export default class ClassName extends BaseComponent {
 			color: #636363;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			line-height: 33rpx;
 			margin: 0 10rpx
 		}
@@ -457,7 +457,7 @@ export default class ClassName extends BaseComponent {
 	text-align: center;
 	font-size: 21rpx;
 	
-	font-weight: 400;
+	
 	color: #D2D2D2;
 	margin: 30rpx 0rpx 10rpx 0;
 }

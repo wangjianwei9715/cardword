@@ -130,7 +130,7 @@
 					width: 100%;
 					font-size: 26rpx;
 					
-					font-weight: 400;
+					
 					color: #333333;
 					margin-bottom: 4rpx;
 				}
@@ -138,7 +138,7 @@
 					width: 100%;
 					font-size: 22rpx;
 					
-					font-weight: 400;
+					
 					color: #999999;
 					margin-top: 4rpx;
 				}
@@ -147,7 +147,7 @@
 				height:90rpx;
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: rgba(153,153,153,0.9);
 				line-height: 90rpx;
 			}

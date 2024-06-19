@@ -147,7 +147,7 @@ export default class ClassName extends BaseComponent {
     box-sizing: border-box;
     font-size: 26rpx;
     
-    font-weight: 400;
+    
     color: #333333;
     z-index: 92323;
   }

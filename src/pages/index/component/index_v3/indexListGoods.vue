@@ -227,19 +227,19 @@
 		height:30rpx;
 		line-height:30rpx;
 		font-size: 18rpx;
-		font-weight: 400;
+		
 		color: #fff;
 		@include flexCenter;
 	}
 	.hide-text{
 		font-size: 24rpx;
-		font-weight: 400;
+		
 		background:rgba(0,0,0,0);
 		color:rgba(0,0,0,0)
 	}
 	.title-text{
 		font-size: 25rpx;
-		font-weight: 400;
+		
 		color: #333333;
 	}
 	.goods-priceMsg{
@@ -286,7 +286,7 @@
 	.goods-priceMsg-right{
 		align-items: flex-end;
 		font-size: 23rpx;
-		font-weight: 400;
+		
 		color: #C0C0C0;
 		margin-bottom: -2rpx;
 	}
@@ -320,7 +320,7 @@
 	.bussName {
 		width: 246rpx;
 		font-size: 21rpx;
-		font-weight: 400;
+		
 		color: #707070;
 	}
 	.merchant-logo{

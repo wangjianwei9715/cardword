@@ -291,7 +291,7 @@ export default {
 .nomTxt {
   font-size: 21rpx;
 
-  font-weight: 400;
+  
   color: #ffffff;
 }
 
@@ -342,7 +342,7 @@ export default {
 .couponInput {
   font-size: 25rpx;
   
-  font-weight: 400;
+  
   color: #ffffff;
   text-align: right;
   width: 340rpx;
@@ -358,7 +358,7 @@ export default {
 .placeholder {
   font-size: 25rpx;
   
-  font-weight: 400;
+  
   color: #ffffff;
 }
 
@@ -378,7 +378,7 @@ export default {
   align-items: center;
   font-size: 29rpx;
 
-  font-weight: 400;
+  
   color: #ffffff;
   flex-direction: row;
   align-items: center;
@@ -450,7 +450,7 @@ export default {
  width: 406rpx;
   font-size: 25rpx;
   
-  font-weight: 400;
+  
   color: #ffffff;
   text-align: left;
   lines: 2;
@@ -464,7 +464,7 @@ export default {
   border-radius: 3rpx;
   font-size: 25rpx;
   
-  font-weight: 400;
+  
   color: #ffffff;
   text-align: center;
   line-height: 41rpx;

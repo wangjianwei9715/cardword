@@ -751,14 +751,14 @@ page {
   width: 100%;
   font-size: 31rpx;
   
-  font-weight: 400;
+  
   color: #333333;
 }
 .address-name {
   width: 100%;
   font-size: 27rpx;
   
-  font-weight: 400;
+  
   color: #88878C;
 }
 .address-tips {
@@ -792,7 +792,7 @@ page {
 .goods-info2-title {
   font-size: 28rpx;
   
-  font-weight: 400;
+  
   color: #333333;
   line-height: 40rpx;
   display: -webkit-box;
@@ -824,7 +824,7 @@ page {
 }
 .goods-money text{
   font-size: 32rpx;
-  font-weight: 400;
+  
   color: #333333;
 }
 .select-team-title{
@@ -837,7 +837,7 @@ page {
   justify-content: center;
   font-size: 24rpx;
   
-  font-weight: 400;
+  
   color: #F6F7FB;
   margin-left: 0;
 }
@@ -884,7 +884,7 @@ page {
   justify-content: center;
   font-size: 23rpx;
   
-  font-weight: 400;
+  
   color: #88878C;
   margin-right:26rpx;
 }
@@ -907,7 +907,7 @@ page {
   text-align: center;
   font-size: 25rpx;
   
-  font-weight: 400;
+  
   color: #333333;
   line-height: 36rpx;
   background:#F6F7FB;
@@ -975,7 +975,7 @@ page {
 	  line-height: 40rpx;
     font-size: 23rpx;
     
-    font-weight: 400;
+    
     color: #333333;
     box-sizing: border-box;
     padding:0 12rpx;
@@ -989,7 +989,7 @@ page {
     line-height: 40rpx;
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     color: #333333;
     overflow: hidden;
     text-overflow:ellipsis;
@@ -1014,7 +1014,7 @@ page {
     justify-content: center;
     font-size: 23rpx;
     
-    font-weight: 400;
+    
     color: #88878C;
   }
   .randomh-num-box{
@@ -1050,7 +1050,7 @@ page {
       line-height: 39rpx;
       font-size: 25rpx;
       
-      font-weight: 400;
+      
       color: #333333;
     }
   }
@@ -1059,7 +1059,7 @@ page {
 .item-name {
   font-size: 25rpx;
   
-  font-weight: 400;
+  
   color: #333333;
   line-height: 34rpx;
   display: flex;
@@ -1087,7 +1087,7 @@ page {
 .item-title {
   font-size: 25rpx;
   
-  font-weight: 400;
+  
   color: #14151a;
   line-height: 34rpx;
   margin-left: 22rpx;
@@ -1110,7 +1110,7 @@ page {
   background: #F1F1F1;
   font-size: 23rpx;
   
-  font-weight: 400;
+  
   color: #88878C;
   padding: 0 22rpx;
   width: fit-content;
@@ -1121,7 +1121,7 @@ page {
 .current-discount{
   font-size: 23rpx;
   
-  font-weight: 400;
+  
   color: #FFFFFF;
   background:#FF0003;
 }
@@ -1155,7 +1155,7 @@ page {
 .heji-text {
   font-size: $font-20;
   
-  font-weight: 400;
+  
   color: #14151a;
   line-height: 28rpx;
 }
@@ -1172,7 +1172,7 @@ page {
 .heji-text-b {
   font-size: 25rpx;
   
-  font-weight: 400;
+  
   color: #88878C;
   line-height: 28rpx;
 }
@@ -1225,7 +1225,7 @@ page {
     width: 100%;
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     color: #88878C;
     line-height: 36rpx;
     margin-top: 10rpx;
@@ -1233,7 +1233,7 @@ page {
   .bottom-gm-btn {
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     color: #88878C;
     line-height: 36rpx;
   }

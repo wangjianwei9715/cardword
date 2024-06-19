@@ -182,7 +182,7 @@
 				box-sizing: border-box;
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #A27339;
 				padding-left: 16rpx;
 			}
@@ -209,14 +209,14 @@
 		line-height: 40rpx;
 		font-size: 27rpx;
 		
-		font-weight: 400;
+		
 		color: #C0C0C0;
 	}
 	.detail-act-desc{
 		width: 550rpx;
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		overflow: hidden;
 		text-overflow:ellipsis;
@@ -238,7 +238,7 @@
 		margin-right: 24rpx;
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #EA4055;
 	}
 	.drawer-helpmsg{
@@ -257,7 +257,7 @@
 		width: 100%;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #7D8288;
 		white-space: pre-wrap;
 		line-height: 35rpx;
@@ -267,7 +267,7 @@
 		width: 100%;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		line-height: 46rpx;
 		white-space: pre-wrap;
@@ -288,7 +288,7 @@
 	.drawer-header-name{
 		font-size: 23rpx;
 		
-		font-weight: 400;
+		
 		color: #959695;
 	}
 	.drawer-chedui{
@@ -328,7 +328,7 @@
 		height:85rpx;
 		font-size: 38rpx;
 		font-family: Impact;
-		font-weight: 400;
+		
 		color: #908D8B;
 		display: flex;
 		align-items: center;
@@ -384,7 +384,7 @@
 		width: 100%;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		margin-bottom: 5rpx;
 	}
@@ -392,13 +392,13 @@
 		width: 100%;
 		font-size: 21rpx;
 		
-		font-weight: 400;
+		
 		color: #C0C0C0;
 	}
 	.chedui-rank-item-reward{
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 	}
 	.font-bold{

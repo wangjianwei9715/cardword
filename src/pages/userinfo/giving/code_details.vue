@@ -130,7 +130,7 @@ import { Md5 } from "ts-md5";
 		height:80rpx;
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		line-height: 40rpx;
 		display: -webkit-box;
@@ -150,20 +150,20 @@ import { Md5 } from "ts-md5";
 		height:30rpx;
 		font-size: 18rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 	}
 	.details-header-info-price text{
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 	}
 	.details-header-info-code{
 		height:30rpx;
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #88878C;
 	}
 
@@ -191,7 +191,7 @@ import { Md5 } from "ts-md5";
 		padding:25rpx 28rpx;
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		line-height: 40rpx;
 	}
@@ -218,7 +218,7 @@ import { Md5 } from "ts-md5";
 		justify-content: space-between;
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 	}
 	.details-desc-index-line{
@@ -228,7 +228,7 @@ import { Md5 } from "ts-md5";
 		justify-content: space-between;
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 	}
 	.details-desc-avatar{
@@ -260,7 +260,7 @@ import { Md5 } from "ts-md5";
 		justify-content: center;
 		font-size: 36rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		border-radius: 5rpx;
 		border:1px solid #333333;

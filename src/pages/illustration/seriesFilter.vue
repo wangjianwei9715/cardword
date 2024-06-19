@@ -304,7 +304,7 @@
 		text-align: center;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		line-height: 150rpx;
 		display: flex;
@@ -361,7 +361,7 @@
 			height: 73rpx;
 			font-size: 23rpx;
 			
-			font-weight: 400;
+			
 		}
 		.search-icon{
 			width: 28rpx;
@@ -394,7 +394,7 @@
 			padding:10rpx 20rpx;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			background: #F2F2F2;
 			border-radius: 3rpx;
@@ -410,7 +410,7 @@
 			height:66rpx;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			line-height: 66rpx;
 			text-align: center;
@@ -425,7 +425,7 @@
 			height:66rpx;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			line-height: 66rpx;
 			text-align: center;
@@ -439,7 +439,7 @@
 			height:66rpx;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			text-align: center;
 		}
@@ -474,7 +474,7 @@
 			margin-right: 29rpx;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			display: inline-flex;
 			align-items: center;
@@ -501,7 +501,7 @@
 			box-sizing: border-box;
 			font-size: 33rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			display: flex;
 			align-items: center;

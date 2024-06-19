@@ -278,7 +278,7 @@ page {
   .smallTips {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #ffffff;
   }
 }
@@ -313,14 +313,14 @@ page {
     .goodsName {
       font-size: 25rpx;
       
-      font-weight: 400;
+      
       color: #333333;
       display: flex;
 
       .name {
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #333333;
         flex: 1;
       }
@@ -328,7 +328,7 @@ page {
       .state {
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #fa1545;
         margin-left: 10rpx;
       }
@@ -359,7 +359,7 @@ page {
     justify-content: space-between;
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     color: #333333;
   }
 }
@@ -391,7 +391,7 @@ page {
     &_lineone {
       font-size: 29rpx;
       
-      font-weight: 400;
+      
       color: #333333;
     }
 
@@ -399,7 +399,7 @@ page {
       font-size: 25rpx;
       color: #999999;
       
-      font-weight: 400;
+      
     }
   }
 

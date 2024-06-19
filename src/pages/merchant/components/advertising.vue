@@ -267,7 +267,7 @@
 	.drawer-header-name{
 		font-size: 23rpx;
 		
-		font-weight: 400;
+		
 		color: #959695;
 	}
 	.drawer-bottom{
@@ -363,7 +363,7 @@
 			width: 100%;
 			text-align: center;
 			font-size: 26rpx;
-			font-weight: 400;
+			
 			margin-top: 6rpx;
 			color: #333333;
 		}
@@ -372,7 +372,7 @@
 			text-align: center;
 			font-size: 23rpx;
 			
-			font-weight: 400;
+			
 			color: #959695;
 		}
 		.drawer-item-surplus{
@@ -387,7 +387,7 @@
 			line-height: 38rpx;
 			font-size: 23rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 		}
 		.drawer-item-inuse{
@@ -400,7 +400,7 @@
 			left:0;
 			font-size: 20rpx;
 			
-			font-weight: 400;
+			
 			color: #FA1545;
 			display: flex;
 			align-items: center;
@@ -478,14 +478,14 @@
 				width: 100%;
 				text-align: center;
 				font-size: 28rpx;
-				font-weight: 400;
+				
 				color: #333333;
 			}
 			.level-text{
 				width: 100%;
 				text-align: center;
 				font-size: 26rpx;
-				font-weight: 400;
+				
 				color: #333333;
 				margin-top: 10rpx;
 			}

@@ -83,7 +83,7 @@
 		width: 100%;
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: rgba(153,153,153,0.9);
 		line-height: 36rpx;
 		margin-top: 10rpx;

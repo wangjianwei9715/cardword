@@ -323,7 +323,7 @@
 	.order-title{
 		@include fontSfTR;
 		font-size: 20rpx;
-		font-weight: 400;
+		
 		color: #BBBBBB;
 		margin-bottom: 12rpx;
 	}
@@ -363,7 +363,7 @@
 		box-sizing: border-box;
 		padding-left: 20rpx;
 		font-size: 20rpx;
-		font-weight: 400;
+		
 		color: #BBBBBB;
 		margin-bottom: 8rpx;
 	}
@@ -436,7 +436,7 @@
 		display: -webkit-box;
 		align-items: center;
 		font-size: 22rpx;
-		font-weight: 400;
+		
 		color: #333333;
 		line-height: 32rpx;
 		background: #F6F7F8;
@@ -456,7 +456,7 @@
 		.cardno{
 			@include fontSfTR;
 			font-size: 22rpx;
-			font-weight: 400;
+			
 			color: #999999;
 			margin-top: 8rpx;
 			line-height: 34rpx;
@@ -467,7 +467,7 @@
 			bottom:0;
 			left:0;
 			font-size: 18rpx;
-			font-weight: 400;
+			
 			color: #DDDDDD;
 		}
 	}
@@ -479,7 +479,7 @@
 		display: inline-flex;
 		flex-wrap: wrap;
 		font-size: 22rpx;
-		font-weight: 400;
+		
 		color: #333333;
 		line-height: 32rpx;
 		padding:10rpx 20rpx;
@@ -492,7 +492,7 @@
 		justify-content: center;
 		font-size: 21rpx;
 		
-		font-weight: 400;
+		
 		color:#fff;
 		margin-right: 8rpx;
 	}

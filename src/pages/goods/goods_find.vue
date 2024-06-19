@@ -245,7 +245,7 @@
 		border-radius: 3rpx;
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #14151A;
 		padding-left:76rpx
 	}
@@ -264,7 +264,7 @@
 		line-height: 50rpx;
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #14151A;
 	}
 	.top-center{
@@ -314,7 +314,7 @@
 		text-align: center;
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #767880;
 		margin-right: 16rpx;
 		margin-bottom: 16rpx;
@@ -495,7 +495,7 @@
 		justify-content: center;
 		font-size: 27rpx;
 		font-family: Impact;
-		font-weight: 400;
+		
 		color: #757575;
 		margin-right: 15rpx;
 	}
@@ -524,7 +524,7 @@
 		margin-left: 20rpx;
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		overflow: hidden;
 		text-overflow:ellipsis;
@@ -557,7 +557,7 @@
 	.merchant-desc{
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		margin-left: 22rpx;
 	}
@@ -605,7 +605,7 @@
 		height:35rpx;
 		font-size: 29rpx;
 		
-		font-weight: 400;
+		
 		color: #757575;
 		display: flex;
 		align-items: center;

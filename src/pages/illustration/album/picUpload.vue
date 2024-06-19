@@ -287,7 +287,7 @@
 			background: #272727;
 			font-size: 23rpx;
 			
-			font-weight: 400;
+			
 			color: #C0C0C0;
 			padding:0 20rpx;
 			display: flex;
@@ -322,7 +322,7 @@
 			box-sizing: border-box;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #707070;
 			line-height: 38rpx;
 		}
@@ -387,7 +387,7 @@
 			width: 100%;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #8D8D8D;
 			text-align: center;
 		}

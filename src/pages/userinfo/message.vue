@@ -185,7 +185,7 @@
 					width: 100%;
 					font-size: 24rpx;
 					
-					font-weight: 400;
+					
 					color: #767880;
 				}
 			}
@@ -201,7 +201,7 @@
 				width: 100%;
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #AAAABB;
 				margin-bottom: 6rpx;
 				text-align: end;
@@ -217,7 +217,7 @@
 				justify-content: center;
 				font-size: 20rpx;
 				
-				font-weight: 400;
+				
 				color: #FFFFFF;
 			}
 		}
@@ -229,7 +229,7 @@
 	.desc-message /deep/ p{
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #767880;
 	}
 	.desc-message /deep/ image{

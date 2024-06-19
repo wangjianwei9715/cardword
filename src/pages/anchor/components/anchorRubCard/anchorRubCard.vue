@@ -350,7 +350,7 @@
 				line-height: 38rpx;
 				font-size: 27rpx;
 				
-				font-weight: 400;
+				
 				color: #FFFFFF;
 				position: absolute;
 				right:-12rpx;
@@ -381,7 +381,7 @@
 					max-width: 150rpx;
 					font-size: 33rpx;
 					
-					font-weight: 400;
+					
 					color: #333333;
 				}
 				.user-choice{
@@ -782,7 +782,7 @@
 				text-align: center;
 				font-size: 33rpx;
 				
-				font-weight: 400;
+				
 				color: #FFFFFF;
 				line-height: 42rpx;
 			}
@@ -849,7 +849,7 @@
 					line-height: 218rpx;
 					font-size: 95rpx;
 					font-family: Impact;
-					font-weight: 400;
+					
 					color: #FFFFFF;
 					text-align: center;
 				}
@@ -899,7 +899,7 @@
 							line-height: 43rpx;
 							font-size: 27rpx;
 							
-							font-weight: 400;
+							
 							color: #FFFFFF;
 							box-sizing: border-box;
 							overflow: hidden;
@@ -911,7 +911,7 @@
 					.ulist-time{
 						font-size: 21rpx;
 						
-						font-weight: 400;
+						
 						color: #FFFFFF;
 					}
 				}

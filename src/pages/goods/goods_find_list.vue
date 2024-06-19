@@ -289,7 +289,7 @@ page {
       text-align: center;
       font-size: 22rpx;
       
-      font-weight: 400;
+      
       color: #333333;
       white-space: nowrap;
       overflow: hidden;
@@ -338,7 +338,7 @@ page {
   position: relative;
   font-size: 28rpx;
   
-  font-weight: 400;
+  
   color: #a3a3a3;
   line-height: 65rpx;
   box-sizing: border-box;
@@ -404,7 +404,7 @@ page {
 //     box-sizing: border-box;
 //     font-size: 26rpx;
 //     
-//     font-weight: 400;
+//     
 //     color: #333333;
 //   }
 

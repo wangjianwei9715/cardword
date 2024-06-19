@@ -143,7 +143,7 @@
 			text-align: center;
 			font-size: 20rpx;
 			
-			font-weight: 400;
+			
 			color: #AAAABB;
 			line-height: 28rpx;
 			margin-top: 12rpx;

@@ -266,7 +266,7 @@ export default class ClassName extends BaseNode {
 		width: 25%;
 		font-size: 27rpx;
 		
-		font-weight: 400;
+		
 		color: #959695;
 		text-align: center;
 		padding-bottom: 13rpx;
@@ -319,7 +319,7 @@ export default class ClassName extends BaseNode {
 		.userData {
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #C0C0C0;
 		}
 
@@ -333,7 +333,7 @@ export default class ClassName extends BaseNode {
 		border-radius: 3rpx;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #C0C0C0;
 	}
 }
@@ -358,7 +358,7 @@ export default class ClassName extends BaseNode {
 		.name {
 			font-size: 29rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			margin-bottom: 24rpx;
 		}
@@ -366,7 +366,7 @@ export default class ClassName extends BaseNode {
 		.num {
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #88878c;
 		}
 	}

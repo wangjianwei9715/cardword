@@ -159,7 +159,7 @@ page {
 	line-height: 96rpx;
 	font-size: 29rpx;
 	
-	font-weight: 400;
+	
 	color: #333333;
 }
 
@@ -212,7 +212,7 @@ page {
 	.normal {
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #b8b7b7;
 	}
 }
@@ -251,7 +251,7 @@ page {
 		background: #dbdbdb;
 		border-radius: 3rpx;
 		font-size: 25rpx;
-		font-weight: 400;
+		
 		color: #ffffff;
 		text-align: center;
 		line-height: 39rpx;

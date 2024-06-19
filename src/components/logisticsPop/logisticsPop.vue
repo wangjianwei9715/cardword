@@ -120,7 +120,7 @@ export default class ClassName extends BaseComponent {
     padding: 0 50rpx;
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     color: #333333;
     border-bottom: 1rpx solid #E6E6E6;
 

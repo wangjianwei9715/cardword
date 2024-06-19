@@ -126,7 +126,7 @@ export default class ClassName extends BaseComponent {
     .rankTop {
         font-size: 16rpx;
         
-        font-weight: 400;
+        
         color: #333333;
         margin-top: 4rpx;
     }
@@ -186,7 +186,7 @@ export default class ClassName extends BaseComponent {
         .goodsName {
             // font-size: 25rpx;
             // 
-            // font-weight: 400;
+            // 
             // color: #333333;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -196,7 +196,7 @@ export default class ClassName extends BaseComponent {
             line-height: 34rpx;
             -webkit-line-clamp: 2;
             font-size: 25rpx;
-            font-weight: 400;
+            
             color: #333333;
         }
 
@@ -236,7 +236,7 @@ export default class ClassName extends BaseComponent {
             margin-left: 18rpx;
             font-size: 23rpx;
             
-            font-weight: 400;
+            
             width: 86rpx;
             // background-color: red;
             text-align: right;
@@ -247,7 +247,7 @@ export default class ClassName extends BaseComponent {
         .goodsType {
             font-size: 21rpx;
             
-            font-weight: 400;
+            
             color: #959695;
             display: flex;
             align-items: center;
@@ -276,7 +276,7 @@ export default class ClassName extends BaseComponent {
             color: #333333;
             font-size: 31rpx;
             font-family: ArialBold !important;
-            font-weight: 400;
+            
             color: #333333;
             // line-height: 38rpx;
             // margin-right: 10rpx;
@@ -294,7 +294,7 @@ export default class ClassName extends BaseComponent {
             .priceTips {
                 // font-size: 23rpx;
                 // 
-                // font-weight: 400;
+                // 
                 // color: #959695;
                 margin-left: 10rpx;
                 font-size: 23rpx;
@@ -315,7 +315,7 @@ export default class ClassName extends BaseComponent {
             .merchantName {
                 font-size: 23rpx;
                 
-                font-weight: 400;
+                
                 color: #333333;
             }
         }

@@ -176,7 +176,7 @@
 				width: 100%;
 				font-size: 29rpx;
 				
-				font-weight: 400;
+				
 				color: #FFFFFF;
 				text-align: center;
 				font-weight: bold;
@@ -226,7 +226,7 @@
 					width: 100%;
 					font-size: 21rpx;
 					
-					font-weight: 400;
+					
 					color: #88878C;
 					margin-top: 10rpx;
 				}
@@ -257,7 +257,7 @@
 					line-height: 50rpx;
 					font-size: 20rpx;
 					
-					font-weight: 400;
+					
 					color: #B8B7B7;
 				}
 				.coupon-right-down{
@@ -309,7 +309,7 @@
 		line-height: 58rpx;
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #545659;
 	}
 	.btn-exchange{
@@ -338,7 +338,7 @@
 		width: 100%;
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #B8B7B7;
 		line-height: 36rpx;
 	}

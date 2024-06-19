@@ -86,7 +86,7 @@ export default {
 	text-align: center;
 	font-size: 26rpx;
 	
-	font-weight: 400;
+	
 	color: #BABDC7;
 }
 </style>

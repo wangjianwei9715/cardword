@@ -165,7 +165,7 @@
 		line-height: 50rpx;
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #14151A;
 	}
 	.top-center{
@@ -209,7 +209,7 @@
 		text-align: center;
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #767880;
 		margin-right: 16rpx;
 		margin-bottom: 16rpx;

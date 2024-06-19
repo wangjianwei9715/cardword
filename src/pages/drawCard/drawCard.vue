@@ -437,7 +437,7 @@
       margin-top: 30rpx;
       font-size: 24rpx;
       
-      font-weight: 400;
+      
       color: #a3a3a3;
       text-align: center;
     }
@@ -621,7 +621,7 @@
   .cardname-clamp{
     font-size: 26rpx;
     
-    font-weight: 400;
+    
     color: #FFFFFF;
     line-height: 38rpx;
     display: -webkit-box;
@@ -664,7 +664,7 @@
     margin-top: 18rpx;
     font-size: 19rpx;
     
-    font-weight: 400;
+    
     color: #FFFFFF;
   }
   // 抽屉内容
@@ -682,7 +682,7 @@
     line-height: 40rpx;
     font-size: 24rpx;
     
-    font-weight: 400;
+    
     color: #9b9b9b;
     margin-right: 15rpx;
     position: relative;
@@ -721,7 +721,7 @@
     width: 580rpx;
     font-size: 20rpx;
     
-    font-weight: 400;
+    
     color: #333333;
     line-height: 30rpx;
   }

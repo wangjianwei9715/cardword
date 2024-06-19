@@ -121,7 +121,7 @@
 			text-align: center;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #C0C0C0;
 		}
 	}
@@ -145,7 +145,7 @@
 			text-align: center;
 			font-size: 20rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 		}
 	}

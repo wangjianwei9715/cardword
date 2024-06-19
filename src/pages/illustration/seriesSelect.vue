@@ -148,7 +148,7 @@
 		text-align: center;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		line-height: 150rpx;
 	}
@@ -215,7 +215,7 @@
 			white-space: nowrap;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			text-align: center;
 		}
@@ -224,7 +224,7 @@
 			text-align: center;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #C0C0C0;
 		}
 	}
@@ -236,7 +236,7 @@
 		align-items: center;
 		font-size: 21rpx;
 		
-		font-weight: 400;
+		
 		color: #8D8D8D;
 		margin-bottom: 30rpx;
 	}

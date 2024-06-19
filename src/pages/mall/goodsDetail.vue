@@ -318,7 +318,7 @@ page {
     .exchangeText {
         font-size: 29rpx;
         
-        font-weight: 400;
+        
         color: #333333;
     }
 
@@ -339,7 +339,7 @@ page {
     .exchangeTips {
         font-size: 23rpx;
         
-        font-weight: 400;
+        
         color: #949494;
         white-space: nowrap;
     }
@@ -386,7 +386,7 @@ page {
                 overflow: hidden;
                 font-size: 20rpx;
                 
-                font-weight: 400;
+                
                 color: #ffffff;
                 display: flex;
                 white-space: nowrap;
@@ -413,7 +413,7 @@ page {
             .tips {
                 font-size: 21rpx;
                 
-                font-weight: 400;
+                
                 color: #515151;
                 text-align: right;
             }
@@ -431,7 +431,7 @@ page {
                     border-radius: 3rpx;
                     font-size: 21rpx;
                     
-                    font-weight: 400;
+                    
                     color: #ffffff;
                     margin-left: 4rpx;
                 }
@@ -466,7 +466,7 @@ page {
         text-align: left;
         font-size: 23rpx;
         
-        font-weight: 400;
+        
         color: #333333;
         white-space: pre-wrap
     }
@@ -534,7 +534,7 @@ page {
             .myPoint {
                 font-size: 23rpx;
                 
-                font-weight: 400;
+                
                 color: #949494;
             }
         }

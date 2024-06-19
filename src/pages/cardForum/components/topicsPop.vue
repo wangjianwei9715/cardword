@@ -124,7 +124,7 @@ export default class ClassName extends BaseComponent {
         .input {
             font-size: 23rpx;
             
-            font-weight: 400;
+            
             color: #ffffff;
             flex: 1;
             margin-left: 20rpx;
@@ -174,7 +174,7 @@ export default class ClassName extends BaseComponent {
         .num {
             font-size: 21rpx;
             
-            font-weight: 400;
+            
             color: #C0C0C0;
         }
     }

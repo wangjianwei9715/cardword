@@ -973,7 +973,7 @@ page {
     width: 100%;
     font-size: 29rpx;
     
-    font-weight: 400;
+    
     margin-top: 24rpx;
     height: 513rpx;
     border: none;
@@ -1003,7 +1003,7 @@ page {
     .voteTitle {
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #959695;
         margin-right: 6rpx;
     }
@@ -1074,7 +1074,7 @@ page {
         .goodsInfo {
             font-size: 23rpx;
             
-            font-weight: 400;
+            
             color: #E6E6E6;
             line-height: 25rpx;
             flex: 1;
@@ -1121,7 +1121,7 @@ page {
             text {
                 font-size: 21rpx;
                 
-                font-weight: 400;
+                
                 color: #C0C0C0;
             }
         }
@@ -1190,7 +1190,7 @@ page {
     .private_text {
         font-size: 21rpx;
         
-        font-weight: 400;
+        
         color: #C0C0C0;
     }
 }

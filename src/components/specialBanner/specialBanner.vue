@@ -385,7 +385,7 @@
       width: 100%;
       font-size: 33rpx;
       
-      font-weight: 400;
+      
       color: #333333;
       overflow: hidden;
       text-overflow:ellipsis;
@@ -396,7 +396,7 @@
       width: 100%;
       font-size: 25rpx;
       
-      font-weight: 400;
+      
       color: #595959;
       line-height: 35rpx;
     }
@@ -405,7 +405,7 @@
       height:40rpx;
       font-size: 24rpx;
       
-      font-weight: 400;
+      
       color: #777777;
       margin-top: 20rpx;
       display: flex;
@@ -481,7 +481,7 @@
       width: 100%;
       font-size: 25rpx;
       
-      font-weight: 400;
+      
       color: #333333;
       text-align: center;
       margin-top: 13rpx;

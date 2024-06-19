@@ -68,7 +68,7 @@
 	.desc{
 		font-size: 30rpx;
 		
-		font-weight: 400;
+		
 		color: #000;
 		margin:30rpx 0;
 	}
@@ -82,7 +82,7 @@
 		border-radius: 5rpx;
 		font-size: 34rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		margin:0 auto;
 		margin-top: 100rpx;

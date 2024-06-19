@@ -282,7 +282,7 @@ export default class ClassName extends BaseNode {
 				width: 100%;
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #767880;
 			}
 		}
@@ -300,7 +300,7 @@ export default class ClassName extends BaseNode {
 			width: 100%;
 			font-size: 24rpx;
 			
-			font-weight: 400;
+			
 			color: #AAAABB;
 			margin-bottom: 6rpx;
 			text-align: end;
@@ -317,7 +317,7 @@ export default class ClassName extends BaseNode {
 			justify-content: center;
 			font-size: 20rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 		}
 	}
@@ -330,7 +330,7 @@ export default class ClassName extends BaseNode {
 .desc-message /deep/ p {
 	font-size: 24rpx;
 	
-	font-weight: 400;
+	
 	color: #767880;
 }
 

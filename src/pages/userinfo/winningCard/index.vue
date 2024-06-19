@@ -171,7 +171,7 @@ page {
 	height: 85rpx;
 	font-size: 27rpx;
 	
-	font-weight: 400;
+	
 	color: #333333;
 	line-height: 38rpx;
 	display: -webkit-box;
@@ -196,14 +196,14 @@ page {
 .list-bottom-time {
 	font-size: 23rpx;
 	
-	font-weight: 400;
+	
 	color: #595959;
 }
 
 .list-bottom-num {
 	font-size: 23rpx;
 	
-	font-weight: 400;
+	
 	color: #595959;
 }
 
@@ -240,7 +240,7 @@ page {
 			text {
 				font-size: 21rpx;
 				
-				font-weight: 400;
+				
 				color: #C0C0C0;
 			}
 		}
@@ -248,7 +248,7 @@ page {
 		.shareText {
 			font-size: 28rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 		}
 

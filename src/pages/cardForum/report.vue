@@ -141,7 +141,7 @@ export default class ClassName extends BaseNode {
         margin-bottom: 10rpx;
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #707070;
     }
 

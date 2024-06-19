@@ -296,7 +296,7 @@
 			height:80rpx;
 			font-size: 28rpx;
 			
-			font-weight: 400;
+			
 			color: #14151B;
 			line-height: 78rpx;
 		}	
@@ -308,7 +308,7 @@
 			border-bottom: 2rpx solid #E6E3E3;
 			font-size: 28rpx;
 			
-			font-weight: 400;
+			
 			color: #14151B;
 		}
 		.code-content{
@@ -327,7 +327,7 @@
 				line-height: 78rpx;
 				font-size: 28rpx;
 				
-				font-weight: 400;
+				
 				color: #14151B;
 			}
 			.code-btn{
@@ -342,7 +342,7 @@
 				bottom:16rpx;
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #14151A;
 			}
 		}
@@ -372,7 +372,7 @@
 				line-height: 32rpx;
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #9397A7;
 			}
 			.xieyi-desc text{
@@ -403,7 +403,7 @@
 			justify-content: space-between;
 			font-size: 24rpx;
 			
-			font-weight: 400;
+			
 			color: #14151A;
 			margin-top: 32rpx;
 		}
@@ -442,7 +442,7 @@
 				line-height: 40rpx;
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #9397A7;
 				text-align: center;
 				position: relative;

@@ -312,7 +312,7 @@
 		background: #272727;
 		font-size: 23rpx;
 		
-		font-weight: 400;
+		
 		color: #C0C0C0;
 		padding:0 20rpx;
 		display: flex;
@@ -350,7 +350,7 @@
 			z-index: 2;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 			text-align: center;
 			line-height: 32rpx;
@@ -373,7 +373,7 @@
 		color:#fff;
 		font-size: 21rpx;
 		
-		font-weight: 400;
+		
 		border: 2rpx dashed rgba(230, 230, 230, 0.6);
 		align-items: center;
 		justify-content: center;
@@ -390,7 +390,7 @@
 		height:86rpx;
 		font-size: 23rpx;
 		
-		font-weight: 400;
+		
 		color: #959695;
 		display: flex;
 		align-items: center;
@@ -426,7 +426,7 @@
 		.msg{
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #707070;
 			margin-top: 18rpx;
 		}
@@ -452,7 +452,7 @@
 			text-align: center;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #3E3E3E;
 			position: absolute;
 			bottom: 43rpx;

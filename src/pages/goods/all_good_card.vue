@@ -233,7 +233,7 @@
 		line-height: 40rpx;
 		font-size: 30rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		background:#F6F7FB;
 		box-sizing: border-box;
@@ -247,7 +247,7 @@
 	.title-middle {
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		line-height: 32rpx;
 		display: flex;
@@ -278,7 +278,7 @@
 		line-height: 40rpx;
 		font-size: 23rpx;
 		
-		font-weight: 400;
+		
 		color: #34363A;
 		text-align: center;
 		padding:10rpx ;

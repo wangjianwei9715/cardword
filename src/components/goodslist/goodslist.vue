@@ -158,7 +158,7 @@
 		&-title {
 			height: 75rpx;
 			font-size: 25rpx;
-			font-weight: 400;
+			
 			color: #333333;
 			margin-top: 15rpx;
 			display: -webkit-box;
@@ -178,7 +178,7 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 19rpx;
-			font-weight: 400;
+			
 			color: #FFFFFF;
 			margin-right: 10rpx;
 			background: url(@/static/goods/icon_b2.png) no-repeat center / 100% 100%;
@@ -249,7 +249,7 @@
 				display: flex;
 				align-items: flex-end;
 				font-size: 23rpx;
-				font-weight: 400;
+				
 				color: #C0C0C0;
 			}
 		}
@@ -269,7 +269,7 @@
 					width: 246rpx;
 					position: relative;
 					font-size: 23rpx;
-					font-weight: 400;
+					
 					color: #707070;
 					overflow: hidden;
 					text-overflow: ellipsis;
@@ -370,7 +370,7 @@
 			border: 1rpx solid #FB4E3E;
 			border-radius: 3rpx;
 			font-size: 20rpx;
-			font-weight: 400;
+			
 			color: #FB4E3E;
 			padding: 0 11rpx;
 			width: fit-content;

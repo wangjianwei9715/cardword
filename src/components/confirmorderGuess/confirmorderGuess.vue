@@ -115,7 +115,7 @@
 		line-height:91rpx;
 		font-size: 29rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 	}
 	.guess-content{
@@ -272,7 +272,7 @@
 		width: 100%;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #7D8288;
 		white-space: pre-wrap;
 		line-height: 35rpx;

@@ -82,7 +82,7 @@ export default class ClassName extends BaseNode {
 .desc {
     font-size: 28rpx;
     
-    font-weight: 400;
+    
     color: #14151A;
     line-height: 50rpx;
     letter-spacing: 2rpx;

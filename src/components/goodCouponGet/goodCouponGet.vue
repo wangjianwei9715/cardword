@@ -101,7 +101,7 @@
 				background: linear-gradient(90deg, #FFE2E7 0%, #F1D4FA 100%);
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #FA1545;
 				display: flex;
 				align-items: center;
@@ -114,7 +114,7 @@
 			align-items: center;
 			font-size: 24rpx;
 			
-			font-weight: 400;
+			
 			color: rgba(255,255,255,0.9);
 			box-sizing: border-box;
 			border-radius: 4rpx;

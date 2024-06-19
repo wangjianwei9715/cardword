@@ -158,14 +158,14 @@
 		text-align: center;
 		font-size: 43rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 	}
 	.panel-title-ver {
 		width: 100%;
 		text-align: center;
 		font-size: 24rpx;
-		font-weight: 400;
+		
 		color: #FFFFFF;
 	}
 

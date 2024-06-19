@@ -210,7 +210,7 @@
 		line-height: 54rpx;
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		box-sizing: border-box;
 	}

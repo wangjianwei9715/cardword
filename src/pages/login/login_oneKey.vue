@@ -330,7 +330,7 @@ export default class ClassName extends BaseNode {
 .loginTips {
     font-size: 24rpx;
     
-    font-weight: 400;
+    
     margin-top: 23rpx;
     color: #DDDDDD;
     margin-bottom: 67rpx;
@@ -377,7 +377,7 @@ export default class ClassName extends BaseNode {
         flex: 1;
         font-size: 30rpx;
         
-        font-weight: 400;
+        
         color: #333333;
         height: 54rpx;
     }
@@ -385,7 +385,7 @@ export default class ClassName extends BaseNode {
     .getCode {
         font-size: 26rpx;
         
-        font-weight: 400;
+        
         color: #263858;
         width: 160rpx;
         height: 50rpx;
@@ -414,7 +414,7 @@ export default class ClassName extends BaseNode {
 .changeText {
     font-size: 24rpx;
     
-    font-weight: 400;
+    
     color: #263858;
 
 }
@@ -460,7 +460,7 @@ export default class ClassName extends BaseNode {
     .font {
         font-size: 24rpx;
         
-        font-weight: 400;
+        
         color: #999999;
     }
 
@@ -483,7 +483,7 @@ export default class ClassName extends BaseNode {
     .text {
         font-size: 24rpx;
         
-        font-weight: 400;
+        
         color: #DDDDDD;
     }
 

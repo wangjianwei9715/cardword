@@ -82,7 +82,7 @@
 		align-items: center;
 		font-size: 23rpx;
 		
-		font-weight: 400;
+		
 		color: #A5A5AA;
 		justify-content: center;
 	}
@@ -128,7 +128,7 @@
 			font-size: 27rpx;
 			line-height: 34rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			box-sizing: border-box;
 			text-overflow: -o-ellipsis-lastline;
@@ -160,7 +160,7 @@
 			.like-plan{
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #999999;
 			}
 		}

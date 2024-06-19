@@ -110,7 +110,7 @@
                     text-align: center;
                     font-size: 23rpx;
                     
-                    font-weight: 400;
+                    
                     color: #FFFFFF;
                 }
             }
@@ -136,7 +136,7 @@
                 .right-time{
                     font-size: 21rpx;
                     
-                    font-weight: 400;
+                    
                     color: #88878C;
                     margin-top: 2rpx;
                 }
@@ -170,7 +170,7 @@
                 .right-b-font{
                     font-size: 21rpx;
                     
-                    font-weight: 400;
+                    
                     color: #88878C;
                 }
                 .coupon-right-down{

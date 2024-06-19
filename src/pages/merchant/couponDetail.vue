@@ -236,7 +236,7 @@
         .good-name {
             font-size: 25rpx;
             
-            font-weight: 400;
+            
             color: #333333;
             text-overflow: -o-ellipsis-lastline;
             overflow: hidden;
@@ -274,7 +274,7 @@
         .tag {
             font-size: 28rpx;
             
-            font-weight: 400;
+            
             color: #959699;
             width: 33.33%;
             text-align: center;
@@ -324,7 +324,7 @@
             border-radius: 3rpx;
             font-size: 21rpx;
             
-            font-weight: 400;
+            
             color: #FFFFFF;
             width: 88rpx;
         }
@@ -373,7 +373,7 @@
     .couponItem-message {
         font-size: 20rpx;
         
-        font-weight: 400;
+        
         color: #88878C;
         margin-top: 16rpx;
     }
@@ -383,7 +383,7 @@
         align-items: center;
         font-size: 21rpx;
         
-        font-weight: 400;
+        
         color: #333333;
         margin-top: 20rpx;
 

@@ -91,7 +91,7 @@
 					width: 100%;
 					font-size: 27rpx;
 					
-					font-weight: 400;
+					
 					color: #333333;
 					line-height: 33rpx;
 				}
@@ -108,7 +108,7 @@
 					line-height: 20rpx;
 					font-size: 22rpx;
 					
-					font-weight: 400;
+					
 					color: #AAAAAA;
 				}
 				.orther{
@@ -121,7 +121,7 @@
 					align-items: center;
 					font-size: 22rpx;
 					
-					font-weight: 400;
+					
 					color: #AAAAAA;
 					margin-left: 34rpx;
 				}
@@ -182,7 +182,7 @@
 				left:0;
 				font-size: 20rpx;
 				
-				font-weight: 400;
+				
 				color: #FFFFFF;
 				display: flex;
 				align-items: center;

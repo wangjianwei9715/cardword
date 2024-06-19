@@ -675,7 +675,7 @@ export default {
                     justify-content: center;
                     font-size: 21rpx;
                     
-                    font-weight: 400;
+                    
                     color: #FFFFFF;
                     position: absolute;
                     top: 0rpx;
@@ -723,7 +723,7 @@ export default {
                 text {
                     font-size: 21rpx;
                     
-                    font-weight: 400;
+                    
                     color: #3E3E3E;
                     display: block;
                 }
@@ -751,7 +751,7 @@ export default {
     border-radius: 3rpx;
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #FFFFFF;
     text-align: center;
     line-height: 32rpx;

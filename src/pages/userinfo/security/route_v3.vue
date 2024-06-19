@@ -271,7 +271,7 @@ export default class ClassName extends BaseNode {
             justity-content: flex-end;
             font-size: 24rpx;
             
-            font-weight: 400;
+            
             color: #aaaabb;
         }
     }

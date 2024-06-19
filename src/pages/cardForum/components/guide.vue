@@ -317,7 +317,7 @@ export default {
 .msg{
     font-size: 24rpx;
     
-    font-weight: 400;
+    
     color: #999999;
 }
 .btn{
@@ -499,7 +499,7 @@ $uvui-nvue-style: true !default;
 .waterfall-item__bottom__userName {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #707070;
     flex: 1;
 }
@@ -519,7 +519,7 @@ $uvui-nvue-style: true !default;
 .likeNum {
     font-size: 23rpx;
     
-    font-weight: 400;
+    
     color: #8D8D8D;
     margin-left: 8rpx;
 }

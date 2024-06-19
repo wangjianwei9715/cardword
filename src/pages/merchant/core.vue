@@ -613,7 +613,7 @@ page {
 
     .type {
       font-size: 20rpx;
-      font-weight: 400;
+      
       color: #333333;
       white-space: nowrap;
       overflow: hidden;
@@ -658,7 +658,7 @@ page {
 
   .info-introduction {
     font-size: 23rpx;
-    font-weight: 400;
+    
     color: #c0c0c0;
     margin-top: 10rpx;
   }
@@ -693,7 +693,7 @@ page {
 .merchant-introduction {
   @include padingLR30;
   font-size: 25rpx;
-  font-weight: 400;
+  
   color: #7c7c7c;
   margin-top: 17rpx;
   letter-spacing: 0rpx;
@@ -760,7 +760,7 @@ page {
 
   .rule-tips {
     font-size: 23rpx;
-    font-weight: 400;
+    
     color: #7c7c7c;
   }
 }
@@ -785,7 +785,7 @@ page {
     position: relative;
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     padding-right: 28rpx;
     color: #7b7a7a;
   }
@@ -835,7 +835,7 @@ page {
     height: 38rpx;
     font-size: 24rpx;
     
-    font-weight: 400;
+    
     color: #FFFFFF;
     background-color: #fa1545;
     border-radius: 7rpx;
@@ -872,7 +872,7 @@ page {
 
   .tag {
     font-size: 27rpx;
-    font-weight: 400;
+    
     color: #959699;
 
     /* margin-right:82rpx; */

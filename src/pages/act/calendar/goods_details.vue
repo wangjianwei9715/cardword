@@ -185,7 +185,7 @@
 		height:38rpx;
 		text-align: left;
 		font-size: 28rpx;
-		font-weight: 400;
+		
 		color: #666666;
 		margin-bottom: 15rpx;
 	}
@@ -194,7 +194,7 @@
 		height:32rpx;
 		text-align: left;
 		font-size: 28rpx;
-		font-weight: 400;
+		
 		color: #FB4E3E;
 	}
 	

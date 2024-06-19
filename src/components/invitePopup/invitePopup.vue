@@ -95,7 +95,7 @@
 		padding:0 50rpx;
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #34363A;
 		line-height: 50rpx;
 		text-align: center;
@@ -166,7 +166,7 @@
 		margin-bottom: 40rpx;
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #34363A;
 		line-height: 40rpx;
 	}

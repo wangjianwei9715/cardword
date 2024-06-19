@@ -140,7 +140,7 @@ page {
     .merchantName {
         font-size: 21rpx;
         
-        font-weight: 400;
+        
         color: #959695;
     }
 }
@@ -166,7 +166,7 @@ page {
     .goodsName {
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #333333;
     }
 
@@ -180,7 +180,7 @@ page {
     .font {
         font-size: 21rpx;
         
-        font-weight: 400;
+        
         color: #C0C0C0;
         margin-left: 4rpx;
     }
@@ -204,7 +204,7 @@ page {
     .kamiNum {
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #333333;
     }
 }

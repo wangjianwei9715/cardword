@@ -91,7 +91,7 @@
 	.btn-text{
 		@include flexCenter;
 		font-size: 33rpx;
-		font-weight: 400;
+		
 		color: #FEFEFE;
 	}
 	.winning-close{

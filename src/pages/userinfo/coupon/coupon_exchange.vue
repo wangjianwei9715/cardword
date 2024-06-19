@@ -68,7 +68,7 @@
 		box-sizing: border-box;
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #545659;
 		line-height: 48rpx;
 	}
@@ -81,7 +81,7 @@
 		padding:0 22rpx;
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #545659;
 		margin-top: 30rpx;
 	}
@@ -95,7 +95,7 @@
 		line-height: 60rpx;
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		margin-top: 57rpx;
 	}

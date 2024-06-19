@@ -835,7 +835,7 @@
 		line-height: 42rpx;
 		font-size: 20rpx;
 		
-		font-weight: 400;
+		
 		color: #F4F4F4;
 	}
 
@@ -843,7 +843,7 @@
 		height: 42rpx;
 		font-size: 21rpx;
 		
-		font-weight: 400;
+		
 		color: #F4F4F4;
 		margin-left: 10rpx;
 		display: flex;
@@ -854,7 +854,7 @@
 	.swiper-btn-current {
 		font-size: 23rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 	}
 
@@ -970,7 +970,7 @@
 		justify-content: flex-end;
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #14151B;
 	}
 
@@ -993,7 +993,7 @@
 		width: 100%;
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #ACAEB7;
 		margin-bottom: 40rpx;
 		margin-top: 10rpx;
@@ -1023,7 +1023,7 @@
 			&-desc {
 				font-size: $font-20;
 				
-				font-weight: 400;
+				
 				color: #000000;
 			}
 		}
@@ -1043,7 +1043,7 @@
 					align-items: center;
 					font-size: 23rpx;
 					
-					font-weight: 400;
+					
 					color: #C0C0C0;
 				}
 			}
@@ -1070,7 +1070,7 @@
 				height: 30rpx;
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #C0C0C0;
 				line-height: 30rpx;
 				text-align: right;
@@ -1082,7 +1082,7 @@
 				height: 30rpx;
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #999999;
 				text-align: right;
 				margin-bottom: 0rpx;
@@ -1094,7 +1094,7 @@
 				line-height: 30rpx;
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #999999;
 				display: flex;
 				align-items: baseline;
@@ -1104,7 +1104,7 @@
 				line-height: 30rpx;
 				font-size: 22rpx;
 				
-				font-weight: 400;
+				
 				color: #999999;
 				display: flex;
 				align-items: baseline;
@@ -1124,7 +1124,7 @@
 				height: 30rpx;
 				font-size: 22rpx;
 				
-				font-weight: 400;
+				
 				color: #999999;
 				text-align: right;
 			}
@@ -1211,7 +1211,7 @@
 					width: 100%;
 					font-size: 30rpx;
 					
-					font-weight: 400;
+					
 					color: #333333;
 					overflow: hidden;
 					text-overflow: ellipsis;
@@ -1224,7 +1224,7 @@
 					width: 100%;
 					font-size: 24rpx;
 					
-					font-weight: 400;
+					
 					color: #C0C0C0;
 				}
 			}
@@ -1234,7 +1234,7 @@
 			background: #FBF2F3;
 			font-size: 23rpx;
 			
-			font-weight: 400;
+			
 			color: #F63D47;
 			line-height: 28rpx;
 			display: inline-flex;
@@ -1279,7 +1279,7 @@
 			.goods-desc-title-right {
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #c0c0c0;
 				display: flex;
 				align-items: center;
@@ -1298,7 +1298,7 @@
 			font-size: 27rpx;
 			// 
 			
-			font-weight: 400;
+			
 			color: #818080;
 
 			&-text {
@@ -1364,7 +1364,7 @@
 					margin-top: -4rpx;
 					font-size: 23rpx;
 					
-					font-weight: 400;
+					
 					color: #949494
 				}
 			}
@@ -1506,7 +1506,7 @@
 		width: 100%;
 		font-size: 27rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		line-height: 43rpx;
 		margin-bottom: 30rpx;
@@ -1601,7 +1601,7 @@
 				text-align: center;
 				font-size: 20rpx;
 				
-				font-weight: 400;
+				
 				color: #333333;
 			}
 		}
@@ -1627,7 +1627,7 @@
 		width: 100%;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #7D8288;
 		line-height: 38rpx;
 		margin-bottom: 50rpx;
@@ -1662,7 +1662,7 @@
 		padding-left: 12rpx;
 		font-size: 20rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 	}
 	.record-item-avatar{
@@ -1681,14 +1681,14 @@
 		max-width: 80rpx;
 		font-size: 21rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 	}
 	.record-item-title{
 		width: 252rpx;
 		font-size: 21rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		margin-right: 55rpx;
 	}
@@ -1696,14 +1696,14 @@
 		width: 80rpx;
 		font-size: 21rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 	}
 	.record-item-time{
 		width: 150rpx;
 		font-size: 21rpx;
 		
-		font-weight: 400;
+		
 		color: #C0C0C0;
 		text-align: right;
 	}
@@ -1721,7 +1721,7 @@
 			min-height:80rpx;
 			background:#F3F4F7;
 			font-size: 24rpx;
-			font-weight: 400;
+			
 			color: #333333;
 			display: flex;
 			align-items: center;
@@ -1733,7 +1733,7 @@
 			min-height:80rpx;
 			background:#F3F4F7;
 			font-size: 24rpx;
-			font-weight: 400;
+			
 			color: #333333;
 			display: flex;
 			align-items: center;
@@ -1749,7 +1749,7 @@
 		padding: 28rpx 30rpx 30rpx 30rpx;
 		
 		font-size: 21rpx;
-		font-weight: 400;
+		
 		color: #949494;
 		line-height: 36rpx;
 		.book-tips{
@@ -1770,7 +1770,7 @@
 	@mixin font($size) {
 		font-size: $size;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 	}
 	.detail-header{
