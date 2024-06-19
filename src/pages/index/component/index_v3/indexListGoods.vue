@@ -8,14 +8,15 @@
 		<div class="goods-content" @click="goGoodsDetails()">
 			<image class="goods-pic" :src="getGoodsImg(decodeURIComponent(data.pic))"/>
 			<div class="goods-header u-line-2">
+				<!-- #ifdef APP-NVUE -->
+				<rich-text class="cardicon" :selectable="false" :nodes="nodesTypeName"></rich-text>
+				<rich-text class="richtext" :selectable="false" :nodes="nodesTitle"></rich-text>
+				<!-- #endif -->
+
+				<!-- #ifndef APP-NVUE -->
 				<div class="cardicon">
-					<image class="icon-image" :src="`/static/goods/icon_b${goodsData.iconSrc}.png`"></image>
 					<text class="icon-text">{{goodsData.typeName}}</text>
 				</div>
-				<!-- #ifdef APP-NVUE -->
-				<rich-text class="richtext" :selectable="false" space="ensp" :nodes="nodes"></rich-text>
-				<!-- #endif -->
-				<!-- #ifndef APP-NVUE -->
 				<text class="title-text u-line-2" style="text-indent: 100rpx;">{{data.title}}</text>
 				<!-- #endif -->
 			</div>
@@ -85,12 +86,24 @@
 					iconSrc:([10,11].includes(pintuan_type) || remainingRandom) ? '1' : '2'
 				}
 			},
-			nodes(){
+			nodesTypeName(){
+				const typeName = this.goodsData.typeName;
+				const name1 = typeName.slice(0,2);
+				const name2 = typeName.slice(2);
+				return [{
+					name: 'div',
+					children: [
+						{ type: 'text', attrs: { class: 'icon-text',style:'color:red' }, text: name1 },
+						{ type: 'text', attrs: { class: 'icon-text' }, text: name2 }
+					]
+				}]
+			},
+			nodesTitle(){
 				return [{
 					name: 'div',
 					children: [
 						{ type: 'text', attrs: { class: 'hide-text' }, text: this.goodsData.typeName },
-						{ type: 'span', attrs: { class: 'title-text' }, text: this.data.title }
+						{ type: 'text', attrs: { class: 'title-text' }, text: this.data.title }
 					]
 				}]
 			},
@@ -212,7 +225,11 @@
 		height:30rpx;
 		margin-right: 10rpx;
 		position: absolute;
+		border:1rpx solid #e8e8e8;
+		border-radius: 5rpx;
 		@include flexCenter;
+		text-align: center;
+		line-height: 28rpx;
 		left:16rpx;
 		top:4rpx;
 	}
@@ -227,8 +244,7 @@
 		height:30rpx;
 		line-height:30rpx;
 		font-size: 18rpx;
-		
-		color: #fff;
+		color: #333;
 		@include flexCenter;
 	}
 	.hide-text{
@@ -239,7 +255,7 @@
 	}
 	.title-text{
 		font-size: 25rpx;
-		
+		font-weight: 300;
 		color: #333333;
 	}
 	.goods-priceMsg{
