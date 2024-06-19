@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-12-16 16:23:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-10-12 16:33:36
+ * @LastEditTime: 2024-06-19 13:47:39
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -43,7 +43,25 @@
         </view>
 
         <upWeight :show.sync="showUpWeight" :equitycard="equitycard" :short_description="short_description" :monthly_cards="monthly_cards" :goodCode="goodCode" @equitycardUse="refresh"/>
-        <advertising :show.sync="adPopup.show" :goodCode="adPopup.goodCode" />
+        <advertising :show.sync="adPopup.show" :goodCode="adPopup.goodCode" :slogan="adPopup.slogan" />
+
+        <u-popup :show="showAdSlogan.show" mode="center" @close="showAdSlogan.show=false">
+            <view class="popup-content">
+                <view class="tipsTitle">广告推广</view>
+        
+                <view class="slogan-box">
+                    <view class="slogan-title">广告标语：</view>
+                    <u--input class="slogan-input" v-model="showAdSlogan.slogan" />
+                </view>
+                <view class="slogan-box" @click="sloganCheck=!sloganCheck">
+                    <view class="bottom-gm-gx" :class="{ 'bottom-gm-check': sloganCheck }"></view>设为默认
+                </view>
+                <view class="slogan-box btn-box">
+                    <view class="btn" @click="showAdSlogan.show=false">取消</view>
+                    <view class="btn con-btn" @click="onClickConfirmSlogan">确认</view>
+                </view>
+            </view>
+		</u-popup>
     </view>
 </template>
 
@@ -77,8 +95,15 @@
         showUpWeight = false;
         adPopup = {
             show:false,
-            goodCode:""
+            goodCode:"",
+            slogan:""
         }
+        showAdSlogan = {
+            show:false,
+            goodCode:"",
+            slogan:""
+        }
+        sloganCheck=false;
         onLoad(query: any) {
             this.reqNewData()
         }
@@ -115,9 +140,22 @@
             })
         }
         onClickShowAd(goodCode=""){
+            this.showAdSlogan = {
+                show:true,
+                goodCode,
+                slogan:uni.getStorageSync("adSlogan") || ""
+            }
+            
+        }
+        onClickConfirmSlogan(){
+            const { goodCode, slogan } = this.showAdSlogan
+            if(this.sloganCheck) uni.setStorageSync("adSlogan",slogan);
+            this.showAdSlogan.show=false;
+            this.sloganCheck=false;
             this.adPopup = {
                 show:true,
-                goodCode
+                goodCode,
+                slogan
             }
         }
     }
@@ -278,5 +316,105 @@
         line-height: 52rpx;
         background: #FA1545;
         color:#FFFFFF
+    }
+    @mixin lineBox {
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+    }
+
+    @mixin font($size) {
+        font-size: $size;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .popup-content {
+        @include lineBox;
+        width: 700rpx;
+        flex-direction: column;
+        align-items: center;
+        padding:30rpx 100rpx;
+
+        .title {
+            @include font(42rpx)
+        }
+        .tipsTitle{
+            font-weight:bold;
+            @include font(32rpx);
+            margin-bottom: 100rpx
+        }
+        .slogan-box{
+            @include lineBox;
+            flex-wrap: wrap;
+            margin-bottom: 20rpx;
+            .slogan-title{
+                width: 100%;
+                @include font(28rpx);
+                font-weight: 400;
+            }
+            .slogan-input{
+                @include font(28rpx);
+                margin-top: 10rpx;
+                font-weight:400;
+            }
+        }
+        .image {
+            width: 292rpx;
+            height: 235rpx;
+            transform: scale(1.2);
+            margin: 76rpx 0 100rpx 0
+        }
+
+        .btn {
+            @include font(36rpx);
+            width: 240rpx;
+            height: 80rpx;
+            border:0.8px solid #959695;
+            border-radius: 3rpx;
+            text-align: center;
+            line-height: 80rpx;
+            margin-top:30rpx;
+        }
+        .con-btn{
+            border:0.8px solid #FA1545;
+            background: #FA1545;
+            color:#fff;
+        }
+        .tips {
+            @include lineBox;
+            font-size: 24rpx;
+            
+            font-weight: 400;
+            color: #E6E6E6;
+            justify-content: center;
+            align-items: center;
+            .icon {
+                width: 24rpx;
+                height: 24rpx;
+                margin-right: 10rpx;
+            }
+        }
+        .btn-box{
+            justify-content: space-between;
+        }
+        .tips-btn{
+            font-size: 28rpx;
+            margin-top: 20rpx;
+        }
+        .bottom-gm-gx {
+            width: 30rpx;
+            height: 30rpx;
+            background: url(@/static/userinfo/weixuan@2x.png) no-repeat center;
+            background-size: 100% 100%;
+            margin-right: 10rpx;
+        }
+        .bottom-gm-check {
+            width: 30rpx;
+            height: 30rpx;
+            background: url(@/static/userinfo/pay_gou.png) no-repeat center;
+            background-size: 100% 100%;
+            margin-right: 10rpx;
+        }
     }
 </style>

@@ -301,6 +301,7 @@ export default class HttpRequest {
 				errorCb&&errorCb(response.data.msg)
 			}
 		}).catch((error: any) => {
+			if (errorCb) errorCb()
 			if (reqUrl == 'dataApi/home') {
 				uni.showToast({
 					title: '网络异常',

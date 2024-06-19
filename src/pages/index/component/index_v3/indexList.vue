@@ -109,7 +109,8 @@
 				indexMenu,
 				capsuleCurrent:0,
 				goodsList:[],
-				refreshing:false
+				refreshing:false,
+				adPlace:{}
 			}
 		},
 		watch:{
@@ -164,7 +165,7 @@
 				}
 				app.http.GetWithCrypto(`dataApi/goodlist/forsale/${urlNamr}`, params, (data) => {
 					this.currentItem.noMoreData = data.isFetchEnd;
-				
+
 					const goodList = this.listSort(data.goodList,data.adPlace,fetchFrom);
 					if (goodList) {
 						const list = fetchFrom == 1 ? goodList : [...this.currentItem.list,...goodList];
@@ -175,21 +176,27 @@
 					this.refreshing = false;
 					cb && cb()
 				});
+				
 			},
 			listSort(goodList=[],adPlace={},fetchFrom){
-				if(this.current!=0 || fetchFrom!=1) return goodList;
+				if(this.current!=0) return goodList;
 
 				const { dyBroadcast=[] } = this.homeData;
-				if(dyBroadcast.length){
-					adPlace[4] = dyBroadcast;
+				if(fetchFrom==1){
+					this.adPlace = adPlace;
+					dyBroadcast.length&&(this.adPlace[4] = dyBroadcast)
 				}
-				Object.keys(adPlace).forEach(key => {  
-					const data = {
-						special_type:key==4?'dyBroadcast':'ad',
-						goodCode:`ad${key}`,
-						list:adPlace[key]
+				Object.keys(this.adPlace).forEach(key => {
+					const index = key-1-this.currentItem.list.length;
+					if(index <= goodList.length){
+						const data = {
+							special_type:key==4?'dyBroadcast':'ad',
+							goodCode:`ad${key}`,
+							list:this.adPlace[key]
+						}
+						goodList.splice(index, 0, data); 
+						delete this.adPlace[key]
 					}
-					goodList.splice((key-1), 0, data); 
 				});
 				return goodList
 			},

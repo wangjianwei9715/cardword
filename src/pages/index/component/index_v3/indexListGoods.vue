@@ -1,48 +1,47 @@
 <template>
-	<div>
-		<div v-if="data.special_type" class="goods-container">
-			
+	<div v-if="data.special_type" class="goods-container">
+		<!-- 边播边拆 -->
+		<div v-if="data.special_type=='dyBroadcast'" class="dyBroadcast" @click="onClickGoDyBroadcast"></div>
+	</div>
+	<!-- 普通商品 -->
+	<div v-else class="goods-container">
+		<div class="goods-content" @click="goGoodsDetails()">
+			<image class="goods-pic" :src="getGoodsImg(decodeURIComponent(data.pic))"/>
+			<div class="goods-header u-line-2">
+				<div class="cardicon">
+					<image class="icon-image" :src="`/static/goods/icon_b${goodsData.iconSrc}.png`"></image>
+					<text class="icon-text">{{goodsData.typeName}}</text>
+				</div>
+				<!-- #ifdef APP-NVUE -->
+				<rich-text class="richtext" :selectable="false" space="ensp" :nodes="nodes"></rich-text>
+				<!-- #endif -->
+				<!-- #ifndef APP-NVUE -->
+				<text class="title-text u-line-2" style="text-indent: 100rpx;">{{data.title}}</text>
+				<!-- #endif -->
+			</div>
+			<div class="goods-priceMsg">
+				<div class="goods-priceMsg-left">
+					<text class="price-icon">￥</text>
+					<text class="price-text">{{ filterPrice(data.price).integer }}</text>
+					<text class="decimal"
+						v-if="filterPrice(data.price).decimal">{{ filterPrice(data.price).decimal }}</text>
+					<text class="lowest">{{hasLowestPrice(data)?'起':''}}</text>
+				</div>
+				<text v-if="[0,-1].includes(data.state)" class="goods-priceMsg-right">
+					{{$u.timeFormat(data.startAt,"mm-dd hh:MM")}}开售
+				</text>
+				<text v-else :id="data.goodCode" class="goods-priceMsg-right">
+					{{listPlan(data,'str')}}
+				</text>
+			</div>
+			<div class="goods-progress" :class="{'goods-progress-select':ifSelectType(data)}">
+				<div class="progressMask" :style="progressStyle"></div>
+			</div>
 		</div>
-		<!-- 普通商品 -->
-		<div v-else class="goods-container">
-			<div class="goods-content" @click="goGoodsDetails()">
-				<image class="goods-pic" :src="getGoodsImg(decodeURIComponent(data.pic))"/>
-				<div class="goods-header u-line-2">
-					<div class="cardicon">
-						<image class="icon-image" :src="`/static/goods/icon_b${goodsData.iconSrc}.png`"></image>
-						<text class="icon-text">{{goodsData.typeName}}</text>
-					</div>
-					<!-- #ifdef APP-NVUE -->
-					<rich-text class="richtext" :nodes="nodes"></rich-text>
-					<!-- #endif -->
-					<!-- #ifndef APP-NVUE -->
-					<text class="title-text u-line-2" style="text-indent: 100rpx;">{{data.title}}</text>
-					<!-- #endif -->
-				</div>
-				<div class="goods-priceMsg">
-					<div class="goods-priceMsg-left">
-						<text class="price-icon">￥</text>
-						<text class="price-text">{{ filterPrice(data.price).integer }}</text>
-						<text class="decimal"
-							v-if="filterPrice(data.price).decimal">{{ filterPrice(data.price).decimal }}</text>
-						<text class="lowest">{{hasLowestPrice(data)?'起':''}}</text>
-					</div>
-					<text v-if="[0,-1].includes(data.state)" class="goods-priceMsg-right">
-						{{$u.timeFormat(data.startAt,"mm-dd hh:MM")}}开售
-					</text>
-					<text v-else :id="data.goodCode" class="goods-priceMsg-right">
-						{{listPlan(data,'str')}}
-					</text>
-				</div>
-				<div class="goods-progress" :class="{'goods-progress-select':ifSelectType(data)}">
-					<div class="progressMask" :style="progressStyle"></div>
-				</div>
-			</div>
-			<div class="goods-bottom" @click="onClickSellerShop(data)">
-				<image class="merchant-logo" mode="aspectFill" :src="decodeURIComponent(data.merchantLogo)"/>
-				<image v-if="data.merchantLevel&&merchantLevelItem['icon']" class="avatar-level" :src="`/static/goods/v2/good_small_${merchantLevelItem['icon']}.png`" />
-				<text class="bussName">{{data.merchantName}}</text>
-			</div>
+		<div class="goods-bottom" @click="onClickSellerShop(data)">
+			<image class="merchant-logo" mode="aspectFill" :src="decodeURIComponent(data.merchantLogo)"/>
+			<image v-if="data.merchantLevel&&merchantLevelItem['icon']" class="avatar-level" :src="`/static/goods/v2/good_small_${merchantLevelItem['icon']}.png`" />
+			<text class="bussName">{{data.merchantName}}</text>
 		</div>
 	</div>
 	
@@ -91,7 +90,7 @@
 					name: 'div',
 					children: [
 						{ type: 'text', attrs: { class: 'hide-text' }, text: this.goodsData.typeName },
-						{ type: 'text', attrs: { class: 'title-text' }, text: this.data.title }
+						{ type: 'span', attrs: { class: 'title-text' }, text: this.data.title }
 					]
 				}]
 			},
@@ -110,9 +109,10 @@
 			},
 			onClickSellerShop({merchantAlias}) {
 				if(!merchantAlias) return
-				uni.navigateTo({
-					url:`/pages/merchant/core?alias=${merchantAlias}`
-				})
+				uni.navigateTo({ url:`/pages/merchant/core?alias=${merchantAlias}` })
+			},
+			onClickGoDyBroadcast(){
+				uni.navigateTo({ url:'/pages/goods/dyBroadcast' })
 			},
 			goGoodsDetails(){
 				app.navigateTo.goGoodsDetails(this.data.goodCode)
@@ -201,9 +201,11 @@
 		margin-top: 15rpx;
 	}
 	.richtext{
+		flex:1;
 		lines:2;
 		text-overflow: ellipsis;
-		word-wrap:anywhere;
+		font-family:PingFangSC-Light;
+		word-wrap:anywhere
 	}
 	.cardicon{
 		width: 90rpx;
@@ -223,13 +225,14 @@
 	}
 	.icon-text{
 		height:30rpx;
+		line-height:30rpx;
 		font-size: 18rpx;
 		font-weight: 400;
 		color: #fff;
 		@include flexCenter;
 	}
 	.hide-text{
-		font-size: 23rpx;
+		font-size: 24rpx;
 		font-weight: 400;
 		background:rgba(0,0,0,0);
 		color:rgba(0,0,0,0)
@@ -333,5 +336,9 @@
 		z-index: 1;
 		width: 21rpx;
 		height:17rpx;
+	}
+	.dyBroadcast{
+		height:484rpx;
+		background:red
 	}
 </style>
