@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-28 11:43:29
+ * @LastEditTime: 2024-06-19 15:50:57
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -1388,8 +1388,6 @@
 			display: flex;
 			align-items: center;
 			font-size: 32rpx;
-			
-			font-weight:400;
 			color: #333333;
 			justify-content: center;
 			box-sizing: border-box;
@@ -1505,8 +1503,6 @@
 	.special-explain {
 		width: 100%;
 		font-size: 27rpx;
-		
-		
 		color: #333333;
 		line-height: 43rpx;
 		margin-bottom: 30rpx;
@@ -1551,18 +1547,14 @@
 	}
 
 	.detail-bottom-explain {
-		
 		font-size: 26rpx;
-		font-weight: 600;
 		color: #818080;
 		line-height: 40rpx;
 		margin-bottom: 30rpx;
 	}
 
 	.detail-bottom-explain-title {
-		
 		font-size: 27rpx;
-		font-weight: 600;
 		color: #333;
 		line-height: 40rpx;
 		margin-bottom: 10rpx;
