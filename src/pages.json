@@ -1,15 +1,7 @@
-/*
- * @Author: lsj a1353474135@163.com
- * @Date: 2023-06-13 10:58:55
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-06-17 09:31:15
- * @FilePath: \jichao_app_2\src\pages.json
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
- {
+{
 	"pages": [
 		{
-			"path": "pages/index/index",
+			"path": "pages/index/index_v3",
 			"style": {
 				"navigationStyle": "custom",
 				"disableScroll":true,
@@ -21,7 +13,7 @@
 			}
 		},
 		{
-			"path": "pages/index/index_v3",
+			"path": "pages/index/index",
 			"style": {
 				"navigationStyle": "custom",
 				"disableScroll":true,
@@ -130,17 +122,6 @@
 			}
 		},
 		{
-			"path": "pages/login/login",
-			"style": {
-				"navigationBarTitleText": "登录",
-				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTextStyle": "black",
-				"app-plus": {
-					"softinputMode": "adjustPan"
-				}
-			}
-		},
-		{
 			"path": "pages/login/login_oneKey",
 			"style": {
 				// "navigationStyle": "custom",
@@ -238,16 +219,16 @@
 		"height": "52px",
 		"list": [
 			{
-				"pagePath": "pages/index/index",
+				"pagePath": "pages/index/index_v3",
 				"iconPath":"static/index/tabbar/1_b.png",
 				"selectedIconPath":"static/index/tabbar/1.png",
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/index/index_v3",
+				"pagePath": "pages/index/index",
 				"iconPath":"static/index/tabbar/1_b.png",
 				"selectedIconPath":"static/index/tabbar/1.png",
-				"text": "首页2"
+				"text": "首页"
 			},
 			{
 				"pagePath": "pages/illustration/index",

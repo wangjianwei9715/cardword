@@ -91,7 +91,7 @@ export default {
                 // if (res.confirm) {
                 //     // this.leaveRoom()
                 //     uni.switchTab({
-                //         url: "/pages/index/index"
+                //         url: "/pages/index/index_v3"
                 //     });
                 // }
                 app.navigateTo.switchTab(0)

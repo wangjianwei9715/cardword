@@ -182,11 +182,6 @@
 		top:50%;
 		margin-top: -26rpx;
 	}
-	.icon-live{
-		width: 51rpx;
-		height:52rpx;
-		background: url(@/static/index/v3/icon_live.png) no-repeat center / 100% 100%;
-	}
 	.sousuo-icon {
 		position: absolute;
 		left:32rpx;

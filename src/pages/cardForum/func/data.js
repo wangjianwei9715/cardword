@@ -56,7 +56,7 @@ export const CardForumTagMap = {
 export const CardForumTabbar = [
     {
         text: '首页',
-        pagePath: "/pages/index/index",
+        pagePath: "/pages/index/index_v3",
         iconPath: "/static/index/tabbar/1_.png"
     },
     {

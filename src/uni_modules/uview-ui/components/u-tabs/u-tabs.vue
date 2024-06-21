@@ -6,7 +6,6 @@
 				<scroll-view :scroll-x="scrollable" :scroll-left="scrollLeft" scroll-with-animation
 					class="u-tabs__wrapper__scroll-view" :show-scrollbar="false" ref="u-tabs__wrapper__scroll-view">
 					<view class="u-tabs__wrapper__nav" ref="u-tabs__wrapper__nav">
-
 						<template v-if="customType == 'goods_animeTv'">
 							<view class="u-tabs__wrapper__nav__item" v-for="(item, index) in list" :key="index"
 								@tap="clickHandler(item, index)" :ref="`u-tabs__wrapper__nav__item-${index}`"
@@ -65,10 +64,13 @@
 								:style="[$u.addStyle(itemStyle), { flex: scrollable ? '' : 1,position:'relative' }]"
 								:class="[`u-tabs__wrapper__nav__item-${index}`, item.disabled && 'u-tabs__wrapper__nav__item--disabled']">
 								<text :class="[item.disabled && 'u-tabs__wrapper__nav__item__text--disabled']"
-									class="u-tabs__wrapper__nav__item__text" :style="[textStyle(index)]">{{ item[keyName]
+									class="u-tabs__wrapper__nav__item__text" :style="[textStyle(index)]">{{ picNameIndex>=0&&picNameIndex==index?'':item[keyName]
 									}}</text>
 								<view class="u-tabs_sort" v-if="item.sort" @click="onClickSort(item.sort,index)">
 									<slot name="sort"></slot>
+								</view>
+								<view v-if="picNameIndex>=0&&picNameIndex==index">
+									<slot name="picName"></slot>
 								</view>
 								<u-badge :show="!!(item.badge && (item.badge.show || item.badge.isDot || item.badge.value))"
 									:isDot="item.badge && item.badge.isDot || propsBadge.isDot"

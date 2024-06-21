@@ -64,6 +64,10 @@ export default {
         customType:{
             type:String,
             default:""
+        },
+        picNameIndex:{
+            type:Number|String,
+            default:-1
         }
     }
 }

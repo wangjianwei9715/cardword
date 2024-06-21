@@ -37,9 +37,7 @@
 							uni.removeStorageSync("token");
 							app.token = {accessToken:'',refreshToken:''};
 							uni.setStorageSync('reLaunch',true);
-							uni.reLaunch({
-								url: "/pages/index/index",
-							});
+							app.navigateTo.reLaunchIndex()
 						})
 					}
 				}
