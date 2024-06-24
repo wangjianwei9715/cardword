@@ -3,7 +3,7 @@
 		<view id="pageTopContainer" class="navigation-header" :style="{ backgroundColor: `rgba(${navColor},${scrollTopPercent})` }">
 			<view class="content" :style="'height:' + statusBarHeight + 'px'"></view>
 			<view class="tab-header">
-				<view class="icon-back" :class="{'icon-back-white':scrollTopPercent<1}" v-show="showBack" @click="onClickBack"></view>
+				<view class="icon-back" :class="{'icon-back-white':scrollTopPercent<1 && !colorBlack}" v-show="showBack" @click="onClickBack"></view>
 				<view class="header-title">
 					<u-tabs :list="titles" lineHeight="0" :activeStyle="activeStyle" :inactiveStyle="inactiveStyle" itemStyle="height:88rpx;line-height:88rpx;" :current="current" @click="onClickTabs"></u-tabs>
 				</view>
@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import BaseComponent from "@/base/BaseComponent.vue";
 import { app } from "@/app";
 @Component({})
@@ -46,6 +46,8 @@ export default class navigationbar extends BaseComponent {
 	backColor?:string
 	@Prop({ default: 0 })
 	current!:number
+	@Prop({ default: false })
+	colorBlack ?:Boolean
 	operationShow = false;
 	statusBarHeight = app.statusBarHeight;
 	MAX_HEIGHT:any=0;
@@ -62,6 +64,10 @@ export default class navigationbar extends BaseComponent {
 		"color":"rgba(255,255,255,0.6)",
 	}
 	created() {//在实例创建完成后被立即调用
+		if(this.colorBlack){
+			this.activeStyle.color = "#333"
+			this.inactiveStyle.color = "#333"
+		}
 	}
 	mounted() {//挂载到实例上去之后调用
 		this.$nextTick(() => {
@@ -87,6 +93,7 @@ export default class navigationbar extends BaseComponent {
 	}
 	setPageScroll(scroll:any) {
 		this.scrollTop = scroll.scrollTop
+		if(this.colorBlack) return
 		if(this.scrollTopPercent>=1){
 			this.activeStyle.color = "#333"
 			this.inactiveStyle.color = "#333"

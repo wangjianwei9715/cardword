@@ -1,19 +1,15 @@
 <template>
 	<view class="content">
-		<view class="header-banner">
-			<statusbar />
-			<view class="tab-header">
-				<view class="icon-back" @click="onClickBack">&#xe582;</view>
-				<view class="header-search" @click="onClickLiveSearch">
-					<view class="sousuo-icon"></view>
-					<view style="padding-left:80rpx;color:#A3A3A3;font-size:25rpx">{{liveData.q||'商品/商家/直播'}}</view>
-					<view class="search-btn">搜索</view>
+		<navigationbarTabs ref="rNavigationbarTabs" :colorBlack="true" :titles="titles" :current="headerCurrent" backColor="#fff" backgroundColor="rgba(0,0,0,0)" @tabsClisk="onClickListTabs"/>
+		<view class="header-container">
+			<view class="search-container">
+				<view class="search-box" @click="onClickLiveSearch">
+					<image class="search-icon" src="@/static/index/v3/icon_search.png"></image>
+					<text class="search-text">{{liveData.q||'商品/商家/直播'}}</text>
 				</view>
 			</view>
-			<tabc class="live-tabc" :tabc="tabData" :tabsCheck="liveData.liveTabCheck" @tabsClick="onClickListTabs"></tabc>
 		</view>
 		<view class="tab-center">
-			<statusbar />
 			<view class="live-content">
 				<liveslist :liveList="liveList" />
 			</view>
@@ -29,13 +25,23 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
-	@Component({})
+	import navigationbarTabs from "@/components/navigationbarTabs/navigationbarTabs.vue"
+	const titles = [
+		{id:0,name:'我的',http:'me/broadcast'},
+		{id:1,name:'直播',http:'dataApi/broadcast/list/living'},
+		{id:2,name:'回放',http:'dataApi/broadcast/list/playback'},
+	]
+	@Component({
+		components:{navigationbarTabs}
+	})
 	export default class ClassName extends BaseNode {
+		titles = titles;
 		tabData = [
 			{id:1,name:'直播拆卡',http:'dataApi/broadcast/list/living'},
 			{id:2,name:'拆卡回放',http:'dataApi/broadcast/list/playback'},
 			{id:3,name:'我的拆卡',http:'me/broadcast'}
 		];
+		headerCurrent = 1;
 		liveList = [];
 		liveData = {
 			pageIndex:1,
@@ -54,6 +60,10 @@
 			})
 			this.reqNewLiveList()
 		}
+		onPageScroll(data: any) {
+			//@ts-ignore
+			this.$refs.rNavigationbarTabs.setPageScroll(data)
+		}
 		onReachBottom() {
 			this.reqNewLiveList();
 		}
@@ -61,6 +71,11 @@
 			this.liveData.pageIndex = 1;
 			this.liveData.q = q;
 			this.liveData.noMoreData = false
+		}
+		onTabsClick(e:any){
+			if(e.index == this.headerCurrent) return;
+			this.headerCurrent = e.index;
+			console.log('this.headerCurrent=',this.headerCurrent)
 		}
 		onClickBack() {
 			app.platform.pageBack()
@@ -77,11 +92,12 @@
 				url: `/pages/live/live_find?q=${this.liveData.q}`
 			})
 		}
-		onClickListTabs(id: any) {
-			if (id == this.liveData.liveTabCheck) {
+		onClickListTabs({index,http}: any) {
+			if (index == this.liveData.liveTabCheck) {
 				return;
 			}
-			if (id == 3 && app.token.accessToken == ''){
+			this.headerCurrent = index;
+			if (index == 0 && app.token.accessToken == ''){
 				app.login.arouseLogin()
 				return;
 			}
@@ -90,8 +106,8 @@
 				pageSize:10,
 				noMoreData:false,
 				q:this.liveData.q,
-				liveTabCheck:id,
-				httpUrl:this.tabData[id-1].http,
+				liveTabCheck:index,
+				httpUrl:http,
 				once:false
 			}
 			this.reqNewLiveList()
@@ -123,7 +139,6 @@
 	.content{
 		width: 100%;
 		box-sizing: border-box;
-		background:#fff;
 	}
 	.header-banner {
 		width: 100%;
@@ -144,77 +159,11 @@
 		font-style: normal;
 		color: #000;
 	}
-	.tab-header {
-		width: 750rpx;
-		height: 104rpx;
-		display: flex;
-		box-sizing: border-box;
-		padding: 0 35rpx 0 20rpx;
-		z-index: 10;
-		align-items: center;
-		justify-content: space-between;
-	}
-	.header-search {
-		width: 614rpx;
-		height: 71rpx;
-		border: 3rpx solid #333333;
-		border-radius: 5rpx;
-		display: flex;
-		align-items: center;
-		box-sizing: border-box;
-		position: relative;
-		box-sizing: border-box;
-		padding-right: 10rpx;
-	}
-	.search-btn{
-		width: 100rpx;
-		height: 52rpx;
-		background: #FA1545;
-		border-radius: 5rpx;
-		font-size: 29rpx;
-		
-		font-weight: 600;
-		color: #FFFFFF;
-		text-align: center;
-		line-height: 52rpx;
-		position: absolute;
-		right:10rpx;
-		top:50%;
-		margin-top: -26rpx;
-	}
-	.sousuo-icon {
-		position: absolute;
-		left:32rpx;
-		top:50%;
-		margin-top: -13rpx;
-		width: 26rpx;
-		height: 26rpx;
-		background: url(../../static/index/v3/search.png) no-repeat center /100% 100%;
-	}
-
-	.search-icon {
-		width: 113rpx;
-		height: 54rpx;
-		background: $btn-red;
-		border-radius: 30rpx;
-		position: absolute;
-		right: 3rpx;
-		top: 50%;
-		margin-top: -27rpx;
-		text-align: center;
-		line-height: 54rpx;
-		font-size: 28rpx;
-		
-		
-		color: #FFFFFF;
-		box-sizing: border-box;
-	}
 	.tab-center {
 		width: 100%;
 		height:100%;
 		box-sizing: border-box;
-		padding-top: 194rpx;
-		background: $content-bg
+		background: $content-bg;
 	}
 	.live-tabc{
 		padding:0 70rpx;
@@ -226,5 +175,44 @@
 		box-sizing: border-box;
 		background:$content-bg;
 		padding:20rpx 20rpx 20rpx 20rpx;
+	}
+	.header-container{
+		width: 750rpx;
+		height:288rpx;
+		background: url(@/static/index/v3/bg/live.png) no-repeat top/100% 288rpx;
+		position: relative;
+	}
+	.search-container{
+		width: 100%;
+		height: 105rpx;
+		background: #fff; 	
+		position: absolute;
+		bottom:0;
+		left:0;
+	}
+	.search-box{
+		width: 726rpx;
+		height: 65rpx;
+		background: #F6F7FB; 	
+		border-radius: 5rpx;
+		position: absolute;
+		bottom:20rpx;
+		left:50%;
+		margin-left: -363rpx;
+		padding-left: 81rpx;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+	}
+	.search-icon {
+		position: absolute;
+		left:33rpx;
+		top:20rpx;
+		width: 28rpx;
+		height: 29rpx;
+	}
+	.search-text{
+		font-size: 26rpx;
+		color: #B0B0B0;
 	}
 </style>

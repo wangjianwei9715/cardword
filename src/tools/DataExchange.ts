@@ -1,3 +1,13 @@
+export const gameplayType = {
+    1:{ name:"卡种随机", color:"#FA1545", progressLeft:"#FFBAC9", progressRight:"#FA1545" },
+    2:{ name:"球队随机", color:"#1FDFCB", progressLeft:"#92FBFA", progressRight:"#0ACDB8" },
+    3:{ name:"球员随机", color:"#ECBE32", progressLeft:"#FFF772", progressRight:"#E8B929" },
+    4:{ name:"卡盒随机", color:"#FA1545", progressLeft:"#FFBAC9", progressRight:"#FA1545" },
+    5:{ name:"卡包随机", color:"#FA1545", progressLeft:"#FFBAC9", progressRight:"#FA1545" },
+    10:{ name:"球队自选", color:"#2A93FF", progressLeft:"#9AF2FF", progressRight:"#1F85EE" },
+    11:{ name:"选队随机", color:"#692EFF", progressLeft:"#DDBBFF", progressRight:"#5E23F3" },
+    12:{ name:"卡种自选", color:"#FA1545", progressLeft:"#FFBAC9", progressRight:"#FA1545" }
+}
 // 首页tab列表
 export const indexMenu = {
     front:[
