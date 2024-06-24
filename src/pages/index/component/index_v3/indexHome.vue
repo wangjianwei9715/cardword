@@ -39,13 +39,13 @@
 					</div>
 				</div>
 			</div>
-			<div class="feature-box feature-center">
+			<div class="feature-box feature-center" @click="onClickGoProgressRank">
 				<text class="feature-title">即将组齐</text>
 				<div class="feature-pic-box">
 					<!-- <image class="feature-pic" :src="decodeURIComponent()" mode="aspectFill" /> -->
 				</div>
 			</div>
-			<div class="feature-box">
+			<div class="feature-box" @click="onClickSeries">
 				<text class="feature-title">推荐系列</text>
 				<div class="feature-pic-box">
 					<!-- <image class="feature-pic" :src="decodeURIComponent()" mode="aspectFill" /> -->
@@ -90,6 +90,14 @@
 			},
 			onClickToAD(target) {
 				app.navigateTo.navigateToAD(target)
+			},
+			onClickSeries(){
+				uni.navigateTo({
+					url:`/pages/goods/goods_seriesDetail?seriesId=2`
+				})
+			},
+			onClickGoProgressRank(){
+				uni.navigateTo({ url:'/pages/goods/goods_progressRank' })
 			},
 			onClickJumpUrl({ needLogin, name, url }) {
 				if (needLogin) {
