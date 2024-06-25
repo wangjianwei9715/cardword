@@ -43,7 +43,7 @@
 						<text class="ad-lowest">{{hasLowestPrice(data)?'起':''}}</text>
 					</div>
 					<text v-if="[0,-1].includes(data.state)" class="ad-goods-priceMsg-right">
-						{{$u.timeFormat(data.startAt,"mm-dd hh:MM")}}开售
+						{{timeFormat(data.startAt)}}开售
 					</text>
 					<text v-else :id="data.goodCode" class="ad-goods-priceMsg-right">
 						{{listPlan(data,'str')}}
@@ -93,7 +93,7 @@
 						<text class="lowest">{{hasLowestPrice(data)?'起':''}}</text>
 					</div>
 					<text v-if="[0,-1].includes(data.state)" class="goods-priceMsg-right">
-						{{$u.timeFormat(data.startAt,"mm-dd hh:MM")}}开售
+						{{timeFormat(data.startAt)}}开售
 					</text>
 					<text v-else :id="data.goodCode" class="goods-priceMsg-right">
 						{{listPlan(data,'str')}}
@@ -227,6 +227,9 @@
 			ifSelectType(item) {
 				const allowedTypes = [10, 11, 12];
 				return allowedTypes.includes(item.pintuan_type);
+			},
+			timeFormat(time){
+				return uni.$u.timeFormat(time,"mm-dd hh:MM")
 			}
 		}
 	}

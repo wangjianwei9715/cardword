@@ -5,6 +5,7 @@
 				<image v-if="homeListBg[index]" mode="widthFix" class="bg-image" :style="{height:homeListBg[index].height}" :src="homeListBg[index].src"/>
 			</div>
 			<div class="list-container" :style="listContainerStyle">
+				<indexSortTab v-if="index>1" @sortChange="onSortChange"/>
 				<!-- #ifdef APP-NVUE -->
 				<waterfall column-count="2" column-width="auto" :show-scrollbar="false" left-gap="6" right-gap="6" column-gap="6" @loadmore="reqNewMainList()" >
 					<refresh class="refresh" @refresh="reload(true)" :display="refreshing ? 'show' : 'hide'">
@@ -12,6 +13,10 @@
 					</refresh>
 					<header v-if="index==0">
 						<indexHome :headerAddList="headerAddList" :broadCast="homeBroadCast"/>
+					</header>
+					<header>
+						<indexSeries v-if="index==1"/>
+						<indexSortTab v-if="index==1" @sortChange="onSortChange"/>
 					</header>
 					<cell v-for="(item,index) in goodsList[index]?goodsList[index].list:[]" >
 						<indexListGoods :data="item"/>
@@ -31,6 +36,8 @@
 					<div v-if="index==0">
 						<indexHome :headerAddList="headerAddList" :broadCast="homeBroadCast"/>
 					</div>
+					<indexSeries v-if="index==1"/>
+					<indexSortTab v-if="index==1" @sortChange="onSortChange"/>
 					<div class="scroll-list-box">
 						<div class="scroll-index" v-for="item in goodsList[index]?goodsList[index].list:[]" >
 							<indexListGoods :data="item"/>
@@ -55,16 +62,25 @@
 	import { homeListBg } from "@/tools/DataExchange.js"
 	import indexListGoods from './indexListGoods.vue'
 	import indexHome from './indexHome.vue'
+	import indexSeries from './indexSeries.vue'
+	import indexSortTab from './indexSortTab.vue'
 	class ListParams {
 		fetchFrom=1;
 		fetchSize=10;
 		noMoreData=false;
 		empty=false;
 	}
+	class Sort {
+		pintuan_type=null;
+		genre=0;
+		od=""
+	}
 	export default {
 		components:{
 			indexListGoods,
-			indexHome
+			indexHome,
+			indexSeries,
+			indexSortTab
 		},
 		props: {
 			current:{
@@ -86,7 +102,8 @@
 				homeListBg,
 				goodsList:[],
 				refreshing:false,
-				adPlace:{}
+				adPlace:{},
+				sortData:{}
 			}
 		},
 		watch:{
@@ -132,6 +149,10 @@
 			onChangeCurrent(e){
 				this.$emit('update:current', e.detail.current)
 			},
+			onSortChange(data){
+				this.$set(this.sortData, this.current, data)
+				this.reload()
+			},
 			reload(pullingdown=false){
 				pullingdown&&(this.refreshing=true);
 				setTimeout(()=>{
@@ -140,12 +161,14 @@
 				},pullingdown?1000:0);
 			},
 			reqNewMainList(cb) {
-				const { fetchFrom, fetchSize, noMoreData } = this.currentItem;
+				const { fetchFrom,fetchSize,noMoreData } = this.currentItem;
 				if (noMoreData) return;
 				const urlNamr = this.tabs[this.current].url;
-				const params = {
-					fetchFrom,
-					fetchSize,
+				const sort = this.sortData[this.current]|| {}
+				const params = { 
+					fetchFrom, 
+					fetchSize, 
+					...sort
 				}
 				app.http.GetWithCrypto(`dataApi/goodlist/forsale/${urlNamr}`, params, (data) => {
 					this.currentItem.noMoreData = data.isFetchEnd;
@@ -168,7 +191,8 @@
 				const { dyBroadcast=[] } = this.homeData;
 				if(fetchFrom==1){
 					this.adPlace = adPlace;
-					dyBroadcast.length&&(this.adPlace[4] = dyBroadcast)
+					// dyBroadcast.length&&(this.adPlace[4] = dyBroadcast)
+					this.adPlace[4] = [{ad:1}]
 				}
 				Object.keys(this.adPlace).forEach(key => {
 					const index = key-1-this.currentItem.list.length;

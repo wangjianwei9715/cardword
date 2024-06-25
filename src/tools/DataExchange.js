@@ -25,7 +25,7 @@ export const goodsTabs = [
     {name:'推荐',id:2,url:'main'},
     {name:'篮球',id:3,url:'basketball'},
     {name:'足球',id:4,url:'football'},
-    {name:'动漫影视',id:5,url:'animeTv'},
+    {name:'宝可梦',id:5,url:'animeTv'},
     {name:'综合体育',id:6,url:'zhty'},
     {name:'其他',id:7,url:'other'},
 ]

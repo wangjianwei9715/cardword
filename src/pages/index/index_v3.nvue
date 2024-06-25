@@ -20,7 +20,7 @@
 			</div>
 			<!-- tabs -->
 			<u-tabs class="tabs-container" picNameIndex="3" :list="goodsTabs" :current="goodsTabCurrent" lineHeight="0" @click="clickGoodsTabs"
-				:itemStyle="{height:'44px',padding:'0 24rpx'}"
+				:itemStyle="{height:'44px',padding:'0 25rpx'}"
 				:inactiveStyle="{fontSize:'26rpx',color:'#8D8D8D'}"
 				:activeStyle="{fontSize:'30rpx',color:'#333333',fontWeight:500}"
 			>
