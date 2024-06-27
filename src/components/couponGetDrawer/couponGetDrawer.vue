@@ -1,6 +1,6 @@
 
 <template>
-    <view class="content">
+    <view>
         <bottomDrawer title="领取优惠券" :showDrawer.sync="showValue" drawerBg="#F5F7FB">
             <!-- <view class="coupon-list"> -->
                 <scroll-view scroll-y="true" class="coupon-list" @scrolltolower="lower">

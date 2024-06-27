@@ -76,7 +76,7 @@
 						<text class="icon-text" :style="{color:goodsTypeData.color}">{{goodsData.typeName.slice(0,2)}}</text>
 						<text class="icon-text">{{goodsData.typeName.slice(2)}}</text>
 					</div>
-					<text class="title-text u-line-2" style="text-indent: 100rpx;">{{data.title}}</text>
+					<text class="title-text u-line-2" style="text-indent: 70rpx;">{{data.title}}</text>
 					<!-- #endif -->
 				</div>
 				<div class="goods-merchant" @click="onClickSellerShop(data)">
@@ -299,24 +299,22 @@
 		font-weight: 300;
 	}
 	.cardicon{
-		width: 90rpx;
-		height:30rpx;
+		width:66rpx;
+		height:21rpx;
 		margin-right: 10rpx;
 		position: absolute;
 		border:1rpx solid #e8e8e8;
 		border-radius: 5rpx;
 		@include flexCenter;
 		text-align: center;
-		line-height: 28rpx;
+		line-height: 19rpx;
 		left:20rpx;
-		// #ifdef APP-NVUE
-		top:2rpx;
-		// #endif
+		top:8rpx;
 		font-weight: 600;
 	}
 	.icon-image{
-		width: 90rpx;
-		height:30rpx;
+		width: 66rpx;
+		height:21rpx;
 		position: absolute;
 		left:0;
 		top:0;
@@ -324,12 +322,12 @@
 	.icon-text{
 		height:30rpx;
 		line-height:30rpx;
-		font-size: 18rpx;
+		font-size: 14rpx;
 		color: #333;
 		@include flexCenter;
 	}
 	.hide-text{
-		font-size: 24rpx;
+		font-size: 18rpx;
 		background:rgba(0,0,0,0);
 		color:rgba(0,0,0,0)
 	}

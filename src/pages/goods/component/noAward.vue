@@ -2,7 +2,7 @@
 	<view v-if="awardList.length">
 		<view class="cardCode" :style="{width}" @click="onClickAward">
 			<view class="text">搓卡密 掉好物</view>
-			<view class="flex1" style="position: relative;height: 64rpx;justify-content: flex-end;display: flex;">
+			<view class="flex1" style="position: relative;height: 90rpx;justify-content: center;display: flex;">
 				<swiper class="swiper" autoplay="true" circular="true">
 					<swiper-item class="swiper-item" v-for="(item,index) in awardList" :key="index">
 						<image mode="aspectFit" v-for="(items,indexs) in item" :key="`card_${indexs}`" :src="parsePic(items)" class="pic"></image>
@@ -28,7 +28,7 @@
 		}
 	})
 	export default class ClassName extends BaseComponent {
-		@Prop({ default: "710rpx" })
+		@Prop({ default: "718rpx" })
 		width?: string;
 		@Prop({ default: 0 })
 		price?: number;
@@ -55,7 +55,7 @@
 			return result;
 		}
 		setAwardList(list:string[]){
-			this.awardList = this.splitArray(list,3) ;
+			this.awardList = this.splitArray(list,4) ;
 		}
 		onClickAward(){
 			this.$refs.rAwardPopup.showAwardPopup(this.goodCode)
@@ -69,44 +69,46 @@
 
 <style lang="scss" scoped>
 	.cardCode{
-		width: 710rpx;
-		height:92rpx;
+		width: 718rpx;
+		height:120rpx;
 		background-size: 100% 100%;
-		background-image: url("/static/goods/detail/noAward.png");
+		background-image: url("/static/goods/v3/cuoka_bg.png");
 		// margin-bottom: 6rpx;
 		display: flex;
 		align-items: center;
 		position: relative;
 		box-sizing: border-box;
+		padding-left: 26rpx;
 		.swiper{
 			position: absolute;
-			width: 240rpx;
-			height: 64rpx;
+			width: 510rpx;
+			height: 90rpx;
 			justify-content: flex-end;
 			flex-wrap: nowrap;
 			background:rgba(0,0,0,0);
 			.swiper-item{
+
 				display: inline-flex;
 				justify-content: flex-end;
 			}
 		}
 		.text{
-			height:42rpx;
+			width: 90rpx;
 			display: flex;
 			align-items: flex-start;
-			font-family: HYLiLiangHeiJ;
-			font-size: 34rpx;
-			color: #7380A1;
-			margin-left: 100rpx;
+			font-family: YouSheBiaoTiHei;
+			font-size: 30rpx;
+			color: #606B88;
+			line-height: 26rpx;
 		}
 		.flex1{
 			flex: 1;
 		}
 		.pic{
-			width: 64rpx;
-			height: 64rpx;
+			width: 90rpx;
+			height: 90rpx;
 			border-radius: 2rpx;
-			margin-left: 16rpx;
+			margin-left: 36rpx;
 		}
 		&-right {
 			width: 11rpx;

@@ -1,19 +1,8 @@
 <template name="goodslist">
 	<view class="like-content">
-		<view class="like-header">
-			<view class="icon-lx"/>猜你喜欢<view class="icon-lx"/>
-		</view>
+		<view class="like-header">· 猜你喜欢 ·</view>
 		<view class="like-list">
-			<view class="item" v-for="(item,index) in goodsList" :key="index" @click="goGoodsDetails(item.goodCode)">
-				<view class="like-pic-box">
-					<muqian-lazyLoad class="like-pic" :src="getGoodsImg(decodeURIComponent(item.pic))" borderRadius="3rpx"></muqian-lazyLoad>
-				</view>
-				<view class="like-title">{{item.title}}</view>
-				<view class="like-bottom">
-					<view class="like-price">￥<text>{{item.price}}</text></view>
-					<view class="like-plan">{{getPlan(item)}}</view>
-				</view>
-			</view>
+			<goodslist :goodsList="goodsList" @send="goGoodsDetails" :presell="false"/>
 		</view>
 	</view>
 </template>
@@ -80,20 +69,12 @@
 		height:100rpx;
 		display: flex;
 		align-items: center;
-		font-size: 23rpx;
-		
-		
-		color: #A5A5AA;
+		font-size: 22rpx;
+		color: #AAAFBD;
 		justify-content: center;
 	}
-	.icon-lx{
-		width:10rpx;
-		height:16rpx;
-		background:url(@/static/goods/v2/lx.png) no-repeat center / 100% 100%;
-		margin:0 16rpx;
-	}
 	.like-list{
-		width: 722rpx;
+		width: 750rpx;
 		box-sizing: border-box;
 		display: flex;
 		flex-wrap: wrap;

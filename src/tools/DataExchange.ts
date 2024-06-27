@@ -40,6 +40,16 @@ export const goodsTypeTitle: { [x: string]: any } = {
 	'yifen':'一分上组',
     'fresh':'最新上架'
 }
+export const countDownList = [
+    {type:'str',name:'剩'},
+    {type:'time',name:'days'},
+    {type:'str',name:'天'},
+    {type:'time',name:'hours'},
+    {type:'str',name:':'},
+    {type:'time',name:'minutes'},
+    {type:'str',name:':'},
+    {type:'time',name:'seconds'}
+]
 // 状态
 export var stateArray = [
     {

@@ -114,7 +114,7 @@
 
 <style lang="scss">
 	.good-act-content{
-		width: 710rpx;
+		width: 718rpx;
 		border-radius: 3rpx;
 		background:#fff;
 		margin-bottom: 14rpx;
@@ -122,19 +122,16 @@
 	.detail-act-box{
 		width: 100%;
 		box-sizing: border-box;
-		padding:7rpx 30rpx;
+		padding:7rpx 20rpx;
 		.act-box{
 			width: 100%;
-			min-height:76rpx;
 			display: flex;
-			align-items: center;
+			align-items: flex-start;
 			.act-box-name{
-				margin:26rpx 0;
+				margin:18rpx 0;
 				width:82rpx;
-				font-size: 26rpx;
-				
-				
-				color: #D9D9D9;
+				font-size: 22rpx;
+				color: #333333;
 				display: flex;
 				align-items: center;
 			}
@@ -143,7 +140,6 @@
 			}
 			.act-box-desc{
 				width: 587rpx;
-				min-height:76rpx;
 			}
 			.flex-between{
 				display: flex;
@@ -155,10 +151,8 @@
 				align-items: center;
 				box-sizing: border-box;
 				font-size: 25rpx;
-				
-				
 				color: #333333;
-				margin:26rpx 0;
+				margin:16rpx 0;
 			}
 		}
 		.detail-act-index{
@@ -188,9 +182,7 @@
 	}
 	.detail-act-desc{
 		width: 550rpx;
-		font-size: 26rpx;
-		
-		
+		font-size: 22rpx;
 		color: #333333;
 		overflow: hidden;
 		text-overflow:ellipsis;
@@ -262,6 +254,7 @@
 		margin-bottom: 15rpx;
 	}
 	.detail-act-right{
+		margin:22rpx 0;
 		width: 11rpx;
 		height:17rpx;
 		background:url(../../static/goods/v2/icon_right_new.png) no-repeat center;

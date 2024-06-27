@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-06-06 10:12:00
+ * @LastEditTime: 2024-06-27 13:41:43
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -127,10 +127,10 @@
 				<view class="tab-index" @click="onClickComplain"><view class="icon-tousu"></view>投诉订单</view>
 			</view>
 
-			<!-- 猜你喜欢 -->
-			<guessYouLikeIt v-if="orderData.good&&orderData.good.goodCode" :goodCode="orderData.good.goodCode" />
+			
 		</view>
-
+		<!-- 猜你喜欢 -->
+		<guessYouLikeIt v-if="orderData.good&&orderData.good.goodCode" :goodCode="orderData.good.goodCode" />
 		<!-- 底部按钮 -->
 		<view class="bottom-btn" v-if="operateData!='' && !orderRefund">
 			<view class="small-btn-content" >

@@ -3,14 +3,14 @@
  * @Author: wjw
  * @Date: 2024-01-30 09:24:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-02-05 13:28:24
+ * @LastEditTime: 2024-06-27 09:53:44
  * Copyright: 2024 .
  * @Descripttion: 
 -->
 <template>
 	<view>
-		<view class="header-base" @click="basePopupShow=true">
-			基础卡片<image class="icon-base" src="@/static/goods/detail/base.png"/>
+		<view class="base-container-header" @click="basePopupShow=true">
+			{{getPriceStart?'起':''}}/份精美卡片<image class="icon-base" src="@/static/goods/v3/icon_tips.png"/>
 		</view>
 		<baseCardPopup :show.sync="basePopupShow"/>
 	</view>
@@ -24,24 +24,27 @@
 		components:{baseCardPopup}
 	})
 	export default class ClassName extends BaseComponent {
+		@Prop({ default: false})
+		getPriceStart: boolean;
+		
 		basePopupShow=false
 	}
 </script>
 
 <style lang="scss" scoped>
-	.header-base{
+	.base-container-header{
 		height:40rpx;
-		font-size: 24rpx;
-		
-		
-		color: #FFFFFF;
+		font-size: 20rpx;
+		color: #AEAEB2;
 		display: flex;
 		align-items: center;
 		line-height: 40rpx;
+		font-weight: 300;
+		margin-left: 4rpx;
 	}
 	.icon-base{
-		width: 30rpx;
-		height:30rpx;
+		width: 18rpx;
+		height:18rpx;
 		margin-left: 8rpx;
 	}
 	.base-popup{
