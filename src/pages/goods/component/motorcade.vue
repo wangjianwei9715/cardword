@@ -123,12 +123,12 @@
 
 <style lang="scss">
 	.good-act-content{
-		width: 718;
+		width: 718rpx;
 		height: 60rpx;
 		background: url(@/static/goods/v3/chedui_bg.png) no-repeat center / 100% 100%;
 		box-sizing: border-box;
-		margin-bottom: 16rpx;
 		margin:0 auto;
+		margin-bottom: 16rpx;
 	}
 	.detail-act-box{
 		width: 100%;
@@ -162,7 +162,7 @@
 				height:32rpx;
 			}
 			.act-box-desc{
-				width: 550rpx;
+				width: 520rpx;
 				height: 42rpx;
 			}
 			.flex-between{
