@@ -29,33 +29,38 @@
 			</div>
 		</div>
 		<!-- 广告商品 -->
-		<div v-else-if="data.special_type=='ad'" class="ad-box">
-			<image class="goods-pic" :src="getGoodsImg(decodeURIComponent(data.pic))"/>
-			<image class="bg-top" src="/static/index/v3/ad_top.png"  @click="goGoodsDetails()"/>
-			<image class="bg-bottom" src="/static/index/v3/ad_bottom.png"/>
-			<div class="ad-goods-box">
-				<div class="ad-goods-header"  @click="goGoodsDetails()">
-					<div class="ad-goods-priceMsg-left">
-						<text class="ad-price-icon">￥</text>
-						<text class="ad-price-text">{{ filterPrice(data.price).integer }}</text>
-						<text class="ad-decimal"
-							v-if="filterPrice(data.price).decimal">{{ filterPrice(data.price).decimal }}</text>
-						<text class="ad-lowest">{{hasLowestPrice(data)?'起':''}}</text>
+		<swiper v-else-if="data.special_type=='ad'" class="ad-box" :disable-touch="data.list.length<2">
+			<swiper-item v-for="(item,index) in data.list" :key="index">
+				<image class="goods-pic" :src="getGoodsImg(decodeURIComponent(item.pic))"/>
+				<image class="bg-top" src="/static/index/v3/ad_top.png"  @click="goGoodsDetails(item.goodCode)"/>
+				<image class="bg-bottom" src="/static/index/v3/ad_bottom.png"/>
+				<div class="ad-goods-box">
+					<div class="ad-goods-header"  @click="goGoodsDetails(item.goodCode)">
+						<div class="ad-goods-priceMsg-left">
+							<text class="ad-price-icon">￥</text>
+							<text class="ad-price-text">{{ filterPrice(item.price).integer }}</text>
+							<text class="ad-decimal"
+								v-if="filterPrice(item.price).decimal">{{ filterPrice(item.price).decimal }}</text>
+							<text class="ad-lowest">{{hasLowestPrice(item)?'起':''}}</text>
+						</div>
+						<text v-if="[0,-1].includes(item.state)" class="ad-goods-priceMsg-right">
+							{{timeFormat(item.startAt)}}开售
+						</text>
+						<text v-else :id="item.goodCode" class="ad-goods-priceMsg-right">
+							{{listPlan(item,'str')}}
+						</text>
 					</div>
-					<text v-if="[0,-1].includes(data.state)" class="ad-goods-priceMsg-right">
-						{{timeFormat(data.startAt)}}开售
-					</text>
-					<text v-else :id="data.goodCode" class="ad-goods-priceMsg-right">
-						{{listPlan(data,'str')}}
-					</text>
+					<div class="ad-goods-center">
+						<text class="ad-goods-slogan u-line-1"  @click="goGoodsDetails(item.goodCode)">{{item.slogan}}</text>
+						<text class="ad-goods-title u-line-1"  @click="goGoodsDetails(item.goodCode)">{{item.title}}</text>
+						<text class="ad-goods-merchant u-line-1" @click="onClickSellerShop(item)">{{item.merchantName}}</text>
+					</div>
+					<div class="ad-goods-tips" v-if="data.list.length>1"> 
+						<text class="ad-tips-text">广告 {{index+1}}/{{data.list.length}}</text>
+					</div>
 				</div>
-				<div class="ad-goods-center">
-					<text class="ad-goods-slogan u-line-1"  @click="goGoodsDetails()">十重福利和十重福利！</text>
-					<text class="ad-goods-title u-line-1"  @click="goGoodsDetails()">{{data.title}}</text>
-					<text class="ad-goods-merchant u-line-1" @click="onClickSellerShop(data)">{{data.merchantName}}</text>
-				</div>
-			</div>
-		</div>
+			</swiper-item>
+		</swiper>
 	</div>
 	<!-- 普通商品 -->
 	<div v-else class="goods-container">
@@ -184,8 +189,8 @@
 			onClickGoDyBroadcast(){
 				uni.navigateTo({ url:'/pages/goods/dyBroadcast' })
 			},
-			goGoodsDetails(){
-				app.navigateTo.goGoodsDetails(this.data.goodCode)
+			goGoodsDetails(goodCode=""){
+				app.navigateTo.goGoodsDetails(goodCode||this.data.goodCode)
 			},
 			getGoodsImg(img) {
 				if (img.indexOf(',') == -1) {
@@ -575,6 +580,20 @@
 		bottom:0;
 		left:0;
 		z-index: 3;
+	}
+	.ad-goods-tips{
+		position: absolute;
+		bottom:10rpx;
+		right: 10rpx;
+		height:30rpx;
+		@include flexCenter;
+		border:1rpx solid #9FA4B0;
+		padding:0 6rpx;
+		border-radius: 4rpx;
+	}
+	.ad-tips-text{
+		font-size: 18rpx;
+		color: #9FA4B0;
 	}
 	.ad-goods-header{
 		width: 357rpx;

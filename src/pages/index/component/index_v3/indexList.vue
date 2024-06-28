@@ -178,7 +178,7 @@
 				app.http.GetWithCrypto(`dataApi/goodlist/forsale/${urlNamr}`, params, (data) => {
 					this.currentItem.noMoreData = data.isFetchEnd;
 
-					const goodList = this.listSort(data.goodList,data.adPlace,fetchFrom);
+					const goodList = this.listSort(data.goodList,data.slot?.adPlace,fetchFrom);
 					if (goodList) {
 						const list = fetchFrom == 1 ? goodList : [...this.currentItem.list,...goodList];
 						this.currentItem.list = app.platform.removeDuplicate(list,'goodCode');

@@ -205,7 +205,6 @@ page {
 	display: flex;
 	// margin:0 auto;
 	white-space: nowrap;
-	margin-bottom: 10rpx;
 	.scrollItem {
 		display: inline-flex;
 		width: 140rpx;
