@@ -16,8 +16,8 @@
 		<view class="goods-lists">
 			<statusbar />
 			<scroll-view class="goods-scroll" scroll-x="true" v-if='seriesShow' v-show="merchantList!=''">
-				<view class="scrollItem" v-for="(item,index) in merchantList" :key='index' @click="clickSerie(item,index)">
-					<muqian-lazyLoad class="merchant-logo" :src="decodeURIComponent(item.icon)" mode="aspectFit"></muqian-lazyLoad>
+				<view class="scrollItem" v-for="(item,index) in merchantList" :key='index' @click="onClickSellerShop(item)">
+					<muqian-lazyLoad class="merchant-logo" :src="decodeURIComponent(item.logo)" mode="aspectFit"></muqian-lazyLoad>
 					<view class="merchant-name u-line-2">{{item.name}}</view>
 					<view class="merchant-btn">进店</view>
 				</view>
@@ -42,18 +42,10 @@
 </template>
 
 <script lang="ts">
-	import {
-		app
-	} from "@/app";
-	import {
-		Component
-	} from "vue-property-decorator";
+	import { app } from "@/app";
+	import { Component } from "vue-property-decorator";
 	import BaseNode from "../../base/BaseNode.vue";
-	import {
-		goodsTabs,
-		stateArray,
-		palyArray
-	} from "@/tools/DataExchange";
+	import { goodsTabs } from "@/tools/DataExchange";
 	import indexSortTab from '@/pages/index/component/index_v3/indexSortTab.vue'
 	const navHeight = app.statusBarHeight + uni.upx2px(104)
 	@Component({components:{indexSortTab}})
@@ -101,8 +93,8 @@
 			this.searchText = '';
 			this.reqSearchList()
 		}
-		clickSerie(item: any, index ? : number) {
-			
+		onClickSellerShop(item: any) {
+			this.goMerchantPage(item.alias)
 		}
 		onReachBottom() {
 			this.reqNewData("reach");
@@ -126,7 +118,13 @@
 			app.navigateTo.goGoodsDetails(goodCode)
 		}
 		onSortChange(data){
-			this.sortParams = data;
+			this.sortParams = {
+				genre:data.genre,
+				sort:data.od
+			};
+			if(data.pintuan_type){
+				this.sortParams.ptType = data.pintuan_type
+			}
 			this.reqSearchList()
 		}
 		merchantSearch() {
@@ -134,7 +132,7 @@
 				"dataApi/merchant/search/list/brief", {
 					fetchFrom: 1,
 					fetchSize: 100,
-					q:this.searchText
+					q:encodeURIComponent(this.searchText)
 				},
 				(res: any) => {
 					this.merchantList = res.list || [];
@@ -149,7 +147,7 @@
 			let params: { [x: string]: any; } = {
 				state: 1,
 				pageSize: 10,
-				tp:this.goodsTabCurrent,
+				tp:goodsTabs[this.goodsTabCurrent].id,
 				q:encodeURIComponent(searchText),
 			};
 			if (type == "reach") {

@@ -5,7 +5,6 @@
 				<image v-if="homeListBg[index]" mode="widthFix" class="bg-image" :style="{height:homeListBg[index].height}" :src="homeListBg[index].src"/>
 			</div>
 			<div class="list-container" :style="listContainerStyle">
-				<indexSortTab v-if="index>1" @sortChange="onSortChange"/>
 				<!-- #ifdef APP-NVUE -->
 				<waterfall column-count="2" column-width="auto" :show-scrollbar="false" left-gap="6" right-gap="6" column-gap="6" @loadmore="reqNewMainList()" >
 					<refresh class="refresh" @refresh="reload(true)" :display="refreshing ? 'show' : 'hide'">
@@ -14,9 +13,11 @@
 					<header v-if="index==0">
 						<indexHome :headerAddList="headerAddList" :broadCast="homeBroadCast"/>
 					</header>
-					<header>
-						<indexSeries v-if="index==1"/>
-						<indexSortTab v-if="index==1" @sortChange="onSortChange"/>
+					<header v-if="index==1">
+						<indexSeries :seriesId.sync="seriesId" @onSeries="reload()"/>
+					</header>
+					<header v-if="index>=1" style="position:sticky">
+						<indexSortTab @sortChange="onSortChange"/>
 					</header>
 					<cell v-for="(item,index) in goodsList[index]?goodsList[index].list:[]" >
 						<indexListGoods :data="item"/>
@@ -36,8 +37,8 @@
 					<div v-if="index==0">
 						<indexHome :headerAddList="headerAddList" :broadCast="homeBroadCast"/>
 					</div>
-					<indexSeries v-if="index==1"/>
-					<indexSortTab v-if="index==1" @sortChange="onSortChange"/>
+					<indexSeries v-if="index==1" :seriesId.sync="seriesId" @onSeries="reload()"/>
+					<indexSortTab style="position:sticky" v-if="index>=1" @sortChange="onSortChange"/>
 					<div class="scroll-list-box">
 						<div class="scroll-index" v-for="item in goodsList[index]?goodsList[index].list:[]" >
 							<indexListGoods :data="item"/>
@@ -103,7 +104,8 @@
 				goodsList:[],
 				refreshing:false,
 				adPlace:{},
-				sortData:{}
+				sortData:{},
+				seriesId:null,
 			}
 		},
 		watch:{
@@ -165,10 +167,13 @@
 				if (noMoreData) return;
 				const urlNamr = this.tabs[this.current].url;
 				const sort = this.sortData[this.current]|| {}
-				const params = { 
+				let params = { 
 					fetchFrom, 
 					fetchSize, 
 					...sort
+				}
+				if(this.current==1&&this.seriesId>0){
+					params.iconId = this.seriesId
 				}
 				app.http.GetWithCrypto(`dataApi/goodlist/forsale/${urlNamr}`, params, (data) => {
 					this.currentItem.noMoreData = data.isFetchEnd;
@@ -191,8 +196,7 @@
 				const { dyBroadcast=[] } = this.homeData;
 				if(fetchFrom==1){
 					this.adPlace = adPlace;
-					// dyBroadcast.length&&(this.adPlace[4] = dyBroadcast)
-					this.adPlace[4] = [{ad:1}]
+					dyBroadcast.length&&(this.adPlace[4] = dyBroadcast)
 				}
 				Object.keys(this.adPlace).forEach(key => {
 					const index = key-1-this.currentItem.list.length;
@@ -266,5 +270,4 @@
 	.bg-image{
 		width: 750rpx;
 	}
-	
 </style>

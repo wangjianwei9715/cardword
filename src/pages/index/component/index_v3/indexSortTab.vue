@@ -119,10 +119,12 @@
 				const odItem = sortTab.find(x=>{
 					return (x.type=='updown') && (x.select!='')
 				})
-				const data = {
-					pintuan_type:pintuanCurrent>=0?sortTab[3].list[pintuanCurrent].tp:null,
+				let data = {
 					genre:Number(sortTab[0].current==1?1:0),
-					od:!uni.$u.test.isEmpty(odItem) ? `${odItem.od}:${odItem.select=='up'?'asc':'desc'}` : ""
+					od:!uni.$u.test.isEmpty(odItem) ? `${odItem.od}${odItem.select=='up'?'':':desc'}` : ""
+				}
+				if(pintuanCurrent>=0){
+					data.pintuan_type = sortTab[3].list[pintuanCurrent].tp
 				}
 				this.$emit('sortChange',data)
 			}

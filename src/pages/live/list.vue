@@ -1,6 +1,7 @@
 <template>
 	<view class="content">
-		<navigationbarTabs ref="rNavigationbarTabs" :colorBlack="true" :titles="titles" :current="headerCurrent" backColor="#fff" backgroundColor="rgba(0,0,0,0)" @tabsClisk="onClickListTabs"/>
+		<navigationbarTabs navBgImage="/static/index/v3/bg/live.png" :colorBlack="true" :titles="titles" :current="headerCurrent" @tabsClisk="onClickListTabs"/>
+		<statusbar/>
 		<view class="header-container">
 			<view class="search-container">
 				<view class="search-box" @click="onClickLiveSearch">
@@ -60,9 +61,14 @@
 			})
 			this.reqNewLiveList()
 		}
-		onPageScroll(data: any) {
-			//@ts-ignore
-			this.$refs.rNavigationbarTabs.setPageScroll(data)
+		//   下拉刷新
+		onPullDownRefresh() {
+			this.liveData.pageIndex = 1;
+			this.liveData.noMoreData = false;
+			this.liveData.once = false;
+			this.reqNewLiveList(() => {
+				uni.stopPullDownRefresh();
+			})
 		}
 		onReachBottom() {
 			this.reqNewLiveList();
@@ -143,9 +149,6 @@
 	.header-banner {
 		width: 100%;
 		background: #fff;
-		position: fixed;
-		left: 0;
-		top: 0;
 		box-sizing: border-box;
 		z-index: 9;
 	}
@@ -178,17 +181,13 @@
 	}
 	.header-container{
 		width: 750rpx;
-		height:288rpx;
-		background: url(@/static/index/v3/bg/live.png) no-repeat top/100% 288rpx;
+		padding-top: 88rpx;
 		position: relative;
 	}
 	.search-container{
 		width: 100%;
 		height: 105rpx;
 		background: #fff; 	
-		position: absolute;
-		bottom:0;
-		left:0;
 	}
 	.search-box{
 		width: 726rpx;

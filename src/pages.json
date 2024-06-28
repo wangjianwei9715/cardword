@@ -52,7 +52,7 @@
 			"path": "pages/live/list",
 			"style": {
 				"navigationStyle": "custom",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -1106,13 +1106,6 @@
 								"titleColor":"#333"
 							}
 						}
-					}
-				},
-				{
-					"path": "talk",
-					"style": {
-						"navigationBarTitleText": "在线客服",
-						"enablePullDownRefresh": false
 					}
 				},
 				{

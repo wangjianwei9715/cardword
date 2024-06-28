@@ -22,12 +22,12 @@ export const indexMenu = [
     {icon:'/static/index/tabs/5.png',needLogin:true,name:'店铺列表',url:'/pages/userinfo/merchant_listV2'},
 ]
 export const goodsTabs = [
-    {name:'推荐',id:2,url:'main'},
-    {name:'篮球',id:3,url:'basketball'},
-    {name:'足球',id:4,url:'football'},
-    {name:'宝可梦',id:5,url:'animeTv'},
-    {name:'综合体育',id:6,url:'zhty'},
-    {name:'其他',id:7,url:'other'},
+    {name:'推荐',id:0,url:'main'},
+    {name:'篮球',id:1,url:'basketball'},
+    {name:'足球',id:2,url:'football'},
+    {name:'宝可梦',id:9,url:'animeTv'},
+    {name:'综合体育',id:20,url:'zhty'},
+    {name:'其他',id:100,url:'other'},
 ]
 // 商品列表类型
 export const goodsTypeTitle = {

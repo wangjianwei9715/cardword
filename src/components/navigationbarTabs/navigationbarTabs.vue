@@ -2,6 +2,9 @@
 	<view>
 		<view id="pageTopContainer" class="navigation-header" :style="{ backgroundColor: `rgba(${navColor},${scrollTopPercent})` }">
 			<view class="content" :style="'height:' + statusBarHeight + 'px'"></view>
+			<view v-if="navBgImage" class="nav-bg-container">
+				<image class="nav-bg-image" :src="navBgImage" mode="widthFix"/>
+			</view>
 			<view class="tab-header">
 				<view class="icon-back" :class="{'icon-back-white':scrollTopPercent<1 && !colorBlack}" v-show="showBack" @click="onClickBack"></view>
 				<view class="header-title">
@@ -48,6 +51,8 @@ export default class navigationbar extends BaseComponent {
 	current!:number
 	@Prop({ default: false })
 	colorBlack ?:Boolean
+	@Prop({ default: '' })
+	navBgImage?:string
 	operationShow = false;
 	statusBarHeight = app.statusBarHeight;
 	MAX_HEIGHT:any=0;
@@ -84,6 +89,7 @@ export default class navigationbar extends BaseComponent {
 
 	}
 	public get scrollTopPercent() {
+		if(this.navBgImage!="") return 1;
 		return this.scrollTop / (this.MAX_HEIGHT.toFixed(2) * 1.4)
 	}
 	public get opacityStyle() {
@@ -197,5 +203,21 @@ export default class navigationbar extends BaseComponent {
 		position: absolute;
 		right: 40rpx;
 		top: 0;
+	}
+	.nav-bg-container{
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top:0;
+		left:0;
+		right:0;
+		overflow: hidden;
+	}
+	.nav-bg-image{
+		width: 100%;
+		height:100%;
+		position: absolute;
+		top:0;
+		left:0;
 	}
 }</style>
