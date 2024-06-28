@@ -80,7 +80,7 @@
 		</movable-area>
 
 		<!-- 底部按钮 -->
-		<view class="bottom-container">
+		<view class="bottom-container" v-if="goodsData.state>=1||(goodsData.state==0&&getPriceStart)">
 			<view class="bottom-container-left">
 				<view v-if="myJoined" class="bottom-container-left-index" @click="onClickMyCard()">
 					<image class="bottom-icon" src="@/static/goods/v3/icon_card_my.png" mode="aspectFill" />
@@ -91,7 +91,7 @@
 					<view class="bottom-container-left-index-name">卡密列表</view>
 				</view>
 			</view>
-			<view class="btn-confirm" @click="onClickBuy()" v-if="goodsData.state==1||(goodsData.state==0&&getPriceStart)">
+			<view class="btn-confirm" @click="onClickBuy()" v-if="goodsData.state<=1">
 				{{isRandomType?'选择编号':'立即购买'}}
 			</view>
 			<view v-else class="btn-container">
