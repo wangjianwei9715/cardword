@@ -191,7 +191,7 @@ export default {
 .columnWrap_message_left_type {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #AAAAAA;
     margin-top: 19rpx;
 }
@@ -225,7 +225,7 @@ export default {
 .infoNum {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #AAAAAA;
 }
 
@@ -237,7 +237,7 @@ export default {
     //#endif 
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #AAAAAA;
 }
 

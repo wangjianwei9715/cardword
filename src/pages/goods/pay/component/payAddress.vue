@@ -83,7 +83,7 @@
 	width: 100%;
 	font-size: 24rpx;
 	
-	font-weight: 400;
+	
 	color: rgba(0,0,0,0.9);
 }
 .address-name {

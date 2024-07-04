@@ -162,7 +162,7 @@
 		.startTime {
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #88878C;
 			margin-top: 18rpx;
 		}

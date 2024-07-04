@@ -1,5 +1,11 @@
 export const maxAdHour = 72; //最大广告有效时长
 export const maxMonthWeight = 5000; //最大月可兑积分
+export const levelLoca = {
+    1:1,
+    2:5,
+    3:10,
+    4:13
+}
 export const stateMap = {
     "notStart":0,
     "waitUpload":1,

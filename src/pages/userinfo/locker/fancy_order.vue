@@ -246,7 +246,7 @@
 			align-items: center;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #959695;
 			margin-top: 15rpx;
 			margin-bottom: 40rpx;
@@ -291,7 +291,7 @@
 				align-items: center;
 				font-size: 23rpx;
 				
-				font-weight: 400;
+				
 				color: #959695;
 			}
 			.index-right{
@@ -300,7 +300,7 @@
 				align-items: center;
 				font-size: 23rpx;
 				
-				font-weight: 400;
+				
 				color: #333333;
 			}
 		}
@@ -377,7 +377,7 @@
 			align-items: center;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 		}
 		.pay-info-total{
@@ -394,13 +394,13 @@
 		.pay-info-name{
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #959695;
 		}
 		.pay-info-desc{
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 		}
 		.pay-info-price{

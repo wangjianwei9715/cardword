@@ -88,7 +88,7 @@
         position: relative;
         font-size: 27rpx;
         
-        font-weight: 400;
+        
     }
 
     .inputContainer ::v-deep .u-border {

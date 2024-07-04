@@ -599,11 +599,7 @@
 		line-height: 54rpx;
 		margin-top: -1rpx;
 	}
-	.icon-live{
-		width: 51rpx;
-		height:52rpx;
-		background: url(@/static/index/v3/icon_live.png) no-repeat center / 100% 100%;
-	}
+
 	.sousuo-icon {
 		position: absolute;
 		left:32rpx;
@@ -627,7 +623,7 @@
 		line-height: 54rpx;
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		box-sizing: border-box;
 	}

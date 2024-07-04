@@ -132,7 +132,7 @@
 		border-radius: 3rpx;
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #14151A;
 		padding-left:76rpx
 	}

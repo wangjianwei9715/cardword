@@ -229,7 +229,7 @@
 		width: 100%;
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		margin-bottom: 25rpx;
 	}
@@ -237,7 +237,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		font-size: 22rpx;
-		font-weight: 400;
+		
 		color: #333333;
 		line-height: 32rpx;
 		padding:10rpx 20rpx;
@@ -264,7 +264,7 @@
 		margin-top: 30rpx;
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 	}
 	.box-index-avatar{
@@ -303,7 +303,7 @@
 		width: 600rpx;
 		font-size: 22rpx;
 		
-		font-weight: 400;
+		
 		color: #AFAEAE;
 		line-height: 30rpx;
 	}

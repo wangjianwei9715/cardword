@@ -212,7 +212,7 @@ export default class ClassName extends BaseNode {
         flex: 1;
         font-size: 30rpx;
         
-        font-weight: 400;
+        
         color: #333333;
         height: 54rpx;
     }
@@ -220,7 +220,7 @@ export default class ClassName extends BaseNode {
     .getCode {
         font-size: 26rpx;
         
-        font-weight: 400;
+        
         color: #263858;
         width: 160rpx;
         height: 50rpx;

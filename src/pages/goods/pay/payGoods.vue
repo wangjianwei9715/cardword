@@ -488,7 +488,7 @@ page {
 .item-name {
   font-size: 26rpx;
   
-  font-weight: 400;
+  
   color: #333333;
   line-height: 34rpx;
   display: flex;
@@ -510,7 +510,7 @@ page {
 .item-title {
   font-size: 25rpx;
   
-  font-weight: 400;
+  
   color: #14151a;
   line-height: 34rpx;
   margin-left: 22rpx;
@@ -551,7 +551,7 @@ page {
 .heji-text {
   font-size: $font-20;
   
-  font-weight: 400;
+  
   color: #14151a;
   line-height: 28rpx;
 }
@@ -568,7 +568,7 @@ page {
 .heji-text-b {
   font-size: 25rpx;
   
-  font-weight: 400;
+  
   color: #88878C;
   line-height: 28rpx;
 }

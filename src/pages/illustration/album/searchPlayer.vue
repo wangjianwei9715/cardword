@@ -110,7 +110,7 @@
         height: 69rpx;
         font-size: 25rpx;
         
-        font-weight: 400;
+        
     }
     .search-icon{
 		width: 28rpx;
@@ -147,14 +147,14 @@
                     width: 100%;
                     font-size: 25rpx;
                     
-                    font-weight: 400;
+                    
                     color: #333333;
                     margin-bottom: 15rpx;
                 }
                 .num{
                     font-size: 25rpx;
                     
-                    font-weight: 400;
+                    
                     color: #333333;
                 }
                 .num-text{

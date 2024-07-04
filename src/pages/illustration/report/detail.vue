@@ -104,7 +104,7 @@
 		.msg{
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 		}
 	}

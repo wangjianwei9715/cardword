@@ -78,7 +78,7 @@
 		padding: 8px 10px;
 		font-size: 14px;
 		border-bottom: 1px $border-color solid;
-		font-weight: 400;
+		
 		color: #606266;
 		line-height: 23px;
 		box-sizing: border-box;

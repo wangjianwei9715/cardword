@@ -1,92 +1,94 @@
 <template>
 	<swiper class="index-swiper" :style="{ height: swiperHeight + 'px' }" :disable-touch="refreshing" :current="current" @change="onChangeCurrent">
 		<swiper-item v-for="(item,index) in tabs" :key="index">
-			<!-- #ifdef APP-NVUE -->
-			<waterfall column-count="2" column-width="auto" :show-scrollbar="false" left-gap="10" right-gap="10" column-gap="10" @loadmore="reqNewMainList()" >
-				<refresh class="refresh" @refresh="reload(true)" :display="refreshing ? 'show' : 'hide'">
-					<u-loading-icon mode="semicircle"></u-loading-icon>
-				</refresh>
-				<header>
-					<!-- 首页头部广告 -->
-					<swiper v-if="addList.top.length && index==1" :indicator-dots="true" :indicator-active-color="'#fff'" :indicator-color="'rgba(170, 170, 170, .75)'" class="capsule-box"  :current="capsuleCurrent" autoplay circular @change="e=> capsuleCurrent=e.detail.current">
-						<swiper-item v-for="(item,index) in addList.top" :key="index">
-							<div class="capsule-content">
-								<image class="capsule-pic" :src="decodeURIComponent(item.pic)" mode="aspectFill" @click="onClickToAD(item.target)"/>
-							</div>
-						</swiper-item>
-					</swiper>
-
-					<!-- 金刚区 -->
-					<div class="golden-container" v-if="index==1">
-						<div class="golden-tab" v-for="(items,indexs) in indexMenu.front" :key="indexs" @click="onClickJumpUrl(items)">
-							<image class="golden-img" :src="items.icon" mode="aspectFit"/>
-							<text class="golden-text u-line-1">{{items.name}}</text>
-						</div>
-					</div>
-				</header>
-				<cell v-for="(item,index) in goodsList[index]?goodsList[index].list:[]" >
-					<indexListGoods :data="item"/>
-				</cell>
-				<cell v-if="goodsList[index]&&goodsList[index].empty">
-					<empty></empty>
-				</cell>
-			</waterfall>
-			<!-- #endif -->
-
-			<!-- #ifndef APP-NVUE -->
-			<scroll-view class="scroll-box" @scrolltolower="reqNewMainList()" :refresher-enabled="true" refresher-default-style="white" @refresherrefresh="reload(true)" :refresher-triggered="refreshing" :scroll-y="true">
-				<div>
-					<!-- 首页头部广告 -->
-					<swiper v-if="addList.top.length && index==1" :indicator-dots="true" :indicator-active-color="'#fff'" :indicator-color="'rgba(170, 170, 170, .75)'" class="capsule-box"  :current="capsuleCurrent" autoplay circular @change="e=> capsuleCurrent=e.detail.current">
-						<swiper-item v-for="(item,index) in addList.top" :key="index">
-							<div class="capsule-content">
-								<image class="capsule-pic" :src="decodeURIComponent(item.pic)" mode="aspectFill" @click="onClickToAD(item.target)"/>
-							</div>
-						</swiper-item>
-					</swiper>
-
-					<!-- 金刚区 -->
-					<div class="golden-container" v-if="index==1">
-						<div class="golden-tab" v-for="(items,indexs) in indexMenu.front" :key="indexs" @click="onClickJumpUrl(items)">
-							<image class="golden-img" :src="items.icon" mode="aspectFit"/>
-							<text class="golden-text u-line-1">{{items.name}}</text>
-						</div>
-					</div>
-				</div>
-				<div class="scroll-list-box">
-					<div class="scroll-index" v-for="item in goodsList[index]?goodsList[index].list:[]" >
+			<div class="header-bg" :style="{height:homeListBg[index]?homeListBg[index].height:'280rpx'}">
+				<image v-if="homeListBg[index]" mode="widthFix" class="bg-image" :style="{height:homeListBg[index].height}" :src="homeListBg[index].src"/>
+			</div>
+			<div class="list-container" :style="listContainerStyle">
+				<!-- #ifdef APP-NVUE -->
+				<waterfall column-count="2" column-width="auto" :show-scrollbar="false" left-gap="6" right-gap="6" column-gap="6" @loadmore="reqNewMainList()" >
+					<refresh class="refresh" @refresh="reload(true)" :display="refreshing ? 'show' : 'hide'">
+						<u-loading-icon mode="semicircle"></u-loading-icon>
+					</refresh>
+					<header v-if="index==0">
+						<indexHome :headerAddList="headerAddList" :broadCast="homeBroadCast"/>
+					</header>
+					<header v-if="index==1">
+						<indexSeries :seriesId.sync="seriesId" @onSeries="reload()"/>
+					</header>
+					<header v-if="index>=1" style="position:sticky">
+						<indexSortTab @sortChange="onSortChange"/>
+					</header>
+					<cell v-for="(item,index) in goodsList[index]?goodsList[index].list:[]" >
 						<indexListGoods :data="item"/>
+					</cell>
+					<cell v-if="goodsList[index]&&goodsList[index].empty">
+						<empty></empty>
+					</cell>
+					<header v-if="goodsList[index]&&goodsList[index].list.length">
+						<u-loadmore :line="true" loadingIcon="semicircle"
+						lineLength="20rpx" :status="goodsList[index]&&goodsList[index].noMoreData ? 'nomore' : 'loading'" nomore-text="没有更多了" fontSize="24rpx" />
+					</header>
+				</waterfall>
+				<!-- #endif -->
+
+				<!-- #ifndef APP-NVUE -->
+				<scroll-view class="scroll-box" @scrolltolower="reqNewMainList()" :refresher-enabled="true" refresher-default-style="white" @refresherrefresh="reload(true)" :refresher-triggered="refreshing" :scroll-y="true">
+					<div v-if="index==0">
+						<indexHome :headerAddList="headerAddList" :broadCast="homeBroadCast"/>
 					</div>
-				</div>
-				<div v-if="goodsList[index]&&goodsList[index].empty">
-					<empty></empty>
-				</div>
-			</scroll-view>
-			<!-- #endif -->
+					<indexSeries v-if="index==1" :seriesId.sync="seriesId" @onSeries="reload()"/>
+					<indexSortTab style="position:sticky" v-if="index>=1" @sortChange="onSortChange"/>
+					<div class="scroll-list-box">
+						<div class="scroll-index" v-for="item in goodsList[index]?goodsList[index].list:[]" >
+							<indexListGoods :data="item"/>
+						</div>
+					</div>
+					<div v-if="goodsList[index]&&goodsList[index].empty">
+						<empty></empty>
+					</div>
+					<div v-if="goodsList[index]&&goodsList[index].list.length">
+						<u-loadmore :line="true" loadingIcon="semicircle"
+						lineLength="20rpx" :status="goodsList[index]&&goodsList[index].noMoreData ? 'nomore' : 'loading'" nomore-text="没有更多了" fontSize="24rpx" />
+					</div>
+				</scroll-view>
+				<!-- #endif -->
+			</div>
 		</swiper-item>
 	</swiper>
 </template>
 
 <script>
 	const app = getApp().globalData.app;
-	import { indexMenu,goodsTabs } from "@/tools/DataExchange.js"
+	import { homeListBg } from "@/tools/DataExchange.js"
 	import indexListGoods from './indexListGoods.vue'
+	import indexHome from './indexHome.vue'
+	import indexSeries from './indexSeries.vue'
+	import indexSortTab from './indexSortTab.vue'
 	class ListParams {
 		fetchFrom=1;
 		fetchSize=10;
 		noMoreData=false;
 		empty=false;
 	}
+	class Sort {
+		pintuan_type=null;
+		genre=0;
+		od=""
+	}
 	export default {
 		components:{
-			indexListGoods
+			indexListGoods,
+			indexHome,
+			indexSeries,
+			indexSortTab
 		},
 		props: {
 			current:{
 				type:Number,
 				default:0
 			},
-			addList:{
+			homeData:{
 				type:Object,
 				default: () => {}
 			},
@@ -98,25 +100,17 @@
 		data(){
 			return {
 				app,
-				indexMenu,
-				capsuleCurrent:0,
+				homeListBg,
 				goodsList:[],
-				refreshing:false
+				refreshing:false,
+				adPlace:{},
+				sortData:{},
+				seriesId:null,
 			}
 		},
 		watch:{
 			current(val,oldVal){
 				if(val!=oldVal){
-					if(val == 0) {
-						if(app.token.accessToken == ''){
-							this.$emit('update:current', val)
-							setTimeout(()=>{ this.$emit('update:current', oldVal) },500)
-							app.login.arouseLogin()
-							return;
-						}
-						this.$emit('followed')
-						this.$set(this.goodsList, 0, { list:[], ...new ListParams()})
-					}
 					this.reqNewMainList()
 				}
 			}
@@ -131,9 +125,23 @@
 			},
 			swiperHeight(){
 				const { platform:{systemInfo} } = app;
-				// swiper高度 = 屏幕高度-状态栏高度-首页tab高度(44)-底部tab高度(52) -搜索栏高度 - 底部安全区高度
-				const height = systemInfo.screenHeight - systemInfo.statusBarHeight - 96 - uni.upx2px(104) - (systemInfo.safeAreaInsets.bottom || 0);
+				// swiper高度 = 屏幕高度 - 底部tab高度(52) - 底部安全区高度
+				const height = systemInfo.screenHeight - 52 - (systemInfo.safeAreaInsets.bottom || 0);
 				return height
+			},
+			listContainerStyle(){
+				// 状态栏高度+首页tab高度+搜索栏高度
+				const headerHeight = (app.statusBarHeight+44+uni.upx2px(104))
+				return {
+					height:(this.swiperHeight-headerHeight)+'px',
+					top:headerHeight+'px'
+				}
+			},
+			headerAddList(){
+				return (this.homeData.addList&&this.homeData.addList.filter( x => x.location==3 )) || []
+			},
+			homeBroadCast(){
+				return this.homeData.broadCast || []
 			}
 		},
 		methods: {
@@ -143,6 +151,10 @@
 			onChangeCurrent(e){
 				this.$emit('update:current', e.detail.current)
 			},
+			onSortChange(data){
+				this.$set(this.sortData, this.current, data)
+				this.reload()
+			},
 			reload(pullingdown=false){
 				pullingdown&&(this.refreshing=true);
 				setTimeout(()=>{
@@ -150,22 +162,25 @@
 					this.reqNewMainList()
 				},pullingdown?1000:0);
 			},
-			onClickJumpDetails(goodCode) {
-				app.navigateTo.goGoodsDetails(goodCode)
-			},
 			reqNewMainList(cb) {
-				const { fetchFrom, fetchSize, noMoreData } = this.currentItem;
+				const { fetchFrom,fetchSize,noMoreData } = this.currentItem;
 				if (noMoreData) return;
 				const urlNamr = this.tabs[this.current].url;
-				const params = {
-					fetchFrom,
-					fetchSize,
+				const sort = this.sortData[this.current]|| {}
+				let params = { 
+					fetchFrom, 
+					fetchSize, 
+					...sort
+				}
+				if(this.current==1&&this.seriesId>0){
+					params.iconId = this.seriesId
 				}
 				app.http.GetWithCrypto(`dataApi/goodlist/forsale/${urlNamr}`, params, (data) => {
 					this.currentItem.noMoreData = data.isFetchEnd;
-					if (fetchFrom == 1 && this.currentItem.list.length) this.currentItem.list = [];
-					if (data.goodList) {
-						const list = fetchFrom == 1 ? data.goodList : [...this.currentItem.list,...data.goodList];
+
+					const goodList = this.listSort(data.goodList,data.slot?.adPlace,fetchFrom);
+					if (goodList) {
+						const list = fetchFrom == 1 ? goodList : [...this.currentItem.list,...goodList];
 						this.currentItem.list = app.platform.removeDuplicate(list,'goodCode');
 					}
 					this.currentItem.empty = this.currentItem.list.length==0;
@@ -173,6 +188,29 @@
 					this.refreshing = false;
 					cb && cb()
 				});
+				
+			},
+			listSort(goodList=[],adPlace={},fetchFrom){
+				if(this.current!=0) return goodList;
+
+				const { dyBroadcast=[] } = this.homeData;
+				if(fetchFrom==1){
+					this.adPlace = adPlace;
+					dyBroadcast.length&&(this.adPlace[4] = dyBroadcast)
+				}
+				Object.keys(this.adPlace).forEach(key => {
+					const index = key-1-this.currentItem.list.length;
+					if(index <= goodList.length){
+						const data = {
+							special_type:key==4?'dyBroadcast':'ad',
+							goodCode:`ad${key}`,
+							list:this.adPlace[key]
+						}
+						goodList.splice(index, 0, data); 
+						delete this.adPlace[key]
+					}
+				});
+				return goodList
 			}
 		}
 	}
@@ -191,79 +229,17 @@
 	.index-swiper{
 		width: 750rpx;
 	}
-	.capsule-box {
+	.list-container{
 		width: 750rpx;
-		height: 222rpx;
-		position: relative;
-		background: #fff;
-		border-radius: 5rpx;
-		@include flexCenter;
-	}
-	.capsule-content{
-		width: 750rpx;
-		height: 200rpx;
-		@include flexCenter;
-	}
-	.capsule-pic{
-		width: 710rpx;
-		height:200rpx;
-		z-index: 5;
-		border-radius: 5rpx;
-	}
-	// 金刚区
-	.golden-container{
-		width: 750rpx;
-		padding: 0;
-		background: #fff;
-		padding:5rpx 30rpx 10rpx 30rpx;
-		margin-bottom: 20rpx;
-		@include flexCenter;
-		justify-content: space-between;
-	}
-	.golden-tab {
-		width: 130rpx;
-		height: 160rpx;
-		@include flexCenter;
-		flex-wrap: wrap;
-	}
-	.golden-img {
-		width: 122rpx;
-		height: 122rpx;
-	}
-	.golden-text {
-		width: 130rpx;
-		height: 34rpx;
-		font-size: 21rpx;
-		font-weight: 600;
-		color: #333333;
-		text-align: center;
-		margin-top: -8rpx;
-		z-index: 6;
-	}
-	.bg-gradient{
-		width: 750rpx;
-		height:100rpx;
-		background: linear-gradient(to bottom, #fff, $content-bg);
 		position: absolute;
-		top:0;
-		left:0
+		left:0;
+		right:0;
 	}
-	.goods-text{
-		color:#fff;
-		font-size:20rpx;
-		height:300rpx;
-		background:red;
-		margin-top: 20rpx;
-	}
+	
 	.refresh{
 		width: 750rpx;
 		height:80rpx;
 		@include flexCenter;
-	}
-	.loadmore-content{
-		width: 750rpx;
-		height:80rpx;
-		background:red;
 	}
 	.scroll-box{
 		width: 100%;
@@ -276,10 +252,22 @@
 	.scroll-list-box{
 		width: 100%;
 		box-sizing: border-box;
-		padding:0 20rpx;
+		padding:0 12rpx;
 		display: flex;
 		justify-content: space-between;
 		flex-wrap: wrap;
 	}
 	// #endif
+	.header-bg{
+		width: 750rpx;
+		height:280rpx;
+		position: absolute;
+		top:0;
+		left:0;
+		background: #fff;
+		overflow: hidden;
+	}
+	.bg-image{
+		width: 750rpx;
+	}
 </style>

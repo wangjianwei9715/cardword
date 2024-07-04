@@ -175,7 +175,7 @@ import { Md5 } from "ts-md5";
 				.info-title{
 					font-size: 25rpx;
 					
-					font-weight: 400;
+					
 					color: #333333;
 					line-height: 34rpx;
 				}
@@ -185,7 +185,7 @@ import { Md5 } from "ts-md5";
 					margin-top: 10rpx;
 					font-size: 23rpx;
 					
-					font-weight: 400;
+					
 					color: #7C7C7C;
 				}
 				.logo-m{
@@ -200,7 +200,7 @@ import { Md5 } from "ts-md5";
 					left:0;
 					font-size: 21rpx;
 					
-					font-weight: 400;
+					
 					color: #7C7C7C;
 				}
 				.info-bottom text{
@@ -245,7 +245,7 @@ import { Md5 } from "ts-md5";
 					text-align: center;
 					font-size: 20rpx;
 					
-					font-weight: 400;
+					
 					color: #7C7C7C;
 				}
 				.right-btn{

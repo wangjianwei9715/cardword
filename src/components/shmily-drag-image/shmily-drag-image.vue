@@ -568,7 +568,7 @@ export default {
           justify-content: center;
           font-size: 21rpx;
           
-          font-weight: 400;
+          
           color: #FFFFFF;
           position: absolute;
           top: 0rpx;

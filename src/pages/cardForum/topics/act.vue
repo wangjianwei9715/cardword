@@ -182,7 +182,7 @@ export default class ClassName extends BaseNode {
     .gray {
         font-size: 17rpx;
         
-        font-weight: 400;
+        
         color: #C0C0C0;
     }
 }
@@ -199,7 +199,7 @@ export default class ClassName extends BaseNode {
         width: 44rpx;
         font-size: 33rpx;
         font-family: Impact;
-        font-weight: 400;
+        
         color: #333333;
         text-align: center;
         margin-right: 10rpx;
@@ -221,7 +221,7 @@ export default class ClassName extends BaseNode {
     .userName {
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #8D8D8D;
         margin-bottom: 6rpx;
     }
@@ -236,7 +236,7 @@ export default class ClassName extends BaseNode {
     .award {
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #333333;
     }
 }
@@ -282,7 +282,7 @@ export default class ClassName extends BaseNode {
 .desc {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #959695;
     // width: 500rpx;
     // #ifdef APP-NVUE
@@ -308,7 +308,7 @@ export default class ClassName extends BaseNode {
     text-align: center;
     font-size: 20rpx;
     
-    font-weight: 400;
+    
     color: #FFFFFF;
     line-height: 32rpx;
 }
@@ -326,7 +326,7 @@ export default class ClassName extends BaseNode {
 .num {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #C0C0C0;
 }
 
@@ -348,7 +348,7 @@ export default class ClassName extends BaseNode {
 .rule {
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     color: #333333;
     line-height: 38rpx;
     padding: 0 56rpx;

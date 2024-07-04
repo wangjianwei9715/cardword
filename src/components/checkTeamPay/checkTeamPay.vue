@@ -499,14 +499,14 @@
 				font-size: 24rpx;
 				
 				text-indent: -10rpx;
-				font-weight: 400;
+				
 				color: #34363A;
 			}
 			.header-teamtip{
 				width: 100%;
 				font-size: 22rpx;
 				
-				font-weight: 400;
+				
 				color: #AAAAAA;
 		
 			}
@@ -519,7 +519,7 @@
 				border-radius: 30rpx;
 				font-size: 28rpx;
 				
-				font-weight: 400;
+				
 				color: #FFFFFF;
 				position: absolute;
 				right:0;
@@ -547,7 +547,7 @@
 	.teamtion-title-tip{
 		font-size: 18rpx;
 		
-		font-weight: 400;
+		
 		color: #AAAAAA;
 	}
 	.team-check{
@@ -590,7 +590,7 @@
 					width:120rpx;
 					font-size: 22rpx;
 					
-					font-weight: 400;
+					
 					color: #34363A;
 					text-align: center;
 				}
@@ -626,7 +626,7 @@
 		margin-left: 8rpx;
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #AAAAAA;
 	}
 	.teamtion-center{
@@ -667,7 +667,7 @@
 		border-radius: 23rpx;
 		font-size: 22rpx;
 		
-		font-weight: 400;
+		
 		color: #34363A;
 		text-align: center;
 		line-height: 46rpx;
@@ -687,7 +687,7 @@
 		white-space: nowrap;
 		font-size: 22rpx;
 		
-		font-weight: 400;
+		
 		color: #34363A;
 		line-height: 46rpx;
 	}
@@ -699,7 +699,7 @@
 		white-space: nowrap;
 		font-size: 22rpx;
 		
-		font-weight: 400;
+		
 		color: #34363A;
 		line-height: 46rpx;
 	}
@@ -717,7 +717,7 @@
 		line-height: 27rpx;
 		font-size: 16rpx;
 		
-		font-weight: 400;
+		
 		color: #AAAAAA;
 	}
 	.branch-reward{
@@ -729,7 +729,7 @@
 		border-radius: 12rpx 2rpx 12rpx 2rpx;
 		font-size: 16rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		position: absolute;
 		right:-54rpx;
@@ -745,7 +745,7 @@
 		border: 1rpx solid #FFFFFF;
 		font-size: 16rpx;
 		
-		font-weight: 400;
+		
 		color: #FF3C00;
 		position: absolute;
 		right:-10rpx;
@@ -791,7 +791,7 @@
 			border-radius: 4rpx;
 			font-size: 20rpx;
 			
-			font-weight: 400;
+			
 			color: #34363A;
 			text-align: center;
 			line-height: 46rpx;
@@ -812,7 +812,7 @@
 			white-space: nowrap;
 			font-size: 22rpx;
 			
-			font-weight: 400;
+			
 			color: #34363A;
 			line-height: 46rpx;
 		}
@@ -1029,7 +1029,7 @@
 		top:0;
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #AAAABB;
 	}
 	.checkteam-popup-list{
@@ -1095,14 +1095,14 @@
 		height:50rpx;
 		font-size: 30rpx;
 		
-		font-weight: 400;
+		
 		color: #34363A;
 	}
 	.checkteam-popup-detail-name{
 		width: 100%;
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #AAAABB;
 		margin-bottom: 10rpx;
 	}
@@ -1214,7 +1214,7 @@
 		line-height: 76rpx;
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #34363A;
 		text-align: center;
 		border:1px solid #D6D6D6
@@ -1225,7 +1225,7 @@
 		top:10rpx;
 		font-size: 16rpx;
 		
-		font-weight: 400;
+		
 		color: #AAAABB;
 		width: 150rpx;
 		display: flex;
@@ -1248,7 +1248,7 @@
 		line-height: 20rpx;
 		font-size: 18rpx;
 		
-		font-weight: 400;
+		
 		color: #AAAABB;;
 		margin-bottom:10rpx			
 	}
@@ -1296,7 +1296,7 @@
 		padding:0 50rpx;
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #34363A;
 		line-height: 50rpx;
 		text-align: center;

@@ -256,7 +256,7 @@ page {
 .infoItem-name {
     font-size: 29rpx;
     
-    font-weight: 400;
+    
     color: #7c7c7c;
     margin-right: 52rpx;
     position: relative;

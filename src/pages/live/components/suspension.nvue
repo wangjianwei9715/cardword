@@ -108,7 +108,7 @@ export default {
 .packCountDown {
     font-size: 17rpx;
     
-    font-weight: 400;
+    
     color: #ffffff;
     line-height: 83rpx;
     text-align: center;

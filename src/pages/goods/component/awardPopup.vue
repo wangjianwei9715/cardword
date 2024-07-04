@@ -202,7 +202,7 @@
 		.popup-desc{
 			font-size: 24rpx;
 			
-			font-weight: 400;
+			
 			color: #7380A1;
 			line-height: 34rpx;
 		}
@@ -220,7 +220,7 @@
 		.popup-header-rank{
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 			text-align: center;
 		}
@@ -263,7 +263,7 @@
 			width: 100%;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 		}
 		.popup-item-avatar{
@@ -309,7 +309,7 @@
 				font-size: 24rpx;
 				height:40rpx;
 				
-				font-weight: 400;
+				
 				color: #D9D9D9
 			}
 			.popup-code-name{
@@ -317,7 +317,7 @@
 				min-height: 63rpx;
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #999999;
 				margin-top: 26rpx;
 				display: inline-flex;
@@ -352,7 +352,7 @@
 			.item-desc{
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #333333;
 				line-height: 40rpx;
 				margin-bottom: 10rpx;
@@ -361,7 +361,7 @@
 				font-weight: bold;
 			}
 			.item-desc text.notice{
-				font-weight: 400;
+				
 				color:#FA1545
 			}
 		}

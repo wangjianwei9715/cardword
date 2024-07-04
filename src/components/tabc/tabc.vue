@@ -55,7 +55,7 @@
 		line-height: 90rpx;
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #959699;
 	}
 	.current{

@@ -119,7 +119,7 @@
 			box-sizing: border-box;
 			font-size: 22rpx;
 			
-			font-weight: 400;
+			
 			color: #999898;
 			display: inline-flex;
 			align-items: center;

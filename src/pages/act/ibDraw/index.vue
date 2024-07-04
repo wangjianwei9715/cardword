@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-24 17:01:39
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-29 17:17:27
- * @FilePath: \jichao_app_2\src\pages\act\forumDraw\index.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-06-20 11:41:01
+ * @FilePath: \jichao_app_2\src\pages\act\ibDraw\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -443,9 +443,7 @@ export default class ClassName extends BaseNode {
           showCancel: false,
           success: (choice: any) => {
             if (choice.confirm) {
-              uni.switchTab({
-                url: "/pages/index/index"
-              })
+              app.navigateTo.switchTab(0)
             }
           }
         })
@@ -496,7 +494,7 @@ page {
   .title {
     font-size: 45rpx;
     font-family: YouSheBiaoTiHei;
-    font-weight: 400;
+    
     color: #ffffff;
     margin-left: 23rpx;
     white-space: nowrap;
@@ -647,7 +645,7 @@ page {
       .right {
         font-size: 24rpx;
         
-        font-weight: 400;
+        
         color: #F8D6B7;
       }
     }
@@ -664,7 +662,7 @@ page {
         background-size: 100% 100%;
         font-size: 34rpx;
         font-family: Impact;
-        font-weight: 400;
+        
         color: #F8D6B7;
         margin-right: 18rpx;
       }
@@ -692,7 +690,7 @@ page {
         width: 90rpx;
         font-size: 24rpx;
         
-        font-weight: 400;
+        
         color: #F8D6B7;
         margin-right: 28rpx;
         white-space: nowrap;
@@ -701,7 +699,7 @@ page {
       &_point {
         font-size: 24rpx;
         
-        font-weight: 400;
+        
         color: #F93042;
         flex: 1;
       }
@@ -709,7 +707,7 @@ page {
       &_awardName {
         font-size: 24rpx;
         
-        font-weight: 400;
+        
         color: #F8D6B7;
       }
     }
@@ -750,7 +748,7 @@ page {
           &_three {
             font-size: 20rpx;
             
-            font-weight: 400;
+            
             color: #A88566;
           }
 
@@ -794,7 +792,7 @@ page {
           border-radius: 4rpx;
           font-size: 22rpx;
           
-          font-weight: 400;
+          
           color: #F8D6B7;
           transition: background-color 0.3s;
         }
@@ -808,7 +806,7 @@ page {
         .tips {
           font-size: 20rpx;
           
-          font-weight: 400;
+          
           color: #A88566;
           text-align: center;
           position: absolute;
@@ -927,7 +925,7 @@ page {
 .detailButton {
   font-size: 22rpx;
   
-  font-weight: 400;
+  
   color: #ffffff;
   width: 76rpx;
   height: 76rpx;

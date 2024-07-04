@@ -143,7 +143,7 @@
 		justify-content: center;
 		font-size: 21rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFEFE;
 		.right{
 			width: 12rpx;

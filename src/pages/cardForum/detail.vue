@@ -1003,7 +1003,7 @@ export default class ClassName extends BaseNode {
     .voteTitle {
         font-size: 29rpx;
         
-        font-weight: 400;
+        
         color: #333333;
         line-height: 35rpx;
         margin-bottom: 26rpx;
@@ -1025,7 +1025,7 @@ export default class ClassName extends BaseNode {
         .voteFont {
             font-size: 25rpx;
             
-            font-weight: 400;
+            
             color: #333333;
             flex: 1;
             z-index: 4;
@@ -1083,7 +1083,7 @@ export default class ClassName extends BaseNode {
         width: 100%;
         font-size: 31rpx;
         
-        font-weight: 400;
+        
         color: #333333;
         line-height: 50rpx;
         letter-spacing: 2rpx;
@@ -1099,7 +1099,7 @@ export default class ClassName extends BaseNode {
     .time {
         font-size: 20rpx;
         
-        font-weight: 400;
+        
         color: #949494;
         margin-top: 40rpx;
         margin-bottom: 20rpx;
@@ -1145,7 +1145,7 @@ export default class ClassName extends BaseNode {
             font-size: 25rpx;
             
             margin-right: 50rpx;
-            font-weight: 400;
+            
             overflow: hidden;
             color: #88878C;
 
@@ -1265,7 +1265,7 @@ export default class ClassName extends BaseNode {
 .tips {
     font-size: 19rpx;
     
-    font-weight: 400;
+    
     color: #FA1545;
 }
 
@@ -1301,7 +1301,7 @@ export default class ClassName extends BaseNode {
                     .name {
                         font-size: 27rpx;
                         
-                        font-weight: 400;
+                        
                         color: #636363;
 
                     }
@@ -1309,7 +1309,7 @@ export default class ClassName extends BaseNode {
                     .time {
                         font-size: 25rpx;
                         
-                        font-weight: 400;
+                        
                         color: #AAAAAA;
                         margin-left: 22rpx;
                         flex: 1;
@@ -1321,7 +1321,7 @@ export default class ClassName extends BaseNode {
                 .contentMsg {
                     font-size: 27rpx;
                     
-                    font-weight: 400;
+                    
                     color: #333333;
                     margin-top: 20rpx;
                     line-height: 33rpx;
@@ -1439,7 +1439,7 @@ export default class ClassName extends BaseNode {
 .noMore {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #D2D2D2;
     margin: 20rpx 0;
 }
@@ -1472,7 +1472,7 @@ export default class ClassName extends BaseNode {
         align-items: center;
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #333333;
     }
 
@@ -1495,7 +1495,7 @@ export default class ClassName extends BaseNode {
 .timeInfo {
     font-size: 24rpx;
     
-    font-weight: 400;
+    
     color: #AAAAAA;
     margin-top: 20rpx;
     display: flex;
@@ -1504,7 +1504,7 @@ export default class ClassName extends BaseNode {
     .num {
         font-size: 24rpx;
         
-        font-weight: 400;
+        
         color: #AAAAAA;
         margin-left: 12rpx;
     }

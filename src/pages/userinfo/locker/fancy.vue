@@ -181,7 +181,7 @@
 		align-items: center;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 	}
 	.locker-logo{
@@ -193,7 +193,7 @@
 		margin-top: 18rpx;
 		font-size: 23rpx;
 		
-		font-weight: 400;
+		
 		color: #949494;
 	}
 	.locker-left-num text{
@@ -231,7 +231,7 @@
 			align-items: center;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #959695;
 		}
 		.order-logo{
@@ -266,7 +266,7 @@
 		.order-info-freight{
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #959695;
 			margin:15rpx 0 46rpx 0;
 		}
@@ -293,7 +293,7 @@
 			justify-content: center;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			margin-left: 28rpx;
 		}

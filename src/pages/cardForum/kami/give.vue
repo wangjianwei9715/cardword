@@ -249,7 +249,7 @@ page {
         .To {
             font-size: 25rpx;
             
-            font-weight: 400;
+            
             color: #333333;
         }
 
@@ -272,14 +272,14 @@ page {
         .userId {
             font-size: 25rpx;
             
-            font-weight: 400;
+            
             color: #959695;
         }
 
         .selectNum {
             font-size: 21rpx;
             
-            font-weight: 400;
+            
             color: #333333;
         }
 
@@ -310,7 +310,7 @@ page {
     .tips {
         font-size: 20rpx;
         
-        font-weight: 400;
+        
         color: #C0C0C0;
         margin-top: 22rpx;
         text-align: center;
@@ -335,7 +335,7 @@ page {
     .original {
         font-size: 21rpx;
         
-        font-weight: 400;
+        
         color: #707070;
     }
 }
@@ -357,7 +357,7 @@ page {
         // height: 90px;
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #707070;
         line-height: 33rpx;
         flex: 1;

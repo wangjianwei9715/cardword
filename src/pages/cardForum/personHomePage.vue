@@ -619,7 +619,7 @@ page {
 .caogaoText {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #ECEFF6;
 }
 </style>

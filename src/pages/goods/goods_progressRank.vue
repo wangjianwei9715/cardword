@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\pages\goods\goods_progressRank.vue
  * @Author: wjw
  * @Date: 2022-11-01 11:45:57
- * @LastEditors: 
- * @LastEditTime: 2022-11-01 13:47:10
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-06-24 16:34:47
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -96,12 +96,14 @@ page {
 
 .topBanner {
     width: 750rpx;
-    height: 350rpx;
+    height: 360rpx;
     background-size: 100% 100%;
-    background-image: url('../../static/goods/v2/progressRank.png');
+    background-image: url('@/static/goods/v2/progress.png');
 }
 
 .goodsContainer {
-    padding: 13rpx 20rpx;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16rpx;
 }
 </style>

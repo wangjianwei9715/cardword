@@ -384,7 +384,7 @@ export default {
 .desc {
     font-size: 20rpx;
     
-    font-weight: 400;
+    
     color: #C0C0C0;
     margin-top: 10rpx;
 }

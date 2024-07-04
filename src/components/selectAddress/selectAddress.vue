@@ -116,7 +116,7 @@ export default class ClassName extends BaseComponent {
     width: 100%;
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     color: #959695;
     line-height: 36rpx;
 }

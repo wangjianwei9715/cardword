@@ -153,7 +153,7 @@
 			top:0;
 			font-size: 33rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 			.avatar-bg{
 				width: 46rpx;
@@ -345,7 +345,7 @@
 					padding:0 14rpx;
 					font-size: 27rpx;
 					
-					font-weight: 400;
+					
 					color: #EAEAEA;
 				}
 				.info-num{
@@ -362,7 +362,7 @@
 					line-height: 38rpx;
 					font-size: 27rpx;
 					
-					font-weight: 400;
+					
 					color: #FFFFFF;
 					position: absolute;
 					right:0;

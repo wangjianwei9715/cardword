@@ -1,3 +1,12 @@
+<!--
+ * @FilePath: \jichao_app_2\src\pages\userinfo\setting.vue
+ * @Author: wjw
+ * @Date: 2024-06-19 15:38:03
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-06-20 11:38:33
+ * Copyright: 2024 .
+ * @Descripttion: 
+-->
 <template>
   <view class="content">
     <view class="orther-setting">
@@ -160,9 +169,7 @@ export default class ClassName extends BaseNode {
     app.token = {accessToken:'',refreshToken:''};
     uni.setStorageSync('reLaunch',true);
     uni.removeStorageSync('ksjUserId')
-    uni.reLaunch({
-      url: "/pages/index/index",
-    });
+    app.navigateTo.reLaunchIndex()
   }
 }
 </script>
@@ -203,7 +210,7 @@ export default class ClassName extends BaseNode {
       justify-content: flex-end;
       font-size: 24rpx;
       
-      font-weight: 400;
+      
       color: #aaaabb;
     }
   }

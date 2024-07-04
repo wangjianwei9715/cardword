@@ -119,7 +119,7 @@
 					align-items: center;
 					font-size: 21rpx;
 					
-					font-weight: 400;
+					
 					color: #FFFFFF;
 				}
 				&-state{
@@ -156,7 +156,7 @@
 					max-width: 180rpx;
 					font-size: 22rpx;
 					
-					font-weight: 400;
+					
 					color: #FFFFFF;
 					height: 80rpx;
 					line-height: 80rpx;
@@ -167,7 +167,7 @@
 				&-text{
 					font-size: 22rpx;
 					
-					font-weight: 400;
+					
 					color: #FFFFFF;
 					height: 80rpx;
 					line-height: 80rpx;
@@ -180,7 +180,7 @@
 				top:18rpx;
 				font-size: 16rpx;
 				
-				font-weight: 400;
+				
 				color: #FFFFFF;
 				display: flex;
 				align-items: center;
@@ -252,13 +252,13 @@
 					align-items: center;
 					font-size: 23rpx;
 					
-					font-weight: 400;
+					
 					color: #333333;
 				}
 				&-name{
 					font-size: 23rpx;
 					
-					font-weight: 400;
+					
 					color: #333333;
 				}
 				&-right{
@@ -266,7 +266,7 @@
 					line-height: 77rpx;
 					font-size: 23rpx;
 					
-					font-weight: 400;
+					
 					color: #C0C0C0;
 				}
 				&-avatar{

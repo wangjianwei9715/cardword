@@ -133,7 +133,7 @@
 			margin-top: 140rpx;
 			font-size: 29rpx;
 			
-			font-weight: 400;
+			font-weight: 300;
 			color: #FFFFFF;
 		}
 		.icon-pop{

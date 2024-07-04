@@ -547,7 +547,7 @@ export default {
 .merchant_name_text {
   font-size: 25rpx;
   
-  font-weight: 400;
+  
   color: #ffffff;
 }
 
@@ -659,7 +659,7 @@ export default {
 .videoTime {
   font-size: 21rpx;
   
-  font-weight: 400;
+  
   color: #fffefe;
   margin: 0 16rpx;
   width: 90rpx;
@@ -675,7 +675,7 @@ export default {
   text-align: center;
   /* align-items: center; */
   
-  font-weight: 400;
+  
   color: #fffefe;
   /* justify-content: center;
   text-align: center; */

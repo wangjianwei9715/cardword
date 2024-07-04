@@ -133,7 +133,7 @@ export default class navigationbar extends BaseComponent {
 	.right-text {
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		position: absolute;
 		right: 32rpx;

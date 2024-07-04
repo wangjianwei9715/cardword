@@ -3,35 +3,38 @@
 		<view class="header-banner">
 			<statusbar />
 			<view class="header-top">
-				<view class="header-back" @click="onClickBack">
-					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
-				</view>
+				<view class="back" @click="onClickBack"></view>
 				<view class="header-search">
-					<view class="header-search-input" @click="onClickSearch">
-						<view class="sousuo-icon"></view>{{searchText}}
-					</view>
-					<view class="search-icon" v-show="searchText!=''" @click="onClickRemoveSearch">
+					<view class="search-icon"></view>
+					<view class="header-search-input" @click="onClickSearch">{{searchText}}</view>
+					<view class="remove-icon" v-show="searchText!=''" @click="onClickRemoveSearch">
 						<image class="search-remove" src="../../static/goods/v2/mini_close.png" />
 					</view>
 				</view>
 			</view>
-			<view class="header-tab">
-				<tabc :tabc="classifyData" :tabsCheck="classifyOpt" @tabsClick="onClickListTabs"></tabc>
-			</view>
-			<sortTabCopy :maskTop='300' :sortData='sortData' @tagChange='onClickListSortTabs'></sortTabCopy>
 		</view>
 		<view class="goods-lists">
 			<statusbar />
-			<scroll-view class="goods-scroll" scroll-x="true" v-if='seriesShow' v-show="seriesList!=''">
-				<view class="scrollItem" v-for="(item,index) in seriesList" :key='index' @click="clickSerie(item,index)">
-					<view class="frameImage">
-						<muqian-lazyLoad class="seriesImg" :src="decodeURIComponent(item.icon)" mode="aspectFit"></muqian-lazyLoad>
-					</view>
-					<view class="seriesText" :class="{selectSearchText:clickSerieItem&&clickSerieItem.id==item.id}">
-						{{item.name}}
-					</view>
+			<scroll-view class="goods-scroll" scroll-x="true" v-if='seriesShow' v-show="merchantList!=''">
+				<view class="scrollItem" v-for="(item,index) in merchantList" :key='index' @click="onClickSellerShop(item)">
+					<muqian-lazyLoad class="merchant-logo" :src="decodeURIComponent(item.logo)" mode="aspectFit"></muqian-lazyLoad>
+					<view class="merchant-name u-line-2">{{item.name}}</view>
+					<view class="merchant-btn">进店</view>
 				</view>
 			</scroll-view>
+			<u-sticky :customNavHeight="navHeight">
+				<u-tabs class="tabs-container" picNameIndex="3" :list="goodsTabs" :current="goodsTabCurrent" 		lineHeight="0" @click="clickGoodsTabs"
+					:itemStyle="{height:'44px',padding:'0 25rpx'}"
+					:inactiveStyle="{fontSize:'26rpx',color:'#8D8D8D'}"
+					:activeStyle="{fontSize:'30rpx',color:'#333333',fontWeight:500}"
+				>
+					<template v-slot:picName>
+						<image class="icon-pokemon" v-if="goodsTabCurrent==3" src="/static/index/v3/pokemon_.png"></image>
+						<image class="icon-pokemon" v-else src="/static/index/v3/pokemon.png"></image>
+					</template>
+				</u-tabs>
+				<indexSortTab @sortChange="onSortChange"/>
+			</u-sticky>
 			<goodslist :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" :nomore="noMoreData" />
 			<empty v-if="goodsList&&!goodsList.length&&!isRequest" />
 		</view>
@@ -39,92 +42,31 @@
 </template>
 
 <script lang="ts">
-	import {
-		app
-	} from "@/app";
-	import {
-		Component
-	} from "vue-property-decorator";
+	import { app } from "@/app";
+	import { Component } from "vue-property-decorator";
 	import BaseNode from "../../base/BaseNode.vue";
-	import {
-		stateArray,
-		palyArray
-	} from "@/tools/DataExchange";
-	@Component({})
+	import { goodsTabs } from "@/tools/DataExchange";
+	import indexSortTab from '@/pages/index/component/index_v3/indexSortTab.vue'
+	const navHeight = app.statusBarHeight + uni.upx2px(104)
+	@Component({components:{indexSortTab}})
 	export default class ClassName extends BaseNode {
+		navHeight = navHeight
 		searchText = "";
 		isRequest: boolean = true;
-		goodTabCheck = 1;
-		sortData: any = [{
-				name: "",
-				index: 0,
-				selectShow: false,
-				key: "state",
-				children: stateArray
-			},
-			{
-				name: "拼团方式",
-				index: -1,
-				selectShow: false,
-				key: "ptType",
-				children: palyArray
-			},
-			{
-				name: "进度",
-				needOrder: true,
-				key: "sort",
-				searchText: "progress",
-				odType: 0
-			},
-			{
-				name: "价格",
-				needOrder: true,
-				key: "sort",
-				searchText: "price",
-				odType: 0
-			}
-		];
-		classifyData = [
-			{ id: 100, name: "推荐" },
-			{ id: 1, name: "篮球" },
-			{ id: 2, name: "足球" },
-			{ id: 0, name: "其他" }
-		];
-		classifyOpt = 100;
-		playTypeCurrent = -1;
-		classifyShow = false;
-		classifyShowPlay = false;
+		goodsTabs = goodsTabs;
+		goodsTabCurrent = 0;
 		goodsData: any = [];
 		goodsList: any = [];
 		scrollId = "";
 		noMoreData = false;
 		hasQueryData:boolean=false;
-		seriesList: any = [];
-		clickSerieItem: any = {};
-		tagParams: any = {};
+		merchantList: any = [];
+		sortParams: any = {};
 		onLoad(query: any) {
 			if (query.q) {
 				this.searchText = decodeURIComponent(query.q);
 			}
-			if (query.classType) {
-				this.classifyOpt = query.classType;
-			}
-			if(query.ptType){
-				const findIndex:number=palyArray.findIndex((item:any)=>{
-					return item.value==Number(query.ptType)
-				})
-				this.sortData[1].index=findIndex
-			}
-			// if(query.serie){
-			//   this.clickSerieItem = {title:query.serie}
-			// }
-			if (query.hs) {
-				this.clickSerieItem = {
-					id: query.hs,
-					title: query.hsTitle ?? ''
-				}
-				this.searchText=query.hsTitle ?? ''
-			}
+			
 			if (query.data) {
 				setTimeout(() => {
 					this.goodsData = JSON.parse(query.data);
@@ -135,10 +77,10 @@
 					}
 					this.hasQueryData=true
 				}, 10);
-				this.reqNewSeries();
+				this.merchantSearch();
 			} else {
 				this.reqNewData("default");
-				this.reqNewSeries();
+				this.merchantSearch();
 			}
 			
 		}
@@ -149,13 +91,10 @@
 		}
 		onClickRemoveSearch(){
 			this.searchText = '';
-			this.clickSerieItem = {};
 			this.reqSearchList()
 		}
-		clickSerie(item: any, index ? : number) {
-			this.clickSerieItem = this.clickSerieItem.id == item.id ? {} : item;
-			this.searchText = item.name
-			this.reqSearchList();
+		onClickSellerShop(item: any) {
+			this.goMerchantPage(item.alias)
 		}
 		onReachBottom() {
 			this.reqNewData("reach");
@@ -170,55 +109,54 @@
 				url: "/pages/goods/goods_find?q=" + this.searchText
 			});
 		}
-		onClickListSortTabs(data: any) {
-			this.tagParams = data.data;
-			if(data.refresh) this.reqSearchList();
-		}
-		onClickListTabs(index: number) {
-			if (this.classifyOpt == index) return;
-			this.classifyOpt = index;
-			this.reqNewSeries();
+		clickGoodsTabs({index}){
+			if(this.goodsTabCurrent == index) return;
+			this.goodsTabCurrent = index;
 			this.reqSearchList();
 		}
 		onClickJumpDetails(goodCode: any) {
 			app.navigateTo.goGoodsDetails(goodCode)
 		}
-		reqNewSeries() {
+		onSortChange(data){
+			this.sortParams = {
+				genre:data.genre,
+				sort:data.od
+			};
+			if(data.pintuan_type){
+				this.sortParams.ptType = data.pintuan_type
+			}
+			this.reqSearchList()
+		}
+		merchantSearch() {
 			app.http.Get(
-				"dataApi/advertising/iconSeries/list", {
+				"dataApi/merchant/search/list/brief", {
 					fetchFrom: 1,
 					fetchSize: 100,
-					tp:this.classifyOpt!=100?(this.classifyOpt==0?100:this.classifyOpt):0
+					q:encodeURIComponent(this.searchText)
 				},
 				(res: any) => {
-					this.seriesList = res.list || [];
+					this.merchantList = res.list || [];
 				}
 			);
 		}
 		reqNewData(type: string, cb ? : Function) {
-			const {goodTabCheck, classifyOpt, clickSerieItem, searchText, tagParams} = this;
+			const { searchText, sortParams} = this;
 			if (this.noMoreData) return;
 			this.isRequest = true;
 			// 获取列表
 			let params: { [x: string]: any; } = {
-				state: Number(goodTabCheck),
+				state: 1,
 				pageSize: 10,
-				tp:classifyOpt!=100?(classifyOpt==0?100:classifyOpt):0,
-				q:clickSerieItem.id ? '' : encodeURIComponent(searchText),
+				tp:goodsTabs[this.goodsTabCurrent].id,
+				q:encodeURIComponent(searchText),
 			};
-			if(clickSerieItem.id){
-				params.hs = clickSerieItem.id
-			}
 			if (type == "reach") {
 				params.scrollId = this.scrollId;
 			}
 			const date: any = new Date();
 			params.timeStamp = Date.parse(date) / 1000;
 			app.http.GetWithCrypto(
-				"dataApi/search/good", {
-					...params,
-					...tagParams
-				},
+				"dataApi/search/good", { ...params, ...sortParams },
 				(res: any) => {
 					if (res.end) {
 						this.noMoreData = true;
@@ -241,7 +179,7 @@
 		private get seriesShow(){
 			let show=false
 			if(!this.searchText) return true
-			return this.seriesList&&this.seriesList.length&&!this.clickSerieItem.id
+			return this.merchantList&&this.merchantList.length
 		}
 	}
 </script>
@@ -259,48 +197,51 @@ page {
 }
 
 .goods-scroll {
-  width: 100%;
-  padding:0 20rpx;
-  box-sizing: border-box;
-  height: 140rpx;
-  display: flex;
-  // margin:0 auto;
-  margin-left: 12rpx;
-  white-space: nowrap;
-  margin-bottom: 10rpx;
-  .scrollItem {
-    display: inline-block;
-    width: 100rpx;
-    position: relative;
-    margin-right: 22rpx;
-    .frameImage {
-      width: 100rpx;
-      height: 100rpx;
-      background-color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      .seriesImg {
-        width: 80rpx;
-        height: 80rpx;
-      }
-    }
-    .seriesText {
-      text-align: center;
-      font-size: 22rpx;
-      
-      font-weight: 400;
-      color: #333333;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-align: center;
-    }
-
-    .selectSearchText {
-      color: #e23737;
-    }
-  }
+	width: 100%;
+	padding:0 35rpx;
+	box-sizing: border-box;
+	height: 160rpx;
+	background:#fff;
+	display: flex;
+	// margin:0 auto;
+	white-space: nowrap;
+	.scrollItem {
+		display: inline-flex;
+		width: 140rpx;
+		height: 160rpx;
+		box-sizing: border-box;
+		border-radius: 4rpx;
+		border: 1rpx solid #F3F5FB;
+		position: relative;
+		margin-right: 14rpx;
+		padding:12rpx 24rpx 10rpx 24rpx;
+		justify-content: center;
+		align-content: space-between;
+		flex-wrap: wrap;
+		.merchant-logo {
+			width: 42rpx;
+			height: 42rpx;
+			border-radius: 50%;
+		}
+		.merchant-name {
+			width: 100%;
+			font-size: 18rpx;
+			color: #3D4352;
+			text-align: center;
+			white-space: normal;
+		}
+		.merchant-btn{
+			width: 78rpx;
+			height: 26rpx;
+			border-radius: 2rpx;
+			border: 1rpx solid #B0B0B0;
+			box-sizing: border-box;
+			font-size: 18rpx;
+			color: #3D4352;
+			text-align: center;
+			line-height: 24rpx;
+		}
+	}
 }
 
 .header-banner {
@@ -314,61 +255,66 @@ page {
 }
 
 .header-top {
-  width: 100%;
-  height: 88rpx;
-  display: flex;
-  box-sizing: border-box;
-  padding: 0 20rpx 0 0;
-  z-index: 10;
-  align-items: center;
-  justify-content: space-between;
+	width: 100%;
+	height:104rpx;
+	display: flex;
+	box-sizing: border-box;
+	padding:0 34rpx;
+	z-index: 10;
+	align-items: center;
 }
-
+.back{
+	width: 58rpx;
+	height:64rpx;
+	background: url(@/static/goods/v3/back.png) no-repeat 0 15rpx / 17rpx 29rpx;
+}
 .header-search {
-  width: 626rpx;
-  height: 64rpx;
-  border-radius: 29rpx;
-  position: relative;
+	width: 623rpx;
+	height:64rpx;
+	background: #F6F7FB;
+	border-radius: 5rpx;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	position: relative;
 }
 .header-search-input {
-  width: 100%;
-  height: 65rpx;
-  background: #edecec;
-  border-radius: 40rpx;
-  position: relative;
-  font-size: 28rpx;
-  
-  font-weight: 400;
-  color: #a3a3a3;
-  line-height: 65rpx;
-  box-sizing: border-box;
-  padding-left: 34rpx;
-  display: flex;
-  align-items: center;
+	width: 100%;
+	height: 64rpx;
+	background: #F6F7FB;
+	border-radius: 5rpx;
+	font-size: 26rpx;
+	color: #333;
+	padding-left:81rpx;
+	display: flex;
+	align-items: center;
 }
-.sousuo-icon {
-  width: 31rpx;
-  height: 32rpx;
-  background: url(../../static/index/v2/sousuo.png) no-repeat center;
-  background-size: 100% 100%;
-  margin-right: 30rpx;
+.search-icon{
+	width: 28rpx;
+	height:29rpx;
+	background:url(@/static/index/v3/icon_search.png) no-repeat center;
+	background-size:100% 100%;
+	position: absolute;
+	left:38rpx;
+	top:50%;
+	margin-top: -14.5rpx;
 }
-.search-icon {
-  width: 31rpx;
-  height: 31rpx;
-  position: absolute;
-  right: 30rpx;
-  top: 50%;
-  margin-top: -15.5rpx;
-  background: #dbdbdb;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
+.remove-icon {
+	width: 31rpx;
+	height: 31rpx;
+	position: absolute;
+	right: 30rpx;
+	top: 50%;
+	margin-top: -15.5rpx;
+	background: #dbdbdb;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
 }
 .search-remove {
-  width: 15rpx;
-  height: 14rpx;
+	width: 15rpx;
+	height: 14rpx;
 }
 .header-back {
 	width: 80rpx;
@@ -379,128 +325,39 @@ page {
 }
 
 .header-tab {
-  width: 100%;
-  height: 90rpx;
-  margin-top: -10rpx;
-  padding: 0 22rpx;
-  box-sizing: border-box;
-  border-bottom: 1px solid #f1f1f4;
+	width: 100%;
+	height: 90rpx;
+	margin-top: -10rpx;
+	padding: 0 22rpx;
+	box-sizing: border-box;
+	border-bottom: 1px solid #f1f1f4;
+	background: #fff;
 }
 
-// .header-sort {
-//   width: 100%;
-//   height: 72rpx;
-//   box-sizing: border-box;
-//   padding: 0 56rpx;
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   position: relative;
-
-//   &-index {
-//     height: 72rpx;
-//     display: flex;
-//     align-items: center;
-//     box-sizing: border-box;
-//     font-size: 26rpx;
-//     
-//     font-weight: 400;
-//     color: #333333;
-//   }
-
-//   .current-name {
-//     color: #e23737;
-//   }
-
-//   .header-sort-icon {
-//     width: 18rpx;
-//     margin-left: 4rpx;
-//     margin-bottom: -4rpx;
-
-//     .icon-sort-up {
-//       width: 18rpx;
-//       height: 12rpx;
-//       background: url(../../static/goods/sort_u_.png) no-repeat center;
-//       background-size: 100% 100%;
-//       margin-bottom: 2rpx;
-//     }
-
-//     .icon-sort-upn {
-//       width: 18rpx;
-//       height: 12rpx;
-//       background: url(../../static/goods/sort_u.png) no-repeat center;
-//       background-size: 100% 100%;
-//       margin-bottom: 2rpx;
-//     }
-
-//     .icon-sort-down {
-//       width: 18rpx;
-//       height: 12rpx;
-//       background: url(../../static/goods/sort_d_.png) no-repeat center;
-//       background-size: 100% 100%;
-//     }
-
-//     .icon-sort-downn {
-//       width: 18rpx;
-//       height: 12rpx;
-//       background: url(../../static/goods/sort_d.png) no-repeat center;
-//       background-size: 100% 100%;
-//     }
-//   }
-
-//   &-classify {
-//     width: 100%;
-//     height: 0;
-//     box-sizing: border-box;
-//     position: absolute;
-//     top: 72rpx;
-//     left: 0;
-//     padding: 0 36rpx;
-//     background: #fff;
-//     transition: all 0.1s linear;
-//     overflow: hidden;
-
-//     &-index {
-//       width: 100%;
-//       height: 80rpx;
-//       box-sizing: border-box;
-//       border-bottom: 1px solid #f1f1f4;
-//       display: flex;
-//       align-items: center;
-//       font-size: $font-24;
-//       
-//       font-weight: 600;
-//       color: #14151a;
-//     }
-
-//     &-index:last-child {
-//       border: none;
-//     }
-//   }
-
-//   .classify-show {
-//     height: 400rpx;
-//   }
-
-//   .classify-opt {
-//     color: #f65d2d;
-//   }
-// }
-
 .goods-lists {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 250rpx 0 60rpx 0;
-  overflow-x: hidden;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 104rpx 0 60rpx 0;
 }
 
 .sort-shadow {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 8;
-  background: rgba(0, 0, 0, 0.5);
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 8;
+	background: rgba(0, 0, 0, 0.5);
+}
+.tabs-container{
+	width: 750rpx;
+	box-sizing: border-box;
+	background: #fff;
+	padding-left: 11rpx;
+}
+.icon-pokemon{
+	width: 105rpx;
+	height:38rpx;
+	margin-top: -10rpx;
 }
 </style>

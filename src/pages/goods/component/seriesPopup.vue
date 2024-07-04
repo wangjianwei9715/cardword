@@ -113,7 +113,7 @@
 				box-sizing: border-box;
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #333333;
 				line-height: 50rpx;
 				text-align: center;

@@ -4,7 +4,7 @@
         </transitionNav>
 		<view class="detail-content" @touchstart="detailTouchStart" @touchend="detailTouchEnd">
 			<view class="top-ray" v-show="currentLevelData.isGet"></view>
-			<image class="pic" :src="currentLevelData.pic"/>
+			<image class="pic" :src="currentLevelData.pic" mode="aspectFit"/>
 			<view class="name">{{currentLevelData.name}}</view>
 			<view class="explain" v-if="levelList.length">
 				{{currenUnlockData.front}}

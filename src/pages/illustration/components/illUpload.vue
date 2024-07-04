@@ -247,7 +247,7 @@
 			height:31rpx;
 			font-size: 27rpx;
 			
-			font-weight: 400;
+			
 			color: #E6E6E6;
 			display: flex;
 			align-items: center;

@@ -83,7 +83,7 @@ page {
     line-height: 96rpx;
     font-size: 29rpx;
     
-    font-weight: 400;
+    
     color: #333333;
 }
 
@@ -116,7 +116,7 @@ page {
         .time {
             margin-top: 8rpx;
             font-size: 25rpx;
-            font-weight: 400;
+            
             color: #88878C;
         }
     }

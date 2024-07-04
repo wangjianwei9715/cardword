@@ -126,7 +126,7 @@
 		width: 750rpx;
 		margin-top: 140rpx;
 		font-size: 29rpx;
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		@include flexCenter
 	}
@@ -137,7 +137,7 @@
 	}
 	.pop-text{
 		font-size: 29rpx;
-		font-weight: 400;
+		
 		color: #FFFFFF;
 	}
 </style>

@@ -424,7 +424,7 @@ $show-lines: 1;
 .hideText {
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     color: #757575;
 }
 
@@ -584,7 +584,7 @@ $show-lines: 1;
     flex: 1;
     font-size: 25rpx;
     
-    font-weight: 400;
+    
 }
 
 .flexCenter {
@@ -690,7 +690,7 @@ $show-lines: 1;
     line-height: 48rpx;
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     text-align: center;
     // #ifdef APP-NVUE
     lines: 1;

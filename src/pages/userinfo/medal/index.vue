@@ -56,7 +56,7 @@
 					:key="index"
 					@click="goMedalDetail(item.id)"
 				>
-					<image class="grid-pic" :class="{'nohas':!item.isGet&&isMine}" :src="item.pic"/>
+					<image class="grid-pic" :class="{'nohas':!item.isGet&&isMine}" :src="item.pic" mode="aspectFit"/>
 					<view>
 						<image class="grid-reward" :class="{'nohas':item.receive==0}" v-if="item.max_level_amount>0&&item.receive!=2&&isMine" src="/static/medal/detail/reward.png"/>
 						<text class="grid-text">{{ item.name }}</text>
@@ -284,7 +284,7 @@
 				text-align: center;
 				line-height:50rpx;
 				font-family: Impact;
-				font-weight: 400;
+				
 				font-size: 44rpx;
 				color: #EEDA94;
 			}

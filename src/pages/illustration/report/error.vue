@@ -191,7 +191,7 @@
 			width: 100%;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #C0C0C0;
 			text-align: center;
 		}
@@ -202,7 +202,7 @@
 		.tips{
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #C0C0C0;
 		}
 		.btn{

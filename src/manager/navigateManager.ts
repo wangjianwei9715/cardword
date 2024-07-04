@@ -2,7 +2,7 @@ import { _Maps } from "@/tools/map"
 export default class navigateManager {
     private static instance: navigateManager;
 	switchMap:{[x:number]:string} = {
-		0:"/pages/index/index",
+		0:"/pages/index/index_v3",
 		1:"/pages/illustration/index",
 		2:"/pages/cardForum/home",
 		3:"/pages/index/message",
@@ -120,6 +120,11 @@ export default class navigateManager {
 		uni.switchTab({
 			url: this.switchMap[index]
 		})
+	}
+	reLaunchIndex(){
+		uni.reLaunch({
+			url: this.switchMap[0],
+		});
 	}
 	navigateBack(delta=1) {
 		uni.navigateBack({ delta });

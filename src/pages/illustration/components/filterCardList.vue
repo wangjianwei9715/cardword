@@ -311,7 +311,7 @@
         height: 69rpx;
         font-size: 25rpx;
         
-        font-weight: 400;
+        
     }
     .search-icon{
 		width: 28rpx;
@@ -381,7 +381,7 @@
         padding:0 18rpx;
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #959695;
         display: inline-block;
         margin-right: 24rpx;
@@ -453,7 +453,7 @@
             width: 100%;
             font-size: 23rpx;
             
-            font-weight: 400;
+            
             color: #C0C0C0;
             margin-top: 10rpx;
             display: flex;
@@ -493,7 +493,7 @@
     .card-set{
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #767880;
         word-break: break-all;
     }
@@ -515,7 +515,7 @@
         line-height: 31rpx;
         font-size: 21rpx;
         
-        font-weight: 400;
+        
         text-align: center;
         border-radius: 3rpx;
         margin-right: 10rpx;
@@ -573,7 +573,7 @@
                     display: flex;
                     font-size: 25rpx;
                     
-                    font-weight: 400;
+                    
                     color: #767880;
                     word-break: break-all;
                 }
@@ -622,7 +622,7 @@
                 width: 100%;
                 font-size: 25rpx;
                 
-                font-weight: 400;
+                
                 color: #C0C0C0;
                 margin-top: 10rpx;
                 display: flex;

@@ -325,7 +325,7 @@ page {
         width: 750rpx;
         font-size: 42rpx;
         font-family: YouSheBiaoTiHei;
-        font-weight: 400;
+        
         height: 68rpx;
         color: #FFFFFF;
     }
@@ -356,7 +356,7 @@ page {
     height: 53rpx;
     font-size: 39rpx;
     font-family: Impact;
-    font-weight: 400;
+    
     background-size: 100% 100%;
     color: #333333;
     display: flex;
@@ -392,7 +392,7 @@ page {
     .get {
         font-size: 23rpx;
         
-        font-weight: 400;
+        
         color: #990100;
         margin-bottom: 10rpx;
     }
@@ -400,7 +400,7 @@ page {
     .freeze {
         font-size: 23rpx;
         
-        font-weight: 400;
+        
         color: #A0BED8;
     }
 }
@@ -412,7 +412,7 @@ page {
     display: flex;
     font-size: 23rpx;
     
-    font-weight: 400;
+    
     color: #FEFEFE;
     margin-top: 28rpx;
     justify-content: center;
@@ -477,7 +477,7 @@ page {
         .tips {
             font-size: 20rpx;
             
-            font-weight: 400;
+            
             text-decoration: underline;
             color: #333333;
         }
@@ -485,7 +485,7 @@ page {
         .lookDetail {
             font-size: 20rpx;
             
-            font-weight: 400;
+            
             text-decoration: underline;
             color: #333333;
         }
@@ -577,7 +577,7 @@ page {
         // text-align: center;
         font-size: 39rpx;
         font-family: Impact;
-        font-weight: 400;
+        
         color: #333333;
         margin-right: 20rpx;
         margin-left: 20rpx;
@@ -601,7 +601,7 @@ page {
         view {
             font-size: 23rpx;
             
-            font-weight: 400;
+            
         }
     }
 
@@ -621,7 +621,7 @@ page {
         // background-image: url("@/static/act/merchantRank/shuke/leftA.png");
         font-size: 21rpx;
         
-        font-weight: 400;
+        
         color: #FFFFFF
     }
 

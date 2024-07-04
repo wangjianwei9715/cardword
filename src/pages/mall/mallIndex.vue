@@ -316,14 +316,14 @@ page {
         &_redFont {
             font-size: 33rpx;
             font-family: YouSheBiaoTiHei;
-            font-weight: 400;
+            
             color: #FA1545;
         }
 
         &_point {
             font-size: 33rpx;
             font-family: YouSheBiaoTiHei;
-            font-weight: 400;
+            
             color: #333333;
             display: flex;
             align-items: center;
@@ -356,7 +356,7 @@ page {
         text-align: center;
         font-size: 28rpx;
         
-        font-weight: 400;
+        
         color: #333333;
         white-space: nowrap;
     }
@@ -364,7 +364,7 @@ page {
     .tabsItem_select {
         font-size: 40rpx;
         font-family: YouSheBiaoTiHei;
-        font-weight: 400;
+        
         color: #F91E44;
     }
 
@@ -433,7 +433,7 @@ page {
         padding: 0 14rpx;
         font-size: 21rpx;
         
-        font-weight: 400;
+        
         color: #FFFFFF;
         justify-content: space-between;
 
@@ -448,7 +448,7 @@ page {
                 border-radius: 3rpx;
                 font-size: 21rpx;
                 
-                font-weight: 400;
+                
                 color: #515151;
                 margin-left: 4rpx;
             }
@@ -463,7 +463,7 @@ page {
         &_leftFont {
             font-size: 21rpx;
             
-            font-weight: 400;
+            
             color: #FFFFFF;
         }
     }
@@ -482,7 +482,7 @@ page {
     .goodsName {
         font-size: 27rpx;
         
-        font-weight: 400;
+        
         color: #333333;
     }
 
@@ -500,7 +500,7 @@ page {
         .leftNum {
             font-size: 21rpx;
             
-            font-weight: 400;
+            
             color: #999999;
         }
     }
@@ -513,7 +513,7 @@ page {
     .money {
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #F91E44;
         position: relative;
     }

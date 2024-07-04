@@ -52,7 +52,7 @@ export default class ClassName extends BaseComponent {
 
 @mixin font($size) {
 	font-size: $size;
-	font-weight: 400;
+	
 	color: #FFFFFF;
 }
 

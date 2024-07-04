@@ -36,7 +36,7 @@
 		height:29rpx;
 		font-size: 21rpx;
 		font-family: YouSheBiaoTiHei;
-		font-weight: 400;
+		
 		font-style: italic;
 		line-height: 29rpx;
 		box-sizing: border-box;

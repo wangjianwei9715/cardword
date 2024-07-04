@@ -48,7 +48,7 @@
 		height:78rpx;
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #88878C;
 		box-sizing: border-box;
 		padding: 0 24rpx;
@@ -65,7 +65,7 @@
 		border-radius: 5rpx;
 		font-size: 36rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 	}
 </style>

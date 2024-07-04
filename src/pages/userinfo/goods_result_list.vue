@@ -266,7 +266,7 @@
 		.header-title2 {
 			font-size: $font-32;
 			
-			font-weight: 400;
+			
 			color: #A9ABB4;
 			line-height: 88rpx;
 
@@ -482,7 +482,7 @@
 			.title{
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #7F7F8E;
 				margin-bottom: 8rpx;
 				display: flex;
@@ -511,7 +511,7 @@
 			.time{
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #AAAABB;
 			}
 		}

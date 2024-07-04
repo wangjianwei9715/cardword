@@ -815,7 +815,7 @@ page {
     // background-color: red;
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     padding: 0 10rpx;
     // color: #C0C0C0;
 }
@@ -872,7 +872,7 @@ page {
 .hotTopicRow_all {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #FFFFFF;
     margin-right: 14rpx;
 }
@@ -962,7 +962,7 @@ page {
 .columnItem_text {
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     color: #959695;
 }
 
@@ -998,7 +998,7 @@ page {
     left: 0;
     font-size: 17rpx;
     
-    font-weight: 400;
+    
     color: #FFFFFF;
     text-align: center;
     line-height: 23rpx;
@@ -1051,7 +1051,7 @@ page {
     text-align: center;
     font-size: 19rpx;
     
-    font-weight: 400;
+    
     color: #C0C0C0;
     margin-top: 6rpx;
 }

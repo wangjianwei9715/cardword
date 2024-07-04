@@ -1,51 +1,37 @@
 <template name="goodslist">
 	<view class="goodsContent">
-		<!-- 首页轮播 -->
-		<view class="index-swiper" v-if="indexSwiper&&indexAddList!=''">
-			<swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="5000" :duration="500"
-				:circular="true" :indicator-active-color="'#fff'" :indicator-color="'rgba(170, 170, 170, .75)'">
-				<swiper-item v-for="(item,index) in indexAddList" :key="index">
-					<muqian-lazyLoad class="swiper-image" :src="decodeURIComponent(item.pic)"
-						@click="onClickTopJumpUrl(item.target)" borderRadius="5rpx"></muqian-lazyLoad>
-				</swiper-item>
-			</swiper>
-		</view>
-		<view class="goodslist-index-show" v-for="(item,index) in goodsList" :key="index">
-			<view class="goodslist-index">
-				<!-- <muqian-lazyLoad v-else-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/> -->
-				<view class="goodslist-index-box" @click="onClickJumpUrl(item.goodCode)">
-					<view class="goodslist-pic">
-						<muqian-lazyLoad v-if="item.pic!=''" class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(item.pic))" borderRadius="5rpx 5rpx 0 0"></muqian-lazyLoad>
+		<view class="goods-container" v-for="(item,index) in goodsList" :key="index">
+			<view class="goods-content">
+				<muqian-lazyLoad v-if="item.pic!=''" class="goods-pic" :src="getGoodsImg(decodeURIComponent(item.pic))" borderRadius="5rpx 5rpx 0 0" @click="onClickJumpUrl(item.goodCode)"></muqian-lazyLoad>
+				<view class="goods-index">
+					<view class="goods-progress" :style="progressStyle(item.pintuan_type)">
+						<view class="progressMask" :style="{width:(100-goodsManaager.listPlan(item,'num'))+'%'}"></view>
 					</view>
-					
-					<view class="goodslist-title u-line-2 goodslist-padding">
-						<view v-if="item.saleMode==1&&item.state==1" class="goodslist-cardicon goodslist-cardicon-purple">剩余随机</view>
-						<view v-else class="goodslist-cardicon" :class="{'goodslist-cardicon-purple':[10,11].includes(item.pintuan_type)}">{{goodsManaager.gameplayType[item.pintuan_type]}}</view>
-						<text class="goodslist-title-text">{{item.title}}</text>
+					<view class="goods-header u-line-2" @click="onClickJumpUrl(item.goodCode)">
+						<view class="cardicon">
+							<text class="icon-text" :style="{color:gameplayType[item.pintuan_type].color}">{{goodsData(item).typeName1}}</text>
+							<text class="icon-text">{{goodsData(item).typeName2}}</text>
+						</view>
+						<text class="title-text u-line-2" style="text-indent: 70rpx;">{{item.title}}</text>
 					</view>
-					<view class="goodslist-priceMsg uni-flex goodslist-padding">
-						<view class="goodslist-priceMsg-left">
-							￥
+					<view class="goods-merchant" @click="onClickSellerShop(item)">
+						<merchantAvatar width="30rpx" height="30rpx" :level="item.merchantLevel" :src="decodeURIComponent(item.merchantLogo)"/>
+						<text class="bussName">{{item.merchantName}}</text>
+					</view>
+					<view class="goods-priceMsg" @click="onClickJumpUrl(item.goodCode)">
+						<view class="goods-priceMsg-left">
+							<text class="price-icon">￥</text>
 							<text class="price-text">{{ filterPrice(item.price).integer }}</text>
 							<text class="decimal"
 								v-if="filterPrice(item.price).decimal">{{ filterPrice(item.price).decimal }}</text>
-							<text>{{goodsManaager.hasLowestPrice(item)?'起':''}}</text>
+							<text class="lowest">{{goodsManaager.hasLowestPrice(item)?'起':''}}</text>
 						</view>
-						<view v-if="item.state==0 || item.state == -1" class="goodslist-priceMsg-right">
-							{{$u.timeFormat(item.startAt,"mm-dd hh:MM")}}开售
-						</view>
-						<view v-else :id="item.goodCode" class="goodslist-priceMsg-right goodslist-plan-desc">
+						<text v-if="[0,-1].includes(item.state)" class="goods-priceMsg-right">
+							{{$u.timeFormat(item.startAt)}}开售
+						</text>
+						<text v-else :id="item.goodCode" class="goods-priceMsg-right">
 							{{goodsManaager.listPlan(item,'str')}}
-						</view>
-					</view>
-					<view class="goodslist-progress" :class="{'goodslist-progress-select':goodsManaager.ifSelectType(item)}" :style="progressBg">
-						<view class="progressMask" :style="{width:(100-goodsManaager.listPlan(item,'num'))+'%'}"></view>
-					</view>
-				</view>
-				<view class="goodslist-bottom goodslist-padding" @click="onClickSellerShop(item)">
-					<view class="bottom-right" v-show="item.merchantName">
-						<merchantAvatar width="36rpx" height="36rpx" :level="item.merchantLevel" :src="decodeURIComponent(item.merchantLogo)"/>
-						<view class="bussName">{{item.merchantName}}</view>
+						</text>
 					</view>
 				</view>
 			</view>
@@ -61,6 +47,7 @@
 	import { Component, Prop, Vue } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { getGoodsImg,filterPrice } from "@/tools/util";
+	import { gameplayType } from "@/tools/DataExchange"
 	import { app } from "@/app";
 	@Component({})
 	export default class ClassName extends BaseComponent {
@@ -88,6 +75,7 @@
 		screenHeight = uni.getSystemInfoSync().windowHeight
 		showPlan: any = []
 		valid = true;
+		gameplayType = gameplayType;
 		created() { //在实例创建完成后被立即调用
 			
 		}
@@ -97,6 +85,21 @@
 			if(this.progressColor=="") return {}
 			return {
 				background:this.progressColor
+			}
+		}
+		goodsData(item){
+			const { pintuan_type, saleMode, state } = item;
+			const remainingRandom = saleMode==1&&state==1;
+			const name = gameplayType[item.pintuan_type].name
+			return {
+				typeName1: remainingRandom ? '剩余' : (name.slice(0,2) || ''),
+				typeName2: remainingRandom ? '随机' : (name.slice(2) || '')
+			}
+		}
+		progressStyle(type){
+			const { progressLeft, progressRight } = gameplayType[type]
+			return {
+				'background': `linear-gradient(to right,${progressLeft},${progressRight})`
 			}
 		}
 		onClickJumpUrl(id: any) {
@@ -113,323 +116,198 @@
 </script>
 
 <style lang="scss">
-	.goodsContent {
+	@mixin flexCenter{
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		justify-content: center;
+		// #ifndef APP-NVUE
+		box-sizing: border-box;
+		align-content: baseline;
+		// #endif
+	}
+	@mixin linePadding{
+		width: 357rpx;
+		padding-left: 20rpx;
+		padding-right: 20rpx;
+	}
+	.goodsContent{
 		width: 100%;
 		box-sizing: border-box;
-		padding: 6rpx 20rpx 56rpx 20rpx;
+		padding:0 13rpx;
 		display: flex;
+		justify-content: space-between;
 		flex-wrap: wrap;
+	}
+	.goods-container{
+		width: 357rpx;
+		height:473rpx;
+		margin-top: 12rpx;
+	}
+	.goods-content{
+		width: 357rpx;
+		background: #FFFFFF;
+		border-radius: 5rpx;
+		overflow: hidden;
+		padding:0;
+		@include flexCenter;
+		flex-wrap: wrap;
+	}
+	.goods-pic{
+		width: 357rpx;
+		height: 277rpx;
+		border-top-left-radius: 5rpx;
+		border-top-right-radius: 5rpx;
+	}
+
+	.goods-index{
+		width: 357rpx;
+		height:196rpx;
+		background: #FFFFFF;
+		padding-top: 2rpx;
+		@include flexCenter;
+		flex-wrap: wrap;
+	}
+	.goods-header{
+		@include linePadding;
+		height:75rpx;
+		position: relative;
+		// #ifndef APP-NVUE
+		box-sizing: border-box;
+		// #endif
+		margin-top: 14rpx;
+	}
+	.richtext{
+		width: 317rpx;
+		height: 72rpx;
+		line-height:34rpx;
+		lines:2;
+		text-overflow: ellipsis;
+		word-wrap:anywhere;
+		font-weight: 300;
+	}
+	.cardicon{
+		width: 66rpx;
+		height:21rpx;
+		margin-right: 10rpx;
+		position: absolute;
+		border:1rpx solid #e8e8e8;
+		border-radius: 5rpx;
+		@include flexCenter;
+		text-align: center;
+		line-height: 19rpx;
+		left:20rpx;
+		top:6rpx;
+		font-weight: 600;
+	}
+	.icon-image{
+		width: 66rpx;
+		height:21rpx;
+		position: absolute;
+		left:0;
+		top:0;
+	}
+	.icon-text{
+		height:30rpx;
+		line-height:30rpx;
+		font-size: 14rpx;
+		color: #333;
+		@include flexCenter;
+	}
+	.hide-text{
+		font-size: 24rpx;
+		background:rgba(0,0,0,0);
+		color:rgba(0,0,0,0)
+	}
+	.title-text{
+		font-size: 24rpx;
+		font-weight: 300;
+		color: #333333;
+	}
+	.goods-priceMsg{
+		flex:1;
+		height: 69rpx;
+		@include flexCenter;
+		position: relative;
+		align-items: flex-end;
+		padding-left: 16rpx;
+		padding-right: 16rpx;
+		padding-bottom:16rpx;
 		justify-content: space-between;
 	}
-	.goodslist-padding{
-		box-sizing: border-box;
-		padding:0 16rpx
+	.goods-priceMsg-left{
+		height: 40rpx;
+		margin-bottom: -4rpx;
+		@include flexCenter;
+		align-items: flex-end;
 	}
-	.goodslist {
-		&-index {
-			width: 349rpx;
-			height:500rpx;
-			background: #FFFFFF;
-			border-radius: 5rpx;
-			box-sizing: border-box;
-			position: relative;
-			padding:0;
-			margin-bottom: 14rpx;
-			// overflow: hidden;
-		}
-		&-index-box{
-			height:430rpx;
-			margin-bottom: 14rpx;
-		}
-		&-pic {
-			width: 349rpx;
-			height: 268rpx;
-			margin: 0 auto;
-			overflow: hidden;
-			position: relative;
-			display: flex;
-			border-top-left-radius: 5rpx;
-			border-top-right-radius: 5rpx;
-		}
-		&-pic-image {
-			width: 349rpx;
-			height: 268rpx;
-		}
-		&-title {
-			height: 75rpx;
-			font-size: 25rpx;
-			font-weight: 400;
-			color: #333333;
-			margin-top: 15rpx;
-			display: -webkit-box;
-			line-height: 38rpx;
-			letter-spacing:1rpx;
-			position: relative;
-			&-text{
-				padding-left: 100rpx;
-			}
-		}
-		
-		&-cardicon{
-			width: 90rpx;
-			height:30rpx;
-			display: inline-flex;
-			line-height: 31rpx;
-			align-items: center;
-			justify-content: center;
-			font-size: 19rpx;
-			font-weight: 400;
-			color: #FFFFFF;
-			margin-right: 10rpx;
-			background: url(@/static/goods/icon_b2.png) no-repeat center / 100% 100%;
-			word-break: keep-all;
-			position: absolute;
-			left:16rpx;
-			top:4rpx;
-		}
-		&-cardicon-purple{
-			background: url(@/static/goods/icon_b1.png) no-repeat center / 100% 100% !important;
-		}
-		&-progress {
-			background:#FA1545;
-			width: 317rpx;
-			height: 6rpx;
-			position: relative;
-			display: flex;
-			justify-content: flex-end;
-			margin:0 auto;
-			.progressMask {
-				height: inherit;
-				background-color: #f3f2f2;
-				width: 30%;
-			}
-		}
-
-		&-progress-select {
-			background: linear-gradient(90deg, #CFC1F3 0%, #7048DD 100%);
-			background-size: 100% 100%;
-		}
-
-		&-priceMsg {
-			justify-content: space-between;
-			// vertical-align: bottom;
-			height: 40rpx;
-			display: flex;
-			align-items: flex-end;
-			position: relative;
-			margin-bottom: 15rpx;
-			margin-top: 16rpx;
-			align-items: flex-end;
-
-			.goodslist-priceMsg-left {
-				font-size: 18rpx;
-				font-family: ArialBold !important;
-				font-weight: 600;
-				color: #333333;
-				height: 40rpx;
-				margin-bottom: -4rpx;
-				text.price-text {
-					font-size: 31rpx;
-					line-height: 38rpx;
-				}
-				text.decimal{
-					font-size: 23rpx;
-				}
-				text:last-child {
-					font-size: 21rpx;
-					
-					font-weight: 600;
-					color: #C0C0C0;
-					margin-left: 6rpx;
-				}
-			}
-
-			.goodslist-priceMsg-right {
-				height: 40rpx;
-				display: flex;
-				align-items: flex-end;
-				font-size: 23rpx;
-				font-weight: 400;
-				color: #C0C0C0;
-			}
-		}
-
-		&-bottom {
-			justify-content: space-between;
-			align-items: center;
-			display: flex;
-			width: 100%;
-			padding-bottom: 8rpx;
-
-			.bottom-right {
-				width: 100%;
-				display: flex;
-				align-items: center;
-				.bussName {
-					width: 246rpx;
-					position: relative;
-					font-size: 23rpx;
-					font-weight: 400;
-					color: #707070;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
-				}
-
-				.cores {
-					display: block;
-					width: 11rpx;
-					height: 17rpx;
-					background-image: url('../../static/goods/v2/icon_right_new.png');
-					background-size: 100% 100%;
-					position: relative;
-				}
-			}
-		}
-
-		&-plan-content {
-			// width: 112rpx;
-			height: 40rpx;
-			background: #F9D0CC;
-			overflow: hidden;
-			position: relative;
-			border-radius: 8rpx;
-
-		}
-
-		&-plan-num {
-			position: absolute;
-			left: 0;
-			top: 0;
-			width: 112rpx;
-			height: 40rpx;
-			line-height: 40rpx;
-			font-size: 22rpx;
-			font-weight: bold;
-			color: #fff;
-			text-align: center;
-		}
-
-		&-plan-now {
-			height: 40rpx;
-			background: #FB4E3E;
-		}
-
-		&-bottom {
-			// width: 100%;
-			// display: flex;
-			// align-items: flex-end;
-			// justify-content: space-between;
-			// position: absolute;
-			// bottom: 0;
-			// left: 0;
-		}
-
-		&-bottom-right {
-			width: 300rpx;
-			// display: flex;
-			// flex-wrap: wrap;
-			// justify-content: flex-end;
-		}
-
-		&-bottom-right-time {
-			width: 300rpx;
-			display: flex;
-			flex-wrap: wrap;
-			box-sizing: border-box;
-			padding-right: 20rpx;
-			color: #AAAAAA;
-			font-size: 30rpx;
-			justify-content: flex-end;
-		}
-
-		&-price-content {
-			font-size: 26rpx;
-			font-weight: normal;
-			color: #14151A;
-			margin-top: -10rpx;
-		}
-
-		&-price {
-			font-size: 36rpx;
-		}
-
-		&-tips-list {
-			width: 100%;
-			box-sizing: border-box;
-			display: flex;
-			flex-wrap: wrap;
-		}
-
-		&-tips {
-			text-align: center;
-			line-height: 34rpx;
-			margin-right: 17rpx;
-			height: 34rpx;
-			background: #FFFFFF;
-			border: 1rpx solid #FB4E3E;
-			border-radius: 3rpx;
-			font-size: 20rpx;
-			font-weight: 400;
-			color: #FB4E3E;
-			padding: 0 11rpx;
-			width: fit-content;
-			margin-left: 1rpx;
-			display: block;
-		}
+	.price-icon{
+		font-size: 28rpx;
+		font-weight: 600;
+		color: #333333;
 	}
-
-	.plan-baifen {
-		font-weight: 0;
+	.price-text {
+		font-size: 28rpx;
+		font-weight: 600;
+		margin-left: -6rpx;
+	}
+	.decimal{
 		font-size: 18rpx;
+		margin-bottom: 4rpx;
 	}
-
-	.select-team {
-		width: 112rpx;
-		height: 32rpx;
+	.lowest {
+		font-size: 18rpx;
+		color: #C0C0C0;
+		margin-left: 6rpx;
+		margin-bottom: 4rpx;
+	}
+	.goods-priceMsg-right{
+		align-items: flex-end;
+		font-size: 22rpx;
+		color: #C0C0C0;
+		margin-bottom: -2rpx;
+	}
+	.goods-progress {
+		background: linear-gradient(to right,#FFBAC9,#FA1545);
+		width: 357rpx;
+		height: 6rpx;
+		@include flexCenter;
+		justify-content: flex-end;
+	}
+	.progressMask {
+		height: 6rpx;
+		background-color: #f3f2f2;
+	}
+	.goods-merchant {
+		@include linePadding;
+		height:30rpx;
+		@include flexCenter;
+		position: relative;
+		justify-content: flex-start;
+		background:#fff;
+		border-bottom-left-radius: 5rpx;
+		border-bottom-right-radius: 5rpx;
+	}
+	.bussName {
+		width: 246rpx;
+		font-size: 22rpx;
+		color: #9FA4B0;
+		lines:1;
+		text-overflow: ellipsis;
+	}
+	.merchant-logo{
+		width: 30rpx;
+		height:30rpx;
+		margin-right: 10rpx;
+		border-radius: 50%;
+	}
+	.avatar-level{
 		position: absolute;
-		left: 0;
-		top: 0;
+		bottom:-4rpx;
+		left:36rpx;
 		z-index: 1;
-		box-sizing: border-box;
-	}
-	.lucky-mark{
-		width: 87rpx;
-		height:87rpx;
-		position: absolute;
-		right: -4rpx;
-		top: -4rpx;
-		z-index: 1;
-	}
-	.price-qi {
-		font-size: 20rpx !important;
-		color: #ACAEB7 !important;
-	}
-
-	// 活动轮播
-	.index-swiper {
-		width: 349rpx;
-		height: 500rpx;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.swiper {
-		width: 349rpx;
-		height: 500rpx;
-		box-sizing: border-box;
-		display: flex;
-		align-items: flex-start;
-		justify-content: center;
-		border-radius: 5rpx;
-	}
-
-	.swiper-image {
-		width: 349rpx;
-		height: 500rpx;
-		box-sizing: border-box;
-		border-radius: 5rpx;
+		width: 21rpx;
+		height:17rpx;
 	}
 	.loadmore{
 		width:750rpx;

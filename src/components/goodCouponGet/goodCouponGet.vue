@@ -6,7 +6,10 @@
 					<view class="coupon-item">{{item}}</view>
 				</view>
 			</view>
-			<view class="coupon-list-right" @click="onClickMoreCoupon">领券<image class="icon-r" src="@/static/goods/detail/right.png"/></view>
+			<view class="coupon-list-right" @click="onClickMoreCoupon">
+				<image class="coupon-line" src="@/static/goods/v3/coupon_line.png"/>
+				<text class="coupon-text">去领券</text>
+			</view>
 		</view>
 
 		<couponGetDrawer :showDrawer.sync="showDrawer" :goodPage="goodPage" :couponList="couponList" @lower="getCouponList"/>
@@ -69,57 +72,62 @@
 <style lang="scss">
 	.coupon-list{
 		width: 100%;
-		height:42rpx;
+		height:36rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-bottom: 20rpx;
-		.icon-r{
-			width: 22rpx;
-			height:22rpx;
-			margin-left: 6rpx;
-		}
+		margin-bottom: 10rpx;
 		.coupon-list-left{
 			width:550rpx;
-			height:42rpx;
+			height:36rpx;
 			overflow: hidden;
 			display: flex;
 			align-items: center;
 			.coupon-box{
-				height:42rpx;
+				height:36rpx;
 				position: relative;
 				overflow: hidden;
-				margin-right: 16rpx;
-				margin-left: 2rpx;
+				margin-right: 27rpx;
 			}
 			.coupon-item{
-				height:42rpx;
-				border-radius: 4rpx;
+				height:36rpx;
+				border-radius: 2rpx;
 				box-sizing: border-box;
-				padding: 0 8rpx;
-				background: linear-gradient(90deg, #FFE2E7 0%, #F1D4FA 100%);
-				font-size: 24rpx;
-				
-				font-weight: 400;
-				color: #FA1545;
-				display: flex;
-				align-items: center;
-				justify-content: center;
+				padding: 0 10rpx;
+				background: #FF5441;
+				font-size: 19rpx;
+				color: #FFFFFF;
+				line-height: 36rpx;
+				text-align: center;
 			}
 		}
 		.coupon-list-right{
-			height:34rpx;
+			height:30rpx;
 			display: flex;
 			align-items: center;
+			font-family: YouSheBiaoTiHei;
 			font-size: 24rpx;
-			
-			font-weight: 400;
-			color: rgba(255,255,255,0.9);
+			color: #333333;
 			box-sizing: border-box;
-			border-radius: 4rpx;
-			padding: 0 8rpx;
-			background: linear-gradient(90deg, #FF007A 0%, #FF0054 100%);
+			position: relative;
+			.coupon-line{
+				width: 44rpx;
+				height:6rpx;
+				position: absolute;
+				bottom:4rpx;
+				left:50%;
+				margin-left: -22rpx;
+				z-index: 1;
+			}
+			.coupon-text{
+				height:30rpx;
+				font-family: YouSheBiaoTiHei;
+				font-size: 24rpx;
+				color: #333333;
+				position: relative;
+				z-index: 2;
+			}
 		}
 	}
 </style>

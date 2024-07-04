@@ -105,7 +105,7 @@
 		line-height: 66rpx;
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #666666;
 		border-bottom: 1rpx solid #E7E7E7;
 	}
@@ -133,7 +133,7 @@
 		align-items: center;
 		font-size: 22rpx;
 		
-		font-weight: 400;
+		
 		color: #666666;
 		padding:0 13rpx;
 	}
@@ -146,7 +146,7 @@
 		justify-content: center;
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color:#666666;
 	}
 	.red-color{

@@ -80,7 +80,7 @@
 			.title{
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #7F7F8E;
 				margin-bottom: 8rpx;
 			}
@@ -95,7 +95,7 @@
 			.time{
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #AAAABB;
 			}
 		}

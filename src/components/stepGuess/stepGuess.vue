@@ -130,7 +130,7 @@
 		padding:0 12rpx;
 		font-size: 19rpx;
 		
-		font-weight: 400;
+		
 		color: rgba(228, 78, 78,0.97);;
 	}
 	.guess-icon-kefu{
@@ -236,7 +236,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 36rpx;
-		font-weight: 400;
+		
 		color: #333333;
 		position: absolute;
 		left:50%;
@@ -256,7 +256,7 @@
 		width: 100%;
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #525151;
 		line-height: 40rpx;
 		margin-top: 40rpx;
@@ -264,7 +264,7 @@
 	.drawer-content-tips{
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #CF3737;
 		line-height: 40rpx;
 		margin-top: 60rpx;
@@ -303,7 +303,7 @@
 		padding-left: 12rpx;
 		font-size: 20rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 	}
 	.order-guess-successbox{
@@ -339,7 +339,7 @@
 		width: 100%;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #7D8288;
 		white-space: pre-wrap;
 		line-height: 35rpx;

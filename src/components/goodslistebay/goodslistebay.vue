@@ -71,7 +71,7 @@
 			width: 100%;
 			font-size: 28rpx;
 			
-			font-weight: 400;
+			
 			color: #14151A;
 			margin-bottom: 12rpx;
 			word-break:break-all;
@@ -141,7 +141,7 @@
 		background-size: 100% 100%;
 		font-size: 20rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		text-align: center;
 		line-height: 38rpx;
@@ -153,7 +153,7 @@
 		background-size: 100% 100%;
 		font-size: 20rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		text-align: center;
 		line-height: 38rpx;

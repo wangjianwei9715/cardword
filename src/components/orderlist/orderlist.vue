@@ -73,7 +73,7 @@
 	.count-down{
 		margin-left: 10rpx;
 		
-		font-weight: 400;
+		
 	}
 	.orderlist{
 		&-index{
@@ -106,7 +106,7 @@
 						line-height: 40rpx;
 						font-size: 28rpx;
 						
-						font-weight: 400;
+						
 						color: #333333;
 					}
 				}
@@ -120,7 +120,7 @@
 						align-items: center;
 						font-size: 26rpx;
 						
-						font-weight: 400;
+						
 						color: rgba(153,153,153,0.9);
 					}
 					&-count{
@@ -166,7 +166,7 @@
 						margin-top: 5rpx;
 						font-size: 23rpx;
 						
-						font-weight: 400;
+						
 						color: #F63D47;
 						box-sizing: border-box;
 						padding:0 18rpx;
@@ -189,7 +189,7 @@
 						left:0;
 						.num{
 							font-size: 22rpx;
-							font-weight: 400;
+							
 							color: #C0C0C0;
 						}
 						.price{
@@ -197,7 +197,7 @@
 							line-height: 40rpx;
 							font-size: 24rpx;
 							
-							font-weight: 400;
+							
 							color: rgba(0,0,0,0.9);
 							display: inline-flex
 						}
@@ -251,7 +251,7 @@
 					justify-content: flex-end;
 					font-size: 20rpx;
 					
-					font-weight: 400;
+					
 					color: #14151A;
 					padding-right: 20rpx;
 					box-sizing: border-box;
@@ -282,7 +282,7 @@
 						justify-content: center;
 						border-radius:5rpx;
 						font-size: 24rpx;
-						font-weight: 400;
+						
 						margin-right: 26rpx;
 						background:#fff;
 						border:1rpx solid #DADADA;

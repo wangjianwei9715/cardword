@@ -338,7 +338,7 @@
 		width: 100%;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #7d8288;
 		line-height: 38rpx;
 		margin-bottom: 50rpx;
@@ -359,7 +359,7 @@
 			box-sizing: border-box;
 			font-size: 69rpx;
 			font-family: hei;
-			font-weight: 400;
+			
 			color: #ffffff;
 			margin-bottom: 49rpx;
 		}
@@ -367,7 +367,7 @@
 		.mall-my-point {
 			font-size: 27rpx;
 			
-			font-weight: 400;
+			
 			color: #ffffff;
 			letter-spacing: 5rpx;
 		}
@@ -418,7 +418,7 @@
 			align-items: center;
 			font-size: 23rpx;
 			
-			font-weight: 400;
+			
 			color: #ffffff;
 
 			.mall-top-img {
@@ -458,7 +458,7 @@
 					align-items: center;
 					font-size: 23rpx;
 					
-					font-weight: 400;
+					
 					color: #333333;
 					line-height: 32rpx;
 
@@ -473,7 +473,7 @@
 					height: 32rpx;
 					font-size: 23rpx;
 					
-					font-weight: 400;
+					
 					color: #333333;
 					line-height: 32rpx;
 
@@ -538,7 +538,7 @@
 							line-height: 31rpx;
 							font-size: 22rpx;
 							
-							font-weight: 400;
+							
 							// color: #ffffff;
 						}
 					}
@@ -553,7 +553,7 @@
 							line-height: 70rpx;
 							font-size: 27rpx;
 							
-							font-weight: 400;
+							
 							color: #333333;
 							text-align: center;
 							overflow: hidden;
@@ -566,7 +566,7 @@
 							height: 34rpx;
 							font-size: 25rpx;
 							
-							font-weight: 400;
+							
 							color: #ef3333;
 							text-align: center;
 							line-height: 20rpx;
@@ -581,7 +581,7 @@
 							line-height: 46rpx;
 							font-size: 27rpx;
 							
-							font-weight: 400;
+							
 							color: #ffffff;
 						}
 					}
@@ -610,7 +610,7 @@
 		.point-tips {
 			font-size: 23rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 		}
 	}
@@ -660,7 +660,7 @@
 			line-height: 36rpx;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			text-align: center;
 			overflow: hidden;
@@ -674,7 +674,7 @@
 			line-height: 50rpx;
 			font-size: 23rpx;
 			
-			font-weight: 400;
+			
 			color: #ef3333;
 			text-align: center;
 			overflow: hidden;
@@ -691,7 +691,7 @@
 			line-height: 43rpx;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #ffffff;
 			margin: 0 auto;
 		}

@@ -199,7 +199,7 @@
 				width: 100%;
 				font-size: 29rpx;
 				
-				font-weight: 400;
+				
 				color: #FFFFFF;
 				text-align: center;
 				font-weight: bold;
@@ -249,7 +249,7 @@
 					width: 100%;
 					font-size: 21rpx;
 					
-					font-weight: 400;
+					
 					color: #88878C;
 					margin-top: 10rpx;
 				}
@@ -280,7 +280,7 @@
 					line-height: 50rpx;
 					font-size: 20rpx;
 					
-					font-weight: 400;
+					
 					color: #B8B7B7;
 				}
 				.coupon-right-down{
@@ -325,7 +325,7 @@
 		justify-content: center;
 		font-size: 33rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		margin:0
 	}
@@ -356,7 +356,7 @@
 		width: 100%;
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #B8B7B7;
 		line-height: 36rpx;
 	}

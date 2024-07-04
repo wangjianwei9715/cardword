@@ -270,7 +270,7 @@ page {
         .rank {
             font-size: 23rpx;
             
-            font-weight: 400;
+            
             color: #333333;
         }
     }
@@ -284,7 +284,7 @@ page {
         view {
             font-size: 23rpx;
             
-            font-weight: 400;
+            
             color: #333333;
         }
     }
@@ -305,7 +305,7 @@ page {
 .noMore {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #fff;
     margin: 50rpx auto;
     text-align: center;
@@ -359,7 +359,7 @@ page {
         .goodsTitle {
             font-size: 25rpx;
             
-            font-weight: 400;
+            
             color: #333333;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -372,7 +372,7 @@ page {
         .goodsType {
             font-size: 25rpx;
             
-            font-weight: 400;
+            
             color: #949494;
         }
 
@@ -383,14 +383,14 @@ page {
             .time {
                 font-size: 25rpx;
                 
-                font-weight: 400;
+                
                 color: #949494;
             }
 
             .point {
                 font-size: 25rpx;
                 
-                font-weight: 400;
+                
                 color: #A0BED8;
             }
 

@@ -544,7 +544,7 @@ export default {
     width: 670rpx;
     font-size: 23rpx;
     
-    font-weight: 400;
+    
     color: #7C7C7C;
 }
 
@@ -555,7 +555,7 @@ export default {
     // #endif
     font-size: 29rpx;
     
-    font-weight: 400;
+    
     color: #14151A;
     line-height: 36rpx;
     padding: 0 22rpx;
@@ -565,7 +565,7 @@ export default {
 //     width: 670rpx;
 //     font-size: 28rpx;
 //     
-//     font-weight: 400;
+//     
 //     color: #14151A;
 //     line-height: 36rpx;
 // }
@@ -665,7 +665,7 @@ export default {
 .voteTitle {
     font-size: 29rpx;
     
-    font-weight: 400;
+    
     color: #333333;
     line-height: 25rpx;
     margin-bottom: 26rpx;
@@ -692,7 +692,7 @@ export default {
 .voteFont {
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     color: #333333;
     flex: 1;
     z-index: 4;
@@ -789,14 +789,14 @@ export default {
 .name {
     font-size: 27rpx;
     
-    font-weight: 400;
+    
     color: #959695;
 }
 
 .time {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #AAAAAA;
     // margin-left: 22rpx;
     // flex: 1;
@@ -806,7 +806,7 @@ export default {
 .contentMsg {
     font-size: 27rpx;
     
-    font-weight: 400;
+    
     color: #333333;
     margin-top: 20rpx;
     line-height: 33rpx;
@@ -849,7 +849,7 @@ export default {
 .loaction {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #AAAAAA;
     margin-left: 22rpx;
 }
@@ -920,7 +920,7 @@ export default {
 .replayUserName {
     font-size: 27rpx;
     
-    font-weight: 400;
+    
     color: #959695;
     margin-top: 20rpx;
     // position: relative;
@@ -968,7 +968,7 @@ export default {
     align-items: center;
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     color: #333333;
 }
 
@@ -978,7 +978,7 @@ export default {
     color: #fff;
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     border-radius: 3rpx;
     text-align: center;
     line-height: 54rpx;

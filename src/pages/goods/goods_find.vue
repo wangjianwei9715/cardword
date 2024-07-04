@@ -3,12 +3,12 @@
 		<view class="header-banner">
 			<statusbar/>
 			<view class="tab-header">
+				<view class="back" @click="onClickBack"></view>
 				<view class="header-search">
 					<view class="search-icon"></view>
 					<input class="search-input" type="text" focus v-model="searchTetxt" :placeholder="placeholder" confirm-type="search" @input="$u.debounce(onInput, 200)" @confirm="onClickSearch(searchTetxt)" />
 				</view>
-				<view v-if="searchTetxt==''" class="header-right" @click="onClickBack">取消</view>
-				<view v-else class="header-right" @click="onClickSearch(searchTetxt)">搜索</view>
+				<view class="header-right" @click="onClickSearch(searchTetxt)">搜索</view>
 			</view>
 		</view>
 		<view class="lenovo-list" v-show="lenovoShow">
@@ -23,47 +23,32 @@
 			<statusbar/>
 			<view class="search-title" v-show="historyList!=''">历史记录<view class="icon-delete" @click="onClickDelete"></view></view>
 			<view class="search-list" v-show="historyList!=''">
-				<view class="search-index" @click="searchGoodList(item)" v-for="item in historyList" :key="item">{{item}}</view>
+				<view class="search-index" @click="searchGoodList(item)" v-for="item in historyList" :key="item">
+					{{item}}
+				</view>
 			</view>
-			<view class="search-title">热门搜索</view>
+			<view class="search-title" v-show="forecastList.length">猜你想要</view>
 			<view class="search-list">
-				<view class="search-index" @click="searchGoodList(item)" v-for="item in hotSearchList" :key="item">{{item}}</view>
+				<view class="search-index" @click="searchGoodList(item.name)" v-for="(item,index) in forecastList" :key="index">
+					<image v-if="[1,2].includes(item.tp)" class="merchant-logo" :src="decodeURIComponent(item.logo)"/>
+					<text>{{item.name}}</text>
+					<text v-if="[1,2].includes(item.tp)" class="merchant-tag" :style="{color:item.tp==1?'#ED3259':'#EBA447'}">{{item.tag}}</text>
+				</view>
+				
 			</view>
 			<view class="swiper-tab">
-				<view class="swiper-fbtn" :class="{'btn-goods':curIndex==1}" @click="curIndex=1">{{curIndex==1?'':'商品飙升榜'}}</view>
-				<view class="swiper-fbtn" :class="{'btn-merchant':curIndex==2}" @click="curIndex=2">{{curIndex==2?'':'店铺热力榜'}}</view>
+				<view class="btn-goods"></view>
 			</view>
-
-			<swiper
-				:style="{ width: '100%', height: '1250rpx' }"
-				:current = "curIndex-1"
-				duration="200"
-				circular
-				@change="animationfinish"
-				>
-				<swiper-item v-for="(item, i) in 2" :key="i">
-					<view class="slide-image-box" v-if="item==1">
-						<view class="swiper-list swiper-left">
-							<view class="good-item" v-for="(item,index) in hotList.goodList" :key="index" @click="goGoodDetail(item.goodCode)">
-								<view class="good-rank" :class="'rank-'+item.rank">{{item.rank>3?item.rank:''}}</view>
-								<muqian-lazyLoad class="good-pic" :src="decodeURIComponent(item.pic)" borderRadius="5rpx"/>
-								<view class="good-desc">{{item.title}}</view>
-								<view class="good-new" v-if="item.isNew">新</view>
-							</view>
-						</view>
+			<view class="slide-image-box">
+				<view class="swiper-list swiper-left">
+					<view class="good-item" v-for="(item,index) in hotList.goodList" :key="index" @click="goGoodDetail(item.goodCode)">
+						<view class="good-rank" :class="'rank-'+item.rank">{{item.rank>3?item.rank:''}}</view>
+						<muqian-lazyLoad class="good-pic" :src="decodeURIComponent(item.pic)" borderRadius="5rpx"/>
+						<view class="good-desc">{{item.title}}</view>
+						<view class="good-new" v-if="item.isNew"></view>
 					</view>
-					<view  class="slide-image-box" v-else>
-						<view class="swiper-list swiper-right">
-							<view class="good-item" v-for="(item,index) in hotList.merchantList" :key="index" @click="onClickShops(item.alias)">
-								<view class="good-rank" :class="'rank-'+item.rank">{{item.rank>3?item.rank:''}}</view>
-								<muqian-lazyLoad class="merchant-pic" :src="decodeURIComponent(item.logo)" borderRadius="50%"/>
-								<view class="merchant-desc">{{item.name}}</view>
-								<view class="merchant-up" v-if="item.rankAlter>0"></view>
-							</view>
-						</view>
-					</view>
-				</swiper-item>
-			</swiper>
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -79,7 +64,6 @@
 		statusBarHeight = app.statusBarHeight;
 		searchTetxt = ''
 		historyList:{[x:string]:any} = [];
-		hotSearchList:any = [];
 		curIndex = 1;
 		hotList:any = {
 			goodList:[],
@@ -87,19 +71,32 @@
 		}
 		placeholder = '';
 		lenovoList = [];
+		forecastList = [];
 		lastLenovo = "";
 		listHeight = 0;
 		onLoad(query:any) {
-			let searchData = uni.getStorageSync("searchData");
-			if(searchData) this.historyList = searchData
 			if(query.q) this.searchTetxt = query.q;
 			if(query.placeholder) this.placeholder = query.placeholder;
+			this.initEvent();
+		}
+		onClickBack(){
+			uni.navigateBack({ delta: 1 });
+		}
+		public get lenovoShow() : boolean {
+			return this.lenovoList.length>0 && this.searchTetxt!="";
+		}
+		initEvent(){
+			let searchData = uni.getStorageSync("searchData");
+			if(searchData) this.historyList = searchData
+
 			app.http.Get('dataApi/search/heat/list',{},(res:any)=>{
 				this.hotList.goodList = res.data.goodList.splice(0,10);
 				this.hotList.merchantList = res.data.merchantList.splice(0,10);
 			})
-			app.http.Get('dataApi/search/series/list',{},(res:any)=>{
-				this.hotSearchList = res.list ? res.list : [];
+
+			// 猜你想搜
+			app.http.Get('dataApi/search/forecast/list',{},(res:any)=>{
+				this.forecastList = res.list ? res.list : [];
 			})
 
 			// #ifdef H5
@@ -110,12 +107,6 @@
 			const { screenHeight, statusBarHeight } = app.platform.systemInfo;
 			this.listHeight = screenHeight - uni.upx2px(104) - (statusBarHeight||0) - tabbarHeight
 			//#endif
-		}
-		onClickBack(){
-			uni.navigateBack({ delta: 1 });
-		}
-		public get lenovoShow() : boolean {
-			return this.lenovoList.length>0 && this.searchTetxt!="";
 		}
 		onClickDelete(){
 			uni.showModal({
@@ -223,49 +214,50 @@
 		height:104rpx;
 		display: flex;
 		box-sizing: border-box;
-		padding:0 20rpx;
+		padding:0 34rpx;
 		z-index: 10;
 		align-items: center;
-		justify-content: space-between;
+	}
+	.back{
+		width: 58rpx;
+		height:64rpx;
+		background: url(@/static/goods/v3/back.png) no-repeat 0 15rpx / 17rpx 29rpx;
 	}
 	.header-search{
-		width: 640rpx;
+		width: 538rpx;
 		height:64rpx;
-		background: #F5F5F8;
+		background: #F6F7FB;
+		border-radius: 5rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		position: relative;
-		border-radius: 29rpx;
 	}
 	.search-input{
-		width: 626rpx;
+		width: 538rpx;
 		height:64rpx;
-		background: #F5F5F5;
-		border-radius: 3rpx;
+		background: #F6F7FB;
+		border-radius: 5rpx;
 		font-size: 26rpx;
-		
-		font-weight: 400;
-		color: #14151A;
-		padding-left:76rpx
+		color: #333;
+		padding-left:81rpx
 	}
 	.search-icon{
 		width: 28rpx;
-		height:28rpx;
-		background:url(../../static/index/sousuo@2x.png) no-repeat center;
+		height:29rpx;
+		background:url(@/static/index/v3/icon_search.png) no-repeat center;
 		background-size:100% 100%;
 		position: absolute;
-		left:28rpx;
+		left:38rpx;
 		top:50%;
-		margin-top: -14rpx;
+		margin-top: -14.5rpx;
 	}
 	.header-right{
 		height:50rpx;
 		line-height: 50rpx;
 		font-size: 26rpx;
-		
-		font-weight: 400;
-		color: #14151A;
+		color: #333;
+		margin-left: 24rpx;
 	}
 	.top-center{
 		width: 100%;
@@ -281,19 +273,18 @@
 		width: 100%;
 		height:40rpx;
 		box-sizing: border-box;
-		font-size: 32rpx;
-		
-		font-weight: bold;
-		color: #3B3B3B;
+		font-size: 24rpx;
+		font-weight: 500;
+		color: #3D4352;
 		display: flex;
 		align-items: center;
 		justify-content:space-between;
-		padding:0 30rpx;
+		padding:0 38rpx;
 	}
 	.icon-delete{
-		width: 34rpx;
-		height:32rpx;
-		background:url(../../static/goods/v2/icon_del.png) no-repeat center; 
+		width: 24rpx;
+		height:28rpx;
+		background:url(@/static/goods/v3/del.png) no-repeat center; 
 		background-size: 100% 100%;
 	}
 	.search-list{
@@ -305,19 +296,17 @@
 		padding:0 30rpx
 	}
 	.search-index{
-		height:56rpx;
-		line-height: 56rpx;
+		height:40rpx;
 		box-sizing: border-box;
-		padding:0 24rpx;
-		background: #F6F6F7;
-		border-radius: 4rpx;
-		text-align: center;
-		font-size: 24rpx;
-		
-		font-weight: 400;
-		color: #767880;
-		margin-right: 16rpx;
-		margin-bottom: 16rpx;
+		padding:0 20rpx;
+		display: flex;
+		align-items: center;
+		background: #F3F5FB;
+		border-radius: 2rpx;
+		font-size: 20rpx;
+		color: #8D8D8D;
+		margin-right: 28rpx;
+		margin-bottom: 14rpx;
 	}
 	.hot-content{
 		width: 100%;
@@ -456,10 +445,7 @@
 		overflow: hidden;
 	}
 	.swiper-left{
-		background: linear-gradient(0deg, #FFFFFF 0%, #FEF9F4 99%);
-	}
-	.swiper-right{
-		background: linear-gradient(0deg, #FFFFFF 0%, #F6FCFC 99%);
+		background: linear-gradient(0deg, #FFFFFF 0%, #EAE8F5 99%);
 	}
 	.swiper-header{
 		width: 100%;
@@ -473,59 +459,45 @@
 		height:30rpx;
 		background: url(@/static/goods/v2/title_up.png) no-repeat center / 100% 100%;
 	}
-	.swiper-right .swiper-title{
-		width: 163rpx;
-		height:30rpx;
-		background: url(@/static/goods/v2/title_hot.png) no-repeat center / 100% 100%;
-	}
 	.good-item{
 		width: 100%;
-		height:84rpx;
+		height:70rpx;
 		display: flex;
 		align-items: center;
 		box-sizing: border-box;
-		margin-bottom: 30rpx;
+		margin-bottom: 19rpx;
 		position: relative;
 	}
 	.good-rank{
-		width: 35rpx;
+		width: 60rpx;
 		height:70rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		font-size: 27rpx;
 		font-family: Impact;
-		font-weight: 400;
 		color: #757575;
 		margin-right: 15rpx;
 	}
 	.rank-1{
-		width: 35rpx;
-		height:44rpx;
-		background: url(@/static/goods/v2/1.png) no-repeat center / 100% 100%;
+		background: url(@/static/goods/v3/1.png) no-repeat center / 56rpx 35rpx;
 	}
 	.rank-2{
-		width: 35rpx;
-		height:44rpx;
-		background: url(@/static/goods/v2/2.png) no-repeat center / 100% 100%;
+		background: url(@/static/goods/v3/2.png) no-repeat center / 60rpx 38rpx;
 	}
 	.rank-3{
-		width: 35rpx;
-		height:44rpx;
-		background: url(@/static/goods/v2/3.png) no-repeat center / 100% 100%;
+		background: url(@/static/goods/v3/3.png) no-repeat center / 56rpx 35rpx;
 	}
 	.good-pic{
-		width: 96rpx;
-		height:84rpx;
+		width: 87rpx;
+		height:70rpx;
 	}
 	.good-desc{
-		width: 440rpx;
+		width: 400rpx;
 		height:70rpx;
 		margin-left: 20rpx;
-		font-size: 26rpx;
-		
-		font-weight: 400;
-		color: #333333;
+		font-size: 20rpx;
+		color: #3D4352;
 		overflow: hidden;
 		text-overflow:ellipsis;
 		white-space: nowrap;
@@ -536,19 +508,11 @@
 	.good-new{
 		width: 30rpx;
 		height: 30rpx;
-		background: linear-gradient(25deg, #61A178 0%, #88CD5A 99%);
-		border-radius: 3rpx;
-		font-size: 21rpx;
-		
-		font-weight: 600;
-		color: #FFFFFF;
-		box-sizing: border-box;
-		text-align: center;
-		line-height: 30rpx;
 		position: absolute;
 		right:0;
 		top:50%;
 		margin-top: -15rpx;
+		background: url(@/static/goods/v3/new.png) no-repeat center / 100% 100%;
 	}
 	.merchant-pic{
 		width: 75rpx;
@@ -557,7 +521,7 @@
 	.merchant-desc{
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		margin-left: 22rpx;
 	}
@@ -590,7 +554,7 @@
 		box-sizing: border-box;
 		border: 1rpx solid #F3F0F0;
 		border-radius: 5rpx;
-		padding: 30rpx 20rpx 0 20rpx;
+		padding: 28rpx 31rpx 0 15rpx;
 		margin:0 auto;
 	}
 	.swiper-tab{
@@ -601,23 +565,21 @@
 		box-sizing: border-box;
 		padding:0rpx 30rpx;
 	}
-	.swiper-fbtn{
-		height:35rpx;
-		font-size: 29rpx;
-		
-		font-weight: 400;
-		color: #757575;
-		display: flex;
-		align-items: center;
-	}
 	.btn-goods{
-		width: 175rpx;
-		background:url(@/static/goods/v2/title_up.png) no-repeat center / 100% 100%;
-		margin-right: 54rpx;
+		height:33rpx;
+		width: 174rpx;
+		background:url(@/static/goods/v3/up.png) no-repeat center / 100% 100%;
 	}
-	.btn-merchant{
-		width: 176rpx;
-		background:url(@/static/goods/v2/title_hot.png) no-repeat center / 100% 100%;
-		margin-left: 54rpx;
+	.merchant-logo{
+		width: 26rpx;
+		height:26rpx;
+		border-radius: 50%;
+		margin-right: 11rpx;
+	}
+	.search-index text{
+		font-size: 20rpx;
+	}
+	.merchant-tag{
+		margin-left: 14rpx;
 	}
 </style>

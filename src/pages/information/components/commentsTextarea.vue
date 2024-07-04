@@ -92,7 +92,7 @@
 			border-radius: 3rpx;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #88878C;
 			box-sizing: border-box;
 			padding:10rpx 20rpx;
@@ -104,7 +104,7 @@
 			line-height: 60rpx;
 			font-size: 30rpx;
 			
-			font-weight: 400;
+			
 			background-image: linear-gradient(to bottom, #ef3333, #eb6141);
 			border-radius: 40rpx;
 			color:#fff

@@ -4,12 +4,21 @@
 			<view class="drawer-header">
 				<view class="drawer-header-name">使用后在售期间可投放广告页至首页（单商品最高累计可投放{{maxAdHour}}小时）</view>
 			</view>
-			<view class="drawer-center-list" v-show="!waitUploadOrReview">
-				<view class="drawer-center-item" v-for="(item,index) in usableAdCardList" :key="index">
+			<view class="drawer-center-list" v-show="!waitReview">
+				<view class="drawer-level-box">
+					<view class="drawer-level-index" :class="{'current-level':currentLevel==index}" v-for="(item,index) in adCardList" :key="index" @click="onClickCurrentLevel(index)">
+						<view class="level-title">{{index}}级广告位</view>
+						<view class="level-text">位置：{{levelLoca[index]}}</view>
+					</view>
+				</view>
+				<view class="drawer-header-content">
+					<view class="drawer-header-left">共计<text>{{currentAdCardListLength}}</text>张</view>
+					<view class="drawer-header-right" @click="onClickSelectAll()">全选</view>
+				</view>
+				<view class="drawer-center-item" v-for="(item,index) in currentAdCardList" :key="index">
 					<view class="drawer-item-box">
 						<view class="drawer-item-surplus">剩{{item.remaining_quantity}}次</view>
 						<view>
-							<view class="drawer-item-num">广告位</view>
 							<view class="drawer-item-time">{{item.hour}}小时</view>
 						</view>
 					</view>
@@ -20,17 +29,6 @@
 					</view>
 				</view>
 				<view v-if="!hasUsableCard&&currentState.inEffect" class="nouse-card">暂无可用的广告卡</view>
-			</view>
-			<view class="drawer-center-list" v-show="waitUploadOrReview">
-				<view v-if="!uploadImg&&currentState.waitUpload" class="up-box" @click="addImage()">
-					<view class="up-center">
-						<view class="icon-upload"></view>
-					</view>
-				</view>
-				<view v-else class="ad-image-box">
-					<muqian-lazyLoad  class="ad-image-box" mode="aspectFit" :src="currentState.waitUpload?uploadImg:adData.cover" borderRadius="3rpx" preview/>
-					<view v-show="currentState.waitUpload" class="up-pic-del" @click="uploadImg=''"></view>
-				</view>
 			</view>
 			
 			<view class="drawer-bottom" >
@@ -44,8 +42,7 @@
 
 				<view v-if="hasUsableCard" :class="buttonData.class" style="display: flex;align-items: center;justify-content: center;" @click="buttonData.clickHandler">
 					{{ buttonData.text }} 
-					<u-count-down v-if="currentState.waitUpload" :time="countDown(adData.coverUpOverTime)" format="mm:ss" @finish="onFinish"></u-count-down>
-					<u-count-down v-if="adFull&&!currentState.waitUpload&&!currentState.waitReview&&adData.recently_at>0&&!currentState.inEffect" @finish="tipsFinish" style="color: #ffffff;" :time="countDown(adData.recently_at)" :format="(+new Date())-adData.recently_at>60*60?'HH:mm:ss':'mm:ss'"></u-count-down>
+					<u-count-down v-if="adFull&&!currentState.waitReview&&adData.recently_at>0&&!currentState.inEffect" @finish="tipsFinish" style="color: #ffffff;" :time="countDown(adData.recently_at)" :format="(+new Date())-adData.recently_at>60*60?'HH:mm:ss':'mm:ss'"></u-count-down>
 					
 				</view>
 				<view v-else class="drawer-bottom-btn" @click="redirectToMall">去积分中心兑换</view>
@@ -59,7 +56,7 @@
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import Upload from "@/tools/upload"
 	import { app } from "@/app";
-	import { maxAdHour, stateMap } from "../constants/constants";
+	import { maxAdHour, stateMap, levelLoca } from "../constants/constants";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@PropSync("show",{
@@ -67,21 +64,20 @@
 		}) showSync!: Boolean;
 		@Prop({default:''})
 		goodCode?:string
-
+		@Prop({default:''})
+		slogan?:string
+		
+		levelLoca = levelLoca;
 		maxAdHour = maxAdHour;
 		stateMap = stateMap;
 		isPullDown = app.platform.isPullDown;
 		adCardList:any=[];
 		adData:any={};
-		uploadImg="";
+		currentLevel = 0;
 		buttonConfig:any = {
 			[stateMap.notStart]:{
 				text : "",
 				clickHandler : this.onClickConfirmUse
-			},
-			[stateMap.waitUpload]:{
-				text : "上传图片审核",
-				clickHandler : this.onClickUploadPic
 			},
 			[stateMap.waitReview]:{
 				text : "广告内容审核中",
@@ -95,14 +91,12 @@
 		@Watch('show')
 		onChangeShow(val:boolean){
 			if(val){
-				this.uploadImg="";
 				this.getList()
 			}
 		}
 		public get currentState(): { [key: string]: boolean } {
 			return {
 				notStart: this.adData.state === stateMap.notStart,
-				waitUpload: this.adData.state === stateMap.waitUpload,
 				waitReview: this.adData.state === stateMap.waitReview,
 				inEffect: this.adData.state === stateMap.inEffect
 			};
@@ -111,18 +105,24 @@
 			// return true
 			return this.adData.now_num>=this.adData.limit_num;
 		}
-		public get usableAdCardList() : string {
-			return this.adCardList.filter((item:any)=>item.remaining_quantity>0)
+		public get currentAdCardList() : any[]  {
+			return this.adCardList[this.currentLevel]||[]
 		}
-		public get waitUploadOrReview() : boolean {
-			return [stateMap.waitUpload,stateMap.waitReview].includes(this.adData.state)
+		public get currentAdCardListLength() : number {
+			return this.currentAdCardList.reduce((total:number,item:any) => total+item.remaining_quantity , 0)
+		}
+		public get usableAdCardList() : string {
+			return this.currentAdCardList.filter((item:any)=>item.remaining_quantity>0)
+		}
+		public get waitReview() : boolean {
+			return [stateMap.waitReview].includes(this.adData.state)
 		}
 		public get hasUsableCard() : boolean {
-			const hasCard = this.adCardList.length>0 && this.adCardList.some((item:any)=>item.remaining_quantity>0)
-			return (hasCard || this.currentState.waitUpload || this.currentState.waitReview)
+			const hasCard = this.currentAdCardList.length>0 && this.currentAdCardList.some((item:any)=>item.remaining_quantity>0)
+			return (hasCard || this.currentState.waitReview)
 		}
 		public get selectedHour() : number {
-			return this.adCardList.reduce((total:number,item:any) => total+(item.num*item.hour) , 0)
+			return this.currentAdCardList.reduce((total:number,item:any) => total+(item.num*item.hour) , 0)
 		}
 		public get useHour() : number {
 			const hour = this.adData.totalHour + this.selectedHour;
@@ -132,7 +132,7 @@
 			const { state,reminder } = this.adData;
 			console.log(state);
 			
-			const { notStart, waitUpload, waitReview, inEffect } = stateMap;
+			const { notStart, waitReview, inEffect } = stateMap;
 			if(this.currentState.notStart){
 				this.buttonConfig[notStart].text = this.adFull? this.fullTips(reminder) : `确认使用（可申请广告位${this.adData.now_num}/${this.adData.limit_num}）`
 			}
@@ -143,16 +143,10 @@
 				class: {
 					'drawer-bottom-btn': true,
 					'btn-disabled': state===waitReview || (state===notStart&&this.adFull&&reminder),
-					'upload-btn': state===waitUpload || (this.adFull)
+					'upload-btn': (this.adFull)
 				},
 				...this.buttonConfig[state]
 			};
-		}
-		async addImage() {
-			app.platform.hasLoginToken( async ()=>{
-				const pic:any = await Upload.getInstance().uploadSocialImgs(1, "illustration", ["album"]);
-				this.uploadImg = pic[0];
-			})
 		}
 		fullTips(reminder:boolean){
 			if (reminder){
@@ -161,11 +155,19 @@
 				return this.adData.recently_at>0?`已满、预约结束前提醒:`:`已满、点击设置提醒`
 			}
 		}
+		onClickSelectAll(item:any){
+			this.currentAdCardList.forEach(x=>{
+				x.num = x.remaining_quantity
+			})
+		}
 		countDown(endTime:number){
 			return (endTime-Math.round(+new Date().getTime() / 1000))*1000
 		}
 		redirectToMall(){
 			uni.redirectTo({url:"/pages/merchant/mall/index"});
+		}
+		onClickCurrentLevel(index:number){
+			this.currentLevel = index;
 		}
 		onClickReduceNum(item:any){
 			if(item.num<=0) return;
@@ -191,7 +193,6 @@
 			return
 		}
 		onClickConfirmUse(){
-			console.log("use",this.adFull);
 			const { inEffect } = this.currentState
 			if(this.adFull&&!this.adData.reminder&&!inEffect){
 				this.setMerReminder()
@@ -212,9 +213,11 @@
 					if (res.confirm) {
 						const params = {
 							goodCode:this.goodCode??null,
-							list:this.adCardList.map((x:any)=>{
+							list:this.currentAdCardList.map((x:any)=>{
 								return {count:Number(x.num),hour:x.hour}
-							})
+							}),
+							level:Number(this.currentLevel),
+							slogan:this.slogan
 						}
 						app.http.Post("merchant/me/adCard/use/v2",params,(res:any)=>{
 							this.getList()
@@ -223,26 +226,23 @@
 				}
 			});
 		}
-		onClickUploadPic(){
-			if(!this.uploadImg) return;
-			app.platform.UIClickFeedBack();
-			app.http.Post(`merchant/me/adCard/upload/cover/${this.adData.adLogId}`,{cover:this.uploadImg},(res:any)=>{
-				uni.showToast({title:"提交成功，请等待审核",icon:"none"})
-				this.getList()
-			})
-		}
 		onFinish(){
 			this.getList()
-			this.uploadImg="";
 		}
 		tipsFinish(){
-			this.uploadImg="";
 			this.adData.now_num-=1
 		}
 		getList(){
 			app.http.Get('merchant/me/adCard/list',{goodCode:this.goodCode},({list,...rest}:any)=>{
 				this.adData = rest;
-				this.adCardList = list ? list.map( (x:any) => ({...x,num:0}) ) : [];
+				if(!uni.$u.test.isEmpty(list)){
+					Object.keys(list).forEach(key => {
+						list[key] = list[key].map(x=>{
+							return {...x,num:0}
+						})
+					});
+					this.adCardList = list;
+				}
 			})
 		}
 	}
@@ -267,7 +267,7 @@
 	.drawer-header-name{
 		font-size: 23rpx;
 		
-		font-weight: 400;
+		
 		color: #959695;
 	}
 	.drawer-bottom{
@@ -336,14 +336,14 @@
 		flex-wrap: wrap;
 	}
 	.drawer-center-item{
-		width: 216rpx;
-		height:286rpx;
+		width: 160rpx;
+		height:220rpx;
 		box-sizing: border-box;
 		margin-bottom: 30rpx;
-		margin-right:30rpx;
+		margin-right: 20rpx;
 		.drawer-item-box{
-			width: 216rpx;
-			height:216rpx;
+			width: 100%;
+			height:150rpx;
 			box-sizing: border-box;
 			border: 1rpx solid #959695;
 			border-radius: 3rpx;
@@ -355,9 +355,16 @@
 		.drawer-item-num{
 			width: 100%;
 			text-align: center;
-			font-size: 63rpx;
-			
+			font-size: 40rpx;
 			font-weight: 600;
+			color: #333333;
+		}
+		.drawer-item-loca{
+			width: 100%;
+			text-align: center;
+			font-size: 26rpx;
+			
+			margin-top: 6rpx;
 			color: #333333;
 		}
 		.drawer-item-time{
@@ -365,7 +372,7 @@
 			text-align: center;
 			font-size: 23rpx;
 			
-			font-weight: 400;
+			
 			color: #959695;
 		}
 		.drawer-item-surplus{
@@ -380,7 +387,7 @@
 			line-height: 38rpx;
 			font-size: 23rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 		}
 		.drawer-item-inuse{
@@ -393,7 +400,7 @@
 			left:0;
 			font-size: 20rpx;
 			
-			font-weight: 400;
+			
 			color: #FA1545;
 			display: flex;
 			align-items: center;
@@ -406,9 +413,6 @@
 		font-weight: 400 !important;
 		color: #FA1545 !important;
 		margin-left: 10rpx;
-	}
-	.drawer-center-item:nth-child(3n){
-		margin-right: 0rpx;
 	}
 	.drawer-item-operate{
 		width: 100%;
@@ -445,35 +449,6 @@
 	.btn-disabled{
 		background:#c4c6c9 !important
 	}
-	.up-box{
-		width: 181rpx;
-		height:260rpx;
-		border: 0.8px dashed #c4c6c9;
-		border-radius: 3rpx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		box-sizing: border-box;
-	}
-	.ad-image-box{
-		width: 181rpx;
-		height:260rpx;
-		position: relative;
-	}
-	.up-pic-del{
-		width: 50rpx;
-		height:50rpx;
-		position: absolute;
-		right:-10rpx;
-		top:-10rpx;
-		background: url(@/static/illustration/icon_close.png) no-repeat center / 100% 100%;
-	}
-	.icon-upload{
-		width: 100rpx;
-		height:100rpx;
-		background: url(@/static/illustration/icon_upload.png) no-repeat center / 100% 100%;
-		margin:0 auto;
-	}
 	.nouse-card{
 		width: 100%;
 		text-align: center;
@@ -481,5 +456,63 @@
 		line-height: 500rpx;
 		color:#959695;
 		font-size: 30rpx;
+	}
+	.drawer-level-box{
+		width: 100%;
+		height:140rpx;
+		display: flex;
+		justify-content: space-between;
+		border-bottom: 1rpx solid rgb(232, 232, 232);
+		.drawer-level-index{
+			width: 160rpx;
+			height:110rpx;
+			box-sizing: border-box;
+			border: 1rpx solid #959695;
+			border-radius: 3rpx;
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-content: center;
+			.level-title{
+				width: 100%;
+				text-align: center;
+				font-size: 28rpx;
+				
+				color: #333333;
+			}
+			.level-text{
+				width: 100%;
+				text-align: center;
+				font-size: 26rpx;
+				
+				color: #333333;
+				margin-top: 10rpx;
+			}
+		}
+		.current-level{
+			border: 1rpx solid #FA1545;
+			background:rgba(250, 21, 69,0.1);
+		}
+	}
+	.drawer-header-content{
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		height:80rpx;
+		align-items: center;
+	}
+	.drawer-header-left{
+		font-size: 28rpx;
+		color: #333333;
+	}
+	.drawer-header-left text{
+		font-size: 28rpx;
+		color: #FA1545;
+	}
+	.drawer-header-right{
+		font-size: 28rpx;
+		color: #FA1545;
+		text-decoration: underline;
 	}
 </style>

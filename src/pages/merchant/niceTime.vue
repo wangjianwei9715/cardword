@@ -223,7 +223,7 @@ page {
         height: 63rpx;
         font-size: 26rpx;
         
-        font-weight: 400;
+        
         color: #FFFFFF;
         border-radius: 30rpx;
         background-color: #666666;
@@ -239,7 +239,7 @@ page {
         height: 38rpx;
         font-size: 24rpx;
         
-        font-weight: 400;
+        
         color: #FFFFFF;
         background-color: #fa1545;
         border-radius: 7rpx;
@@ -304,7 +304,7 @@ page {
     border-radius: 3rpx;
     font-size: 23rpx;
     
-    font-weight: 400;
+    
     color: #FFFFFF;
     position: absolute;
     right: 0;
@@ -371,7 +371,7 @@ page {
     height: 38rpx;
     font-size: 24rpx;
     
-    font-weight: 400;
+    
     color: #FFFFFF;
     position: absolute;
     left: 25rpx;
@@ -385,7 +385,7 @@ page {
     height: 38rpx;
     font-size: 24rpx;
     
-    font-weight: 400;
+    
     color: #FFFFFF;
     position: absolute;
     background: rgba(0, 0, 0, .4);
@@ -429,7 +429,7 @@ page {
 .niceTime-userName {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #333333;
     flex: 1;
     /* max-width: 200rpx; */
@@ -441,7 +441,7 @@ page {
 .niceTime-time {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #999999;
 }
 

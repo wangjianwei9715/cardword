@@ -2,13 +2,17 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-24 11:05:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-13 10:30:45
+ * @LastEditTime: 2024-06-27 16:43:07
  * @FilePath: \jichao_app_2\src\components\transitionNav\transitionNav.vue
  * @Description: 渐变导航栏（兼容nvue, nvue中把组件放到结构最下面:越后层级越高）
 -->
 <template>
     <view id="pageTopContainer" class="pageTopContainer"
         :style="{ zIndex, backgroundColor: scrollTopPercent >= 1 ? `rgb(${navColor})` : `rgba(${navColor},${scrollTopPercent})` }">
+        <view v-if="navBgImage" class="nav-bg-container" :style="{opacity:(1-scrollTopPercent)}">
+            <image class="nav-bg-image" :src="navBgImage" mode="widthFix"/>
+            <view class="nav-blur"></view>
+        </view>
         <view class="status" :style="{ paddingTop: app.statusBarHeight + 'px', }">
         </view>
         <view id="pageTop" class="pageTop">
@@ -197,6 +201,10 @@ export default {
         slotLeftReverseSide:{
             type:Boolean,
             default:false
+        },
+        navBgImage:{
+            type:String,
+            default:""
         }
     },
     data() {
@@ -432,6 +440,30 @@ export default {
     -webkit-filter: invert(1) hue-rotate(270deg);
     filter: invert(1) hue-rotate(270deg);
 }
-
+.nav-bg-container{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    overflow: hidden;
+}
+.nav-bg-image{
+    width: 100%;
+    height:100%;
+    position: absolute;
+    top:0;
+    left:0;
+}
+.nav-blur{
+    width: 100%;
+    height:100%;
+    position: absolute;
+    top:0;
+    left:0;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(30px);
+}
 /* #endif */
 </style>

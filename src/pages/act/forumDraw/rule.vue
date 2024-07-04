@@ -150,7 +150,7 @@ page {
     .des_content {
         font-size: 23rpx;
         
-        font-weight: 400;
+        
         color: #333333;
         line-height: 36rpx;
         letter-spacing: 2rpx;
@@ -174,7 +174,7 @@ page {
     .des_gray {
         font-size: 19rpx;
         
-        font-weight: 400;
+        
         color: #949494;
         margin-top: 25rpx;
     }
@@ -212,7 +212,7 @@ page {
     .tips {
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #333333;
     }
 
@@ -237,12 +237,12 @@ page {
                 text-align: center;
                 font-size: 23rpx;
                 
-                font-weight: 400;
+                
                 color: #333333;
             }
 
             .rewardName {
-                font-weight: 400;
+                
                 text-align: center;
                 margin-top: 10rpx;
                 font-size: 24rpx;
@@ -277,7 +277,7 @@ page {
         text-align: center;
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #333333;
         top: 74rpx;
     }
@@ -287,7 +287,7 @@ page {
         text-align: center;
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #333333;
         top: 108rpx;
     }

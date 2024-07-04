@@ -507,7 +507,7 @@ export default class ClassName extends BaseNode {
 .tips {
   font-size: 24rpx;
   
-  font-weight: 400;
+  
   color: #c7c8c8;
 }
 
@@ -544,7 +544,7 @@ export default class ClassName extends BaseNode {
   text-align: center;
   font-size: 24rpx;
   
-  font-weight: 400;
+  
   color: #34363a;
 }
 
@@ -569,7 +569,7 @@ export default class ClassName extends BaseNode {
   align-items: center;
   font-size: 30rpx;
   
-  font-weight: 400;
+  
   color: #34363a;
 }
 
@@ -580,13 +580,13 @@ export default class ClassName extends BaseNode {
   line-height: 80rpx;
   font-size: 30rpx;
   
-  font-weight: 400;
+  
   color: #34363a;
 }
 
 .textarea {
   font-size: 30rpx;
-  font-weight: 400;
+  
   color: #34363a;
 }
 
@@ -594,7 +594,7 @@ export default class ClassName extends BaseNode {
   margin-top: 30rpx;
   font-size: 24rpx;
   
-  font-weight: 400;
+  
   color: #c7c8c8;
 }
 

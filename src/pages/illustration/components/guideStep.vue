@@ -122,7 +122,7 @@
 	.msg{
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #999999;
 		margin-bottom: 20rpx;
 	}

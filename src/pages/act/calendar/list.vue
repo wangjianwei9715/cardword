@@ -321,7 +321,7 @@
 		height:55rpx;
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #AAA8B3;
 		text-align: center;
 		line-height: 55rpx;
@@ -376,7 +376,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 35rpx;
-		font-weight: 400;
+		
 		color: #41414D;
 		position:absolute;
 		left:-75rpx;
@@ -406,7 +406,7 @@
 		width: 100%;
 		height:80rpx;
 		font-size: 30rpx;
-		font-weight: 400;
+		
 		color: #000;
 		line-height: 40rpx;
 		word-break:break-all;
@@ -420,14 +420,14 @@
 		box-sizing: border-box;
 		padding-top: 18rpx;
 		font-size: 22rpx;
-		font-weight: 400;
+		
 		color: #666666;
 		display: flex;
 		align-items: center;
 	}
 	.gray-desc{
 		font-size: 22rpx;
-		font-weight: 400;
+		
 		color: #666666;
 		margin-right: 20rpx;
 		position: relative;
@@ -460,7 +460,7 @@
 		width: 100%;
 		text-align: right;
 		font-size: 22rpx;
-		font-weight: 400;
+		
 		color: #666666;
 		margin-top: -10rpx;
 	}

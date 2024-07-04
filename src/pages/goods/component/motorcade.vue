@@ -3,15 +3,11 @@
 		
 		<view class="detail-act-box">
 			<view v-show="cheduiData.list" class="act-box" @click.prevent="cheduiShowDrawer=true;isPullDown(false)">
-				<view class="box-name">
-					<image class="icon-name" src="@/static/goods/detail/chedui.png"/>
-					<text class="box-name-text">车队排行</text>
-				</view>
+				<text class="box-name-text">车队排行榜</text>
 				<view class="act-box-desc flex-between">
-					<view class="act-box-desc-item flex-between">前{{cheduiData.totalNum}}名送礼品</view>
-					<u-notice-bar style="padding:0;max-width:350rpx;text-align:right;height:32rpx;" :fontSize="'24rpx'" :text="rewardList" direction="column" icon="" color="#A27339" bgColor="rgba(0,0,0,0)" :duration="3000" :flexEnd="true"></u-notice-bar>
+					<u-notice-bar style="padding:0;text-align:right;height:32rpx;" :fontSize="'20rpx'" :text="rewardList" direction="column" icon="" color="#C4873B" bgColor="rgba(0,0,0,0)" :duration="3000" :flexEnd="true"></u-notice-bar>
+					<view class="detail-act-right"></view>
 				</view>
-				<view class="detail-act-right"></view>
 			</view>
 		</view>
 		<!-- 车队排行榜 -->
@@ -127,23 +123,24 @@
 
 <style lang="scss">
 	.good-act-content{
-		width: 100%;
-		height: 50rpx;
-		background: #FAEEDD;
-		border-radius: 4rpx;
+		width: 718rpx;
+		height: 60rpx;
+		background: url(@/static/goods/v3/chedui_bg.png) no-repeat center / 100% 100%;
 		box-sizing: border-box;
-		margin-top: 24rpx;
+		margin:0 auto;
+		margin-bottom: 16rpx;
 	}
 	.detail-act-box{
 		width: 100%;
 		box-sizing: border-box;
 		.act-box{
 			width: 100%;
-			height: 50rpx;
+			height: 60rpx;
 			box-sizing: border-box;
-			padding:0 20rpx 0 8rpx;
+			padding:0 26rpx;
 			display: flex;
 			align-items: center;
+			justify-content: space-between;
 			.box-name{
 				width: 122rpx;
 				height:34rpx;
@@ -154,10 +151,9 @@
 				background: linear-gradient(90deg, #DEC18B 0%, #C99C49 100%);
 			}
 			.box-name-text{
-				height:34rpx;
-				font-size: 18rpx;
-				font-family: hei;
-				color: #FFFFFF;
+				font-family: YouSheBiaoTiHei;
+				font-size: 28rpx;
+				color: #C4873B;
 				display: flex;
 				align-items: center;
 			}
@@ -166,7 +162,7 @@
 				height:32rpx;
 			}
 			.act-box-desc{
-				width: 550rpx;
+				width: 520rpx;
 				height: 42rpx;
 			}
 			.flex-between{
@@ -182,7 +178,7 @@
 				box-sizing: border-box;
 				font-size: 24rpx;
 				
-				font-weight: 400;
+				
 				color: #A27339;
 				padding-left: 16rpx;
 			}
@@ -209,14 +205,14 @@
 		line-height: 40rpx;
 		font-size: 27rpx;
 		
-		font-weight: 400;
+		
 		color: #C0C0C0;
 	}
 	.detail-act-desc{
 		width: 550rpx;
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		overflow: hidden;
 		text-overflow:ellipsis;
@@ -238,7 +234,7 @@
 		margin-right: 24rpx;
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #EA4055;
 	}
 	.drawer-helpmsg{
@@ -257,7 +253,7 @@
 		width: 100%;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #7D8288;
 		white-space: pre-wrap;
 		line-height: 35rpx;
@@ -267,7 +263,7 @@
 		width: 100%;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		line-height: 46rpx;
 		white-space: pre-wrap;
@@ -288,7 +284,7 @@
 	.drawer-header-name{
 		font-size: 23rpx;
 		
-		font-weight: 400;
+		
 		color: #959695;
 	}
 	.drawer-chedui{
@@ -328,7 +324,7 @@
 		height:85rpx;
 		font-size: 38rpx;
 		font-family: Impact;
-		font-weight: 400;
+		
 		color: #908D8B;
 		display: flex;
 		align-items: center;
@@ -384,7 +380,7 @@
 		width: 100%;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		margin-bottom: 5rpx;
 	}
@@ -392,13 +388,13 @@
 		width: 100%;
 		font-size: 21rpx;
 		
-		font-weight: 400;
+		
 		color: #C0C0C0;
 	}
 	.chedui-rank-item-reward{
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 	}
 	.font-bold{
@@ -413,7 +409,7 @@
 	.detail-act-right{
 		width: 12rpx;
 		height:20rpx;
-		background:url(@/static/goods/detail/chedui_right.png) no-repeat center /100% 100%;
+		background:url(@/static/goods/v3/chedui_right.png) no-repeat center /100% 100%;
 		margin-left: 12rpx;
 	}
 </style>

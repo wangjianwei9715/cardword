@@ -69,7 +69,7 @@
 			display: -webkit-box;
 			align-items: center;
 			font-size: 22rpx;
-			font-weight: 400;
+			
 			color: #333333;
 			line-height: 32rpx;
 			background: #F6F7F8;
@@ -97,13 +97,13 @@
 		.ename{
 			@include fontSfTR;
 			font-size: 20rpx;
-			font-weight: 400;
+			
 			color: #DDDDDD;
 		}
 		.desc{
 			@include fontSfTR;
 			font-size: 24rpx;
-			font-weight: 400;
+			
 			color: #999999;
 			margin-top: 6rpx;
 		}

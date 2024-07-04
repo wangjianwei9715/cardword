@@ -1,33 +1,33 @@
+export const gameplayType = {
+    1:{ name:"卡种随机", color:"#FA1545", progressLeft:"#FFBAC9", progressRight:"#FA1545" },
+    2:{ name:"球队随机", color:"#1FDFCB", progressLeft:"#92FBFA", progressRight:"#0ACDB8" },
+    3:{ name:"球员随机", color:"#ECBE32", progressLeft:"#FFF772", progressRight:"#E8B929" },
+    4:{ name:"卡盒随机", color:"#FA1545", progressLeft:"#FFBAC9", progressRight:"#FA1545" },
+    5:{ name:"卡包随机", color:"#FA1545", progressLeft:"#FFBAC9", progressRight:"#FA1545" },
+    10:{ name:"球队自选", color:"#2A93FF", progressLeft:"#9AF2FF", progressRight:"#1F85EE" },
+    11:{ name:"选队随机", color:"#692EFF", progressLeft:"#DDBBFF", progressRight:"#5E23F3" },
+    12:{ name:"卡种自选", color:"#FA1545", progressLeft:"#FFBAC9", progressRight:"#FA1545" }
+}
+export const homeListBg = {
+    1:{ src:"/static/index/v3/bg/bg_1.png",height:"454rpx" },
+    2:{ src:"/static/index/v3/bg/bg_2.png",height:"288rpx" },
+    3:{ src:"/static/index/v3/bg/bg_3.png",height:"288rpx"},
+}
 // 首页tab列表
-export const indexMenu = {
-    front:[
-        {icon:'/static/index/tabs/1.png',needLogin:false,name:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'},
-        {icon:'/static/index/tabs/2.png',needLogin:false,name:'动漫专区',url:"/pages/goods/goods_animeTv",},
-        {icon:'/static/index/tabs/3.png',needLogin:false,name:'玩家卡册',url:'/pages/information/list'},
-        {icon:'/static/index/tabs/4.png',needLogin:false,name:'查卡价',url:'/pages/act/service/ref'},
-        {icon:'/static/index/tabs/5.png',needLogin:true,name:'卡币商城',url:'/pages/mall/mallIndex'},
-    ],
-    back:[
-        {icon:'/static/index/tabs/6.png',needLogin:true,name:'商家列表',url:'/pages/userinfo/merchant_listV2'},
-        {icon:'/static/index/tabs/7.png',needLogin:true,name:'领券中心',url:"/pages/userinfo/coupon/coupon_get",},
-        {icon:'/static/index/tabs/8.png',needLogin:true,name:'发售日历',url:'/pages/act/calendar/list'},
-    ]
-};
+export const indexMenu = [
+    {icon:'/static/index/tabs/1.png',needLogin:false,name:'卡片排行',url:'/pages/goods/goods_find_list?classType=100'},
+    {icon:'/static/index/tabs/2.png',needLogin:true,name:'发售日历',url:"/pages/act/calendar/list",},
+    {icon:'/static/index/tabs/3.png',needLogin:true,name:'领劵中心',url:'/pages/userinfo/coupon/coupon_get'},
+    {icon:'/static/index/tabs/4.png',needLogin:false,name:'查卡价',url:'/pages/act/service/ref'},
+    {icon:'/static/index/tabs/5.png',needLogin:true,name:'店铺列表',url:'/pages/userinfo/merchant_listV2'},
+]
 export const goodsTabs = [
-    {
-        name:'关注',
-        id:1,
-        url:'from_followed_merchant',
-        badge: {
-            isDot: false
-        }
-    },
-    {name:'热门',id:2,url:'main'},
-    {name:'篮球',id:3,url:'basketball'},
-    {name:'足球',id:4,url:'football'},
-    {name:'动漫影视',id:5,url:'animeTv'},
-    {name:'综合体育',id:6,url:'zhty'},
-    {name:'其他',id:7,url:'other'},
+    {name:'推荐',id:0,url:'main'},
+    {name:'篮球',id:1,url:'basketball'},
+    {name:'足球',id:2,url:'football'},
+    {name:'宝可梦',id:9,url:'animeTv'},
+    {name:'综合体育',id:20,url:'zhty'},
+    {name:'其他',id:100,url:'other'},
 ]
 // 商品列表类型
 export const goodsTypeTitle = {

@@ -104,7 +104,7 @@ export default class ClassName extends BaseComponent {
 		@include lineBox;
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #E6E6E6;
 		justify-content: center;
 		align-items: center;

@@ -343,7 +343,7 @@ page {
         width: 750rpx;
         font-size: 42rpx;
         font-family: YouSheBiaoTiHei;
-        font-weight: 400;
+        
         height: 68rpx;
         color: #FFFFFF;
     }
@@ -376,7 +376,7 @@ page {
     height: 53rpx;
     font-size: 39rpx;
     font-family: Impact;
-    font-weight: 400;
+    
     background-size: 100% 100%;
     color: #333333;
     display: flex;
@@ -412,7 +412,7 @@ page {
     .get {
         font-size: 23rpx;
         
-        font-weight: 400;
+        
         color: #C4232B;
         margin-bottom: 10rpx;
     }
@@ -420,7 +420,7 @@ page {
     .freeze {
         font-size: 23rpx;
         
-        font-weight: 400;
+        
         color: #A0BED8;
     }
 }
@@ -432,7 +432,7 @@ page {
     display: flex;
     font-size: 23rpx;
     
-    font-weight: 400;
+    
     color: #FEFEFE;
     margin-top: 28rpx;
     justify-content: center;
@@ -497,7 +497,7 @@ page {
         .saleNum {
             font-size: 33rpx;
             font-family: Impact;
-            font-weight: 400;
+            
             color: #FFE400;
             // line-height: 32rpx;
             -webkit-text-stroke: 2rpx #000000;
@@ -542,7 +542,7 @@ page {
                 background-color: rgba(0, 0, 0, .61);
                 font-size: 25rpx;
                 
-                font-weight: 400;
+                
                 color: #FFE400;
             }
         }
@@ -550,7 +550,7 @@ page {
         .target {
             font-size: 25rpx;
             font-family: Impact;
-            font-weight: 400;
+            
             color: #FFE400;
             line-height: 32rpx;
             -webkit-text-stroke: 2rpx #000000;
@@ -598,7 +598,7 @@ page {
         .tips {
             font-size: 20rpx;
             
-            font-weight: 400;
+            
             text-decoration: underline;
             color: #ffffff;
         }
@@ -606,7 +606,7 @@ page {
         .lookDetail {
             font-size: 20rpx;
             
-            font-weight: 400;
+            
             text-decoration: underline;
             color: #ffffff;
         }
@@ -698,7 +698,7 @@ page {
         // text-align: center;
         font-size: 39rpx;
         font-family: Impact;
-        font-weight: 400;
+        
         color: #333333;
         margin-right: 20rpx;
         margin-left: 20rpx;
@@ -722,7 +722,7 @@ page {
         view {
             font-size: 23rpx;
             
-            font-weight: 400;
+            
         }
     }
 
@@ -742,7 +742,7 @@ page {
         background-image: url("@/static/act/merchantRank/hammer/tag.png");
         font-size: 21rpx;
         
-        font-weight: 400;
+        
         color: #F3BD79;
     }
 

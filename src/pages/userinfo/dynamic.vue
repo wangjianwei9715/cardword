@@ -396,7 +396,7 @@ page {
 	line-height: 104rpx;
 	font-size: 22rpx;
 	
-	font-weight: 400;
+	
 	color: #ababbb;
 	text-align: right;
 }
@@ -447,14 +447,14 @@ page {
 			align-items: center;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 			margin-bottom: 20rpx;
 
 			.source_time {
 				font-size: 19rpx;
 				
-				font-weight: 400;
+				
 				color: #C0C0C0;
 				margin-left: 22rpx;
 			}
@@ -463,7 +463,7 @@ page {
 		.info_content {
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			text-align: left;
 			color: #333333;
 			max-width: 90%;
@@ -477,7 +477,7 @@ page {
 			background-color: #F5F5F5;
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #707070;
 
 			text {
@@ -499,7 +499,7 @@ page {
 			border: 1rpx solid #FA1545;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 		}
 
@@ -511,7 +511,7 @@ page {
 			border-radius: 3rpx;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 		}
 
@@ -546,7 +546,7 @@ page {
 		.name {
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #959695;
 			flex: 1;
 		}
@@ -581,7 +581,7 @@ page {
 		.time {
 			font-size: 21rpx;
 			
-			font-weight: 400;
+			
 			color: #C0C0C0;
 		}
 	}
@@ -592,7 +592,7 @@ page {
 		.content {
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #767880;
 			flex: 1;
 			margin-right: 10rpx;

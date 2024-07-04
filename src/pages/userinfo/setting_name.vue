@@ -79,7 +79,7 @@
 		.tips{
 			font-size: 24rpx;
 			
-			font-weight: 400;
+			
 			color: #AAAABB;
 		}
 	}
@@ -88,7 +88,7 @@
 		margin:0 auto;
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #C4C4CF;
 	}
 </style>

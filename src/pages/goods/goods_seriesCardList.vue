@@ -157,7 +157,7 @@ page {
     border-radius: 3rpx;
     font-size: 23rpx;
     
-    font-weight: 400;
+    
     color: #FFFFFF;
     position: absolute;
     right: 0;
@@ -218,7 +218,7 @@ page {
 .niceTime-userName {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #333333;
     flex: 1;
     /* max-width: 200rpx; */
@@ -230,7 +230,7 @@ page {
 .niceTime-time {
     font-size: 21rpx;
     
-    font-weight: 400;
+    
     color: #999999;
 }
 </style>

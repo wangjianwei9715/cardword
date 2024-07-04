@@ -180,7 +180,7 @@
 			width: 100%;
 			font-size: 24rpx;
 			
-			font-weight: 400;
+			
 			color: #7D8288;
 			line-height: 36rpx;
 		}
@@ -201,7 +201,7 @@
 			width: 100%;
 			font-size: 24rpx;
 			
-			font-weight: 400;
+			
 			color: #7D8288;
 			line-height: 36rpx;
 		}

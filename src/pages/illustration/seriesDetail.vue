@@ -257,7 +257,7 @@
 		width: 100%;
 		font-size: 21rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 	}
 	.series-follow{
@@ -276,7 +276,7 @@
 	.followed{
 		background: #fff;
 		color:#909090;
-		font-weight: 400;
+		
 	}
 	.icon-replace{
 		width: 46rpx;
@@ -334,7 +334,7 @@
 			width: 100%;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #333;
 		}
 		.btn-publish{

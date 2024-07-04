@@ -168,7 +168,7 @@
     .tagItem {
         font-size: 28rpx;
         
-        font-weight: 400;
+        
         color: #959699;
     }
 
@@ -202,7 +202,7 @@
     .msg-name {
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #333333;
         flex: 1;
         // text-overflow: -o-ellipsis-lastline;
@@ -243,7 +243,7 @@
         border-radius: 3rpx;
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         margin-left: 21rpx;
         color: #333333;
     }
@@ -251,7 +251,7 @@
     .redButton {
         font-size: 25rpx;
         
-        font-weight: 400;
+        
         color: #F6F7FB;
         border: 1rpx solid #E6374C;
         background: #E6374C;

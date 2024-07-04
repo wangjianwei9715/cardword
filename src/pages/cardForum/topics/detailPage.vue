@@ -315,14 +315,14 @@ page {
     border: 1rpx solid #C0C0C0;
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     color: #C0C0C0;
 }
 
 .desc {
     font-size: 23rpx;
     
-    font-weight: 400;
+    
     color: #959695;
     margin-top: 10rpx;
 }
@@ -343,7 +343,7 @@ page {
     text-align: center;
     font-size: 20rpx;
     
-    font-weight: 400;
+    
     color: #FFFFFF;
     line-height: 32rpx;
 }
@@ -361,7 +361,7 @@ page {
 .num {
     font-size: 23rpx;
     
-    font-weight: 400;
+    
     color: #C0C0C0;
 }
 

@@ -154,7 +154,7 @@
 			border-radius: 3rpx;
 			font-size: 25rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 			text-align: center;
 			line-height: 49rpx;
@@ -170,7 +170,7 @@
 			width: 50%;
 			font-size: 23rpx;
 			
-			font-weight: 400;
+			
 			color: #88878C;
 			margin-bottom: 15rpx;
 		}

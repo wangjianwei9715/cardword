@@ -62,7 +62,7 @@ export default class ClassName extends BaseComponent {
 			line-height: 30rpx;
 			font-size: 26rpx;
 			
-			font-weight: 400;
+			
 			color: #333333;
 		}
 		.giving-index-time{
@@ -70,7 +70,7 @@ export default class ClassName extends BaseComponent {
 			line-height: 30rpx;
 			font-size: 24rpx;
 			
-			font-weight: 400;
+			
 			color: #88878C;
 		}
 	}
@@ -82,7 +82,7 @@ export default class ClassName extends BaseComponent {
 		padding: 25rpx 28rpx;
 		font-size: 26rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		line-height: 40rpx;
 		margin-bottom: 20rpx;
@@ -97,7 +97,7 @@ export default class ClassName extends BaseComponent {
 	.giving-index-bottom-left{
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #88878C;
 	}
 	.giving-index-bottom-btn{
@@ -107,7 +107,7 @@ export default class ClassName extends BaseComponent {
 		border-radius: 28rpx;
 		font-size: 28rpx;
 		
-		font-weight: 400;
+		
 		color: #FFFFFF;
 		line-height: 55rpx;
 		text-align: center;

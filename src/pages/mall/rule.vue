@@ -44,7 +44,7 @@ page {
     padding: 30rpx 33rpx 0 33rpx;
     font-size: 25rpx;
     
-    font-weight: 400;
+    
     color: #7D8288;
     .rule{
         margin-bottom: 20rpx;

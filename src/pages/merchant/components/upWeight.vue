@@ -207,7 +207,7 @@
 			.act-box-desc-item{
 				font-size: 25rpx;
 				
-				font-weight: 400;
+				
 				color: #333333;
 				margin:22rpx 0;
 			}
@@ -234,14 +234,14 @@
 		line-height: 40rpx;
 		font-size: 27rpx;
 		
-		font-weight: 400;
+		
 		color: #C0C0C0;
 	}
 	.detail-act-desc{
 		width: 550rpx;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		overflow: hidden;
 		text-overflow:ellipsis;
@@ -262,7 +262,7 @@
 		margin-right: 24rpx;
 		font-size: 24rpx;
 		
-		font-weight: 400;
+		
 		color: #EA4055;
 	}
 	.drawer-helpmsg{
@@ -281,7 +281,7 @@
 		width: 100%;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #7D8288;
 		white-space: pre-wrap;
 		line-height: 35rpx;
@@ -291,7 +291,7 @@
 		width: 100%;
 		font-size: 25rpx;
 		
-		font-weight: 400;
+		
 		color: #333333;
 		line-height: 46rpx;
 		white-space: pre-wrap;
@@ -318,7 +318,7 @@
 	.drawer-header-name{
 		font-size: 23rpx;
 		
-		font-weight: 400;
+		
 		color: #959695;
 	}
 	.drawer-chedui{
@@ -407,7 +407,7 @@
 			text-align: center;
 			font-size: 23rpx;
 			
-			font-weight: 400;
+			
 			color: #959695;
 		}
 		.drawer-item-surplus{
@@ -422,7 +422,7 @@
 			line-height: 38rpx;
 			font-size: 23rpx;
 			
-			font-weight: 400;
+			
 			color: #FFFFFF;
 		}
 		.drawer-item-inuse{
@@ -435,7 +435,7 @@
 			left:0;
 			font-size: 20rpx;
 			
-			font-weight: 400;
+			
 			color: #FA1545;
 			display: flex;
 			align-items: center;
