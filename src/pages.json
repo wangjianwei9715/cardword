@@ -1,9 +1,9 @@
 /*
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 10:58:55
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-06-11 13:31:57
- * @FilePath: \jichao_app_2\src\pages.json
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2024-07-02 14:16:31
+ * @FilePath: \card-world\src\pages.json
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
  {
@@ -330,6 +330,13 @@
 					}
 				},
 				{
+					"path": "goods_result_list_new",
+					"style": {
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
 					"path": "goods_find",
 					"style": {
 						"navigationStyle": "custom",
@@ -338,6 +345,15 @@
 				},
 				{
 					"path": "goods_seriesDetail",
+					"style": {
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},
+				{
+					"path": "goods_tiktok",
 					"style": {
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": true,
@@ -1910,6 +1926,43 @@
 								"titleColor":"#333"
 							}
 						}
+					}
+				},
+				{
+					"path": "cardresult/index",
+					"style": {
+						"navigationBarTitleText": "报告管理",
+						"navigationBarBackgroundColor": "#ffffff",
+						"app-plus": {
+							"titleNView": {
+								"titleSize":"18px",
+								"titleColor":"#333"
+							}
+						}
+					}
+				},
+				{
+					"path": "cardresult/upload",
+					"style": {
+						"navigationBarTitleText": "上传报告",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "delivery/index",
+					"style": {
+						"navigationBarTitleText": "发货管理",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "delivery/detail",
+					"style": {
+						"navigationBarTitleText": "发货详情",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationStyle": "custom"
 					}
 				}
 			]

@@ -157,6 +157,7 @@ export default class ClassName extends BaseNode {
   },
   {
     icon: '/static/merchant/card.png',
+    url:'/pages/merchant/cardresult/index',
     name: '拆卡报告',
     tipsText: '待制作',
     width: 47,
@@ -165,6 +166,7 @@ export default class ClassName extends BaseNode {
   }, {
     icon: '/static/merchant/wul.png',
     name: '我的发货',
+    url:'/pages/merchant/delivery/index',
     tipsText: '待发货',
     width: 48,
     valueKey: '',
