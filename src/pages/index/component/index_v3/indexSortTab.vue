@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="sort">
+		<div :id="sortId" class="sort">
 			<div class="sort-index" v-for="item in sortTab" :key="item.id" @click="onClickSort(item)">
 				<text class="sort-name" :class="{'current-text':item.current>=0||(item.type=='updown'&&item.select!='')}">{{tabName(item)}}</text>
 				<div class="sort-filter" v-if="item.type=='filter'">
@@ -12,9 +12,10 @@
 				</div>
 			</div>
 		</div>
-		<div v-if="sortHeight>0" class="sort-container" :style="{height:sortHeight+'rpx'}">
+		<div v-if="showFilter" class="sort-filter-bg" @click="onClickCancel"></div>
+		<div v-if="showFilter" class="sort-container" :style="sortFilterStyle">
 			<div class="filter-index" :class="{'current-index':currentTab.current==index}" v-for="(item,index) in filterList" :key="index" @click="onClickFilter(index)">
-				<text class="filter-text" :class="{'current-text':currentTab.current==index}">{{item.name}}</text>
+				<text class="filter-text" :class="{'current-filter':currentTab.current==index}">{{item.name}}</text>
 			</div>
 		</div>
 	</div>
@@ -22,6 +23,12 @@
 
 <script >
 	export default {
+		props: {
+			index:{
+				type:Number,
+				default:0
+			},
+		},
 		data(){
 			return {
 				sortTab:[
@@ -67,13 +74,18 @@
 						]
 					}
 				],
-				currentId:0
+				currentId:0,
+				filterTop:0,
+				showFilter:false
 			}
 		},
 		mounted(){
 			
 		},
 		computed:{
+			sortId(){
+				return 'Sort'+this.index;
+			},
 			sortHeight(){
 				const height = this.currentId>0 ? this.sortTab.find(x=>x.id==this.currentId).height : 0;
 				return height
@@ -83,15 +95,33 @@
 			},
 			filterList(){
 				return [1,4].includes(this.currentId) ? this.currentTab.list : [] 
+			},
+			sortFilterStyle(){
+				return {
+					height:this.sortHeight+'rpx',
+					top:this.filterTop+'px'
+				}
 			}
 		},
 		methods: {
+			getSortTop() {
+				return new Promise((re, rj) => {
+					uni.createSelectorQuery()
+						.select('#'+this.sortId)
+						.boundingClientRect((rect) => {
+							if (rect) {
+								re && re((rect.top+rect.height))
+							}
+						})
+						.exec();
+				})
+			},
 			tabName(item){
 				if(item.type=='updown') return item.name;
 
 				return item.current>=0 ? item.list[item.current].name : item.name
 			},
-			onClickSort({id, type, select, height}){
+			async onClickSort({id, type, select, height}){
 				this.currentId = this.currentId==id ? 0 : id;
 				if(type == 'updown'){
 					this.sortTab.forEach(x=>{
@@ -102,7 +132,14 @@
 						}
 					});
 					this.emitIndex()
+				}else{
+					this.filterTop = await this.getSortTop();
+					this.showFilter = !this.showFilter;
 				}
+			},
+			onClickCancel(){
+				this.currentId = 0;
+				this.showFilter = !this.showFilter;
 			},
 			onClickFilter(index){
 				this.sortTab.forEach(x=>{
@@ -111,6 +148,7 @@
 					}
 				});
 				this.currentId = 0;
+				this.showFilter = false;
 				this.emitIndex()
 			},
 			emitIndex(){
@@ -180,6 +218,15 @@
 		margin-top: 2rpx;
 		margin-bottom: 2rpx;
 	}
+	.sort-filter-bg{
+		width: 750rpx;
+		position: fixed;
+		top:0;
+		left:0;
+		bottom:0;
+		right:0;
+		z-index: 8;		
+	}
 	.sort-container{
 		width: 750rpx;
 		height:0rpx;
@@ -189,6 +236,10 @@
 		align-items: flex-start;
 		padding-left: 20rpx;
 		padding-top: 14rpx;
+		position: fixed;
+		left:0;
+		top:0;
+		z-index: 9
 	}
 	.filter-index{
 		width: 230rpx;
@@ -208,6 +259,9 @@
 		border: 1rpx solid #FA1545;
 	}
 	.current-text{
+		color:#333
+	}
+	.current-filter{
 		color:#FA1545
 	}
 </style>

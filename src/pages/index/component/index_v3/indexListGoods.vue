@@ -11,17 +11,16 @@
 				<div class="dy-goods-box">
 					<div class="dy-goods-index" v-for="(item,index) in data.list">
 						<div class="dy-goods-left">
-							<image class="dy-goods-pic" :src="getGoodsImg(decodeURIComponent(item.pic))"/>
-							<image class="dy-merchant-pic" :src="decodeURIComponent(item.merchantLogo)"/>
+							<image class="dy-goods-pic" :src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"/>
+							<image class="dy-merchant-pic" :src="decodeURIComponent(item.merchantLogo)" mode="aspectFill"/>
 						</div>
 						<div class="dy-goods-right">
-							<text class="dy-goods-title u-line-2">{{item.title}}</text>
+							<text class="dy-goods-title u-line-2">{{item.goodName}}</text>
 							<div class="dy-goods-priceMsg-left">
 								<text class="dy-price-icon">￥</text>
 								<text class="dy-price-text">{{ filterPrice(item.price).integer }}</text>
 								<text class="dy-decimal"
 									v-if="filterPrice(item.price).decimal">{{ filterPrice(item.price).decimal }}</text>
-								<text class="dy-lowest">{{hasLowestPrice(item)?'起':''}}</text>
 							</div>
 						</div>
 					</div>
@@ -31,7 +30,7 @@
 		<!-- 广告商品 -->
 		<swiper v-else-if="data.special_type=='ad'" class="ad-box" :disable-touch="data.list.length<2">
 			<swiper-item v-for="(item,index) in data.list" :key="index">
-				<image class="goods-pic" :src="getGoodsImg(decodeURIComponent(item.pic))"/>
+				<image class="goods-pic" :src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"/>
 				<image class="bg-top" src="/static/index/v3/ad_top.png"  @click="goGoodsDetails(item.goodCode)"/>
 				<image class="bg-bottom" src="/static/index/v3/ad_bottom.png"/>
 				<div class="ad-goods-box">
@@ -65,7 +64,7 @@
 	<!-- 普通商品 -->
 	<div v-else class="goods-container">
 		<div class="goods-content">
-			<image class="goods-pic" :src="getGoodsImg(decodeURIComponent(data.pic))" @click="goGoodsDetails()"/>
+			<image class="goods-pic" :src="getGoodsImg(decodeURIComponent(data.pic))" @click="goGoodsDetails()" mode="aspectFill"/>
 			<div class="goods-index">
 				<div class="goods-progress" :style="progressStyle">
 					<div class="progressMask" :style="progressWidth"></div>

@@ -13,7 +13,7 @@
                     </view>
                     <view class="goods-list">
                         <scroll-view class="goods-scroll" scroll-x="true">
-                            <view class="scroll-item" v-for="(goodItem,goodIndex) in item.goodList" @click="item.current = goodIndex">
+                            <view class="scroll-item" :class="{'current-item':item.current == goodIndex}" v-for="(goodItem,goodIndex) in item.goodList" @click="item.current = goodIndex">
                                 <image class="scroll-image" :src="decodeURIComponent(goodItem.pic)"/>
                             </view>
                         </scroll-view>
@@ -108,7 +108,7 @@ export default class ClassName extends BaseNode {
         return item.goodList[item.current]
     }
     goodsTypeData(item) {
-        return gameplayType[this.currentGoods(item).pintuan_type]
+        return gameplayType[this.currentGoods(item).pintuanType]
     }
     progressStyle(item){
         const { progressLeft, progressRight } = this.goodsTypeData(item)
@@ -154,7 +154,7 @@ export default class ClassName extends BaseNode {
     // 购买
     onClickBuy(item) { 
         app.platform.hasLoginToken(() => {
-            if ([10,11,12].includes(item.pintuan_type)) { 
+            if ([10,11,12].includes(item.pintuanType)) { 
                 // 处理购买自选球队 
                 app.navigateTo.goGoodsDetails(item.goodCode,"&referer=dyBroadcast")
             } else if ((item.totalNum - (item.currentNum + item.lockNum)) <=0) { 
@@ -255,10 +255,16 @@ page {
             width: 128rpx;
             height:100rpx;
             margin-right: 19rpx;
+            box-sizing: border-box;
+            box-sizing: border-box;
+            border:1rpx solid rgba(0,0,0,0)
+        }
+        .current-item{
+            border:1rpx solid #FA1545
         }
         .scroll-image{
-            width: 128rpx;
-            height:100rpx;
+            width:124rpx;
+            height:98rpx;
             border-radius: 4rpx;
         }
     }
