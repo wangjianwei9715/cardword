@@ -42,7 +42,7 @@
                     </view>
                     <view class="button-container">
                         <view class="btn-dy">
-                            <view class="dy-text u-line-1">{{item.dyLink}}</view>
+                            <view class="dy-text u-line-1">{{decodeURIComponent(item.dyLink)}}</view>
                             <view class="btn-copy" @click="onClickCopy(item.dyLink)">复制</view>
                         </view>
                         <view class="btn-buy" @click="onClickBuy(currentGoods(item))">购买</view>
@@ -141,7 +141,7 @@ export default class ClassName extends BaseNode {
     }
     onClickCopy(text){
         uni.setClipboardData({
-            data:text,
+            data:decodeURIComponent(text),
             showToast:false,
             success: ()=> {
                 uni.showToast({
