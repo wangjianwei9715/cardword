@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-08-25 14:42:10
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-07-09 10:38:47
+ * @LastEditTime: 2024-07-09 11:45:53
  * @FilePath: \card-world\src\pages\cardForum\home.nvue
  * @Description: 不使用index抽象索引
 -->
@@ -654,8 +654,9 @@ export default {
                 })
                 // #endif
                 if (this.ratingList.length>0){
-                    list.splice(2,0,{...this.ratingList[0],isRatingCard:true})
-                    // console.log(list[0,3]);
+                    if (this.ratingList[query.sequence]){
+                        list.splice(2,0,{...this.ratingList[0],isRatingCard:true})
+                    }
                 }
                 console.log(list);
                 this.current.isFetchEnd = res.isFetchEnd
