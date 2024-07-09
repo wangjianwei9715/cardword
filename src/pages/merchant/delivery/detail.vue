@@ -115,6 +115,7 @@ export default class ClassName extends BaseNode {
     onLoad(query: any) {
         this.queryParams.codes = query.codes
         this.queryParams.merge = +query.merge
+        if (query.tp) this.queryParams.tp=+query.tp
         this.reqNewData()
         this.reqWuliuCompany()
     }

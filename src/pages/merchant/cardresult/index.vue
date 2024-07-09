@@ -56,10 +56,10 @@
                     <view class="button button_white flexCenter" @click="onClickLookNo(item)">
                         查看报告
                     </view>
-                    <view class="button flexCenter" v-if="item.status==7">
+                    <view class="button flexCenter" v-if="item.status==7" @click="onClickToDeliveryDetail(item,1)">
                         去发货
                     </view>
-                    <view class="button flexCenter" v-if="item.status==8 || item.status==9">
+                    <view class="button flexCenter" v-if="item.status==8 || item.status==9" @click="onClickToDeliveryDetail(item,2)">
                         发货详情
                     </view>
                     <!-- status -->
@@ -115,6 +115,11 @@ export default class ClassName extends BaseNode {
     onClickLookNo(item:any){
         uni.navigateTo({
            url:`/pages/goods/goods_result_list_new?chooseIds=1&code=${item.goodCode}&random=false`
+        })
+    }
+    onClickToDeliveryDetail(item: any,tp:number) {
+        uni.navigateTo({
+            url: `/pages/merchant/delivery/detail?codes=${item.goodCode}&merge=${0}&tp=${tp}`
         })
     }
     getStateName(item: any): any {

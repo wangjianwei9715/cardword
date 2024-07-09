@@ -74,11 +74,11 @@
                     <view class="button button_white flexCenter" @click="onClickLookNo(item)">
                         查看报告
                     </view>
-                    <view class="button flexCenter" v-if="item.status == 7" @click.stop="onClickToDetail(item)">
+                    <view class="button flexCenter" v-if="item.status == 7" @click.stop="onClickToDetail(item,1)">
                         去发货
                     </view>
                     <view class="button flexCenter" v-if="item.status == 8 || item.status == 9"
-                        @click.stop="onClickToDetail(item)">
+                        @click.stop="onClickToDetail(item,2)">
                         发货详情
                     </view>
                     <!-- status -->
@@ -154,11 +154,11 @@ export default class ClassName extends BaseNode {
             url: `/pages/merchant/cardresult/upload?code=${item.goodCode}&reportState=${item.reportState}`
         })
     }
-    onClickToDetail(item: any) {
+    onClickToDetail(item: any,tp:number) {
         this.selectCodes=[]
         this.selectCodes.push(item.goodCode)
         uni.navigateTo({
-            url: `/pages/merchant/delivery/detail?codes=${this.selectCodes.join(',')}&merge=${this.selectCodes.length > 1 ? 1 : 0}`
+            url: `/pages/merchant/delivery/detail?codes=${this.selectCodes.join(',')}&merge=${this.selectCodes.length > 1 ? 1 : 0}&tp=${tp}`
         })
         this.selectCodes = []
     }
