@@ -293,6 +293,7 @@ page {
     }
 
     .bottomWrap {
+        width:100%;
         margin-top: 42rpx;
         display: flex;
         justify-content: end;

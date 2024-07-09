@@ -120,9 +120,9 @@
 			<view class="ratingContainer">
 				<view class="title">我的评分</view>
 				<view class="starContainer">
-					<view class="star" :class="{ star_select: index+1 <= userRatingScore }" v-for="index in 5"
-						@click="onClickRatingStar(index+1)">
-						<view class="txt" :class="{ txt_select: index+1 <= userRatingScore }">{{ RatingMap[index+1]
+					<view class="star" :class="{ star_select: index <= userRatingScore }" v-for="index in 5"
+						@click="onClickRatingStar(index)">
+						<view class="txt" :class="{ txt_select: index <= userRatingScore }">{{ RatingMap[index]
 							}}
 						</view>
 					</view>

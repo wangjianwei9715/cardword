@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2024-06-25 15:43:23
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-07-09 11:35:30
+ * @LastEditTime: 2024-07-09 16:45:10
  * @FilePath: \card-world\src\pages\merchant\delivery\index.vue
  * @Description: ✌✌✌✌✌✌
  * 
@@ -423,6 +423,7 @@ page {
     }
 
     .bottomWrap {
+        width:100%;
         margin-top: 42rpx;
         display: flex;
         justify-content: end;
