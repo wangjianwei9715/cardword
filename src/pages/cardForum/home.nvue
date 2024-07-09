@@ -655,7 +655,7 @@ export default {
                 // #endif
                 if (this.ratingList.length>0){
                     if (this.ratingList[query.sequence]){
-                        list.splice(2,0,{...this.ratingList[0],isRatingCard:true})
+                        list.splice(2,0,{...this.ratingList[query.sequence],isRatingCard:true})
                     }
                 }
                 console.log(list);
