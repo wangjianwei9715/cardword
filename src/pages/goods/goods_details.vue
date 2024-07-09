@@ -1132,13 +1132,15 @@
 				@include font(20rpx);
 				font-weight: 600;
 				box-sizing: border-box;
-				color:#333333
+				color:#333333;
+
 			}
 			.header-price text {
 				@include font(54rpx);
 				font-family: Impact;
 				margin-left: 10rpx;
-				color:#333333
+				color:#333333;
+				letter-spacing:3rpx;
 			}
 		}
 		.time-container{
