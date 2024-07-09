@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-09-21 13:33:17
- * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2024-07-09 11:31:13
+ * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
 <template>
@@ -16,8 +16,9 @@
                 <!-- slot示例 -->
                 <view>
                     <slot name="list1"></slot>
-                    <view v-for="(item, index) in list1" :key="item.index" class="waterfall-item-grayWrap">
-                        <view class="waterfall-item" @click="goToDetail(item)">
+                    <template v-for="(item, index) in list1" >
+                        <view class="waterfall-item-grayWrap" v-if="!item.isRatingCard">
+                            <view class="waterfall-item" @click="goToDetail(item)">
                             <!-- ?x-oss-process=image/resize,m_fixed,h_100,w_100 -->
                             <view class="waterfall-item__image">
                                 <view v-if="item.type == 'cardBook' && item.cover == ''" class="cardBook-nullpic">
@@ -82,7 +83,29 @@
                                 </template>
                             </view>
                         </view>
+                        <view v-if="item.isRatingCard" class="ratingCard">
+				            <view class="ratingCard_picWrap">
+				            	<view class="noPicWrap" v-for="(pic,picIndex) in item.pics" :style="{marginRight:picIndex==2?'0rpx':'16rpx'}">
+				            		<image class="noPic" :src="$parsePic(pic)"></image>
+				            	</view>
+				            </view>
+				            <view class="ratingCard_center">
+				            	<view class="goodsTitleWrap">
+				            		<view class="goodsTitle u-line-1">{{ item.title }}</view>
+				            		<view class="bg">拆卡报告</view>
+				            	</view>
+				            	<view class="ratingCard_center_bottom">
+				            		<view class="ratingNum">{{item.ratingNum}}人已评分</view>
+				            		<view class="ratingScore">{{item.score}}</view>
+				            	</view>
+				            </view>
+				            <view class="ratingCard_merchant">
+				            	<image class="ratingCard_merchant_logo" :src="$parsePic(item.merchantAvatar)"></image>
+				            	<view class="ratingCard_merchant_name flex1">{{ item.merchantName }}</view>
+				            </view>
+			            </view>
                     </view>
+                    </template>
                 </view>
             </view>
             <view class="uv-waterfall__gap_center" style="width:10rpx;opcity:0"></view>
@@ -90,7 +113,8 @@
                 <slot name="list2"></slot>
                 <!-- slot示例 -->
                 <view>
-                    <view v-for="(item, index) in list2" :key="item.index" class="waterfall-item-grayWrap">
+                    <template v-for="(item, index) in list2">
+                        <view :key="item.index" class="waterfall-item-grayWrap"  v-if="!item.isRatingCard">
                         <view class="waterfall-item" @click="goToDetail(item)">
                             <view class="waterfall-item__image">
                                 <view v-if="item.type == 'cardBook' && item.cover == ''" class="cardBook-nullpic">
@@ -157,6 +181,30 @@
                             </view>
                         </view>
                     </view>
+                    <view v-if="item.isRatingCard" class="ratingCard">
+				            <view class="ratingCard_picWrap">
+				            	<view class="noPicWrap" v-for="(pic,picIndex) in item.pics" :style="{marginRight:picIndex==2?'0rpx':'16rpx'}">
+				            		<image mode="aspectFill" class="noPic" :src="$parsePic(pic)"></image>
+				            	</view>
+				            </view>
+				            <view class="ratingCard_center">
+				            	<view class="goodsTitleWrap">
+				            		<view class="goodsTitle u-line-1">{{ item.title }}</view>
+				            		<view class="bg">拆卡报告</view>
+				            	</view>
+				            	<view class="ratingCard_center_bottom">
+				            		<view class="ratingNum">{{item.ratingNum}}人已评分</view>
+				            		<view class="ratingScore">{{item.score}}</view>
+				            	</view>
+				            </view>
+				            <view class="ratingCard_merchant">
+				            	<image mode="aspectFill" class="ratingCard_merchant_logo" :src="$parsePic(item.merchantAvatar)"></image>
+				            	<view class="ratingCard_merchant_name flex1">{{ item.merchantName }}</view>
+				            </view>
+			            </view>
+               </template>
+                   
+                    
                 </view>
             </view>
             <view class="uv-waterfall__gap_right" style="width:10rpx;opcity:0">
@@ -188,7 +236,7 @@
         <slot name="cell"></slot>
         <cell insert-animation="default" v-for="(item, index) in copyValue" class="waterfall-item-grayWrap"
             @click="goToDetail(item)" @appear="comAppear($event, item)">
-            <div class="waterfall-item">
+            <div class="waterfall-item" v-if="!item.isRatingCard">
                 <div class="waterfall-item__image">
                     <div v-if="!item.mode" class="defaultImg" style="background-color: #fff;opacity: 0;"
                         :style="{ width: item.width ? `${item.width}px` : `360rpx`, height: item.height ? `${item.height}px` : `430rpx` }">
@@ -242,6 +290,27 @@
                         </template>
                     </template>
                 </div>
+            </div>
+            <div v-else class="ratingCard">
+                <div class="ratingCard_picWrap">
+				            	<div class="noPicWrap" v-for="(pic,picIndex) in item.pics" :style="{marginRight:picIndex==2?'0rpx':'16rpx'}">
+				            		<image class="noPic" :src="parsePic(pic)"></image>
+				            	</div>
+				            </div>
+				            <div class="ratingCard_center">
+				            	<div class="goodsTitleWrap">
+				            		<text class="goodsTitle u-line-1">{{ item.title }}</text>
+				            		<text class="bg">拆卡报告</text>
+				            	</div>
+				            	<div class="ratingCard_center_bottom">
+				            		<text class="ratingNum">{{item.ratingNum}}人已评分</text>
+				            		<text class="ratingScore">{{item.score}}</text>
+				            	</div>
+				            </div>
+				            <div class="ratingCard_merchant">
+				            	<image class="ratingCard_merchant_logo" :src="parsePic(item.merchantAvatar)"></image>
+				            	<text class="ratingCard_merchant_name flex1">{{ item.merchantName }}</text>
+				            </div>
             </div>
         </cell>
 
@@ -397,6 +466,12 @@ export default {
         bottomSafe: {
             type: Boolean,
             default: false
+        },
+        ratingList:{
+            type:Array,
+            default:()=>{
+                return []
+            }
         }
 
     },
@@ -425,6 +500,7 @@ export default {
             let newArr = this.$uv.deepClone(this.value)
             // #ifdef APP-NVUE
             newArr = newArr.map(item => {
+                if(item.isRatingCard) return item
                 const findItem = getImageByLocal(item)
                 if (findItem) {
                     item.mode = findItem.mode
@@ -586,6 +662,12 @@ export default {
             })
         },
         goToDetail(item) {
+            if(item.isRatingCard){
+                uni.navigateTo({
+                    url:`/pages/goods/goods_result_list_new?chooseIds=1&code=${item.goodCode}&random=false`
+                })
+                return
+            }
             if (item.type == "中卡") {
                 uni.previewImage({
                     current: 0,
@@ -1138,5 +1220,126 @@ $uvui-nvue-style: true !default;
 .wait-pic {
     width: 91rpx;
     height: 78rpx;
+}
+.ratingCard {
+	width: 360rpx;
+	height: 350rpx;
+	background: #FFFFFF;
+	border-radius: 3rpx 3rpx 0rpx 0rpx;
+	// #ifndef APP-NVUE
+    box-sizing: border-box;
+    // #endif
+	padding: 10rpx 10rpx 20rpx 10rpx;
+	display: flex;
+	flex-direction: column;
+	
+    // #ifndef APP-NVUE
+    margin-bottom: 10rpx;
+    // #endif
+
+
+}
+
+.ratingCard_picWrap {
+	display: flex;
+	flex-direction: row;
+	margin-bottom: 10rpx;
+
+
+}
+
+.noPicWrap {
+	width: 102rpx;
+	height: 136rpx;
+	position: relative;
+	// margin-right:10rpx;
+
+}
+
+.noPic {
+	width: 102rpx;
+	height: 136rpx;
+}
+
+.ratingCard_center {
+	width: 340rpx;
+	background: #F7F7F7;
+	border-radius: 3rpx;
+	height: 118rpx;
+	// #ifndef APP-NVUE
+    box-sizing: border-box;
+    // #endif
+	padding: 10rpx 10rpx 12rpx 10rpx;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	margin-bottom: 20rpx;
+}
+
+.goodsTitleWrap {
+	display: flex;
+	flex-direction: row;
+
+
+}
+
+.goodsTitle {
+	font-weight: 500;
+	font-size: 24rpx;
+	color: #333333;
+	// #ifdef APP-NVUE
+	lines: 1;
+	text-overflow: ellipsis;
+	// #endif
+	flex: 1;
+}
+
+.bg {
+	font-weight: 500;
+	font-size: 24rpx;
+	color: #333333;
+}
+
+.ratingCard_center_bottom {}
+
+.ratingNum {
+	font-weight: 400;
+	font-size: 20rpx;
+	color: #999999;
+}
+
+.ratingScore {
+	font-weight: bold;
+	font-size: 68rpx;
+	color: #FA1545;
+	font-family: DINCondensed, DINCondensed;
+	position: absolute;
+	right: 0;
+	bottom: -20rpx;
+    // text-decoration:flex-end;
+    // line-height:82rpx;
+}
+
+.ratingCard_merchant {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+
+
+}
+
+.ratingCard_merchant_logo {
+	width: 36rpx;
+	height: 36rpx;
+	border-radius: 50%;
+	margin-right: 12rpx;
+}
+
+.ratingCard_merchant_name {
+	font-family: PingFangSC, PingFang SC;
+	font-weight: 400;
+	font-size: 20rpx;
+	color: #333333;
 }
 </style>

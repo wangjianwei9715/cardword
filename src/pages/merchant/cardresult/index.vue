@@ -53,7 +53,7 @@
                     </view>
                 </template>
                 <template v-else>
-                    <view class="button button_white flexCenter">
+                    <view class="button button_white flexCenter" @click="onClickLookNo(item)">
                         查看报告
                     </view>
                     <view class="button flexCenter" v-if="item.status==7">
@@ -110,6 +110,11 @@ export default class ClassName extends BaseNode {
     onClickUpload(item: any) {
         uni.navigateTo({
             url: `/pages/merchant/cardresult/upload?code=${item.goodCode}&reportState=${item.reportState}`
+        })
+    }
+    onClickLookNo(item:any){
+        uni.navigateTo({
+           url:`/pages/goods/goods_result_list_new?chooseIds=1&code=${item.goodCode}&random=false`
         })
     }
     getStateName(item: any): any {

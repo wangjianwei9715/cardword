@@ -403,7 +403,7 @@
 		onClickResult(chooseID: number) {
 			let random = this.goodsData.pintuan_type == 10 ? true : false
 			uni.navigateTo({
-				url: `goods_result_list?chooseIds=${chooseID}&code=${this.goodCode}&random=${random}`
+				url: `goods_result_list_new?chooseIds=${chooseID}&code=${this.goodCode}&random=${random}`
 			})
 		}
 		onClickLive() { 

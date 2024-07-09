@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2024-06-25 15:43:23
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-07-04 14:53:20
+ * @LastEditTime: 2024-07-09 11:35:30
  * @FilePath: \card-world\src\pages\merchant\delivery\index.vue
  * @Description: ✌✌✌✌✌✌
  * 
@@ -71,7 +71,7 @@
             </view>
             <view class="bottomWrap">
                 <template>
-                    <view class="button button_white flexCenter">
+                    <view class="button button_white flexCenter" @click="onClickLookNo(item)">
                         查看报告
                     </view>
                     <view class="button flexCenter" v-if="item.status == 7" @click.stop="onClickToDetail(item)">
@@ -93,7 +93,7 @@
                 <view class="yixua" v-if="selectCodes.length > 0">(已选{{ selectCodes.length }}个商品)</view>
                 <view class="flex1"></view>
                 <view class="cancel flexCenter" @click="onBatchSelect = false, selectCodes = []">取消</view>
-                <view class="push flexCenter">批量发货</view>
+                <view class="push flexCenter" @click="onClickDelivery">批量发货</view>
             </view>
             <view class="bottomSafeArea"></view>
         </view>
@@ -141,6 +141,8 @@ export default class ClassName extends BaseNode {
         }
         this.queryParams.pageIndex = 1
         this.queryParams.state = state
+        this.selectCodes=[]
+        this.onBatchSelect=false
         this.reqNewData()
     }
     onInputConfirm() {
@@ -153,6 +155,7 @@ export default class ClassName extends BaseNode {
         })
     }
     onClickToDetail(item: any) {
+        this.selectCodes=[]
         this.selectCodes.push(item.goodCode)
         uni.navigateTo({
             url: `/pages/merchant/delivery/detail?codes=${this.selectCodes.join(',')}&merge=${this.selectCodes.length > 1 ? 1 : 0}`
@@ -171,6 +174,7 @@ export default class ClassName extends BaseNode {
         }
     }
     onClickBatch() {
+        if(this.queryParams.state==2) return
         this.onBatchSelect = !this.onBatchSelect
     }
     onClickGoodsCard(goodCode: string) {
@@ -185,6 +189,16 @@ export default class ClassName extends BaseNode {
         } else {
             this.selectCodes.push(goodCode)
         }
+    }
+    onClickDelivery() {
+        uni.navigateTo({
+            url: `/pages/merchant/delivery/detail?codes=${this.selectCodes.join(',')}&merge=${this.selectCodes.length > 1 ? 1 : 0}`
+        })
+    }
+    onClickLookNo(item:any){
+        uni.navigateTo({
+           url:`/pages/goods/goods_result_list_new?chooseIds=1&code=${item.goodCode}&random=false`
+        })
     }
     onClickSelectAll() {
         this.isSelectAll = !this.isSelectAll

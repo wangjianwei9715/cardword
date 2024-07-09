@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-08-25 14:42:10
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-10 13:35:50
+ * @LastEditTime: 2024-07-09 10:38:47
  * @FilePath: \card-world\src\pages\cardForum\home.nvue
  * @Description: 不使用index抽象索引
 -->
@@ -315,7 +315,12 @@ export default {
             forumGuide: app.guide.cardCircle,
             firstData: {},
             addList: [],
-            columnRefreshing: false
+            columnRefreshing: false,
+            ratingQuery:{
+                pageIndex:1,
+                pageSize:5
+            },
+            ratingList:[]
         }
     },
     async onLoad() {
@@ -584,6 +589,12 @@ export default {
                 this.hotTopics = res.list || []
             })
         },
+        reqRatingList(){
+            app.http.Get(`dataApi/cardCircle/card/rating/list`,this.ratingQuery,(res)=>{
+                if (this.ratingQuery.pageIndex==1) this.ratingList=[]
+                this.ratingList.push(...(res.list || []))
+            })
+        },
         reqTopicAc() {
             app.http.Get(`dataApi/cardCircle/topic/banner/list`, {}, (res) => {
                 this.topicAcList = res.list || []
@@ -629,15 +640,24 @@ export default {
             }
             //存在自定义url优先使用
             const url = `dataApi/${this.current.url ?? (this.current.roll ? "cardCircle/roll" : "cardCircle/list")}`
+            if(this.current.tag===CFTT.ALL.tag&&isRefresh){
+                this.ratingQuery.pageIndex=1
+                this.reqRatingList()
+            }
             app.http.GetWithCrypto(url, query, (res) => {
                 let list = res.list || []
                 // #ifdef APP-NVUE
-                list = (res.list || []).map(item => {
+                list = (res.list || []).map((item) => {
                     //nvue瀑布流下parsePic，有时需要手动更新视图才会显示图片,直接对原数据parsePic
                     item.cover = this.parsePic(decodeURIComponent(item.cover))
                     return item
                 })
                 // #endif
+                if (this.ratingList.length>0){
+                    list.splice(2,0,{...this.ratingList[0],isRatingCard:true})
+                    // console.log(list[0,3]);
+                }
+                console.log(list);
                 this.current.isFetchEnd = res.isFetchEnd
                 if (res.scrollId) this.current.queryParams.scrollId = res.scrollId
                 if (res.st) this.current.queryParams.st = res.st

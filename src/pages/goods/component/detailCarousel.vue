@@ -45,6 +45,7 @@
 		}
 		
 		public get carouselLength() : number {
+			//@ts-ignore
 			return (this.carousel.length - this.yfLength)
 		}
 		

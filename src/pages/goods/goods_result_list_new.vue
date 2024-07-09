@@ -16,8 +16,9 @@
 				</view>
 				<view class="ratingWrap" @click="onClickGoodsRating">
 					<view></view>
-					<view class="ratingNum" v-if="homeData.ratingOpen || homeData.ratingScore > 0">{{ homeData.ratingScore
-						}}
+					<view class="ratingNum" v-if="homeData.ratingOpen || homeData.ratingScore > 0">{{
+			homeData.ratingScore
+		}}
 					</view>
 					<view class="ratingPeopleNum">{{ homeData.ratingOpen ? `${homeData.ratingNum}人已评分` : "暂未开启评分" }}
 					</view>
@@ -30,8 +31,8 @@
 					<view class="rightTaps" :class="{ rightTaps_select: tabTp === 2 }">
 					</view>
 					<view class="fakerTabs uni-flex">
-						<view class="txt" @click="onClickTab(1,false)" :class="{ txt_select: tabTp === 1 }">拆卡报告</view>
-						<view class="txt" @click="onClickTab(2,false)" :class="{ txt_select: tabTp === 2 }">拼团结果</view>
+						<view class="txt" @click="onClickTab(1, false)" :class="{ txt_select: tabTp === 1 }">拆卡报告</view>
+						<view class="txt" @click="onClickTab(2, false)" :class="{ txt_select: tabTp === 2 }">拼团结果</view>
 					</view>
 				</view>
 				<view class="fakerPlaceholder"></view>
@@ -46,7 +47,28 @@
 		<view class="a" :style="{ height: topPx + 'px' }"></view>
 		<view class="listContainer">
 			<template v-if="tabTp === 1">
-				<view class="columnTxt">我的中卡</view>
+				<template v-if="myHitList && myHitList.length">
+					<view class="columnTxt">我的中卡</view>
+					<view class="hitContainer">
+						<scroll-view scroll-x="true" class="scroll" scroll-with-animation="true">
+							<view class="myHitCard" v-for="(item, index) in myHitList" :key="'myHitCard' + index">
+								<view class="myHitCard_top">
+									<muqian-lazyLoad class="img" :src="$parsePic(item.pics[0])"></muqian-lazyLoad>
+									<view class="rarityWrap" v-if="item.rarity">
+										<view class="rarityItem" v-for="s in item.rarity.split('')"></view>
+									</view>
+									<view class="picNum flexCenter" v-if="item.pics.length > 1">{{ item.pics.length }}
+									</view>
+								</view>
+								<view class="cardNameWrap">
+									<view class="noName u-line-2">
+										<view class="cfgLoc" v-if="item.cfgLoc"></view>{{ item.no }}
+									</view>
+								</view>
+							</view>
+						</scroll-view>
+					</view>
+				</template>
 				<view class="columnTxt">其他中卡</view>
 				<view class="resultCard" v-for="(item, index) in resultList" :key="index">
 					<view class="resultCard_left">
@@ -70,7 +92,7 @@
 				</view>
 			</template>
 			<template v-if="tabTp === 2">
-				<view class="mergeWrap" @click="onClickTab(2,true)">
+				<view class="mergeWrap" @click="onClickTab(2, true)">
 					<view class="txt">以{{ isMerge ? "用户" : "卡密" }}为单位</view>
 					<view class="change"></view>
 				</view>
@@ -84,6 +106,8 @@
 					</view>
 					<template v-if="isMerge">
 						<view class="noName" v-for="noItem in item.noList">{{ noItem.no }}</view>
+						<view class="loadMore" @click="mergeUserMoreNoList(item, index)"
+							v-if="item.noList.length < item.total">点击展开{{ item.userName }}更多卡密</view>
 					</template>
 					<template v-else>
 						<view class="noName">{{ item.no }}</view>
@@ -96,9 +120,10 @@
 			<view class="ratingContainer">
 				<view class="title">我的评分</view>
 				<view class="starContainer">
-					<view class="star" :class="{ star_select: index * 2 <= userRatingScore }" v-for="index in 5"
-						@click="onClickRatingStar(index * 2)">
-						<view class="txt" :class="{ txt_select: index * 2 <= userRatingScore }">{{ RatingMap[index * 2] }}
+					<view class="star" :class="{ star_select: index+1 <= userRatingScore }" v-for="index in 5"
+						@click="onClickRatingStar(index+1)">
+						<view class="txt" :class="{ txt_select: index+1 <= userRatingScore }">{{ RatingMap[index+1]
+							}}
 						</view>
 					</view>
 				</view>
@@ -136,11 +161,11 @@ const Tab = {
 	1: '拆卡报告'
 }
 const RatingMap: any = {
-	2: "平平淡淡",
-	4: "一般",
-	6: "还行",
-	8: "起飞",
-	10: "欧气爆棚"
+	1: "平平淡淡",
+	2: "一般",
+	3: "还行",
+	4: "起飞",
+	5: "欧气爆棚"
 }
 const ListParams = {
 	pageIndex: 1,
@@ -190,6 +215,7 @@ export default class ClassName extends BaseNode {
 	userRatingScore: number = 0;
 	userBeforeHasScore: boolean = false
 	isFetchEnd: boolean = true
+	myHitList: any = null
 	onLoad(query: any) {
 		if (query.chooseIds) {
 			this.chooseId = +query.chooseIds;
@@ -201,18 +227,19 @@ export default class ClassName extends BaseNode {
 			}
 			this.reqHomeData()
 			this.getList()
+
 		}
 	}
 	//   加载更多数据
 	onReachBottom() {
-		if(this.isFetchEnd) return
-		if(this.tabTp==2){
-			if(this.isMerge){
-				this.mergeParams.fetchFrom+=this.mergeParams.fetchSize
+		if (this.isFetchEnd) return
+		if (this.tabTp == 2) {
+			if (this.isMerge) {
+				this.mergeParams.fetchFrom += this.mergeParams.fetchSize
 			}
 			this.getCardNo()
-		}else if (this.tabTp==1){
-			this.queryParams.pageIndex+=1
+		} else if (this.tabTp == 1) {
+			this.queryParams.pageIndex += 1
 			this.getResult()
 		}
 	}
@@ -220,7 +247,9 @@ export default class ClassName extends BaseNode {
 		// if (this.noMore) return;
 		if (this.chooseId != 0) {
 			this.tabTp = 1
+			this.reqMyHit()
 			this.getResult()
+
 		} else {
 			this.tabTp = 2
 			this.getCardNo()
@@ -252,21 +281,25 @@ export default class ClassName extends BaseNode {
 			})
 		}
 	}
-	onClickTab(tp: number,isOnclickMerge:boolean) {
-		if (this.tabTp === tp&&!isOnclickMerge) return
-		if(isOnclickMerge) this.isMerge=!this.isMerge
+	onClickTab(tp: number, isOnclickMerge: boolean) {
+		if (this.tabTp === tp && !isOnclickMerge) return
+		if (isOnclickMerge) this.isMerge = !this.isMerge
 		this.tabTp = tp
 		if (tp == 2 && !this.isMerge) {
-			this.teamDataList=[]
+			this.teamDataList = []
 			this.cardNoParams.fromId = 0
 			this.getCardNo()
 		} else if (tp == 2 && this.isMerge) {
-			this.teamDataList=[]
+			this.teamDataList = []
 			this.mergeParams.fetchFrom = 1
 			this.getCardNo()
 		} else if (tp == 1) {
 			this.queryParams.pageIndex = 1
+			if (this.myHitList === null) {
+				this.reqMyHit()
+			}
 			this.getResult()
+
 		}
 	}
 	getResult() {
@@ -277,6 +310,12 @@ export default class ClassName extends BaseNode {
 				return { ...item, ...userData }
 			})
 			this.queryParams.pageIndex == 1 ? this.resultList = list : this.resultList.push(...list)
+		})
+	}
+	mergeUserMoreNoList(item: any, index) {
+		app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/result/merge/noMore`, { fromId: item.noList[item.noList.length - 1].id, fetchSize: 50 }, (res: any) => {
+			const list = res.list || []
+			item.noList.push(...list)
 		})
 	}
 	resetList() {
@@ -332,6 +371,13 @@ export default class ClassName extends BaseNode {
 		app.http.Get(`dataApi/good/${this.goodCode}/result/home`, {}, (res: any) => {
 			this.homeData = res.data
 			this.userBeforeHasScore = this.homeData.userRatingScore != 0
+		})
+	}
+	reqMyHit() {
+		app.http.Get(`dataApi/good/${this.goodCode}/my/cardNoResult`, {}, (res: any) => {
+			this.myHitList = res.list || []
+			console.log(this.myHitList);
+
 		})
 	}
 }
@@ -565,6 +611,87 @@ page {
 	padding: 0 20rpx;
 	margin-top: 24rpx;
 
+	.hitContainer {
+		width: 100%;
+		display: flex;
+		margin-bottom: 36rpx;
+		.scroll {
+			width: 100%;
+			white-space: nowrap;
+			display: flex;
+			align-items: center;
+		}
+	}
+
+	.myHitCard {
+		display: inline-block;
+		background-color: #ffffff;
+		width: 346rpx;
+		height: 428rpx;
+		background: #FFFFFF;
+		border-radius: 4rpx;
+		overflow: hidden;
+		margin-right: 18rpx;
+		.myHitCard_top {
+			position: relative;
+			width: 346rpx;
+			height: 320rpx;
+
+			.img {
+				width: 346rpx;
+				height: 320rpx;
+			}
+
+			.picNum {
+				width: 32rpx;
+				height: 32rpx;
+				background: rgba(0, 0, 0, 0.4);
+				font-family: PingFangSC, PingFang SC;
+				font-weight: 400;
+				font-size: 24rpx;
+				color: #FFFFFF;
+				position: absolute;
+				right: 0;
+				top: 0;
+			}
+
+			.rarityWrap {
+				position: absolute;
+				display: flex;
+				align-items: center;
+				top: 8rpx;
+				left: 8rpx;
+
+				.rarityItem {
+					background-size: 100% 100%;
+					background-image: url("@/static/goods/v2/s.png");
+					width: 18rpx;
+					height: 18rpx;
+					margin-right: 8rpx;
+				}
+			}
+		}
+
+		.cardNameWrap {
+			width: 346rpx;
+			box-sizing: border-box;
+			padding: 0 16rpx;
+			margin-top: 16rpx;
+
+			// display: flex;
+			.noName {
+				font-weight: 400;
+				font-size: 24rpx;
+				color: #333333;
+				line-height: 34rpx;
+			}
+
+
+		}
+	}
+	.myHitCard:last-child{
+		margin-right: 0rpx;
+	}
 	.columnTxt {
 		font-weight: bold;
 		font-size: 28rpx;
@@ -628,6 +755,8 @@ page {
 					color: #333333;
 					line-height: 34rpx;
 				}
+
+
 			}
 
 
@@ -701,6 +830,13 @@ page {
 		.noName:last-child {
 			border: 0;
 			padding-bottom: 0;
+		}
+
+		.loadMore {
+			text-align: center;
+			margin-top: 20rpx;
+			font-size: 24rpx;
+			color: #000000;
 		}
 	}
 }

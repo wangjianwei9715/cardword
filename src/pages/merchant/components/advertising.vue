@@ -111,9 +111,9 @@
 		public get currentAdCardListLength() : number {
 			return this.currentAdCardList.reduce((total:number,item:any) => total+item.remaining_quantity , 0)
 		}
-		public get usableAdCardList() : string {
-			return this.currentAdCardList.filter((item:any)=>item.remaining_quantity>0)
-		}
+		// public get usableAdCardList() : string {
+		// 	return this.currentAdCardList.filter((item:any)=>item.remaining_quantity>0)
+		// }
 		public get waitReview() : boolean {
 			return [stateMap.waitReview].includes(this.adData.state)
 		}
