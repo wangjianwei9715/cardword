@@ -98,8 +98,9 @@
 				background: #FF5441;
 				font-size: 19rpx;
 				color: #FFFFFF;
-				line-height: 36rpx;
 				text-align: center;
+				display: flex;
+				align-items: center;
 			}
 		}
 		.coupon-list-right{

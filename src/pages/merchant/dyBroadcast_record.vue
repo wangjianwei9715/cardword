@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-12-16 16:23:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-08 17:31:16
+ * @LastEditTime: 2024-07-09 09:35:40
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -125,14 +125,14 @@
         }
         .line-title{
             font-size: 24rpx;
-            color:#333333
+            color:#AEAEB2
         }
         .line-right{
             height:60rpx;
             display: flex;
             align-items: center;        
             font-size: 24rpx;  
-            color:#333333              
+            color:#AEAEB2           
         }
     }
 </style>

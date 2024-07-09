@@ -297,7 +297,6 @@
 		width: 317rpx;
 		height: 72rpx;
 		line-height:34rpx;
-		lines:2;
 		text-overflow: ellipsis;
 		word-wrap:anywhere;
 		font-weight: 300;
@@ -315,13 +314,6 @@
 		left:20rpx;
 		top:8rpx;
 		font-weight: 600;
-	}
-	.icon-image{
-		width: 66rpx;
-		height:21rpx;
-		position: absolute;
-		left:0;
-		top:0;
 	}
 	.icon-text{
 		height:30rpx;

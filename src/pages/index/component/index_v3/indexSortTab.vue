@@ -12,7 +12,7 @@
 				</div>
 			</div>
 		</div>
-		<div v-if="showFilter" class="sort-filter-bg" @click="onClickCancel"></div>
+		<div v-if="showFilter" class="sort-filter-bg" @click="onClickCancel" @touchmove.stop.prevent="moveHandle"></div>
 		<div v-if="showFilter" class="sort-container" :style="sortFilterStyle">
 			<div class="filter-index" :class="{'current-index':currentTab.current==index}" v-for="(item,index) in filterList" :key="index" @click="onClickFilter(index)">
 				<text class="filter-text" :class="{'current-filter':currentTab.current==index}">{{item.name}}</text>
@@ -104,6 +104,8 @@
 			}
 		},
 		methods: {
+			moveHandle(){
+			},
 			getSortTop() {
 				return new Promise((re, rj) => {
 					uni.createSelectorQuery()

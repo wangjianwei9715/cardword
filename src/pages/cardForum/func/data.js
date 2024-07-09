@@ -67,7 +67,7 @@ export const CardForumTabbar = [
     {
         text: '卡圈',
         pagePath: "/pages/cardForum/home",
-        iconPath: "/static/index/tabbar/3.png"
+        iconPath: "/static/index/tabbar/3_.png"
     },
     {
         text: '消息',

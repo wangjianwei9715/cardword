@@ -151,7 +151,7 @@ import { Component } from "vue-property-decorator";
 import BaseNode from '../../base/BaseNode.vue';
 import { formatNumber } from "@/tools/util"
 import { app } from "@/app";
-import medalPopup from "./component/index/medalPopup.vue"
+import medalPopup from "./component/index_v3/medalPopup.vue"
 let toolsMap = {
     "设置": {
         action: "",

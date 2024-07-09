@@ -18,7 +18,7 @@ export const indexMenu = [
     {icon:'/static/index/tabs/tab1.png',needLogin:true,name:'卡币商城',url:'/pages/mall/mallIndex'},
     {icon:'/static/index/tabs/tab2.png',needLogin:true,name:'发售日历',url:"/pages/act/calendar/list",},
     {icon:'/static/index/tabs/tab3.png',needLogin:true,name:'领劵中心',url:'/pages/userinfo/coupon/coupon_get'},
-    {icon:'/static/index/tabs/tab3.png',needLogin:false,name:'查卡价',url:'/pages/act/service/ref'},
+    {icon:'/static/index/tabs/tab4.png',needLogin:false,name:'查卡价',url:'/pages/act/service/ref'},
     {icon:'/static/index/tabs/tab5.png',needLogin:true,name:'店铺列表',url:'/pages/userinfo/merchant_listV2'},
 ]
 export const goodsTabs = [

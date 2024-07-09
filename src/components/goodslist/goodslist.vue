@@ -8,11 +8,11 @@
 						<view class="progressMask" :style="{width:(100-goodsManaager.listPlan(item,'num'))+'%'}"></view>
 					</view>
 					<view class="goods-header u-line-2" @click="onClickJumpUrl(item.goodCode)">
-						<view class="cardicon">
+						<view class="cardicon" :style="cardiconStyle">
 							<text class="icon-text" :style="{color:gameplayType[item.pintuan_type].color}">{{goodsData(item).typeName1}}</text>
 							<text class="icon-text">{{goodsData(item).typeName2}}</text>
 						</view>
-						<text class="title-text u-line-2" style="text-indent: 70rpx;">{{item.title}}</text>
+						<text class="title-text u-line-2" :style="{'text-indent': isAndroid? '86rpx' :'70rpx'}">{{item.title}}</text>
 					</view>
 					<view class="goods-merchant" @click="onClickSellerShop(item)">
 						<merchantAvatar width="30rpx" height="30rpx" :level="item.merchantLevel" :src="decodeURIComponent(item.merchantLogo)"/>
@@ -76,8 +76,11 @@
 		showPlan: any = []
 		valid = true;
 		gameplayType = gameplayType;
+		isAndroid = false;
 		created() { //在实例创建完成后被立即调用
-			
+			if (uni.getSystemInfoSync().platform === "android") {  
+				this.isAndroid = true;
+			}
 		}
 		mounted() { //挂载到实例上去之后调用
 		}
@@ -85,6 +88,18 @@
 			if(this.progressColor=="") return {}
 			return {
 				background:this.progressColor
+			}
+		}
+		public get cardiconStyle() : any {
+			if(this.isAndroid){
+				return {
+					padding:'0 6rpx',
+					height:'24rpx'
+				}
+			}else{
+				return {
+					width:'66rpx'
+				}
 			}
 		}
 		goodsData(item){
@@ -187,7 +202,6 @@
 		font-weight: 300;
 	}
 	.cardicon{
-		width: 66rpx;
 		height:21rpx;
 		margin-right: 10rpx;
 		position: absolute;
@@ -199,13 +213,6 @@
 		left:20rpx;
 		top:6rpx;
 		font-weight: 600;
-	}
-	.icon-image{
-		width: 66rpx;
-		height:21rpx;
-		position: absolute;
-		left:0;
-		top:0;
 	}
 	.icon-text{
 		height:30rpx;

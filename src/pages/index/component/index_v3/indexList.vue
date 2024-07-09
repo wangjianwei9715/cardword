@@ -22,9 +22,9 @@
 					<cell v-for="(item,index) in goodsList[index]?goodsList[index].list:[]" >
 						<indexListGoods :data="item"/>
 					</cell>
-					<cell v-if="goodsList[index]&&goodsList[index].empty">
+					<header v-if="goodsList[index]&&goodsList[index].empty">
 						<empty></empty>
-					</cell>
+					</header>
 					<header v-if="goodsList[index]&&goodsList[index].list.length">
 						<u-loadmore :line="true" loadingIcon="semicircle"
 						lineLength="20rpx" :status="goodsList[index]&&goodsList[index].noMoreData ? 'nomore' : 'loading'" nomore-text="没有更多了" fontSize="24rpx" />
