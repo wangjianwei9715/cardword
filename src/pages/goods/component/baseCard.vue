@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-01-30 09:24:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-06-27 09:53:44
+ * @LastEditTime: 2024-07-09 16:46:51
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -33,7 +33,6 @@
 
 <style lang="scss" scoped>
 	.base-container-header{
-		height:40rpx;
 		font-size: 20rpx;
 		color: #AEAEB2;
 		display: flex;

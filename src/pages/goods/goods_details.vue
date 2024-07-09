@@ -786,9 +786,9 @@
 
 	.bottom-container {
 		width: 100%;
-		height: calc(120rpx);
-		height: calc(120rpx + constant(safe-area-inset-bottom));
-		height: calc(120rpx + env(safe-area-inset-bottom));
+		height: calc(110rpx);
+		height: calc(110rpx + constant(safe-area-inset-bottom));
+		height: calc(110rpx + env(safe-area-inset-bottom));
 		position: fixed;
 		bottom: 0;
 		left: 0;
@@ -1132,13 +1132,15 @@
 				@include font(20rpx);
 				font-weight: 600;
 				box-sizing: border-box;
-				color:#333333
+				color:#333333;
+
 			}
 			.header-price text {
 				@include font(54rpx);
 				font-family: Impact;
 				margin-left: 10rpx;
-				color:#333333
+				color:#333333;
+				letter-spacing:3rpx;
 			}
 		}
 		.time-container{

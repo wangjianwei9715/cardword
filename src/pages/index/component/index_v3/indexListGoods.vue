@@ -83,11 +83,6 @@
 					<text class="title-text u-line-2" style="text-indent: 70rpx;">{{data.title}}</text>
 					<!-- #endif -->
 				</div>
-				<div class="goods-merchant" @click="onClickSellerShop(data)">
-					<image class="merchant-logo" mode="aspectFill" :src="decodeURIComponent(data.merchantLogo)"/>
-					<image v-if="data.merchantLevel&&merchantLevelItem['icon']" class="avatar-level" :src="`/static/goods/v2/good_small_${merchantLevelItem['icon']}.png`" />
-					<text class="bussName">{{data.merchantName}}</text>
-				</div>
 				<div class="goods-priceMsg" @click="goGoodsDetails()">
 					<div class="goods-priceMsg-left">
 						<text class="price-icon">￥</text>
@@ -102,6 +97,11 @@
 					<text v-else :id="data.goodCode" class="goods-priceMsg-right">
 						{{listPlan(data,'str')}}
 					</text>
+				</div>
+				<div class="goods-merchant" @click="onClickSellerShop(data)">
+					<image class="merchant-logo" mode="aspectFill" :src="decodeURIComponent(data.merchantLogo)"/>
+					<image v-if="data.merchantLevel&&merchantLevelItem['icon']" class="avatar-level" :src="`/static/goods/v2/good_small_${merchantLevelItem['icon']}.png`" />
+					<text class="bussName">{{data.merchantName}}</text>
 				</div>
 			</div>
 		</div>
@@ -323,7 +323,7 @@
 		@include flexCenter;
 	}
 	.hide-text{
-		font-size: 18rpx;
+		font-size: 19rpx;
 		background:rgba(0,0,0,0);
 		color:rgba(0,0,0,0)
 	}
@@ -334,13 +334,12 @@
 	}
 	.goods-priceMsg{
 		flex:1;
-		height: 69rpx;
+		height: 33rpx;
 		@include flexCenter;
 		position: relative;
 		align-items: flex-end;
 		padding-left: 16rpx;
 		padding-right: 16rpx;
-		padding-bottom:16rpx;
 		justify-content: space-between;
 	}
 	.goods-priceMsg-left{
@@ -384,17 +383,18 @@
 	}
 	.progressMask {
 		height: 6rpx;
-		background-color: #f3f2f2;
+		background-color: #fff;
 	}
 	.goods-merchant {
 		@include linePadding;
-		height:30rpx;
+		height:50rpx;
 		@include flexCenter;
 		position: relative;
 		justify-content: flex-start;
 		background:#fff;
 		border-bottom-left-radius: 5rpx;
 		border-bottom-right-radius: 5rpx;
+		padding-top: 20rpx;
 	}
 	.bussName {
 		width: 246rpx;
@@ -410,12 +410,12 @@
 		border-radius: 50%;
 	}
 	.avatar-level{
+		width: 21rpx !important;
+		height:17rpx !important;
 		position: absolute;
-		bottom:-4rpx;
+		bottom:0rpx;
 		left:36rpx;
-		z-index: 1;
-		width: 21rpx;
-		height:17rpx;
+		z-index: 4;
 	}
 	// 边播边拆
 	.dyBroadcast{
