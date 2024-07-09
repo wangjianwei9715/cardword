@@ -1,3 +1,12 @@
+<!--
+ * @FilePath: \jichao_app_2\src\pages\goods\component\specPlay.vue
+ * @Author: wjw
+ * @Date: 2024-06-26 13:37:24
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-07-09 15:13:41
+ * Copyright: 2024 .
+ * @Descripttion: 
+-->
 <template>
 	<view class="specplay">
 		<view class="specplay-item">
@@ -64,7 +73,6 @@
 	}
 	.item-title{
 		width: 100%;
-		height:30rpx;
 		display: flex;
 		justify-content: center;
 		align-items: center;

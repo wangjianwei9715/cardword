@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-24 11:05:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-06-27 16:43:07
+ * @LastEditTime: 2024-07-09 15:55:03
  * @FilePath: \jichao_app_2\src\components\transitionNav\transitionNav.vue
  * @Description: 渐变导航栏（兼容nvue, nvue中把组件放到结构最下面:越后层级越高）
 -->
@@ -455,6 +455,11 @@ export default {
     position: absolute;
     top:0;
     left:0;
+    -webkit-filter: blur(20px);
+    filter: blur(20px);
+    -webkit-transform: scale(1.5);
+    -ms-transform: scale(1.5);
+    transform: scale(1.5);
 }
 .nav-blur{
     width: 100%;

@@ -17,7 +17,7 @@
 			<statusbar />
 			<scroll-view class="goods-scroll" scroll-x="true" v-if='seriesShow' v-show="merchantList!=''">
 				<view class="scrollItem" v-for="(item,index) in merchantList" :key='index' @click="onClickSellerShop(item)">
-					<muqian-lazyLoad class="merchant-logo" :src="decodeURIComponent(item.logo)" mode="aspectFit"></muqian-lazyLoad>
+					<muqian-lazyLoad class="merchant-logo" :src="decodeURIComponent(item.logo)" mode="aspectFill"></muqian-lazyLoad>
 					<view class="merchant-name u-line-2">{{item.name}}</view>
 					<view class="merchant-btn">进店</view>
 				</view>

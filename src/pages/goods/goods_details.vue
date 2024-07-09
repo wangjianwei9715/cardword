@@ -786,9 +786,9 @@
 
 	.bottom-container {
 		width: 100%;
-		height: calc(120rpx);
-		height: calc(120rpx + constant(safe-area-inset-bottom));
-		height: calc(120rpx + env(safe-area-inset-bottom));
+		height: calc(110rpx);
+		height: calc(110rpx + constant(safe-area-inset-bottom));
+		height: calc(110rpx + env(safe-area-inset-bottom));
 		position: fixed;
 		bottom: 0;
 		left: 0;

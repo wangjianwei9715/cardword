@@ -1,13 +1,13 @@
 <template>
 	<div>
 		<!-- 首页头部广告 -->
-		<swiper v-if="headerAddList.length" :indicator-dots="true" :indicator-active-color="'#fff'" :indicator-color="'rgba(170, 170, 170, .75)'" class="capsule-box"  :current="capsuleCurrent" autoplay circular @change="e=> capsuleCurrent=e.detail.current">
+		<!-- <swiper v-if="headerAddList.length" :indicator-dots="true" :indicator-active-color="'#fff'" :indicator-color="'rgba(170, 170, 170, .75)'" class="capsule-box"  :current="capsuleCurrent" autoplay circular @change="e=> capsuleCurrent=e.detail.current">
 			<swiper-item v-for="(item,index) in headerAddList" :key="index">
 				<div class="capsule-content">
 					<image class="capsule-pic" :src="decodeURIComponent(item.pic)" mode="aspectFill" @click="onClickToAD(item.target)"/>
 				</div>
 			</swiper-item>
-		</swiper>
+		</swiper> -->
 
 		<!-- 金刚区 -->
 		<div class="golden-container">

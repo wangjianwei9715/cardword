@@ -14,10 +14,7 @@
 						</view>
 						<text class="title-text u-line-2" :style="{'text-indent': isAndroid? '86rpx' :'70rpx'}">{{item.title}}</text>
 					</view>
-					<view class="goods-merchant" @click="onClickSellerShop(item)">
-						<merchantAvatar width="30rpx" height="30rpx" :level="item.merchantLevel" :src="decodeURIComponent(item.merchantLogo)"/>
-						<text class="bussName">{{item.merchantName}}</text>
-					</view>
+					
 					<view class="goods-priceMsg" @click="onClickJumpUrl(item.goodCode)">
 						<view class="goods-priceMsg-left">
 							<text class="price-icon">￥</text>
@@ -32,6 +29,10 @@
 						<text v-else :id="item.goodCode" class="goods-priceMsg-right">
 							{{goodsManaager.listPlan(item,'str')}}
 						</text>
+					</view>
+					<view class="goods-merchant" @click="onClickSellerShop(item)" v-if="item.merchantName">
+						<merchantAvatar width="30rpx" height="30rpx" :level="item.merchantLevel" :src="decodeURIComponent(item.merchantLogo)"/>
+						<text class="bussName">{{item.merchantName}}</text>
 					</view>
 				</view>
 			</view>
@@ -94,7 +95,7 @@
 			if(this.isAndroid){
 				return {
 					padding:'0 6rpx',
-					height:'24rpx'
+					height:'26rpx',
 				}
 			}else{
 				return {
@@ -156,7 +157,6 @@
 	}
 	.goods-container{
 		width: 357rpx;
-		height:473rpx;
 		margin-top: 12rpx;
 	}
 	.goods-content{
@@ -177,11 +177,11 @@
 
 	.goods-index{
 		width: 357rpx;
-		height:196rpx;
 		background: #FFFFFF;
 		padding-top: 2rpx;
 		@include flexCenter;
 		flex-wrap: wrap;
+		padding-bottom: 16rpx
 	}
 	.goods-header{
 		@include linePadding;
@@ -229,17 +229,17 @@
 	.title-text{
 		font-size: 24rpx;
 		font-weight: 300;
+		line-height: 34rpx;
 		color: #333333;
 	}
 	.goods-priceMsg{
 		flex:1;
-		height: 69rpx;
+		height: 33rpx;
 		@include flexCenter;
 		position: relative;
 		align-items: flex-end;
 		padding-left: 16rpx;
 		padding-right: 16rpx;
-		padding-bottom:16rpx;
 		justify-content: space-between;
 	}
 	.goods-priceMsg-left{
@@ -283,17 +283,18 @@
 	}
 	.progressMask {
 		height: 6rpx;
-		background-color: #f3f2f2;
+		background-color: #fff;
 	}
 	.goods-merchant {
 		@include linePadding;
-		height:30rpx;
+		height:50rpx;
 		@include flexCenter;
 		position: relative;
 		justify-content: flex-start;
 		background:#fff;
 		border-bottom-left-radius: 5rpx;
 		border-bottom-right-radius: 5rpx;
+		padding-top: 20rpx;
 	}
 	.bussName {
 		width: 246rpx;
@@ -310,7 +311,7 @@
 	}
 	.avatar-level{
 		position: absolute;
-		bottom:-4rpx;
+		bottom:0rpx;
 		left:36rpx;
 		z-index: 1;
 		width: 21rpx;

@@ -190,9 +190,7 @@
 	}
 	.detail-act-remark{
 		width: 550rpx;
-		font-size: 26rpx;
-		
-		
+		font-size: 22rpx;
 		color: #333333;
 	}
 	.discount-box{
