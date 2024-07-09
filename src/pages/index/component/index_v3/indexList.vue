@@ -11,20 +11,20 @@
 						<u-loading-icon mode="semicircle"></u-loading-icon>
 					</refresh>
 					<header v-if="index==0">
-						<indexHome :headerAddList="headerAddList" :broadCast="homeBroadCast"/>
+						<indexHome :homeSeries="homeSeries" :headerAddList="headerAddList" :broadCast="homeBroadCast"/>
 					</header>
 					<header v-if="index==1">
 						<indexSeries :seriesId.sync="seriesId" @onSeries="reload()"/>
 					</header>
 					<header v-if="index>=1" style="position:sticky">
-						<indexSortTab @sortChange="onSortChange"/>
+						<indexSortTab :index="index" @sortChange="onSortChange"/>
 					</header>
 					<cell v-for="(item,index) in goodsList[index]?goodsList[index].list:[]" >
 						<indexListGoods :data="item"/>
 					</cell>
-					<cell v-if="goodsList[index]&&goodsList[index].empty">
+					<header v-if="goodsList[index]&&goodsList[index].empty">
 						<empty></empty>
-					</cell>
+					</header>
 					<header v-if="goodsList[index]&&goodsList[index].list.length">
 						<u-loadmore :line="true" loadingIcon="semicircle"
 						lineLength="20rpx" :status="goodsList[index]&&goodsList[index].noMoreData ? 'nomore' : 'loading'" nomore-text="没有更多了" fontSize="24rpx" />
@@ -35,10 +35,10 @@
 				<!-- #ifndef APP-NVUE -->
 				<scroll-view class="scroll-box" @scrolltolower="reqNewMainList()" :refresher-enabled="true" refresher-default-style="white" @refresherrefresh="reload(true)" :refresher-triggered="refreshing" :scroll-y="true">
 					<div v-if="index==0">
-						<indexHome :headerAddList="headerAddList" :broadCast="homeBroadCast"/>
+						<indexHome :homeSeries="homeSeries" :headerAddList="headerAddList" :broadCast="homeBroadCast"/>
 					</div>
 					<indexSeries v-if="index==1" :seriesId.sync="seriesId" @onSeries="reload()"/>
-					<indexSortTab style="position:sticky" v-if="index>=1" @sortChange="onSortChange"/>
+					<indexSortTab style="z-index:999" v-if="index>=1" :index="index" @sortChange="onSortChange"/>
 					<div class="scroll-list-box">
 						<div class="scroll-index" v-for="item in goodsList[index]?goodsList[index].list:[]" >
 							<indexListGoods :data="item"/>
@@ -142,6 +142,9 @@
 			},
 			homeBroadCast(){
 				return this.homeData.broadCast || []
+			},
+			homeSeries(){
+				return this.homeData.topIconSeries || {pic:"",id:0}
 			}
 		},
 		methods: {

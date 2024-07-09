@@ -1142,11 +1142,11 @@ page {
 }
 
 .showKaTabBar_image {
-    width: 28px;
-    height: 28px;
+    width: 20px;
+    height: 20px;
     // margin-top: 5px;
+    margin-bottom:3px
 }
-
 .tabBarText {
     color: #ffffff;
     font-size: 10px;

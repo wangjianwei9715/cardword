@@ -12,7 +12,7 @@
 		<!-- 金刚区 -->
 		<div class="golden-container">
 			<div class="golden-tab" v-for="(items,indexs) in indexMenu" :key="indexs" @click="onClickJumpUrl(items)">
-				<image class="golden-img" mode="aspectFit"/>
+				<image class="golden-img" mode="aspectFit" :src="items.icon"/>
 				<text class="golden-text u-line-1">{{items.name}}</text>
 			</div>
 		</div>
@@ -22,7 +22,7 @@
 				<div class="feature-live-left">
 					<text class="feature-live-title">直播中</text>
 					<div class="feature-live-box">
-						<image class="feature-live-pic" :src="decodeURIComponent(broadCastData.merchantLogo)"/>
+						<image class="feature-live-pic" :src="decodeURIComponent(broadCastData.merchantLogo)" mode="aspectFill"/>
 					</div>
 					<text class="feature-live-name">{{broadCastData.merchantName}}</text>
 				</div>
@@ -48,7 +48,7 @@
 			<div class="feature-box" @click="onClickSeries">
 				<text class="feature-title">推荐系列</text>
 				<div class="feature-pic-box">
-					<!-- <image class="feature-pic" :src="decodeURIComponent()" mode="aspectFill" /> -->
+					<image class="feature-pic" :src="decodeURIComponent(homeSeries.pic)" mode="aspectFill" />
 				</div>
 			</div>
 		</div>
@@ -68,6 +68,10 @@
 			broadCast:{
 				type:Array,
 				default: () => []
+			},
+			homeSeries:{
+				type:Object,
+				default: () => {}
 			}
 		},
 		data(){
@@ -92,8 +96,9 @@
 				app.navigateTo.navigateToAD(target)
 			},
 			onClickSeries(){
+				if(this.homeSeries.id==0) return;
 				uni.navigateTo({
-					url:`/pages/goods/goods_seriesDetail?seriesId=2`
+					url:`/pages/goods/goods_seriesDetail?seriesId=${this.homeSeries.id}`
 				})
 			},
 			onClickGoProgressRank(){
@@ -183,7 +188,6 @@
 	.golden-img {
 		width: 72rpx;
 		height: 72rpx;
-		background:red;
 		margin-bottom: 15rpx;
 	}
 	.golden-text {

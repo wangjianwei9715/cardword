@@ -8,9 +8,11 @@
 			<div class="header-div">
 				<div :style="{ height: app.statusBarHeight + 'px' }"></div>
 				<div class="header-box">
-					<div class="search">
+					<div class="search" @click="onClickSearch(0)">
 						<image class="search-icon" src="@/static/index/v3/icon_search.png"></image>
-						<u-notice-bar style="padding-left:72rpx;" @click="onClickSearch" :text="noticeList" direction="column" icon="" :color="goodsTabCurrent==2?'#ffffff':'#C0C0C0'" bgColor="rgba(0,0,0,0)" :duration="5000"></u-notice-bar>
+						<text class="search-text">{{noticeList[0] || ''}}</text>
+						<!-- <u-notice-bar @click="onClickSearch" style="padding-left:72rpx" :text="noticeList" direction="column" icon="" :color="goodsTabCurrent==2?'#ffffff':'#C0C0C0'" bgColor="rgba(0,0,0,0)" :duration="5000"></u-notice-bar> -->
+						
 					</div>
 					<div class="live-box" @click="pageJump('/pages/live/list')">
 						<image class="icon-live" src="@/static/index/v3/live.png"></image>
@@ -76,7 +78,6 @@
 					show:false,
 					data:{}
 				},
-				showIndex:false,
 				medalPopupData:{
 					show:false,
 					data:{}
@@ -90,9 +91,6 @@
 			this.onLoadIndex();
 		},
 		onShow(){
-			setTimeout(()=>{
-				this.showIndex = true;
-			},500)
 			uni.showTabBar({ animation: false })
 			// #ifdef APP-NVUE
 			this.networkStatusChange()
@@ -107,7 +105,6 @@
 			this.getHome()
 		},
 		onHide() {
-			this.showIndex = false;
 			uni.offNetworkStatusChange((res) => {})
 		},
 		computed:{
@@ -261,6 +258,13 @@
 		width: 28rpx;
 		height: 29rpx;
 	}
+	.search-text{
+		font-size: 25rpx;
+		color: #C0C0C0;
+		padding-left: 72rpx;
+		height:65rpx;
+		line-height: 65rpx;
+	}
 	.search-btn{
 		width: 98rpx;
 		height: 49rpx;
@@ -301,6 +305,6 @@
 	.icon-pokemon{
 		width: 105rpx;
 		height:38rpx;
-		margin-top: -10rpx;
+		margin-bottom: 10rpx;
 	}
 </style>

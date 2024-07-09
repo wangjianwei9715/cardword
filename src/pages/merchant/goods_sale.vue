@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-12-16 16:23:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-06-19 13:47:39
+ * @LastEditTime: 2024-07-08 14:00:03
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -11,7 +11,7 @@
     <view class="content" style="width: 100%;">
         <navigationbar title="在售管理" :custom="true">
 			<template slot="right">
-				<view class="extract-btn" @click="onClickShowAd()">主页推广</view>
+				<view class="extract-btn" @click="onClickDyBroadcast()">边播边拆</view>
 			</template>
 		</navigationbar>
         <view class="goods-item" v-for="(item,index) in listData" :key="index">
@@ -45,7 +45,7 @@
         <upWeight :show.sync="showUpWeight" :equitycard="equitycard" :short_description="short_description" :monthly_cards="monthly_cards" :goodCode="goodCode" @equitycardUse="refresh"/>
         <advertising :show.sync="adPopup.show" :goodCode="adPopup.goodCode" :slogan="adPopup.slogan" />
 
-        <u-popup :show="showAdSlogan.show" mode="center" @close="showAdSlogan.show=false">
+        <u-popup :show="showAdSlogan.show" mode="bottom" @close="showAdSlogan.show=false">
             <view class="popup-content">
                 <view class="tipsTitle">广告推广</view>
         
@@ -145,7 +145,11 @@
                 goodCode,
                 slogan:uni.getStorageSync("adSlogan") || ""
             }
-            
+        }
+        onClickDyBroadcast(){
+            uni.navigateTo({
+                url:"/pages/merchant/dyBroadcast"
+            })
         }
         onClickConfirmSlogan(){
             const { goodCode, slogan } = this.showAdSlogan
@@ -331,29 +335,32 @@
 
     .popup-content {
         @include lineBox;
-        width: 700rpx;
+        width: 750rpx;
         flex-direction: column;
         align-items: center;
-        padding:30rpx 100rpx;
+        padding:40rpx;
 
         .title {
             @include font(42rpx)
         }
         .tipsTitle{
-            font-weight:bold;
             @include font(32rpx);
-            margin-bottom: 100rpx
+            margin-bottom: 40rpx;
+            font-weight: 500
         }
         .slogan-box{
             @include lineBox;
             flex-wrap: wrap;
             margin-bottom: 20rpx;
+            font-size: 20rpx;
             .slogan-title{
                 width: 100%;
-                @include font(28rpx);
+                @include font(24rpx);
                 
             }
             .slogan-input{
+                height:64rpx;
+                box-sizing: border-box;
                 @include font(28rpx);
                 margin-top: 10rpx;
                 font-weight:400;
@@ -368,7 +375,7 @@
 
         .btn {
             @include font(36rpx);
-            width: 240rpx;
+            width: 196rpx;
             height: 80rpx;
             border:0.8px solid #959695;
             border-radius: 3rpx;
@@ -377,6 +384,7 @@
             margin-top:30rpx;
         }
         .con-btn{
+            width: 450rpx;
             border:0.8px solid #FA1545;
             background: #FA1545;
             color:#fff;

@@ -1112,7 +1112,8 @@
 	}
 	.detail-header{
 		width: 750rpx;
-		background: url(@/static/goods/v3/title_bg.png) no-repeat top / 100% 296rpx;
+		// background: url(@/static/goods/v3/title_bg.png) no-repeat top / 100% 296rpx;
+		background: #fff;
 		box-sizing: border-box;
 		padding: 0 26rpx 26rpx 26rpx;
 		.header-base{
