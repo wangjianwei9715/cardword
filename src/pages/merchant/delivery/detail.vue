@@ -4,12 +4,18 @@
         </transitionNav>
         <view class="topSearchContainer">
             <view class="nav" :style="{ height: navHeight + 'px' }"></view>
-            <view class="topMenu">
+            <view class="topMenu" :class="{topMenu_three:queryParams.isDetail==1}">
                 <view class="menuItem" :class="{ menuItem_select: queryParams.tp == 1 }" @click="onClickMenuItem(1)">
                     待发货
+                    <text class="smallNum">{{numInfo.waitDeliveryNum}}</text>
                 </view>
                 <view class="menuItem" :class="{ menuItem_select: queryParams.tp == 2 }" @click="onClickMenuItem(2)">
                     已发货
+                    <text class="smallNum">{{queryParams.isDetail!=1?numInfo.waitReceiveNum+numInfo.doneNum:numInfo.waitReceiveNum}}</text>
+                </view>
+                <view class="menuItem" v-if="queryParams.isDetail==1" :class="{ menuItem_select: queryParams.tp == 3 }" @click="onClickMenuItem(3)">
+                    已完成
+                    <text class="smallNum">{{numInfo.doneNum}}</text>
                 </view>
             </view>
         </view>
@@ -62,7 +68,7 @@
                             v-if="!item.ziti && !item.wuliuCompanyId && !defaultWuliuCompanyId">待选择</text>
                         <text v-else>{{ wuliuCompanyTxt(item) }}</text>
                     </view>
-                    <view class="right_label" @click="onClickSetZiti(item)">{{ item.ziti ? "取消自提" : "设置自提" }}</view>
+                    <view class="right_label" v-if="queryParams.tp==1" @click="onClickSetZiti(item)">{{ item.ziti ? "取消自提" : "设置自提" }}</view>
                 </view>
                 <view class="wuliu_item">
                     <view class="label">单号信息：</view>
@@ -103,7 +109,8 @@ export default class ClassName extends BaseNode {
         pageSize: 10,
         codes: "",
         tp: 1,
-        merge: 0
+        merge: 0,
+        isDetail:0
     }
     defaultWuliuCompanyId: number = 0
     navHeight = navHeight
@@ -113,13 +120,17 @@ export default class ClassName extends BaseNode {
     companySelectShow: boolean = false
     nowSelect: any = null
     isDetail:boolean=false
+    numInfo:any={}
     onLoad(query: any) {
         this.queryParams.codes = query.codes
         this.queryParams.merge = +query.merge
-        if (query.tp) this.queryParams.tp=+query.tp
-        if(query.isDetail) this.isDetail=true
+        if(query.isDetail&&+query.isDetail==1){
+            this.queryParams.isDetail=1
+            this.queryParams.tp=2
+        }
         this.reqNewData()
         this.reqWuliuCompany()
+        this.reqNumData()
     }
     onReachBottom() {
         if (this.queryParams.pageIndex < this.totalPage) {
@@ -221,6 +232,7 @@ export default class ClassName extends BaseNode {
                 title: "操作成功"
             })
             this.reqNewData()
+            this.reqNumData()
         })
     }
     onClickSelect(event: any) {
@@ -236,6 +248,11 @@ export default class ClassName extends BaseNode {
         this.queryParams.pageIndex = 1
         this.queryParams.merge = this.queryParams.merge == 0 ? 1 : 0
         this.reqNewData()
+    }
+    reqNumData(){
+        app.http.Get(`dataApi/merchant/delivery/more/goods/num`,{codes:this.queryParams.codes,merge:this.queryParams.merge},(res:any)=>{
+            this.numInfo=res.data
+        })
     }
     reqWuliuCompany() {
         app.http.Get(`dataApi/config/wuliu`, {}, (res: any) => {
@@ -542,7 +559,7 @@ page {
     justify-content: space-between;
     width: 750rpx;
     box-sizing: border-box;
-    padding: 0 100rpx;
+    padding:0 100rpx;
     background-color: #ffffff;
     border-bottom: 2rpx solid #f7f7f7;
 
@@ -560,7 +577,13 @@ page {
         line-height: 90rpx;
         // margin-right: 100rpx;
     }
-
+    .smallNum{
+        font-size:20rpx;
+        margin-left:4rpx;
+        // position:absolute;
+        // right:0;
+        // top:0;
+    }
     .menuItem_select {
         color: #FA1545;
     }
@@ -574,5 +597,8 @@ page {
         bottom: 0;
         left: 0;
     }
+}
+.topMenu_three{
+    padding: 0 60rpx;
 }
 </style>

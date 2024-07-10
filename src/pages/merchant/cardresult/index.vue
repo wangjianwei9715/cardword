@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2024-06-17 10:05:21
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-07-10 14:25:36
+ * @LastEditTime: 2024-07-10 14:28:43
  * @FilePath: \card-world\src\pages\merchant\cardresult\index.vue
  * @Description: ✌✌✌✌✌✌
  * 
@@ -56,10 +56,10 @@
                     <view class="button button_white flexCenter" @click="onClickLookNo(item)">
                         查看报告
                     </view>
-                    <view class="button flexCenter" v-if="item.status==7" @click="onClickToDeliveryDetail(item,1)">
+                    <view class="button flexCenter" v-if="item.status==7" @click="onClickToDeliveryDetail(item,0)">
                         去发货
                     </view>
-                    <view class="button flexCenter" v-if="item.status==8 || item.status==9" @click="onClickToDeliveryDetail(item,2)">
+                    <view class="button flexCenter" v-if="item.status==8 || item.status==9" @click="onClickToDeliveryDetail(item,1)">
                         发货详情
                     </view>
                     <!-- status -->
@@ -117,9 +117,9 @@ export default class ClassName extends BaseNode {
            url:`/pages/goods/goods_result_list_new?chooseIds=1&code=${item.goodCode}&random=false`
         })
     }
-    onClickToDeliveryDetail(item: any,tp:number) {
+    onClickToDeliveryDetail(item: any,isDetail:number) {
         uni.navigateTo({
-            url: `/pages/merchant/delivery/detail?codes=${item.goodCode}&merge=${0}&tp=${tp}`
+            url: `/pages/merchant/delivery/detail?codes=${item.goodCode}&merge=${0}&isDetail=${isDetail}`
         })
     }
     getStateName(item: any): any {
