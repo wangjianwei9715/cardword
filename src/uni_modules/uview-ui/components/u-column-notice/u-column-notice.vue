@@ -1,7 +1,7 @@
 <template>
 	<view
 		class="u-notice"
-		@tap="clickHandler"
+		
 	>
 		<slot name="icon">
 			<view
@@ -29,10 +29,12 @@
 				:key="index"
 				class="u-notice__swiper__item"
 				:class="{'u-notice__flexend':flexEnd}"
+				@tap="clickHandler"
 			>
 				<text
 					class="u-notice__swiper__item__text u-line-1"
 					:style="[textStyle]"
+					
 				>{{ item }}</text>
 			</swiper-item>
 		</swiper>

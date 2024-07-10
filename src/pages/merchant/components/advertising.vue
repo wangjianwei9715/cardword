@@ -134,7 +134,7 @@
 			
 			const { notStart, waitReview, inEffect } = stateMap;
 			if(this.currentState.notStart){
-				this.buttonConfig[notStart].text = this.adFull? this.fullTips(reminder) : `确认使用（可申请广告位${this.adData.now_num}/${this.adData.limit_num}）`
+				this.buttonConfig[notStart].text = this.adFull? this.fullTips(reminder) : `确认使用`
 			}
 			if(this.currentState.inEffect){
 				this.buttonConfig[inEffect].text =`生效中`

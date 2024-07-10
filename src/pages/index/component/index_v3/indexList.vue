@@ -10,6 +10,7 @@
 					<refresh class="refresh" @refresh="reload(true)" :display="refreshing ? 'show' : 'hide'">
 						<u-loading-icon mode="semicircle"></u-loading-icon>
 					</refresh>
+					<header ref="goTop"></header>
 					<header v-if="index==0">
 						<indexHome :homeSeries="homeSeries" :headerAddList="headerAddList" :broadCast="homeBroadCast"/>
 					</header>
@@ -60,6 +61,9 @@
 
 <script>
 	const app = getApp().globalData.app;
+	// #ifdef APP-NVUE
+	const dom = weex.requireModule('dom')
+	// #endif
 	import { homeListBg } from "@/tools/DataExchange.js"
 	import indexListGoods from './indexListGoods.vue'
 	import indexHome from './indexHome.vue'
@@ -164,6 +168,13 @@
 					this.$set(this.goodsList, this.current, { list:[], ...new ListParams()})
 					this.reqNewMainList()
 				},pullingdown?1000:0);
+			},
+			goTop(){
+				// #ifdef APP-NVUE
+				dom.scrollToElement(this.$refs.goTop[this.current], {
+					animated: true
+				})
+				// #endif
 			},
 			reqNewMainList(cb) {
 				const { fetchFrom,fetchSize,noMoreData } = this.currentItem;
