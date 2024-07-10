@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2024-06-17 10:05:21
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-07-10 11:00:21
+ * @LastEditTime: 2024-07-10 14:25:36
  * @FilePath: \card-world\src\pages\merchant\cardresult\index.vue
  * @Description: ✌✌✌✌✌✌
  * 
@@ -301,7 +301,7 @@ page {
         width:100%;
         margin-top: 42rpx;
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
 
         .button {
             width: 140rpx;
