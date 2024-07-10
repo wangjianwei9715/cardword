@@ -248,6 +248,7 @@ export default class ClassName extends BaseNode {
         this.queryParams.pageIndex = 1
         this.queryParams.merge = this.queryParams.merge == 0 ? 1 : 0
         this.reqNewData()
+        this.reqNumData()
     }
     reqNumData(){
         app.http.Get(`dataApi/merchant/delivery/more/goods/num`,{codes:this.queryParams.codes,merge:this.queryParams.merge},(res:any)=>{
