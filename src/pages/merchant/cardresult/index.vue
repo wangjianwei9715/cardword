@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2024-06-17 10:05:21
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-06-25 15:41:39
+ * @LastEditTime: 2024-07-10 11:00:21
  * @FilePath: \card-world\src\pages\merchant\cardresult\index.vue
  * @Description: ✌✌✌✌✌✌
  * 
@@ -41,7 +41,7 @@
                             <text class="qi">起</text>
                         </view>
                         <view class="goodsNum">
-                            余0/{{ item.total_num }}
+                            <!-- 余0/{{ item.total_num }} -->
                         </view>
                     </view>
                 </view>

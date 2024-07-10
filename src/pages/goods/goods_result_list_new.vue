@@ -114,6 +114,7 @@
 					</template>
 				</view>
 			</template>
+			<view class="bottomSafeArea"></view>
 		</view>
 		<u-popup :show="ratingShow" mode="bottom" mask :safeAreaInsetBottom="true" @close="ratingShow = false"
 			border-radius="3rpx" bgColor="rgba(255,255,255,1)">

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-07-09 11:31:13
+ * @LastEditTime: 2024-07-09 18:04:04
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -83,7 +83,7 @@
                                 </template>
                             </view>
                         </view>
-                        <view v-if="item.isRatingCard" class="ratingCard">
+                        <view v-if="item.isRatingCard" class="ratingCard" @click="goToDetail(item)">
 				            <view class="ratingCard_picWrap">
 				            	<view class="noPicWrap" v-for="(pic,picIndex) in item.pics" :style="{marginRight:picIndex==2?'0rpx':'16rpx'}">
 				            		<image class="noPic" :src="$parsePic(pic)"></image>
@@ -181,7 +181,7 @@
                             </view>
                         </view>
                     </view>
-                    <view v-if="item.isRatingCard" class="ratingCard">
+                    <view v-if="item.isRatingCard" class="ratingCard" @click="goToDetail(item)">
 				            <view class="ratingCard_picWrap">
 				            	<view class="noPicWrap" v-for="(pic,picIndex) in item.pics" :style="{marginRight:picIndex==2?'0rpx':'16rpx'}">
 				            		<image mode="aspectFill" class="noPic" :src="$parsePic(pic)"></image>

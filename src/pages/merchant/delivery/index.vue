@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2024-06-25 15:43:23
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-07-09 16:45:10
+ * @LastEditTime: 2024-07-10 11:41:00
  * @FilePath: \card-world\src\pages\merchant\delivery\index.vue
  * @Description: ✌✌✌✌✌✌
  * 
@@ -50,7 +50,7 @@
                     拼成时间 {{ $u.timeFormat(item.group_at, "mm-dd hh:MM") }}
                 </view>
                 <view class="stateName" :style="{ color: getStateName(item).color || '#333333' }">
-                    {{ getStateName(item).txt }}
+                    {{ getStateName(item).txt }} <text class="stateOrderNum" v-if="queryParams.state==1">{{`(${item.doneOrderNum}/${item.allOrderNum})`}}</text>
                 </view>
             </view>
             <view class="centerWrap un-flex">
@@ -360,6 +360,10 @@ page {
             color: #333333;
             line-height: 40rpx;
             text-align: right;
+        }
+        .stateOrderNum{
+            font-size:24rpx;
+            margin-left:8rpx;
         }
     }
 

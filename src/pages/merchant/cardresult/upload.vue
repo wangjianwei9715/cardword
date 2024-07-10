@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2024-06-24 14:03:57
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-06-25 11:52:54
+ * @LastEditTime: 2024-07-10 11:24:03
  * @FilePath: \card-world\src\pages\merchant\cardresult\upload.vue
  * @Description: ✌✌✌✌✌✌
  * 
@@ -90,7 +90,7 @@
             <view class="bottomSafeArea"></view>
         </view>
         <u-popup :show="popShow" mode="bottom" mask :safeAreaInsetBottom="true" @close="popShow = false"
-            border-radius="3rpx" bgColor="rgba(0,0,0,0)">
+            border-radius="3rpx" bgColor="#ffffff">
             <view class="popContainer">
                 <view class="topWrap">
                     <view class="title">标记信息</view>
@@ -149,7 +149,7 @@
             </view>
         </u-popup>
         <u-popup :show="popShowRating" mode="bottom" mask :safeAreaInsetBottom="true" @close="popShowRating = false"
-            border-radius="3rpx" bgColor="rgba(0,0,0,0)">
+            border-radius="3rpx" bgColor="#ffffff">
             <view class="ratingContainer">
                 <view class="topWrap">
                     <view class="title">是否开启报告评分功能</view>

@@ -47,7 +47,7 @@
                 <view class="address ">
                     {{ item.receiverInfo.address }}
                 </view>
-                <view class="copy">复制</view>
+                <view class="copy" @click="onClickCopy(item)">复制</view>
             </view>
             <view class="addressWrap uni-flex alc jb">
                 <view class="address ">
@@ -68,7 +68,7 @@
                     <view class="label">单号信息：</view>
                     <view class="input">
                         <view v-if="item.ziti">已设置自提</view>
-                        <input v-else placeholder="待填写" v-model="item.wuliuNo"></input>
+                        <input v-else placeholder="待填写" :disabled="queryParams.tp == 2" v-model="item.wuliuNo"></input>
                     </view>
                     <view class="right_label" v-if="queryParams.tp == 1">扫码</view>
                 </view>
@@ -112,10 +112,12 @@ export default class ClassName extends BaseNode {
     companyList: any = []
     companySelectShow: boolean = false
     nowSelect: any = null
+    isDetail:boolean=false
     onLoad(query: any) {
         this.queryParams.codes = query.codes
         this.queryParams.merge = +query.merge
         if (query.tp) this.queryParams.tp=+query.tp
+        if(query.isDetail) this.isDetail=true
         this.reqNewData()
         this.reqWuliuCompany()
     }
@@ -166,6 +168,17 @@ export default class ClassName extends BaseNode {
     }
     onClickSetZiti(item: any) {
         item.ziti = !item.ziti
+    }
+    onClickCopy(item:any){
+        uni.setClipboardData({
+            data:`${item.receiverInfo.address}\r${item.receiverInfo.name} ${item.receiverInfo.phone}`,
+            success:()=>{
+                uni.showToast({
+                    title:"已复制",
+                    icon:"none"
+                })
+            }
+        })
     }
     onClickSubmit(item: any) {
         if (!item.ziti) {
