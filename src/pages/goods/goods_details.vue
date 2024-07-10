@@ -254,7 +254,7 @@
 			if(this.detilIsEmpty) return {};
 			const { spec, pintuan_type, totalNum } = this.goodsData
 			return {
-				spec:`${spec.name}·${spec.num}张` || "",
+				spec:`${spec.name}·${spec.num>0?spec.num+'张':'暂无'}` || "",
 				pintuan_type:this.goodsManaager.gameplayType[pintuan_type] || "",
 				progress:`余${this.goodSurplusNum}/${totalNum}`
 			} 

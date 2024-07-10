@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-06-06 10:23:49
+ * @LastEditTime: 2024-07-09 17:37:06
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -299,8 +299,6 @@
 			.popup-list-name{
 				width: 100%;
 				font-size: 28rpx;
-				height:40rpx;
-				
 				font-weight: 600;
 				color: #333333;
 			}
