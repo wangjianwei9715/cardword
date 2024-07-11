@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-07-09 18:04:04
+ * @LastEditTime: 2024-07-11 17:44:26
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -1301,7 +1301,12 @@ $uvui-nvue-style: true !default;
 	color: #333333;
 }
 
-.ratingCard_center_bottom {}
+.ratingCard_center_bottom {
+    flex:1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
 
 .ratingNum {
 	font-weight: 400;
@@ -1316,7 +1321,7 @@ $uvui-nvue-style: true !default;
 	font-family: DINCondensed, DINCondensed;
 	position: absolute;
 	right: 0;
-	bottom: -20rpx;
+	bottom: 0rpx;
     // text-decoration:flex-end;
     // line-height:82rpx;
 }
