@@ -84,7 +84,7 @@
 			}
 		},
 		onLoad(){
-			uni.$on("showCommunity", (res) => {
+			uni.$on("showPaySuccess", (res) => {
 				this.showCommunity = true;
 			});
 			this.onLoadIndex();

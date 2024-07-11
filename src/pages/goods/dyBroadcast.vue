@@ -6,7 +6,7 @@
         <view class="list">
             <view class="sale-container" v-for="(item,index) in onSaleList" :key="index">
                 <view class="sale-top">
-                    <image class="goods-pic" :src="decodeURIComponent(currentGoods(item).pic)"/>
+                    <image class="goods-pic" :src="decodeURIComponent(currentGoods(item).pic)" @click="navigateToDetail(currentGoods(item))"/>
                     <view class="sale-merchant" @click="onClickSellerShop(item)">
                         <muqian-lazyLoad class="sale-merchant-image" :src="decodeURIComponent(item.merchantLogo)" />
                         <text class="sale-merchant-name">{{item.merchantName}}</text>
@@ -20,14 +20,14 @@
                     </view>
                 </view>
                 <view class="sale-index">
-                    <view class="sale-title">
+                    <view class="sale-title" @click="navigateToDetail(currentGoods(item))">
                         <div class="cardicon">
                             <text class="icon-text" :style="{color:goodsTypeData(item).color}">{{goodsTypeData(item).name.slice(0,2)}}</text>
                             <text class="icon-text">{{goodsTypeData(item).name.slice(2)}}</text>
                         </div>
                         <text class="sale-name u-line-1">{{currentGoods(item).goodName}}</text>
                     </view>
-                    <view class="sale-content">
+                    <view class="sale-content" @click="navigateToDetail(currentGoods(item))">
                         <div class="goods-priceMsg-left">
                             <text class="price-icon">￥</text>
                             <text class="price-text">{{ filterPrice(currentGoods(item).price).integer }}</text>
@@ -84,7 +84,10 @@ export default class ClassName extends BaseNode {
     onSaleList = [];
     moreList = [];
     listParams = new List()
-    onShow(){
+    onLoad(){
+        uni.$on("showPaySuccess", (res) => {
+            this.refresh()
+        });
         this.refresh()
     }
     onPageScroll(data: any) {
@@ -151,12 +154,15 @@ export default class ClassName extends BaseNode {
             }
         });
     }
+    navigateToDetail(item){
+        app.navigateTo.goGoodsDetails(item.goodCode,"&referer=dyBroadcast")
+    }
     // 购买
     onClickBuy(item) { 
         app.platform.hasLoginToken(() => {
             if ([10,11,12].includes(item.pintuanType)) { 
                 // 处理购买自选球队 
-                app.navigateTo.goGoodsDetails(item.goodCode,"&referer=dyBroadcast")
+                this.navigateToDetail(item)
             } else if ((item.totalNum - (item.currentNum + item.lockNum)) <=0) { 
                 // 售罄
                 uni.showToast({ title: '该商品已售罄', icon: 'none' }) 
@@ -241,7 +247,7 @@ page {
         }
         .goods-scroll {
             width: 100%;
-            padding:17rpx 21rpx;
+            padding:17rpx 21rpx 0rpx 21rpx;
             box-sizing: border-box;
             height: 134rpx;
             display: flex;
@@ -257,14 +263,14 @@ page {
             margin-right: 19rpx;
             box-sizing: border-box;
             box-sizing: border-box;
-            border:1rpx solid rgba(0,0,0,0)
+            border:1px solid rgba(0,0,0,0)
         }
         .current-item{
-            border:1rpx solid #FA1545
+            border:1px solid #FA1545
         }
         .scroll-image{
-            width:124rpx;
-            height:98rpx;
+            width:100%;
+            height:100%;
             border-radius: 4rpx;
         }
     }
@@ -365,6 +371,9 @@ page {
             border-radius: 2rpx;
             border: 1rpx solid #AAAAAA;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
         .dy-text{
             width: 366rpx;
@@ -380,9 +389,6 @@ page {
             height: 60rpx;
             background: #333333;
             border-radius: 2rpx;
-            position: absolute;
-            right:0;
-            top:0;
             display: flex;
             align-items: center;
             justify-content: center;
