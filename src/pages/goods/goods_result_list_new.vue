@@ -2,7 +2,7 @@
 	<view class="content">
 		<transitionNav ref='transitionNav' :transition="true" :needIconShadow="false" title="">
 			<template v-slot:slotRight>
-				<view class="playVideo" @click="onClickPlayVideo"></view>
+				<view class="playVideo" v-if="homeData.roomId" @click="onClickPlayVideo"></view>
 				<!-- <view v-if="reportState==2" class="detailButton flexCenter" @click="showReason">驳回原因</view> -->
 			</template>
 		</transitionNav>
@@ -20,7 +20,10 @@
 			homeData.ratingScore
 		}}
 					</view>
-					<view class="ratingPeopleNum">{{ homeData.ratingOpen ? `${homeData.ratingNum}人已评分` : "暂未开启评分" }}
+					<view class="ratingPeopleNum">
+						<view class="txt">{{ homeData.ratingOpen ?
+			`${homeData.ratingNum == 0 ? '暂无评分' : `${homeData.ratingNum}人已评分`}` : "暂未开启评分" }}</view>
+						<image class="dotImg" src="@/static/goods/v2/sjxDot.png"></image>
 					</view>
 				</view>
 			</view>
@@ -39,7 +42,7 @@
 				<view class="serachWrap">
 					<view class="search">
 						<view class="icon"></view>
-						<input type="text" class="input" placeholder="请输入关键字搜索">
+						<input type="text" v-model="searchQ" class="input" @confirm="onConfirmQ" placeholder="请输入关键字搜索">
 					</view>
 				</view>
 			</view>
@@ -203,6 +206,7 @@ export default class ClassName extends BaseNode {
 		pageSize: 10,
 		q: ""
 	}
+	q: string = ""
 	tabTp: number = 2
 	// list:any=[]
 	resultList: any = []//拆开报告
@@ -257,14 +261,20 @@ export default class ClassName extends BaseNode {
 		}
 	}
 	onClickPlayVideo() {
-		app.platform.goZgLive({ playCode: this.homeData.playCode, state: 3, goodCode: this.goodCode })
+		app.platform.goZgLive({ playCode: this.homeData.playCode, state: 3, goodCode: this.goodCode,alias:this.homeData.merchantAlias,roomID:this.homeData.roomId })
 	}
 	getCardNo() {
 		if (this.isMerge) {
-			app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/result/merge`, this.mergeParams, (res: any) => {
-				this.teamDataList.push(...(res.list || []))
+			app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/result/merge`, { ...this.mergeParams, q: this.searchQ }, (res: any) => {
+				const list = (res.list || []).map((item: any) => {
+					if (item.anonymous) {
+						item.userName = anonymousInfo.userName
+						item.avatar = anonymousInfo.avatar
+					}
+					return item
+				})
+				this.teamDataList.push(...list)
 				this.isFetchEnd = res.isFetchEnd
-				// this.mergeParams.isFetchEnd = res.isFetchEnd
 			})
 		} else {
 			const { cardNoParams } = this;
@@ -280,6 +290,18 @@ export default class ClassName extends BaseNode {
 				cardNoParams.fromId = this.teamDataList[this.teamDataList.length - 1].id;
 				cardNoParams.remainNum = res.remainNum || -1
 			})
+		}
+	}
+	onConfirmQ() {
+		if (this.tabTp == 1) {
+			this.queryParams.pageIndex = 1
+			this.getResult()
+		} else {
+			if (this.isMerge) this.isMerge = false
+			this.teamDataList = []
+			this.mergeParams.fetchFrom = 1
+			this.cardNoParams.fromId = 0
+			this.getCardNo()
 		}
 	}
 	onClickTab(tp: number, isOnclickMerge: boolean) {
@@ -304,7 +326,7 @@ export default class ClassName extends BaseNode {
 		}
 	}
 	getResult() {
-		app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/cardNoResult`, this.queryParams, (res: any) => {
+		app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/cardNoResult`, { ...this.queryParams, q: this.searchQ }, (res: any) => {
 			const list = (res.list || []).map((item: any) => {
 				item.pics = item.pic.split(",")
 				const userData = item.anonymous ? anonymousInfo : {}
@@ -457,11 +479,24 @@ page {
 		position: relative;
 
 		.ratingPeopleNum {
-			font-weight: 400;
-			font-size: 20rpx;
-			color: #FFFFFF;
-			letter-spacing: 1rpx;
+
+			display: flex;
+			align-items: center;
+
+			.txt {
+				font-weight: 400;
+				font-size: 20rpx;
+				color: #FFFFFF;
+				letter-spacing: 1rpx;
+			}
+
+			.dotImg {
+				width: 16rpx;
+				height: 16rpx;
+			}
 		}
+
+
 
 		.ratingNum {
 			font-family: Impact;
@@ -616,6 +651,7 @@ page {
 		width: 100%;
 		display: flex;
 		margin-bottom: 36rpx;
+
 		.scroll {
 			width: 100%;
 			white-space: nowrap;
@@ -633,10 +669,12 @@ page {
 		border-radius: 4rpx;
 		overflow: hidden;
 		margin-right: 18rpx;
+
 		.myHitCard_top {
 			position: relative;
 			width: 346rpx;
 			height: 320rpx;
+			flex: 1;
 
 			.img {
 				width: 346rpx;
@@ -674,12 +712,15 @@ page {
 		}
 
 		.cardNameWrap {
-			width: 346rpx;
+			width: 100%;
 			box-sizing: border-box;
 			padding: 0 16rpx;
 			margin-top: 16rpx;
+			height: 100%;
+			white-space: wrap;
 
 			// display: flex;
+			// background-color:#000000;
 			.noName {
 				font-weight: 400;
 				font-size: 24rpx;
@@ -690,9 +731,11 @@ page {
 
 		}
 	}
-	.myHitCard:last-child{
+
+	.myHitCard:last-child {
 		margin-right: 0rpx;
 	}
+
 	.columnTxt {
 		font-weight: bold;
 		font-size: 28rpx;
@@ -861,7 +904,7 @@ page {
 		padding: 0 100rpx;
 		justify-content: space-between;
 		width: 750rpx;
-		margin-bottom: 68rpx;
+		margin-bottom: 136rpx;
 
 		.star {
 			background-size: 100% 100%;
@@ -901,8 +944,8 @@ page {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-top: 68rpx;
-		padding-bottom: 16rpx;
+		// margin-top: 68rpx;
+		padding-bottom: 26rpx;
 
 		.btn {
 			display: flex;

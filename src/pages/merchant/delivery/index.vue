@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2024-06-25 15:43:23
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-07-10 14:28:52
+ * @LastEditTime: 2024-07-11 17:27:24
  * @FilePath: \card-world\src\pages\merchant\delivery\index.vue
  * @Description: ✌✌✌✌✌✌
  * 
@@ -50,7 +50,8 @@
                     拼成时间 {{ $u.timeFormat(item.group_at, "mm-dd hh:MM") }}
                 </view>
                 <view class="stateName" :style="{ color: getStateName(item).color || '#333333' }">
-                    {{ getStateName(item).txt }} <text class="stateOrderNum" v-if="queryParams.state==1">{{`(${item.doneOrderNum}/${item.allOrderNum})`}}</text>
+                    {{ getStateName(item).txt }} <text class="stateOrderNum" v-if="queryParams.state == 1">{{
+            `(${item.doneOrderNum}/${item.allOrderNum})` }}</text>
                 </view>
             </view>
             <view class="centerWrap un-flex">
@@ -74,23 +75,26 @@
                     <view class="button button_white flexCenter" @click="onClickLookNo(item)">
                         查看报告
                     </view>
-                    <view class="button flexCenter" v-if="item.status == 7" @click.stop="onClickToDetail(item,0)">
+                    <view class="button flexCenter" v-if="item.status == 7" @click.stop="onClickToDetail(item, 0)">
                         去发货
                     </view>
                     <view class="button flexCenter" v-if="item.status == 8 || item.status == 9"
-                        @click.stop="onClickToDetail(item,1)">
+                        @click.stop="onClickToDetail(item, 1)">
                         发货详情
                     </view>
                     <!-- status -->
                 </template>
-                <view v-if="onBatchSelect" :class="[inSelect(item.goodCode) ? 'cardSelect' : 'cardUnSelect']"></view>
+                <view v-if="onBatchSelect"
+                    :class="[inSelect(item.goodCode) || isSelectAll ? 'cardSelect' : 'cardUnSelect']"></view>
             </view>
         </view>
         <view class="bottomActionWrap" v-if="onBatchSelect">
             <view class="btmWrap">
-                <view class="radio" @click="onClickSelectAll"></view>
-                <view class="txt">全选</view>
-                <view class="yixua" v-if="selectCodes.length > 0">(已选{{ selectCodes.length }}个商品)</view>
+                <view class="radio" :class="{ radio_select: isSelectAll }" @click="onClickSelectAll">
+                </view>
+                <view class="txt" @click="onClickSelectAll">全选</view>
+                <view class="yixua" v-if="selectCodes.length > 0 || isSelectAll">(已选{{ isSelectAll ? allCodes().length :
+            selectCodes.length }}个商品)</view>
                 <view class="flex1"></view>
                 <view class="cancel flexCenter" @click="onBatchSelect = false, selectCodes = []">取消</view>
                 <view class="push flexCenter" @click="onClickDelivery">批量发货</view>
@@ -120,7 +124,8 @@ export default class ClassName extends BaseNode {
     selectCodes: any = []
     onBatchSelect: boolean = false
     isSelectAll: boolean = false
-    onLoad(query: any) {
+    loadAllPageTimer: any = null
+    onLoad() {
         this.reqNewData()
     }
     onReachBottom() {
@@ -128,6 +133,12 @@ export default class ClassName extends BaseNode {
             this.queryParams.pageIndex += 1
             this.reqNewData()
         }
+    }
+    allCodes() {
+        const codes = (this.list || []).map((item: any) => {
+            return item.goodCode
+        })
+        return codes
     }
     onPullDownRefresh() {
         this.queryParams.pageIndex = 1
@@ -141,8 +152,8 @@ export default class ClassName extends BaseNode {
         }
         this.queryParams.pageIndex = 1
         this.queryParams.state = state
-        this.selectCodes=[]
-        this.onBatchSelect=false
+        this.selectCodes = []
+        this.onBatchSelect = false
         this.reqNewData()
     }
     onInputConfirm() {
@@ -154,8 +165,8 @@ export default class ClassName extends BaseNode {
             url: `/pages/merchant/cardresult/upload?code=${item.goodCode}&reportState=${item.reportState}`
         })
     }
-    onClickToDetail(item: any,isDetail:number) {
-        this.selectCodes=[]
+    onClickToDetail(item: any, isDetail: number) {
+        this.selectCodes = []
         this.selectCodes.push(item.goodCode)
         uni.navigateTo({
             url: `/pages/merchant/delivery/detail?codes=${this.selectCodes.join(',')}&merge=${this.selectCodes.length > 1 ? 1 : 0}&isDetail=${isDetail}`
@@ -174,7 +185,7 @@ export default class ClassName extends BaseNode {
         }
     }
     onClickBatch() {
-        if(this.queryParams.state==2) return
+        if (this.queryParams.state == 2) return
         this.onBatchSelect = !this.onBatchSelect
     }
     onClickGoodsCard(goodCode: string) {
@@ -191,17 +202,50 @@ export default class ClassName extends BaseNode {
         }
     }
     onClickDelivery() {
+        if (this.selectCodes.length == 0&&!this.isSelectAll) {
+            uni.showToast({
+                title: "请选择商品",
+                icon: "none"
+            })
+            return
+        }
+        if (this.isSelectAll&&this.allCodes().length==0){
+            uni.showToast({
+                title: "批量发货失败,无商品可发货",
+                icon: "none"
+            })
+            return
+        }
         uni.navigateTo({
-            url: `/pages/merchant/delivery/detail?codes=${this.selectCodes.join(',')}&merge=${this.selectCodes.length > 1 ? 1 : 0}`
+            url: `/pages/merchant/delivery/detail?codes=${this.isSelectAll?this.allCodes().join(','):this.selectCodes.join(',')}&merge=${this.isSelectAll?1:this.selectCodes.length > 1 ? 1 : 0}`
         })
     }
-    onClickLookNo(item:any){
+    onClickLookNo(item: any) {
         uni.navigateTo({
-           url:`/pages/goods/goods_result_list_new?chooseIds=1&code=${item.goodCode}&random=false`
+            url: `/pages/goods/goods_result_list_new?chooseIds=1&code=${item.goodCode}&random=false`
         })
     }
     onClickSelectAll() {
         this.isSelectAll = !this.isSelectAll
+        // if (this.isSelectAll && this.totalPage > this.queryParams.pageIndex) {
+        //     uni.showLoading({
+        //         title: "加载中",
+        //     })
+        //     const num: number = this.totalPage - this.queryParams.pageIndex
+        //     console.log(num);
+            
+        //     for (let i = 0; i < num; i++) {
+        //         ((i)=> {
+        //             // this.loadAllPageTimer && clearTimeout(this.loadAllPageTimer)
+        //             this.loadAllPageTimer = setTimeout(() => {
+        //                 this.queryParams.pageIndex += 1
+        //                 this.reqNewData()
+        //             }, i == 0 ? 0 : 600)
+        //         })(i)
+        //     }
+        // }
+        // console.log(this.isSelectAll);
+
     }
     inSelect(code: string) {
         return this.selectCodes.includes(code)
@@ -361,9 +405,10 @@ page {
             line-height: 40rpx;
             text-align: right;
         }
-        .stateOrderNum{
-            font-size:24rpx;
-            margin-left:8rpx;
+
+        .stateOrderNum {
+            font-size: 24rpx;
+            margin-left: 8rpx;
         }
     }
 
@@ -427,7 +472,7 @@ page {
     }
 
     .bottomWrap {
-        width:100%;
+        width: 100%;
         margin-top: 42rpx;
         display: flex;
         justify-content: flex-end;
@@ -515,6 +560,36 @@ page {
             background: #FFFFFF;
             border: 2rpx solid #BBBBBB;
             margin-right: 8rpx;
+            border-radius: 50%;
+            position: relative;
+            // display: flex;
+            // align-items: center;
+            // justify-content: center;
+        }
+
+        .radio_select {
+            // background: #f2004e;
+            border: 2rpx solid #f2004e;
+        }
+
+        .radio_select::after {
+            content: " ";
+            width: 18rpx;
+            height: 18rpx;
+            border-radius: 50%;
+            background-color: #f6054a;
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        .raido_son {
+            background-color: #f2004e;
+            width: 20rpx;
+            height: 20rpx;
             border-radius: 50%;
         }
 

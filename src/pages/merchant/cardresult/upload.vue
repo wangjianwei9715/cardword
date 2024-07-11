@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2024-06-24 14:03:57
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-07-10 11:24:03
+ * @LastEditTime: 2024-07-11 16:45:40
  * @FilePath: \card-world\src\pages\merchant\cardresult\upload.vue
  * @Description: ✌✌✌✌✌✌
  * 
@@ -18,10 +18,15 @@
         <view class="topSearchContainer">
             <view class="nav" :style="{ height: navHeight + 'px' }"></view>
             <view class="searchWrap">
-                <view class="searchTypeName">搜球员</view>
+                <!-- <select name="" id=""></select> -->
+                <!--  -->
+                <!-- :value="queryParams." -->
+                <picker @change="bindPickerChange"  :range="qtOption" range-key="name">
+                    <view class="searchTypeName">{{getSelectQtTxt()}}</view>
+				</picker>
                 <image class="searchIcon" src="@/static/merchant/down.png"></image>
                 <view class="gap"></view>
-                <input class="searchInput" v-model="queryParams.q"></input>
+                <input class="searchInput" v-model="queryParams.q" @confirm="inputConfirm"></input>
             </view>
             <view class="topMenu">
                 <view class="menuItem" :class="{ menuItem_select: queryParams.tp == 100 }" @click="onClickMenu(100)">
@@ -185,6 +190,7 @@ export default class ClassName extends BaseNode {
         code: "",
         tp: 100,
         q: '',
+        qt:100,
         odTp: 100,
         odType: null,
     }
@@ -224,6 +230,7 @@ export default class ClassName extends BaseNode {
         value: 5,
         odType: 1
     }]
+    qtOption:any=[{name:"全部",value:100},{name:"球队",value:1},{name:"球员",value:2}]
     rarityList: any = ["S", "SS", "SSS"]
     scrollLeft: number = 0
     onLoad(query: any) {
@@ -289,12 +296,26 @@ export default class ClassName extends BaseNode {
         if (!this.formData.pics) this.formData.pics = []
         this.popShow = true
     }
+    bindPickerChange(event:any){
+        this.queryParams.qt=this.qtOption[event.detail.value].value
+    }
+    getSelectQtTxt(){
+       const item:any= this.qtOption.find((item:any)=>{
+            return item.value===this.queryParams.qt
+        })
+        return item.name || "全部"
+    }
     clickHit(num: number) {
         if (this.formData.num + num <= 0) {
             this.formData.num = 0
             return
         }
         this.formData.num += num
+    }
+    inputConfirm(){
+        this.queryParams.pageIndex=1
+        this.reqNewData()
+        this.reqHitNum()
     }
     onClickRarity(rarity: string) {
         this.formData.rarity = this.formData.rarity === rarity ? "" : rarity
@@ -388,7 +409,7 @@ export default class ClassName extends BaseNode {
         })
     }
     reqHitNum() {
-        app.http.Get(`dataApi/merchant/good/${this.queryParams.code}/hitAllNum`, {}, (res: any) => {
+        app.http.Get(`dataApi/merchant/good/${this.queryParams.code}/hitAllNum`, {q:this.queryParams.q,qt:this.queryParams.qt}, (res: any) => {
             this.hitAllNum = res.hitNum
             this.markNum = res.markNum
         })

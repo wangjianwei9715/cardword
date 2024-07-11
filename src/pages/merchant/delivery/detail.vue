@@ -193,7 +193,7 @@ export default class ClassName extends BaseNode {
     }
     onClickSubmit(item: any) {
         if (!item.ziti) {
-            if (!item.wuliuCompanyId) {
+            if (!item.wuliuCompanyId&&!this.defaultWuliuCompanyId) {
                 uni.showToast({
                     title: "请选择物流公司",
                     icon: "none"
@@ -226,6 +226,12 @@ export default class ClassName extends BaseNode {
             ziti: item.ziti,
             receiverInfo:item.receiverInfo,
             userId: item.userId
+        }
+        if (!this.queryParams.merge){
+            //非合并状态下
+            data.goodOrders=item.orderList.map((v:any)=>{
+                return v.code
+            })
         }
         app.http.Post(`merchant/delivery/push`, data, (res: any) => {
             uni.showToast({
