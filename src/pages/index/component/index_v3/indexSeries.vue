@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\pages\index\component\index_v3\indexSeries.vue
  * @Author: wjw
  * @Date: 2024-06-25 14:28:26
- * @LastEditors: 
- * @LastEditTime: 2024-06-28 11:04:11
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-07-10 15:20:25
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -67,7 +67,9 @@
 		width: 750rpx;
 		padding:0 35rpx;
 		height: 160rpx;
+		// #ifndef APP-NVUE
 		white-space: nowrap;
+		// #endif
 		@include flexCenter;
 		padding-top: 10rpx;
 	}
@@ -75,7 +77,9 @@
 		width: 100rpx;
 		height: 140rpx;
 		@include flexCenter;
+		// #ifndef APP-NVUE
 		display: inline-flex;
+		// #endif
 		margin-right: 60rpx;
 		flex-wrap: wrap;
 	}

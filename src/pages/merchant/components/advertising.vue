@@ -28,7 +28,7 @@
 						<view class="operate-btn" @click="onClickAddNum(item)"><image  class="icon-add" src="@/static/merchant/icon_add.png" /></view>
 					</view>
 				</view>
-				<view v-if="!hasUsableCard&&currentState.inEffect" class="nouse-card">暂无可用的广告卡</view>
+				<view v-if="!hasUsableCard&&currentAdCardList.length==0" class="nouse-card">暂无可用的广告卡</view>
 			</view>
 			
 			<view class="drawer-bottom" >
@@ -36,14 +36,14 @@
 					<text>生效中：</text><u-count-down :time="countDown(adData.failure_at)" format="HH:mm:ss" @finish="onFinish"></u-count-down>，<text>在售期间/倒计时结束前</text>有效
 				</view>
 				<view v-else-if="hasUsableCard" class="drawer-bottom-rank" >
-					共{{currentState.notStart ? selectedHour:adData.totalHour}}小时,广告图审核通过后开始计时，<text>在售期间/倒计时结束前</text>有效
+					共{{selectedHour}}小时,广告图审核通过后开始计时，<text>在售期间/倒计时结束前</text>有效
 				</view>
 				<view v-else class="drawer-bottom-rank">暂无广告卡可用</view>
 
 				<view v-if="hasUsableCard" :class="buttonData.class" style="display: flex;align-items: center;justify-content: center;" @click="buttonData.clickHandler">
 					{{ buttonData.text }} 
-					<u-count-down v-if="adFull&&!currentState.waitReview&&adData.recently_at>0&&!currentState.inEffect" @finish="tipsFinish" style="color: #ffffff;" :time="countDown(adData.recently_at)" :format="(+new Date())-adData.recently_at>60*60?'HH:mm:ss':'mm:ss'"></u-count-down>
-					
+					<u-count-down v-if="currentState.inEffect" :time="countDown(adData.failure_at)" format="HH:mm:ss" @finish="onFinish"></u-count-down>
+					<u-count-down v-else-if="currentAdCard.residueNum<=0&&currentState.notStart"  @finish="onFinish" style="color: #ffffff;" :time="countDown(currentAdCard.recently_at)" format="HH:mm:ss"></u-count-down>
 				</view>
 				<view v-else class="drawer-bottom-btn" @click="redirectToMall">去积分中心兑换</view>
 			</view>
@@ -64,6 +64,8 @@
 		}) showSync!: Boolean;
 		@Prop({default:''})
 		goodCode?:string
+		@Prop({default:0})
+		rank?:number
 		@Prop({default:''})
 		slogan?:string
 		
@@ -94,6 +96,12 @@
 				this.getList()
 			}
 		}
+		public get currentLevelState(){
+			this.currentAdCard;
+			return {
+
+			}
+		}
 		public get currentState(): { [key: string]: boolean } {
 			return {
 				notStart: this.adData.state === stateMap.notStart,
@@ -103,10 +111,13 @@
 		}
 		public get adFull() : boolean {
 			// return true
-			return this.adData.now_num>=this.adData.limit_num;
+			return this.currentAdCard.residueNum<=0;
+		}
+		public get currentAdCard() : any  {
+			return this.adCardList[this.currentLevel]?this.adCardList[this.currentLevel]:{}
 		}
 		public get currentAdCardList() : any[]  {
-			return this.adCardList[this.currentLevel]||[]
+			return this.currentAdCard.adCards || []
 		}
 		public get currentAdCardListLength() : number {
 			return this.currentAdCardList.reduce((total:number,item:any) => total+item.remaining_quantity , 0)
@@ -128,31 +139,37 @@
 			const hour = this.adData.totalHour + this.selectedHour;
 			return hour
 		}
+		
+		public get levleExceed() : boolean {
+			return this.rank<=this.currentLevel
+		}
+		
 		public get buttonData():{[x:string]:any} {
-			const { state,reminder } = this.adData;
+			const { state } = this.adData;
+			const { reminder } = this.currentAdCard
 			console.log(state);
 			
 			const { notStart, waitReview, inEffect } = stateMap;
 			if(this.currentState.notStart){
-				this.buttonConfig[notStart].text = this.adFull? this.fullTips(reminder) : `确认使用（可申请广告位${this.adData.now_num}/${this.adData.limit_num}）`
+				this.buttonConfig[notStart].text = this.adFull? this.fullTips(reminder) : (this.levleExceed?'当前商品权重高于广告等级，暂不可用':`确认使用`)
 			}
 			if(this.currentState.inEffect){
-				this.buttonConfig[inEffect].text =`生效中`
+				this.buttonConfig[inEffect].text =`广告位使用中,距离结束`
 			}
 			return {
 				class: {
 					'drawer-bottom-btn': true,
-					'btn-disabled': state===waitReview || (state===notStart&&this.adFull&&reminder),
-					'upload-btn': (this.adFull)
+					'btn-disabled': state===waitReview || (state===notStart&&this.adFull&&reminder) || this.levleExceed,
+					'upload-btn': true
 				},
 				...this.buttonConfig[state]
 			};
 		}
 		fullTips(reminder:boolean){
 			if (reminder){
-				return this.adData.recently_at>0?`提醒已设置,距离下一次可用:`:`广告位已满,提醒已设置`
+				return `提醒已设置，距离下一次可用:`
 			}else{
-				return this.adData.recently_at>0?`已满、预约结束前提醒:`:`已满、点击设置提醒`
+				return `广告位已满、点击设置提醒`
 			}
 		}
 		onClickSelectAll(item:any){
@@ -182,25 +199,25 @@
 			if(item.num>=item.remaining_quantity) item.num = item.remaining_quantity;
 		}
 		setMerReminder(){
-			app.http.Post(`merchant/me/adCard/reminder`,{},()=>{
+			app.http.Post(`merchant/me/adCard/reminder`,{level:Number(this.currentLevel)},()=>{
 				uni.showModal({
 					title:"设置提醒成功",
 					content:"平台将在最近一次有可用广告位的前5分钟提醒您，请留意站内信;提示倒计时结束后可刷新页面申请广告位",
 					showCancel:false
 				})
-				this.adData.reminder=true
+				this.currentAdCard.reminder=true
 			})
 			return
 		}
 		onClickConfirmUse(){
 			const { inEffect } = this.currentState
-			if(this.adFull&&!this.adData.reminder&&!inEffect){
+			if(this.adFull&&!this.currentAdCard.reminder&&!inEffect){
 				this.setMerReminder()
 				return
 			}
-		
+
 			if(this.selectedHour==0 || (this.adFull&&!inEffect)) return;
-			if (inEffect) return
+			if (inEffect || this.levleExceed) return
 			if(inEffect && this.useHour > maxAdHour){
 				uni.showToast({title:"超出可续费时间,请重新确认",icon:"none"})
 				return;
@@ -229,15 +246,14 @@
 		onFinish(){
 			this.getList()
 		}
-		tipsFinish(){
-			this.adData.now_num-=1
-		}
 		getList(){
-			app.http.Get('merchant/me/adCard/list',{goodCode:this.goodCode},({list,...rest}:any)=>{
+			app.http.Get('merchant/me/adCard/list/II',{goodCode:this.goodCode},({list,...rest}:any)=>{
 				this.adData = rest;
+				console.log(list)
 				if(!uni.$u.test.isEmpty(list)){
+					console.log('list=',list)
 					Object.keys(list).forEach(key => {
-						list[key] = list[key].map(x=>{
+						list[key].adCards = list[key].adCards.map(x=>{
 							return {...x,num:0}
 						})
 					});

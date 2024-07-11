@@ -6,10 +6,11 @@
 			</div>
 			<div class="list-container" :style="listContainerStyle">
 				<!-- #ifdef APP-NVUE -->
-				<waterfall column-count="2" column-width="auto" :show-scrollbar="false" left-gap="6" right-gap="6" column-gap="6" @loadmore="reqNewMainList()" >
+				<waterfall column-count="2" column-width="auto" :show-scrollbar="false" :left-gap="waterfallGap" :right-gap="waterfallGap" :column-gap="waterfallGap" @loadmore="reqNewMainList()" >
 					<refresh class="refresh" @refresh="reload(true)" :display="refreshing ? 'show' : 'hide'">
 						<u-loading-icon mode="semicircle"></u-loading-icon>
 					</refresh>
+					<header ref="goTop"></header>
 					<header v-if="index==0">
 						<indexHome :homeSeries="homeSeries" :headerAddList="headerAddList" :broadCast="homeBroadCast"/>
 					</header>
@@ -60,6 +61,9 @@
 
 <script>
 	const app = getApp().globalData.app;
+	// #ifdef APP-NVUE
+	const dom = weex.requireModule('dom')
+	// #endif
 	import { homeListBg } from "@/tools/DataExchange.js"
 	import indexListGoods from './indexListGoods.vue'
 	import indexHome from './indexHome.vue'
@@ -120,6 +124,9 @@
 			this.reload()
 		},
 		computed:{
+			waterfallGap(){
+				return Math.floor(uni.upx2px(12))
+			},
 			currentItem() {
 				return this.goodsList[this.current]
 			},
@@ -164,6 +171,13 @@
 					this.$set(this.goodsList, this.current, { list:[], ...new ListParams()})
 					this.reqNewMainList()
 				},pullingdown?1000:0);
+			},
+			goTop(){
+				// #ifdef APP-NVUE
+				dom.scrollToElement(this.$refs.goTop[this.current], {
+					animated: true
+				})
+				// #endif
 			},
 			reqNewMainList(cb) {
 				const { fetchFrom,fetchSize,noMoreData } = this.currentItem;

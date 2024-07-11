@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-12-16 16:23:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-08 14:00:03
+ * @LastEditTime: 2024-07-11 16:22:48
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -36,14 +36,14 @@
                 <view class="item-rank">权重：{{item.rank}}位</view>
                 <view class="item-btn-box">
                     <view class="item-btn btn-details" @click="goGoodsDetails(item.goodCode)">详情</view>
-                    <view class="item-btn btn-extract" @click="onClickShowAd(item.goodCode)">广告推广</view>
+                    <view class="item-btn btn-extract" @click="onClickShowAd(item.goodCode,item.rank)">广告推广</view>
                     <view class="item-btn btn-extract" @click="onClickShowUpWeight(item.goodCode)">提权</view>
                 </view>
             </view>
         </view>
 
         <upWeight :show.sync="showUpWeight" :equitycard="equitycard" :short_description="short_description" :monthly_cards="monthly_cards" :goodCode="goodCode" @equitycardUse="refresh"/>
-        <advertising :show.sync="adPopup.show" :goodCode="adPopup.goodCode" :slogan="adPopup.slogan" />
+        <advertising :show.sync="adPopup.show" :goodCode="adPopup.goodCode" :rank="adPopup.rank" :slogan="adPopup.slogan" />
 
         <u-popup :show="showAdSlogan.show" mode="bottom" @close="showAdSlogan.show=false">
             <view class="popup-content">
@@ -96,11 +96,13 @@
         adPopup = {
             show:false,
             goodCode:"",
+            rank:0,
             slogan:""
         }
         showAdSlogan = {
             show:false,
             goodCode:"",
+            rank:0,
             slogan:""
         }
         sloganCheck=false;
@@ -139,10 +141,11 @@
                 this.showUpWeight = true
             })
         }
-        onClickShowAd(goodCode=""){
+        onClickShowAd(goodCode="",rank=0){
             this.showAdSlogan = {
                 show:true,
                 goodCode,
+                rank,
                 slogan:uni.getStorageSync("adSlogan") || ""
             }
         }
@@ -152,13 +155,14 @@
             })
         }
         onClickConfirmSlogan(){
-            const { goodCode, slogan } = this.showAdSlogan
+            const { goodCode, slogan,rank } = this.showAdSlogan
             if(this.sloganCheck) uni.setStorageSync("adSlogan",slogan);
             this.showAdSlogan.show=false;
             this.sloganCheck=false;
             this.adPopup = {
                 show:true,
                 goodCode,
+                rank,
                 slogan
             }
         }
@@ -241,15 +245,14 @@
             height: 40rpx;
             display: flex;
             align-items: flex-end;
-
+            
             text.text-price {
                 font-size: 33rpx;
                 font-family: Impact !important;
-                
                 color: #333333;
                 line-height: 38rpx;
                 margin-right: 10rpx;
-                letter-spacing:-2rpx;
+                letter-spacing:3rpx;
             }
 
             text:last-child {

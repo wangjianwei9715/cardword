@@ -8,11 +8,9 @@
 			<div class="header-div">
 				<div :style="{ height: app.statusBarHeight + 'px' }"></div>
 				<div class="header-box">
-					<div class="search" @click="onClickSearch(0)">
+					<div class="search">
 						<image class="search-icon" src="@/static/index/v3/icon_search.png"></image>
-						<text class="search-text">{{noticeList[0] || ''}}</text>
-						<!-- <u-notice-bar @click="onClickSearch" style="padding-left:72rpx" :text="noticeList" direction="column" icon="" :color="goodsTabCurrent==2?'#ffffff':'#C0C0C0'" bgColor="rgba(0,0,0,0)" :duration="5000"></u-notice-bar> -->
-						
+						<u-notice-bar @click="onClickSearch" style="padding-left:72rpx" :text="noticeList" direction="column" icon="" :color="goodsTabCurrent==2?'#ffffff':'#C0C0C0'" bgColor="rgba(0,0,0,0)" :duration="5000"></u-notice-bar>
 					</div>
 					<div class="live-box" @click="pageJump('/pages/live/list')">
 						<image class="icon-live" src="@/static/index/v3/live.png"></image>
@@ -35,7 +33,7 @@
 		
 		<div class="index-container">
 			<!-- 列表 -->
-			<indexList :tabs="goodsTabs" :current.sync="goodsTabCurrent" :homeData="homeData"/>
+			<indexList ref="IndexList" :tabs="goodsTabs" :current.sync="goodsTabCurrent" :homeData="homeData"/>
 		</div>
 		
 		<community :show.sync="showCommunity" :showJoin="true" />
@@ -81,11 +79,12 @@
 				medalPopupData:{
 					show:false,
 					data:{}
-				}
+				},
+				showIndex:false
 			}
 		},
 		onLoad(){
-			uni.$on("showCommunity", (res) => {
+			uni.$on("showPaySuccess", (res) => {
 				this.showCommunity = true;
 			});
 			this.onLoadIndex();
@@ -103,9 +102,15 @@
 			}
 			app.platform.getNetworkType()
 			this.getHome()
+			setTimeout(()=>{ this.showIndex = true; },500)
 		},
 		onHide() {
+			this.showIndex = false;
 			uni.offNetworkStatusChange((res) => {})
+		},
+		onTabItemTap(item){
+			if(!this.showIndex) return;
+			this.$refs.IndexList.goTop();
 		},
 		computed:{
 		},
