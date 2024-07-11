@@ -6,7 +6,7 @@
 			</div>
 			<div class="list-container" :style="listContainerStyle">
 				<!-- #ifdef APP-NVUE -->
-				<waterfall column-count="2" column-width="auto" :show-scrollbar="false" left-gap="6" right-gap="6" column-gap="6" @loadmore="reqNewMainList()" >
+				<waterfall column-count="2" column-width="auto" :show-scrollbar="false" :left-gap="waterfallGap" :right-gap="waterfallGap" :column-gap="waterfallGap" @loadmore="reqNewMainList()" >
 					<refresh class="refresh" @refresh="reload(true)" :display="refreshing ? 'show' : 'hide'">
 						<u-loading-icon mode="semicircle"></u-loading-icon>
 					</refresh>
@@ -124,6 +124,9 @@
 			this.reload()
 		},
 		computed:{
+			waterfallGap(){
+				return Math.floor(uni.upx2px(12))
+			},
 			currentItem() {
 				return this.goodsList[this.current]
 			},
