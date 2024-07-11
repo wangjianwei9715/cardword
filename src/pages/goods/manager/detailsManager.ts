@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-11-03 14:49:34
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-06-27 14:14:36
+ * @LastEditTime: 2024-07-10 16:13:36
  * Copyright: 2023 .
  * @Descripttion: 
  */
@@ -44,7 +44,7 @@ export default class detailsManager {
 	getBuyRecord(goodCode:string,cb:Function){
 		app.http.GetWithCrypto(`dataApi/good/${goodCode}/latest_sales`,{},async ({list,dic}:any)=>{
 			if(list){
-				const data = list.slice(0, 5).map(({dicKey,time,num,anonymous}:any)=>{
+				const data = list.slice(0, 6).map(({dicKey,time,num,anonymous}:any)=>{
 					const userData = anonymous ? anonymousInfo : dic[dicKey];
 					return {time,num,anonymous,...userData}
 				});

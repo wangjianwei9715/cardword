@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-13 16:14:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-06-11 11:58:17
+ * @LastEditTime: 2024-07-10 16:47:58
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -45,6 +45,7 @@
 				default: () => []
 			}
 		},
+		
 		computed:{
 			medalPopupData() {
 				const newMedalLength = this.newMedalList.length;
@@ -75,11 +76,7 @@
 	
 </script>
 
-<style scoped lang="scss">
-	@font-face {
-		font-family: "YouSheBiaoTiHei";
-		src: url("~@/common/Tao/YouShe.ttf");
-	}
+<style lang="scss">
 	@mixin flexCenter{
 		display: flex;
 		align-items: center;
@@ -172,10 +169,19 @@
 		position: absolute;
 		left:0;
 		top:0;
+		z-index: 1;
 	}
 	.btn-text{
-		font-size: 34rpx;
+		width: 296rpx;
+		height:77rpx;
+		line-height: 77rpx;
+		position: absolute;
+		left:0;
+		top:0;
+		z-index: 2;
+		font-size: 30rpx;
 		font-family: YouSheBiaoTiHei;
 		color:#fff;
+		text-align: center;
 	}
 </style>
