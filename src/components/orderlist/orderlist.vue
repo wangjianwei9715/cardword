@@ -30,7 +30,12 @@
 				</view>
 			</view>
 			<view class="orderlist-index-bottom">
-				<view v-if="item.hitNum>0" class="hitnum-bg">恭喜中卡</view>
+				<view>
+					<view v-if="item.hitNum>0" class="hitnum-bg">
+						<view class="hitnum-tips" :style="{background:tipsData[1].background}">{{tipsData[1].text}}x{{item.hitNum}}</view>
+						<muqian-lazyLoad class="tips-pic" :src="getGoodsImg(decodeURIComponent(item.good.pic))"></muqian-lazyLoad>
+					</view>
+				</view>
 				<view class="operate" v-if="item.operate" >
 					<view :class="['btn','btn-'+btnitem.cmd]" @click="onClickOperate(item,btnitem.cmd)" v-for="btnitem in item.operate" :key="btnitem.cmd">{{btnitem.name}}</view>
 				</view>
@@ -43,11 +48,26 @@
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { getGoodsImg,filterPrice } from "@/tools/util";
+	const Tips = {
+		1:{
+			text:"中卡",
+			background:'linear-gradient(to right,rgba(250, 21, 69, 1),rgba(250, 21, 69, 0))'
+		},
+		2:{
+			text:"车位",
+			background:'linear-gradient(to right,rgba(250, 100, 0, 1),rgba(250, 100, 0, 0))'
+		},
+		3:{
+			text:"奖品",
+			background:'linear-gradient(to right,rgba(80, 231, 231, 1),rgba(80, 231, 231, 0))'
+		},
+	}
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
 		orderList:any;
 		
+		tipsData = Tips;
 		getGoodsImg = getGoodsImg;
 		filterPrice = filterPrice;
 		countDownData:any = {};
@@ -72,8 +92,8 @@
 <style lang="scss">
 	.count-down{
 		margin-left: 10rpx;
-		
-		
+		font-size: 24rpx;
+		color: #A2A8B4;
 	}
 	.orderlist{
 		&-index{
@@ -118,17 +138,8 @@
 						height:80rpx;
 						display: flex;
 						align-items: center;
-						font-size: 26rpx;
-						
-						
-						color: rgba(153,153,153,0.9);
-					}
-					&-count{
-						font-size: 32rpx;
-						font-family: 'DIN';
-						font-weight: bold;
-						color: #FF4349;
-						margin-left: 14rpx;
+						font-size: 24rpx;
+						color: #A2A8B4;
 					}
 				}
 			}
@@ -154,8 +165,7 @@
 					position: relative;
 					.title{
 						width: 100%;
-						font-size: 26rpx;
-						
+						font-size: 24rpx;
 						color: #333333;
 						line-height: 34rpx;
 						margin-bottom: 0;
@@ -165,8 +175,6 @@
 						height:35rpx;
 						margin-top: 5rpx;
 						font-size: 23rpx;
-						
-						
 						color: #F63D47;
 						box-sizing: border-box;
 						padding:0 18rpx;
@@ -188,37 +196,31 @@
 						bottom:0;
 						left:0;
 						.num{
-							font-size: 22rpx;
-							
-							color: #C0C0C0;
+							font-size: 20rpx;
+							color: #999999;
 						}
 						.price{
 							height:40rpx;
 							line-height: 40rpx;
 							font-size: 24rpx;
-							
-							
 							color: rgba(0,0,0,0.9);
-							display: inline-flex
+							display: inline-flex;
 						}
 						.total-price{
 							height:40rpx;
-							font-size: 20rpx;
-							
+							font-size: 28rpx;
 							font-weight: 600;
 							color: #000000;
 							line-height: 38rpx;
 							margin-left: 6rpx;
 						}
 						.total-price .price-text{
-							font-size: 28rpx;
-							font-family: Impact;
+							font-size: 36rpx;
 							font-weight: 600;
 							margin-left:2rpx;
 						}
 						.total-price .decimal{
 							font-size: 24rpx;
-							font-family: Impact;
 							font-weight: 600;
 						}
 
@@ -231,17 +233,31 @@
 				padding:25rpx 0 30rpx 26rpx;
 				display: flex;
 				justify-content: space-between;
+				align-items: center;
 				.hitnum-bg{
-					width: 158rpx;
-					height:60rpx;
-					background: url(@/static/order/reward.png) no-repeat center / 100% 100%;
-					font-size: 24rpx;
-					font-family: YouSheBiaoTiHei;
+					width: 88rpx;
+					height:88rpx;
+					background:#EDEDF0;
+					position: relative;
+					border-radius: 4rpx;
+				}
+				.tips-pic{
+					width: 88rpx;
+					height:88rpx;
+					border-radius: 4rpx;
+				}
+				.hitnum-tips{
+					height:24rpx;
+					position: absolute;
+					left:0;
+					top:0;
+					text-align: center;
+					line-height: 26rpx;
+					font-size: 20rpx;
 					color: #FFFFFF;
-					line-height: 28rpx;
 					box-sizing: border-box;
-					padding-left: 50rpx;
-					line-height: 47rpx;
+					padding:0 2rpx;
+					z-index: 2;
 				}
 				.price{
 					width: 100%;
@@ -269,7 +285,6 @@
 					}
 				}
 				.operate{
-					width: 100%;
 					height:60rpx;
 					display: flex;
 					align-items: center;
@@ -282,19 +297,19 @@
 						justify-content: center;
 						border-radius:5rpx;
 						font-size: 24rpx;
-						
-						margin-right: 26rpx;
+						margin-right: 16rpx;
 						background:#fff;
-						border:1rpx solid #DADADA;
-						color:#333333
+						border:2rpx dashed #E5E5EA;
+						color:#333333;
+						font-weight: 500;
 					}
 					.btn-toPay{
-						background: linear-gradient(90deg, #FA1545 0%, #CF004F 100%);
+						background: linear-gradient(to right, #FA1545 , #CF004F);
 						border:none;
 						color:#FFFFFF
 					}
 					.btn-resultCard{
-						background: linear-gradient(90deg, #FA1545 0%, #CF004F 100%);
+						background: linear-gradient(to right, #FA1545,#CF004F);
 						border:none;
 						color:#FFFFFF
 					}

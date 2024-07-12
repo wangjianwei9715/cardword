@@ -1,3 +1,12 @@
+<!--
+ * @FilePath: \jichao_app_2\src\uni_modules\uview-ui\components\u-tabs\u-tabs.vue
+ * @Author: wjw
+ * @Date: 2024-01-30 09:24:51
+ * @LastEditors: 
+ * @LastEditTime: 2024-07-12 11:37:19
+ * Copyright: 2024 .
+ * @Descripttion: 
+-->
 <template>
 	<view class="u-tabs">
 		<view class="u-tabs__wrapper">
@@ -113,6 +122,7 @@
 								height: $u.addUnit(lineHeight),
 								background: lineColor,
 								backgroundSize: lineBgSize,
+								bottom:lineBottom+' !important'
 							}]">
 						</view>
 						<template v-if="customType == 'showKa' || customType == 'cardForum'">

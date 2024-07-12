@@ -14,7 +14,7 @@
 				<view class="icon-kf" @click="onClickHeliService"></view>
 			</view>
 			<view class="header-tab">
-				<u-tabs :itemStyle="{width:'125rpx',height:'90rpx',lineHeight:'86rpx',padding:0,background:'#fff'}" :activeStyle="activeStyle" :inactiveStyle="inactiveStyle" lineColor="#FA1545" lineHeight="2" :list="orderTab" :current="orderTabCheck" @click="onClickListTabs"></u-tabs>
+				<u-tabs :itemStyle="{width:'125rpx',height:'90rpx',lineHeight:'80rpx',padding:0,background:'#fff'}" :activeStyle="activeStyle" :inactiveStyle="inactiveStyle" lineColor="#FA1545" lineHeight="2" :lineBottom="0" :list="orderTab" :current="orderTabCheck" @click="onClickListTabs"></u-tabs>
 			</view>
 		</view>
 
@@ -54,12 +54,12 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		activeStyle={
-			"font-size": "30rpx",
+			"font-size": "28rpx",
 			"font-weight": 500,
 			"color":" #333333",
 		}
 		inactiveStyle={
-			"font-size": "26rpx",
+			"font-size": "24rpx",
 			"font-weight": 400,
 			"color":" #999999",
 		}
@@ -306,9 +306,9 @@
 	}
 
 	.header-search {
-		width:570rpx;
-		height: 72rpx;
-		background: #F6F6F6;
+		width:566rpx;
+		height: 68rpx;
+		background: #F6F7FB;
 		border-radius: 4rpx;
 		box-sizing: border-box;
 		display: flex;
@@ -316,8 +316,8 @@
 		position: relative;
 	}
 	.icon-kf{
-		width: 40rpx;
-		height:34rpx;
+		width: 32rpx;
+		height:32rpx;
 		background: url(@/static/goods/detail/kf.png) no-repeat center / 100% 100%;
 	}
 	.header-back {
@@ -347,23 +347,21 @@
 	.search-input {
 		width: 626rpx;
 		height: 64rpx;
-		background: #F6F6F6;
+		background: #F6F7FB;
 		border-radius: 4rpx;
 		font-size: 24rpx;
-		
-		font-weight: 600;
-		color: #DDDDDD;
-		padding-left: 64rpx;
+		color: #B2B2B2;
+		padding-left: 68rpx;
 	}
 
 	.search-icon {
-		width: 26rpx;
-		height: 27rpx;
-		background: url(@/static/cardForum/sousuo@2x.png) no-repeat center;
+		width: 28rpx;
+		height: 30rpx;
+		background: url(@/static/goods/detail/search_b.png) no-repeat center;
 		background-size: 100% 100%;
 		position: absolute;
-		left: 16rpx;
+		left: 28rpx;
 		top: 50%;
-		margin-top: -13rpx;
+		margin-top: -15rpx;
 	}
 </style>
