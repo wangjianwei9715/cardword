@@ -28,7 +28,7 @@
 			</div>
 		</div>
 		<!-- 广告商品 -->
-		<swiper v-else-if="data.special_type=='ad'" class="ad-box" :disable-touch="data.list.length<2">
+		<swiper v-else-if="data.special_type=='ad'" class="ad-box" :autoplay="data.list.length>1" :circular="true" :disable-touch="data.list.length<2">
 			<swiper-item v-for="(item,index) in data.list" :key="index">
 				<image class="goods-pic" :src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"/>
 				<image class="bg-top" src="/static/index/v3/ad_top.png"  @click="goGoodsDetails(item.goodCode)"/>
