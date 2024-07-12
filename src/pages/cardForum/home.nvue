@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-08-25 14:42:10
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-07-09 11:45:53
+ * @LastEditTime: 2024-07-12 16:30:35
  * @FilePath: \card-world\src\pages\cardForum\home.nvue
  * @Description: 不使用index抽象索引
 -->
@@ -29,7 +29,8 @@
                                 <image src="@/static/cardForum/star.png" class="star"></image>
                                 <text class="hotTopicRow_title">热门话题</text>
                                 <div class="flex1"></div>
-                                <text class="hotTopicRow_all" @click="pageJump('/pages/cardForum/topics/list')">全部</text>
+                                <text class="hotTopicRow_all"
+                                    @click="pageJump('/pages/cardForum/topics/list')">全部</text>
                                 <u-icon size="24rpx" color="#ffffff" name="arrow-right"></u-icon>
                             </view>
                             <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
@@ -64,8 +65,8 @@
                         <!-- 推荐板块广告 -->
                         <div class="adWrap" v-if="tab.tag === CFTT.ALL.tag && addList && addList.length">
                             <swiper class="adWrap_swiper" :autoplay="true" :circular="true">
-                                <swiper-item v-for="(item, index) in addList" :key="index" @click="onClickAdd($event, item)"
-                                    style="position: relative;">
+                                <swiper-item v-for="(item, index) in addList" :key="index"
+                                    @click="onClickAdd($event, item)" style="position: relative;">
                                     <image :src="parsePic(decodeURIComponent(item.pic))" class="swiperPic"
                                         mode="aspectFill"></image>
                                 </swiper-item>
@@ -82,7 +83,7 @@
                                         v-for="(columnItem, columnIndex) in column.list" :key="columnIndex">
                                         <text class="columnItem_text"
                                             :class="{ columnItem_text_select: columnItem.name === column.select }">{{
-                                                columnItem.name }}</text>
+            columnItem.name }}</text>
                                     </view>
                                 </view>
                             </scroll-view>
@@ -92,7 +93,8 @@
                         <waterfalls style="width:750rpx;padding-top: 10rpx;"
                             v-if="tab.list.length && tab.tag !== CFTT.COLUMN.tag" v-model="tab.list" :add-time="50"
                             column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40"
-                            :isFetchEnd="tab.isFetchEnd" :forumGuide="forumGuide" @firstData="$event => firstData = $event">
+                            :isFetchEnd="tab.isFetchEnd" :forumGuide="forumGuide"
+                            @firstData="$event => firstData = $event">
                         </waterfalls>
                         <empty v-if="tab.firstReqEnd && !tab.list.length"></empty>
                     </scroll-view>
@@ -129,7 +131,8 @@
                                         </view>
                                     </scroll-view>
                                 </div>
-                                <div class="adWrap" v-if="tab.tag === CFTT.SHOW.tag && topicAcList && topicAcList.length">
+                                <div class="adWrap"
+                                    v-if="tab.tag === CFTT.SHOW.tag && topicAcList && topicAcList.length">
                                     <image src="@/static/cardForum/acCard.png" class="adWrap_img"></image>
                                     <swiper class="adWrap_swiper" :autoplay="true" :circular="true">
                                         <swiper-item v-for="(item, index) in topicAcList" :key="index"
@@ -171,7 +174,7 @@
                                     v-for="(columnItem, columnIndex) in column.list" :key="columnIndex">
                                     <text class="columnItem_text"
                                         :class="{ columnItem_text_select: columnItem.name === column.select }">{{
-                                            columnItem.name }}</text>
+            columnItem.name }}</text>
                                 </view>
                             </scroll-view>
                         </cell>
@@ -186,7 +189,8 @@
                         <cell v-if="tab.list.length">
                             <div>
                                 <u-loadmore :line="true" loadingIcon="semicircle" lineLength="20rpx"
-                                    :status="tab.isFetchEnd ? 'nomore' : 'loading'" nomore-text="没有更多了" fontSize="24rpx" />
+                                    :status="tab.isFetchEnd ? 'nomore' : 'loading'" nomore-text="没有更多了"
+                                    fontSize="24rpx" />
                             </div>
                         </cell>
 
@@ -197,7 +201,8 @@
 
             </swiper-item>
         </swiper>
-        <div class="fixedTop" id="fixedTop" :style="{ backgroundColor: `rgba(255,255,255,${isShowKa ? 0 : navOpacity})` }">
+        <div class="fixedTop" id="fixedTop"
+            :style="{ backgroundColor: `rgba(255,255,255,${isShowKa ? 0 : navOpacity})` }">
             <div class="navBar" id="navBar" ref="navBar">
                 <div :style="{ height: app.statusBarHeight + 'px' }"></div>
                 <div class="nav">
@@ -218,8 +223,8 @@
                     </div>
                 </div>
             </div>
-            <u-tabs style="width: 750rpx;height:" customType="showKa" :duration="300" lineWidth="49rpx" lineHeight="6rpx"
-                :itemStyle="{ marginTop: '-10rpx', height: '74rpx' }"
+            <u-tabs style="width: 750rpx;height:" customType="showKa" :duration="300" lineWidth="49rpx"
+                lineHeight="6rpx" :itemStyle="{ marginTop: '-10rpx', height: '74rpx' }"
                 :activeStyle="{ color: '#333333', fontSize: '27rpx', transform: 'scale(1.22)', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
                 :inactiveStyle="{ color: '#959695', fontSize: '27rpx', transform: 'scale(1)', fontFamily: 'PingFang SC' }"
                 class="tabs" id="tabs" :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs">
@@ -316,11 +321,12 @@ export default {
             firstData: {},
             addList: [],
             columnRefreshing: false,
-            ratingQuery:{
-                pageIndex:1,
-                pageSize:5
+            ratingQuery: {
+                pageIndex: 1,
+                pageSize: 5,
+                totalPage: 0
             },
-            ratingList:[]
+            ratingList: []
         }
     },
     async onLoad() {
@@ -589,10 +595,14 @@ export default {
                 this.hotTopics = res.list || []
             })
         },
-        reqRatingList(){
-            app.http.Get(`dataApi/cardCircle/card/rating/list`,this.ratingQuery,(res)=>{
-                if (this.ratingQuery.pageIndex==1) this.ratingList=[]
-                this.ratingList.push(...(res.list || []))
+        reqRatingList() {
+            app.http.Get(`dataApi/cardCircle/card/rating/list`, this.ratingQuery, (res) => {
+                if (this.ratingQuery.pageIndex == 1) this.ratingList = []
+                const list = (res.list || []).map((item) => {
+                    item.score = this.getScore(item.score)
+                })
+                this.ratingList.push(...list)
+                this.ratingQuery.totalPage=res.totalPage
             })
         },
         reqTopicAc() {
@@ -609,6 +619,11 @@ export default {
             app.http.Get(`dataApi/cardCircle/specialColumn`, {}, (res) => {
                 this.column.list = res.list || []
             })
+        },
+        getScore(score) {
+            if (!score) return "0.0"
+            if ((score + '').split(".").length > 1) return score
+            return score + '.0'
         },
         reqNewData(isRefresh = false, cb) {
             if (this.current.tag == CFTT.FOLLOW.tag && !app.token.accessToken) {
@@ -640,8 +655,8 @@ export default {
             }
             //存在自定义url优先使用
             const url = `dataApi/${this.current.url ?? (this.current.roll ? "cardCircle/roll" : "cardCircle/list")}`
-            if(this.current.tag===CFTT.ALL.tag&&isRefresh){
-                this.ratingQuery.pageIndex=1
+            if (this.current.tag === CFTT.ALL.tag && isRefresh) {
+                this.ratingQuery.pageIndex = 1
                 this.reqRatingList()
             }
             app.http.GetWithCrypto(url, query, (res) => {
@@ -653,12 +668,15 @@ export default {
                     return item
                 })
                 // #endif
-                if (this.ratingList.length>0){
-                    if (this.ratingList[query.sequence]){
-                        list.splice(2,0,{...this.ratingList[query.sequence],isRatingCard:true})
+                if (this.ratingList.length > 0) {
+                    if (this.ratingList.length > query.sequence) {
+                        list.splice(2, 0, { ...this.ratingList[query.sequence], isRatingCard: true })
+                        if (this.ratingList.length - query.sequence == 1 && this.ratingQuery.totalPage>this.ratingQuery.pageIndex) {
+                            this.ratingQuery.pageIndex + 1
+                            this.reqRatingList()
+                        }
                     }
                 }
-                console.log(list);
                 this.current.isFetchEnd = res.isFetchEnd
                 if (res.scrollId) this.current.queryParams.scrollId = res.scrollId
                 if (res.st) this.current.queryParams.st = res.st
@@ -782,7 +800,7 @@ page {
 
 .nav_search_text {
     font-size: 25rpx;
-    
+
     font-weight: bold;
     line-height: 49rpx;
     color: #FFFFFF;
@@ -805,7 +823,7 @@ page {
 
 .camera_txt {
     font-size: 19rpx;
-    
+
     font-weight: 600;
     color: #333333;
     position: relative;
@@ -835,8 +853,8 @@ page {
     flex: 1;
     // background-color: red;
     font-size: 25rpx;
-    
-    
+
+
     padding: 0 10rpx;
     // color: #C0C0C0;
 }
@@ -885,15 +903,15 @@ page {
 
 .hotTopicRow_title {
     font-size: 27rpx;
-    
+
     font-weight: bold;
     color: #FFFFFF;
 }
 
 .hotTopicRow_all {
     font-size: 21rpx;
-    
-    
+
+
     color: #FFFFFF;
     margin-right: 14rpx;
 }
@@ -982,14 +1000,14 @@ page {
 
 .columnItem_text {
     font-size: 25rpx;
-    
-    
+
+
     color: #959695;
 }
 
 .columnItem_text_select {
     font-size: 25rpx;
-    
+
     font-weight: bold;
     color: #FFFFFF;
 }
@@ -1018,8 +1036,8 @@ page {
     top: 0;
     left: 0;
     font-size: 17rpx;
-    
-    
+
+
     color: #FFFFFF;
     text-align: center;
     line-height: 23rpx;
@@ -1054,7 +1072,7 @@ page {
 
 .topicItem_title {
     font-size: 21rpx;
-    
+
     font-weight: bold;
     color: #FFFFFF;
     text-align: center;
@@ -1071,8 +1089,8 @@ page {
     width: 101rpx;
     text-align: center;
     font-size: 19rpx;
-    
-    
+
+
     color: #C0C0C0;
     margin-top: 6rpx;
 }
@@ -1146,8 +1164,9 @@ page {
     width: 20px;
     height: 20px;
     // margin-top: 5px;
-    margin-bottom:3px
+    margin-bottom: 3px
 }
+
 .tabBarText {
     color: #ffffff;
     font-size: 10px;
