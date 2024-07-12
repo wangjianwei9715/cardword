@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-05-13 16:14:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-10 16:47:58
+ * @LastEditTime: 2024-07-12 16:31:59
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -69,7 +69,7 @@
 			},
 			onClickGoDetail(){
 				this.onClickClose()
-				app.navigateTo.goMedalIndex(0,this.data.id||0)
+				app.navigateTo.goMedalIndex(0,this.data?this.data.id:0)
 			}
 		}
 	}
