@@ -21,9 +21,10 @@
 			</thead>
 			<tbody>
 				<tr v-for="(item,index) in teamDataList" :key="index" :class="index%2==0?'title-middle2':'title-middle3'" >
-					<td  v-for="(items,indexs) in itemListName" :key="indexs" >
+					<td class="card-td"  v-for="(items,indexs) in itemListName" :key="indexs" >
 						<text v-show="!english">{{item['column'+(indexs+1)]}}</text>
 						<text v-show="english">{{item['column'+(indexs+1)+'_English']?item['column'+(indexs+1)+'_English']:item['column'+(indexs+1)]}}</text>
+						<view v-if="indexs==itemListName.length-1" class="card-tips" :style="{background:tipsData[1].background}">{{tipsData[1].text}}</view>
 					</td>
 				</tr>
 			</tbody>
@@ -40,8 +41,23 @@
 	import noAward from "./component/noAward.vue"
 	//@ts-ignore
 	import { KwwConfusion } from "@/net/kwwConfusion.js"
+	const Tips = {
+		1:{
+			text:"车位",
+			background:'linear-gradient(to right,rgba(247, 181, 0, 1),rgba(247, 181, 0, 0))'
+		},
+		2:{
+			text:"附赠车位",
+			background:'linear-gradient(to right,rgba(250, 100, 0, 1),rgba(250, 100, 0, 0))'
+		},
+		3:{
+			text:"掉落奖品",
+			background:'linear-gradient(to right,rgba(80, 231, 231, 1),rgba(80, 231, 231, 0))'
+		},
+	}
 	@Component({ components:{noAward} })
 	export default class ClassName extends BaseNode {
+		tipsData = Tips;
 		goodCode = '';
 		goodType = 0;
 		searchText = '';
@@ -169,14 +185,14 @@
 	$font-24:24rpx;
 	.bg-image{
 		width: 750rpx;
-		height:300rpx;
-		background: url(@/static/goods/detail/card-bg.png) no-repeat top /100% 626rpx;
+		height:282rpx;
+		background: url(@/static/goods/detail/card_bg.png) no-repeat top /100% 360rpx;
 		box-sizing: border-box;
 		padding-top: 186rpx;
 	}
 	.tab-header-box{
 		width: 678rpx;
-		height: 74rpx;
+		height: 68rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
@@ -184,22 +200,20 @@
 		margin:0 auto
 	}
 	.tab-header {
-		width: 622rpx;
-		height: 74rpx;
+		width: 618rpx;
+		height: 68rpx;
 		position: relative;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		box-sizing: border-box;
 		z-index: 10;
-		background: rgba(255,255,255,0.4);
+		background: rgba(255,255,255,0.3);
 		border-radius: 5rpx;
-		padding:0 20rpx;
-		opacity: 0.6;
 	}
 	.search-icon{
-		width: 32rpx;
-		height:32rpx;
+		width: 28rpx;
+		height:30rpx;
 		background:url(@/static/goods/detail/search.png) no-repeat center;
 		background-size:100% 100%;
 		position: absolute;
@@ -219,21 +233,19 @@
 	}
 	.search-input{
 		width: 100%;
-		height:64rpx;
+		height:68rpx;
+		line-height: 68rpx;
 		border-radius: 4rpx;
 		font-size: 24rpx;
-		
 		font-weight: 600;
 		color: rgba(255,255,255,0.4);
-		padding-left:48rpx ;
+		padding-left:68rpx ;
 	}
 	.item-goodtitle{
 		width: 100%;
 		text-align: center;
 		line-height: 40rpx;
 		font-size: 30rpx;
-		
-		
 		color: #333333;
 		background:#F6F7FB;
 		box-sizing: border-box;
@@ -293,5 +305,19 @@
 	}
 	.translate-e{
 		background: url(@/static/goods/detail/translate_e.png) no-repeat center / 100% 100% !important; 
+	}
+	.card-td{
+		position: relative;
+	}
+	.card-tips{
+		width: 100rpx;
+		height:28rpx;
+		position: absolute;
+		right:0;
+		top:0;
+		text-align: center;
+		line-height: 28rpx;
+		font-size: 20rpx;
+		color: #FFFFFF;
 	}
 </style>

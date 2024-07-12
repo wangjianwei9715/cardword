@@ -253,9 +253,11 @@
 				if(!uni.$u.test.isEmpty(list)){
 					console.log('list=',list)
 					Object.keys(list).forEach(key => {
-						list[key].adCards = list[key].adCards.map(x=>{
-							return {...x,num:0}
-						})
+						if(list[key].adCards&&uni.$u.test.array(list[key].adCards)){
+							list[key].adCards = list[key].adCards.map(x=>{
+								return {...x,num:0}
+							})
+						}
 					});
 					this.adCardList = list;
 				}

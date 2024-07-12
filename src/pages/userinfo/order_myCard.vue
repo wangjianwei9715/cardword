@@ -1,39 +1,21 @@
 
 <template>
-	<view class="box-content">
-		<navigationbarTabs ref="rNavigationbarTabs" :titles="titles" :current="headerCurrent" backColor="#fff" backgroundColor="rgba(0,0,0,0)" @tabsClisk="onTabsClick"/>
-		<view class="header" :style="{'height':headerCurrent==1?'358rpx':'458rpx'}">
-			<view class="search-box" v-show="showCardNo">
-				<view class="search-icon"></view>
-				<input class="search-input" type="text"  v-model="searchText" placeholder="搜索球员、球队"  confirm-type="search"  @confirm="reqSearchList" />
-				<view class="search-close" @click="searchText='',reqSearchList()"></view>
-			</view>
-		</view>
-		<view class="header-info-box">
-			<view class="play-box" v-show="showCardNo">
-				<view class="play-info">
-					<view class="play-info-title">{{playInfo.cName}}</view>
-					<view class="play-info-sub">{{playInfo.eName}}</view>
-					<view class="play-info-sub" v-show="playInfo.desc">{{playInfo.desc}}</view>
-				</view>
-				<view class="play-info-right">
-					<muqian-lazyLoad class="play-info-pic" :src="goodPic" mode="aspectFill"/>
-					<view class="play-info-title">共{{totalOrderNum}}条卡密</view>
-					<view class="play-info-sub" v-if="goodState==1" @click="onClickGive">
-						去赠送<view class="play-info-icon"></view>
+	<view class="box-content" :style="{'padding-top':headerCurrent==1?'200rpx':'270rpx'}">
+		<navigationbarTabs ref="rNavigationbarTabs" navBgImage="/static/order/card_bg.png" :colorBlack="true" :titles="titles" :current="headerCurrent" @tabsClisk="onTabsClick">
+			<template slot="bottom">
+				<view class="header" :style="{'height':headerCurrent==1?'80rpx':'150rpx'}">
+					<view class="search-box" v-show="showCardNo">
+						<view class="search-icon"></view>
+						<input class="search-input" type="text"  v-model="searchText" placeholder="搜索球员、球队"  confirm-type="search"  @confirm="reqSearchList" />
 					</view>
-					<view v-else-if="totalHit>0">共中卡{{totalHit}}张</view>
+					<cardSort ref="refCardSort" :showCard="headerCurrent!=1" :sort.sync="sortTab" :pintuanType="pintuanType" @sortChange="onSortChange"/>
 				</view>
-			</view>
-			<view class="header-banner" >
-				<view class="order-type">
-					<view class="order-type-index" :class="{'type-current':item.type==typeTabCurrent}" v-for="(item,index) in typeTab" :key="index" @click="onClickTypeCurrent(item.type)">{{item.name}}</view>
-				</view>
-				<cardSort class="sort-box" v-if="sortData!='' && showCardNo" :sortData="sortData" @postSort="postSort" />
-			</view>
-		</view>
+			</template>
+		</navigationbarTabs>
+		<statusbar/>
+		
 		<view v-if="showCardNo" class="list-index">
-			<view v-if="goodAllOrder&&listSort==''">
+			<view v-if="goodAllOrder&&!sortParams.od">
 				<view class="card-box" v-for="(item,index) in cardList" :key="index">
 					<view class="order-title">订单号：{{item.goodOrder}}</view>
 					<view class="card-index" :class="{'win-card-box':items.state==2}" v-for="(items,indexs) in item.nos" :key="indexs">
@@ -115,7 +97,6 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
-	import { myCardGoodsType,cardPlayInfo } from '@/tools/switchUtil'
 	import { parsePic } from "@/tools/util";
 	import cardSort from "./component/cardSort.vue"
 	import cardNoInfo from "./component/cardNoInfo.vue"
@@ -132,11 +113,6 @@
 		titles = title;
 		parsePic = parsePic;
 		cardList:{[x:string]:any} = [];
-		typeTab = [
-			{name:'全部订单',type:2},
-			{name:'当前订单',type:1}
-		]
-		typeTabCurrent = 1;
 		headerCurrent = 0;
 		orderCode = '';
 		goodCode = '';
@@ -145,8 +121,6 @@
 		noMoreData = false;
 		picList:any = [];
 		pintuanType = 0;
-		listSort = '';
-		sortData:any = [];
 		searchText = '';
 		typeTabClick = false;
 		debug = app.updateDebug == 'on'
@@ -158,28 +132,26 @@
 		}
 		orderNum = 0;
 		orderPoint = 0;
-		playInfo:any = {};
 		empty=false;
-		goodState=0;
-		totalHit = 0;
-		goodPic = "";
 		showBasePopup=false;
-		totalOrderNum = 0;
+		sortTab = [];
+		sortParams = {
+			genre:1,
+			sort:""
+		};
+
 		onLoad(query:any) {
 			this.orderCode = query.code || '';
 			this.goodCode = query.goodCode;
-			this.goodState = query.state || 0;
-			this.goodPic = query.pic;
-			if(query.goodJump){
-				this.typeTabCurrent = 2;
-				this.typeTab = [ {name:'全部订单',type:2} ]
-			}
 			this.pintuanType = Number(query.pintuanType);
-			this.sortData = myCardGoodsType(this.pintuanType);
-			this.playInfo = cardPlayInfo(this.pintuanType)
 			this.orderNum = query.num;
 			this.orderPoint = query.point
-			this.headerCurrent = Number(query.type)
+			this.headerCurrent = Number(query.type);
+			this.sortTab = this.setSort(this.pintuanType)
+			if(query.goodJump){
+				this.sortTab[0].current = 0;
+				this.sortTab[0].list = [{name:"全部订单"}]
+			}
 			this.reqSearchList()
 		}
 		//   加载更多数据
@@ -191,7 +163,7 @@
 			this.$refs.rNavigationbarTabs.setPageScroll(data)
 		}
 		public get goodAllOrder() : boolean {
-			return this.typeTabCurrent==2
+			return this.sortTab[0].current == 0;
 		}
 		public get showCardNo() : boolean {
 			// 卡密信息
@@ -204,21 +176,49 @@
 				return this.orderNum>0
 			}
 		}
+		setSort(pintuanType){
+			switch(pintuanType){
+				case 1: case 11:
+					return [
+						{ 	id:1, name:'全部订单', type:'filter', height:102, current:1,
+							list:[ 
+								{name:"全部订单"},
+								{name:"当前订单"},
+							]
+						},
+						{ id:2, name:'球员', od:"player", type:'updown', select:"", height:0 },
+						{ id:4, name:'限编', od:"seq", type:'updown', select:"", height:0 }
+					]
+				case 2:
+					return [
+						{ 	id:1, name:'全部订单', type:'filter', height:102, current:1,
+							list:[ 
+								{name:"全部订单"},
+								{name:"当前订单"},
+							]
+						}
+					]
+				case 3:
+					return [
+						{ 	id:1, name:'全部订单', type:'filter', height:102, current:1,
+							list:[ 
+								{name:"全部订单"},
+								{name:"当前订单"},
+							]
+						},
+						{ id:2, name:'球员', od:"player", type:'updown', select:"", height:0 }
+					]
+				default:
+					return [];
+			}
+		}
 		onTabsClick(e:any){
 			if(e.index == this.headerCurrent) return;
 			this.headerCurrent = e.index;
 			this.reqSearchList()
 		}
-		onClickTypeCurrent(type:number){
-			if(type == this.typeTabCurrent) return;
-			if(this.typeTabClick){
-				return;
-			}
-			this.typeTabCurrent = type;
-			this.reqSearchList()
-		}
-		postSort(val:string){
-			this.listSort = val;
+		onSortChange(data){
+			this.sortParams = data;
 			this.reqSearchList()
 		}
 		reqSearchList(){
@@ -241,11 +241,11 @@
 			}
 			// 排序方式
 			let url = `me/orderInfo/buyer/${this.orderCode}/nos`
-			if(this.listSort) params.sort = this.listSort;
+			if(this.sortParams.od) params.sort = this.sortParams.od;
 			if(this.goodAllOrder) {
 				params.noSize = 90
 				params.leadOrderCode = this.orderCode;
-				url = this.listSort ? `me/good/${this.goodCode}/orderNos/plain` : `me/good/${this.goodCode}/orderNos/group`;
+				url = this.sortParams.od ? `me/good/${this.goodCode}/orderNos/plain` : `me/good/${this.goodCode}/orderNos/group`;
 			};
 			if(this.searchText) params.q = this.searchText;
 			this.typeTabClick = true;
@@ -257,7 +257,6 @@
 				if(data.list){
 					this.cardList = this.cardList.concat(data.list);
 				}
-				this.totalOrderNum = this.goodAllOrder ? (data.totalNoNum || 0) : (data.total || 0);
 				this.empty = this.cardList.length==0;
 				this.debug && app.platform.refrain(this.cardList);
 				this.typeTabClick = false;
@@ -279,7 +278,7 @@
 			})
 		}
 		orderInfo(){
-			const currentOrder = this.typeTabCurrent==1;
+			const currentOrder = !this.goodAllOrder;
 			const urlFront = currentOrder ? "me/orderInfo/buyer/" : "me/good/";
 			const code = currentOrder ? this.orderCode : this.goodCode;
 			const params = {
@@ -297,11 +296,6 @@
 		onClickGoMall(){
 			app.navigateTo.goMallIndex()
 		}
-		onClickGive(){
-			uni.navigateTo({
-				url:`/pages/userinfo/giving/giving_list?code=${this.goodCode}&pintuanType=${this.pintuanType}&orderCode=${this.goodAllOrder?this.cardList[0].goodOrder:this.orderCode}`
-			})
-	}
 	}
 </script>
 
@@ -315,10 +309,9 @@
 	}
 	.header{
 		width: 100%;
-		height:458rpx;
-		background:url(@/static/order/mycard.png) no-repeat top/100% 626rpx;
+		height:150rpx;
 		box-sizing: border-box;
-		padding-top:186rpx;
+		padding-top: 12rpx
 	}
 	.order-title{
 		@include fontSfTR;
@@ -333,9 +326,6 @@
 		margin-top: 6rpx;
 		color:#333333;
 		font-size: 24rpx;
-	}
-	.header-info-box{
-		margin-top: -154rpx;
 	}
 	.header-banner{
 		width: 100%;
@@ -521,8 +511,8 @@
 		color:#fff;
 	}
 	.search-box {
-		width: 710rpx;
-		height: 74rpx;
+		width: 678rpx;
+		height: 68rpx;
 		position: relative;
 		display: flex;
 		flex-direction: row;
@@ -530,40 +520,27 @@
 		box-sizing: border-box;
 		z-index: 10;
 		margin:0 auto;
-		background: rgba(255,255,255,0.4);
-		border-radius: 5rpx;
-		padding:0 20rpx;
-		opacity: 0.6;
+		background: #F6F7FB;
+		border-radius:4rpx;
 	}
 	.search-icon{
-		width: 32rpx;
-		height:32rpx;
-		background:url(@/static/goods/detail/search.png) no-repeat center;
+		width: 28rpx;
+		height:30rpx;
+		background:url(@/static/goods/detail/search_b.png) no-repeat center;
 		background-size:100% 100%;
 		position: absolute;
-		left:20rpx;
+		left:28rpx;
 		top:50%;
-		margin-top: -16rpx;
-	}
-	.search-close{
-		width: 32rpx;
-		height:32rpx;
-		background:url(@/static/goods/detail/search-close.png) no-repeat center;
-		background-size:100% 100%;
-		position: absolute;
-		right:20rpx;
-		top:50%;
-		margin-top: -16rpx;
+		margin-top: -15rpx;
 	}
 	.search-input{
 		width: 100%;
-		height:64rpx;
+		height:68rpx;
 		border-radius: 4rpx;
 		font-size: 24rpx;
-		
-		font-weight: 600;
-		color: rgba(255,255,255,0.4);
-		padding-left:48rpx ;
+		font-weight: 400;
+		color: #B2B2B2;
+		padding-left:68rpx ;
 	}
 	.play-box{
 		width: 710rpx;
