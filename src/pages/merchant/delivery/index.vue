@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2024-06-25 15:43:23
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-07-11 17:27:24
+ * @LastEditTime: 2024-07-12 16:13:33
  * @FilePath: \card-world\src\pages\merchant\delivery\index.vue
  * @Description: ✌✌✌✌✌✌
  * 
@@ -101,7 +101,10 @@
             </view>
             <view class="bottomSafeArea"></view>
         </view>
-        <view class="bottomSafeArea"></view>
+        <view class="bottomSafeArea">
+
+        <view class="batchFakerWrap" v-if="onBatchSelect" style="height:160rpx"></view>
+        </view>
     </view>
 </template>
 

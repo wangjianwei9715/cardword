@@ -10,14 +10,17 @@
 			<view class="merchantWrap">
 				<muqian-lazyLoad :borderRadius="'50%'" :src="$parsePic(homeData.merchantLogo)" class="merchantImg"
 					alt="" />
-				<view class="merchantInfo">
+				<view class="merchantInfo"
+					:style="{ justifyContent: homeData.resultTime > 0 ? 'space-between' : 'center' }">
 					<view class="name">{{ homeData.merchantName }}</view>
-					<view class="time">2024-05-01</view>
+					<view class="time" v-if="homeData.resultTime > 0">{{
+			homeData.resultTime > 0 ? $u.timeFormat(homeData.resultTime,
+				"yyyy-mm-dd") : "-" }}</view>
 				</view>
 				<view class="ratingWrap" @click="onClickGoodsRating">
 					<view></view>
 					<view class="ratingNum" v-if="homeData.ratingOpen || homeData.ratingScore > 0">{{
-			homeData.ratingScore
+			getScore(homeData.ratingScore)
 		}}
 					</view>
 					<view class="ratingPeopleNum">
@@ -55,17 +58,22 @@
 					<view class="hitContainer">
 						<scroll-view scroll-x="true" class="scroll" scroll-with-animation="true">
 							<view class="myHitCard" v-for="(item, index) in myHitList" :key="'myHitCard' + index">
-								<view class="myHitCard_top">
-									<muqian-lazyLoad class="img" :src="$parsePic(item.pics[0])"></muqian-lazyLoad>
-									<view class="rarityWrap" v-if="item.rarity">
-										<view class="rarityItem" v-for="s in item.rarity.split('')"></view>
+								<view
+									style="display: flex;flex-direction: column;flex-direction: column;justify-content: space-between;">
+									<view class="myHitCard_top">
+										<muqian-lazyLoad class="img" :src="$parsePic(item.pics[0])"></muqian-lazyLoad>
+										<view class="rarityWrap" v-if="item.rarity">
+											<view class="rarityItem" v-for="s in item.rarity.split('')"></view>
+										</view>
+										<view class="picNum flexCenter" v-if="item.pics.length > 1">{{ item.pics.length
+											}}
+										</view>
 									</view>
-									<view class="picNum flexCenter" v-if="item.pics.length > 1">{{ item.pics.length }}
-									</view>
-								</view>
-								<view class="cardNameWrap">
-									<view class="noName u-line-2">
-										<view class="cfgLoc" v-if="item.cfgLoc"></view>{{ item.no }}
+									<view class="cardNameWrap">
+										<view class="noName u-line-2">
+											<image src="@/static/goods/v2/locCfg.png" class="cfgLoc" v-if="item.cfgLoc">
+											</image>{{ item.no }}
+										</view>
 									</view>
 								</view>
 							</view>
@@ -77,7 +85,8 @@
 					<view class="resultCard_left">
 						<view class="cardNameWrap">
 							<view class="noName u-line-2">
-								<view class="cfgLoc" v-if="item.cfgLoc"></view>{{ item.no }}
+								<image src="@/static/goods/v2/locCfg.png" class="cfgLoc" v-if="item.cfgLoc"></image>
+								{{ item.no }}
 							</view>
 						</view>
 						<view class="userWrap">
@@ -85,12 +94,15 @@
 								borderRadius="50%"></muqian-lazyLoad>
 							<view class="userName">{{ item.userName }}{{ item.isMy ? '(我)' : '' }}</view>
 							<view class="flex1"></view>
-							<view class="time">{{ $u.timeFormat(item.time, "yyyy-mm-dd") }}</view>
+							<view class="time">{{ $u.timeFormat(item.time, "yyyy-mm-dd hh:MM") }}</view>
 						</view>
 					</view>
 					<view class="resultCard_right">
 						<view class="num flexCenter" v-if="item.pics.length > 1">{{ item.pics.length }}</view>
 						<muqian-lazyLoad class="img" :src="$parsePic(item.pics[0])"></muqian-lazyLoad>
+						<view class="rarityWrap" v-if="item.rarity">
+							<view class="rarityItem" v-for="s in item.rarity.split('')"></view>
+						</view>
 					</view>
 				</view>
 			</template>
@@ -105,7 +117,7 @@
 							borderRadius="50%"></muqian-lazyLoad>
 						<view class="userName">{{ item.userName }}{{ item.isMy ? '(我)' : '' }}</view>
 						<view class="flex1"></view>
-						<view class="time">{{ $u.timeFormat(item.time || item.buyTime, "yyyy-mm-dd") }}</view>
+						<view class="time">{{ $u.timeFormat(item.time || item.buyTime, "yyyy-mm-dd hh:MM") }}</view>
 					</view>
 					<template v-if="isMerge">
 						<view class="noName" v-for="noItem in item.noList">{{ noItem.no }}</view>
@@ -135,20 +147,6 @@
 					<view class="btn btn_w" @click="ratingShow = false">取消</view>
 					<view class="btn btn_r" @click="onClickSubmitRating">确定</view>
 				</view>
-				<!-- <view class="topWrap">
-                    <view class="title">是否开启报告评分功能</view>
-                </view>
-                <view class="ratingWrap">
-                    <view class="ratingItem" :class="{ ratingItem_select: rating === true }" @click="rating = true">开启评分
-                    </view>
-                    <view class="ratingItem" :class="{ ratingItem_select: rating === false }" @click="rating = false">
-                        不开启评分
-                    </view>
-                </view>
-                <view class="popBottomAction uni-flex" style="margin-bottom: 30rpx;">
-                    <view class="cancelBtn" @click="popShowRating = false">取消</view>
-                    <view class="confirmBtn" @click="submitReview">确认</view>
-                </view> -->
 			</view>
 		</u-popup>
 	</view>
@@ -221,6 +219,7 @@ export default class ClassName extends BaseNode {
 	userBeforeHasScore: boolean = false
 	isFetchEnd: boolean = true
 	myHitList: any = null
+	totalPage: number = 0
 	onLoad(query: any) {
 		if (query.chooseIds) {
 			this.chooseId = +query.chooseIds;
@@ -244,6 +243,7 @@ export default class ClassName extends BaseNode {
 			}
 			this.getCardNo()
 		} else if (this.tabTp == 1) {
+			if (this.queryParams.pageIndex >= this.totalPage) return
 			this.queryParams.pageIndex += 1
 			this.getResult()
 		}
@@ -261,7 +261,7 @@ export default class ClassName extends BaseNode {
 		}
 	}
 	onClickPlayVideo() {
-		app.platform.goZgLive({ playCode: this.homeData.playCode, state: 3, goodCode: this.goodCode,alias:this.homeData.merchantAlias,roomID:this.homeData.roomId })
+		app.platform.goZgLive({ playCode: this.homeData.playCode, state: 3, goodCode: this.goodCode, alias: this.homeData.merchantAlias, roomID: this.homeData.roomId })
 	}
 	getCardNo() {
 		if (this.isMerge) {
@@ -333,6 +333,7 @@ export default class ClassName extends BaseNode {
 				return { ...item, ...userData }
 			})
 			this.queryParams.pageIndex == 1 ? this.resultList = list : this.resultList.push(...list)
+			this.totalPage = res.totalPage
 		})
 	}
 	mergeUserMoreNoList(item: any, index) {
@@ -368,6 +369,11 @@ export default class ClassName extends BaseNode {
 			})
 			this.reqHomeData()
 		})
+	}
+	getScore(score: number) {
+		if (!score) return "0.0"
+		if ((score + '').split(".").length > 1) return score
+		return score + '.0'
 	}
 	// onClickTab(index: number) {
 	// 	this.chooseId = index;
@@ -635,10 +641,25 @@ page {
 .cfgLoc {
 	width: 86rpx;
 	height: 24rpx;
-	background-size: 100% 100%;
-	background-image: url("@/static/goods/v2/locCfg.png");
-	display: inline-block;
 	margin-right: 8rpx;
+	position: relative;
+	top: 2rpx;
+}
+
+.rarityWrap {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	top: 8rpx;
+	left: 8rpx;
+
+	.rarityItem {
+		background-size: 100% 100%;
+		background-image: url("@/static/goods/v2/s.png");
+		width: 18rpx;
+		height: 18rpx;
+		margin-right: 8rpx;
+	}
 }
 
 .listContainer {
@@ -654,7 +675,7 @@ page {
 
 		.scroll {
 			width: 100%;
-			white-space: nowrap;
+			// white-space: nowrap;
 			display: flex;
 			align-items: center;
 		}
@@ -674,7 +695,6 @@ page {
 			position: relative;
 			width: 346rpx;
 			height: 320rpx;
-			flex: 1;
 
 			.img {
 				width: 346rpx;
@@ -694,38 +714,22 @@ page {
 				top: 0;
 			}
 
-			.rarityWrap {
-				position: absolute;
-				display: flex;
-				align-items: center;
-				top: 8rpx;
-				left: 8rpx;
 
-				.rarityItem {
-					background-size: 100% 100%;
-					background-image: url("@/static/goods/v2/s.png");
-					width: 18rpx;
-					height: 18rpx;
-					margin-right: 8rpx;
-				}
-			}
 		}
 
 		.cardNameWrap {
-			width: 100%;
+			width: 346rpx;
 			box-sizing: border-box;
 			padding: 0 16rpx;
 			margin-top: 16rpx;
-			height: 100%;
-			white-space: wrap;
+			flex: 1;
 
-			// display: flex;
-			// background-color:#000000;
 			.noName {
 				font-weight: 400;
 				font-size: 24rpx;
 				color: #333333;
 				line-height: 34rpx;
+				// white-space: wrap;
 			}
 
 
