@@ -56,7 +56,7 @@
 				<template v-if="myHitList && myHitList.length">
 					<view class="columnTxt">我的中卡</view>
 					<view class="hitContainer">
-						<scroll-view scroll-x="true" class="scroll" scroll-with-animation="true">
+						<scroll-view scroll-x="true" class="scroll">
 							<view class="myHitCard" v-for="(item, index) in myHitList" :key="'myHitCard' + index">
 								<view class="myHitCard_top">
 									<muqian-lazyLoad class="img" :src="$parsePic(item.pics[0])"></muqian-lazyLoad>
