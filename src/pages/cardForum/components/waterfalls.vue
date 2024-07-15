@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-07-15 15:13:44
+ * @LastEditTime: 2024-07-15 15:58:33
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -196,14 +196,14 @@
                                 </view>
                             </view>
                         </view>
-                        <view v-if="item.isRatingCard" class="ratingCard" @click="goToDetail(item)">
-                            <view class="ratingCard_picWrap">
+                        <view v-if="item.isRatingCard" class="ratingCard">
+                            <view class="ratingCard_picWrap"  @click="goToDetail(item)">
                                 <view class="noPicWrap" v-for="(pic, picIndex) in item.pics"
                                     :style="{ marginRight: picIndex == 2 ? '0rpx' : '16rpx' }">
                                     <image mode="aspectFill" class="noPic" :src="$parsePic(pic)"></image>
                                 </view>
                             </view>
-                            <view class="ratingCard_center">
+                            <view class="ratingCard_center"  @click="goToDetail(item)">
                                 <view class="goodsTitleWrap">
                                     <view class="goodsTitle u-line-1">{{ item.title }}</view>
                                     <view class="bg">拆卡报告</view>
@@ -335,7 +335,7 @@
                 <div class="ratingCard_merchant">
                     <image class="ratingCard_merchant_logo" :src="parsePic(item.merchantAvatar)"></image>
                     <text class="ratingCard_merchant_name flex1">{{ item.merchantName }}</text>
-                    <div class="likeWrap" @click="onClickLikeWithRating($event, item)">
+                    <div class="likeWrap" @click.stop="onClickLikeWithRating($event, item)">
                         <image
                             :src="item.isLike ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
                             class="likeImg"></image>
@@ -612,13 +612,16 @@ export default {
         uni.$on("setCardForumPrivate", this.setCardForumPrivate)
         uni.$on("cardForumLike", this.onCardForumLike)
         uni.$on("editCardForum", this.onEditCardForum)
-
+        uni.$on("ratingLike",this.onRatingLike)
+        uni.$on("ratingInfo",this.onRatingInfo)
     },
     beforeDestroy() {
         uni.$off("delCardForum", this.onDelCardForum)
         uni.$off("setCardForumPrivate", this.setCardForumPrivate)
         uni.$off("cardForumLike", this.onCardForumLike)
         uni.$off("editCardForum", this.onEditCardForum)
+        uni.$off("ratingLike",this.onRatingLike)
+        uni.$off("ratingInfo",this.onRatingInfo)
     },
     methods: {
         onrefresh() {
@@ -687,11 +690,11 @@ export default {
             // #ifdef APP-NVUE
             event.stopPropagation();
             // #endif
-            app.http.Post(`good/${item.goodCode}/rating/like`, {}, (res) => {
+            app.http.Post(`good/${item.code}/rating/like`, {}, (res) => {
                 if (item.isLike) item.likeNum -= 1
                 if (!item.isLike) item.likeNum += 1
                 item.isLike=!item.isLike
-                // uni.$emit("cardForumLike", { code: item.code, bit: item.bit, likeNum: item.likeNum })
+                uni.$emit("ratingLike", { code: item.code, isLike: item.isLike, likeNum: item.likeNum })
             })
         },
         goToUserProfile(event, item) {
@@ -707,7 +710,7 @@ export default {
         goToDetail(item) {
             if (item.isRatingCard) {
                 uni.navigateTo({
-                    url: `/pages/goods/goods_result_list_new?chooseIds=1&code=${item.goodCode}&random=false`
+                    url: `/pages/goods/goods_result_list_new?chooseIds=1&code=${item.code}&random=false`
                 })
                 return
             }
@@ -1043,6 +1046,28 @@ export default {
             if (index > 0) {
                 this[key][index].bit = res.bit
                 this[key][index].likeNum = res.likeNum
+            }
+        },
+        onRatingLike(res){
+            const { index, list } = this.findIndex(res.code)
+            let key = "value"
+            // #ifndef APP-NVUE
+            key = list
+            // #endif
+            if (index > 0) {
+                this[key][index].likeNum = res.likeNum
+                this[key][index].isLike = res.isLike
+            }
+        },
+        onRatingInfo(res){
+            const { index, list } = this.findIndex(res.code)
+            let key = "value"
+            // #ifndef APP-NVUE
+            key = list
+            // #endif
+            if (index > 0) {
+                this[key][index].ratingNum = res.ratingNum
+                this[key][index].score = res.score
             }
         },
         setCardForumPrivate(res) {

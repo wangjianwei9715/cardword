@@ -5,9 +5,13 @@
         <view class="topSearchContainer">
             <view class="nav" :style="{ height: navHeight + 'px' }"></view>
             <view class="topMenu" :class="{ topMenu_three: queryParams.isDetail == 1 }">
-                <view class="menuItem" :class="{ menuItem_select: queryParams.tp == 1 }" @click="onClickMenuItem(1)">
+                <view class="menuItem" v-if="queryParams.isDetail != 1" :class="{ menuItem_select: queryParams.tp == 1 }" @click="onClickMenuItem(1)">
                     待发货
                     <text class="smallNum">{{ numInfo.waitDeliveryNum }}</text>
+                </view>
+                <view class="menuItem" v-else :class="{ menuItem_select: queryParams.tp == 101 }" @click="onClickMenuItem(101)">
+                    全部
+                    <text class="smallNum">{{ numInfo.doneNum+numInfo.waitDeliveryNum+numInfo.waitReceiveNum }}</text>
                 </view>
                 <view class="menuItem" :class="{ menuItem_select: queryParams.tp == 2 }" @click="onClickMenuItem(2)">
                     已发货
@@ -20,6 +24,16 @@
                     <text class="smallNum">{{ numInfo.doneNum }}</text>
                 </view>
             </view>
+            <view class="searchContainer uni-flex">
+                <view class="inputContainer uni-flex">
+                    <image class="searchImg" src="@/static/cardForum/sousuo@2x.png"></image>
+                    <input type="text" v-model="queryParams.q" class="input" @confirm="inputConfirm"
+                        placeholder="输入搜索内容">
+                </view>
+                <picker v-if="queryParams.tp!=1" :range="wuliuOptions" range-key="label" @change="wuliuSearchChange">
+                    <image src="@/static/merchant/group.png" style="width:34rpx;height:40rpx;margin-left:26rpx;"></image>
+                </picker>
+            </view>
         </view>
         <view class="nav" :style="{ height: navHeight + 'px' }"></view>
         <view class="fakerTop"></view>
@@ -27,6 +41,9 @@
             <view class="card_top uni-flex jb alc">
                 <view class="userName">
                     {{ item.userName }}
+                </view>
+                <view class="state">
+                    {{ getStateName(item) }}
                 </view>
             </view>
             <view class="card_order" v-for="(order) in item.orderList">
@@ -62,7 +79,7 @@
                     {{ item.receiverInfo.name + " " + item.receiverInfo.phone }}
                 </view>
             </view>
-            <view class="wuliuWrap">
+            <view class="wuliuWrap" v-if="!item.ziti ||(item.ziti&&queryParams.tp==1)">
                 <view class="wuliu_item">
                     <view class="label">物流信息：</view>
                     <view class="input" @click="onClickItemWuliu(item)">
@@ -85,7 +102,7 @@
             <view class="confirmBtn" v-if="queryParams.tp == 1" @click="onClickSubmit(item)">确认发货信息</view>
         </view>
         <view class="fake" style="height: 200rpx;"></view>
-        <view class="bottomAction">
+        <view class="bottomAction" v-if="queryParams.isDetail!=1">
             <view class="actionWrap uni-flex">
                 <view class="btn btn_white" @click="companySelectShow = true">默认物流</view>
                 <view class="btn" @click="onClickMerge">{{ queryParams.merge == 0 ? '一键合并重复买家' : '一键取消合并重复买家' }}</view>
@@ -111,9 +128,11 @@ export default class ClassName extends BaseNode {
         pageIndex: 1,
         pageSize: 10,
         codes: "",
+        q:"",
         tp: 1,
         merge: 0,
-        isDetail: 0
+        isDetail: 0,
+        wuliuTp:100
     }
     defaultWuliuCompanyId: number = 0
     navHeight = navHeight
@@ -123,13 +142,14 @@ export default class ClassName extends BaseNode {
     companySelectShow: boolean = false
     nowSelect: any = null
     isDetail: boolean = false
+    wuliuOptions:any=[{value:100,label:"全部"},{value:1,label:"自提"},{value:2,label:"物流"}]
     numInfo: any = {}
     onLoad(query: any) {
         this.queryParams.codes = query.codes
         this.queryParams.merge = +query.merge
         if (query.isDetail && +query.isDetail == 1) {
             this.queryParams.isDetail = 1
-            this.queryParams.tp = 2
+            this.queryParams.tp = 101
         }
         this.reqNewData()
         this.reqWuliuCompany()
@@ -174,6 +194,12 @@ export default class ClassName extends BaseNode {
             const list = res.list || []
             item.orderList.push(...list)
         })
+    }
+    wuliuSearchChange(event:any){
+        if(this.queryParams.wuliuTp==this.wuliuOptions[event.detail.value].value) return
+        this.queryParams.wuliuTp=this.wuliuOptions[event.detail.value].value
+        this.queryParams.pageIndex=1
+        this.reqNewData()
     }
     onClickItemWuliu(item: any) {
         if (item.ziti) return
@@ -244,6 +270,11 @@ export default class ClassName extends BaseNode {
             this.reqNumData()
         })
     }
+    getStateName(item:any){
+        if(this.queryParams.tp==1) return "待发货"
+        if(item.ziti) return "自提"
+        if(item.wuliuCompanyId) return "物流"
+    }
     onClickSelect(event: any) {
         if (this.nowSelect == null) {
             this.defaultWuliuCompanyId = event.value[0].id
@@ -258,6 +289,10 @@ export default class ClassName extends BaseNode {
         this.queryParams.merge = this.queryParams.merge == 0 ? 1 : 0
         this.reqNewData()
         this.reqNumData()
+    }
+    inputConfirm(){
+        this.queryParams.pageIndex=1
+        this.reqNewData()
     }
     scanCode(item: any) {
         uni.scanCode({
@@ -323,6 +358,11 @@ page {
             font-weight: bold;
             font-size: 28rpx;
             color: #333333;
+            flex:1;
+        }
+        .state{
+            font-size: 28rpx;
+            color:#f6054a;
         }
     }
 
@@ -522,6 +562,7 @@ page {
     background-color: #ffffff;
     width: 750rpx;
     padding-top: 14rpx;
+    padding-bottom:12rpx;
     position: fixed;
     top: 0;
     z-index: 2;
@@ -568,9 +609,50 @@ page {
         }
     }
 }
+.searchContainer {
+    box-sizing: border-box;
+    width: 750rpx;
+    padding: 0 20rpx;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20rpx;
 
+    .inputContainer {
+        align-items: center;
+        width: 100%;
+        height: 72rpx;
+        background: #F6F6F6;
+        border-radius: 5rpx;
+        box-sizing: border-box;
+        padding: 0 24rpx;
+
+        .searchImg {
+            width: 28rpx;
+            height: 30rpx;
+            margin-right: 16rpx;
+        }
+
+        .input {
+            flex: 1;
+            font-size: 28rpx;
+        }
+    }
+
+    .btn {
+        width: 128rpx;
+        height: 54rpx;
+        background: #FA1545;
+        border-radius: 5rpx;
+        font-weight: bold;
+        font-size: 24rpx;
+        color: #FFFFFF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
 .fakerTop {
-    height: 100rpx;
+    height: 200rpx;
 }
 
 .topMenu {
