@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2024-06-25 15:43:23
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-07-12 16:13:33
+ * @LastEditTime: 2024-07-15 10:08:15
  * @FilePath: \card-world\src\pages\merchant\delivery\index.vue
  * @Description: ✌✌✌✌✌✌
  * 
@@ -616,7 +616,7 @@ page {
 
         .cancel {
             width: 152rpx;
-            height: 76rpx;
+            height: 62rpx;
             border-radius: 5rpx;
             border: 1rpx solid #DDDDDD;
             font-weight: 500;
@@ -626,7 +626,7 @@ page {
 
         .push {
             width: 172rpx;
-            height: 76rpx;
+            height: 62rpx;
             border-radius: 5rpx;
             border: 1rpx solid #f6054a;
             font-weight: 500;

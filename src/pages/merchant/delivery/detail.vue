@@ -4,18 +4,20 @@
         </transitionNav>
         <view class="topSearchContainer">
             <view class="nav" :style="{ height: navHeight + 'px' }"></view>
-            <view class="topMenu" :class="{topMenu_three:queryParams.isDetail==1}">
+            <view class="topMenu" :class="{ topMenu_three: queryParams.isDetail == 1 }">
                 <view class="menuItem" :class="{ menuItem_select: queryParams.tp == 1 }" @click="onClickMenuItem(1)">
                     待发货
-                    <text class="smallNum">{{numInfo.waitDeliveryNum}}</text>
+                    <text class="smallNum">{{ numInfo.waitDeliveryNum }}</text>
                 </view>
                 <view class="menuItem" :class="{ menuItem_select: queryParams.tp == 2 }" @click="onClickMenuItem(2)">
                     已发货
-                    <text class="smallNum">{{queryParams.isDetail!=1?numInfo.waitReceiveNum+numInfo.doneNum:numInfo.waitReceiveNum}}</text>
+                    <text
+                        class="smallNum">{{ queryParams.isDetail != 1 ? numInfo.waitReceiveNum + numInfo.doneNum : numInfo.waitReceiveNum }}</text>
                 </view>
-                <view class="menuItem" v-if="queryParams.isDetail==1" :class="{ menuItem_select: queryParams.tp == 3 }" @click="onClickMenuItem(3)">
+                <view class="menuItem" v-if="queryParams.isDetail == 1" :class="{ menuItem_select: queryParams.tp == 3 }"
+                    @click="onClickMenuItem(3)">
                     已完成
-                    <text class="smallNum">{{numInfo.doneNum}}</text>
+                    <text class="smallNum">{{ numInfo.doneNum }}</text>
                 </view>
             </view>
         </view>
@@ -68,7 +70,8 @@
                             v-if="!item.ziti && !item.wuliuCompanyId && !defaultWuliuCompanyId">待选择</text>
                         <text v-else>{{ wuliuCompanyTxt(item) }}</text>
                     </view>
-                    <view class="right_label" v-if="queryParams.tp==1" @click="onClickSetZiti(item)">{{ item.ziti ? "取消自提" : "设置自提" }}</view>
+                    <view class="right_label" v-if="queryParams.tp == 1" @click="onClickSetZiti(item)">{{ item.ziti ?
+            "取消自提" : "设置自提" }}</view>
                 </view>
                 <view class="wuliu_item">
                     <view class="label">单号信息：</view>
@@ -76,7 +79,7 @@
                         <view v-if="item.ziti">已设置自提</view>
                         <input v-else placeholder="待填写" :disabled="queryParams.tp == 2" v-model="item.wuliuNo"></input>
                     </view>
-                    <view class="right_label" v-if="queryParams.tp == 1">扫码</view>
+                    <view class="right_label" v-if="queryParams.tp == 1" @click="scanCode(item)">扫码</view>
                 </view>
             </view>
             <view class="confirmBtn" v-if="queryParams.tp == 1" @click="onClickSubmit(item)">确认发货信息</view>
@@ -110,7 +113,7 @@ export default class ClassName extends BaseNode {
         codes: "",
         tp: 1,
         merge: 0,
-        isDetail:0
+        isDetail: 0
     }
     defaultWuliuCompanyId: number = 0
     navHeight = navHeight
@@ -119,14 +122,14 @@ export default class ClassName extends BaseNode {
     companyList: any = []
     companySelectShow: boolean = false
     nowSelect: any = null
-    isDetail:boolean=false
-    numInfo:any={}
+    isDetail: boolean = false
+    numInfo: any = {}
     onLoad(query: any) {
         this.queryParams.codes = query.codes
         this.queryParams.merge = +query.merge
-        if(query.isDetail&&+query.isDetail==1){
-            this.queryParams.isDetail=1
-            this.queryParams.tp=2
+        if (query.isDetail && +query.isDetail == 1) {
+            this.queryParams.isDetail = 1
+            this.queryParams.tp = 2
         }
         this.reqNewData()
         this.reqWuliuCompany()
@@ -180,20 +183,20 @@ export default class ClassName extends BaseNode {
     onClickSetZiti(item: any) {
         item.ziti = !item.ziti
     }
-    onClickCopy(item:any){
+    onClickCopy(item: any) {
         uni.setClipboardData({
-            data:`${item.receiverInfo.address}\r${item.receiverInfo.name} ${item.receiverInfo.phone}`,
-            success:()=>{
+            data: `${item.receiverInfo.address}\r${item.receiverInfo.name} ${item.receiverInfo.phone}`,
+            success: () => {
                 uni.showToast({
-                    title:"已复制",
-                    icon:"none"
+                    title: "已复制",
+                    icon: "none"
                 })
             }
         })
     }
     onClickSubmit(item: any) {
         if (!item.ziti) {
-            if (!item.wuliuCompanyId&&!this.defaultWuliuCompanyId) {
+            if (!item.wuliuCompanyId && !this.defaultWuliuCompanyId) {
                 uni.showToast({
                     title: "请选择物流公司",
                     icon: "none"
@@ -224,12 +227,12 @@ export default class ClassName extends BaseNode {
             wuliuCompanyId: item.wuliuCompanyId || this.defaultWuliuCompanyId,
             no: item.wuliuNo,
             ziti: item.ziti,
-            receiverInfo:item.receiverInfo,
+            receiverInfo: item.receiverInfo,
             userId: item.userId
         }
-        if (!this.queryParams.merge){
+        if (!this.queryParams.merge) {
             //非合并状态下
-            data.goodOrders=item.orderList.map((v:any)=>{
+            data.goodOrders = item.orderList.map((v: any) => {
                 return v.code
             })
         }
@@ -256,9 +259,20 @@ export default class ClassName extends BaseNode {
         this.reqNewData()
         this.reqNumData()
     }
-    reqNumData(){
-        app.http.Get(`dataApi/merchant/delivery/more/goods/num`,{codes:this.queryParams.codes,merge:this.queryParams.merge},(res:any)=>{
-            this.numInfo=res.data
+    scanCode(item: any) {
+        uni.scanCode({
+            scanType: ['barCode'],
+            success: (res: any) => {
+                console.log(res);
+                if (res.errMsg == "scanCode:ok") {
+                    item.wuliuNo = res.result
+                }
+            }
+        })
+    }
+    reqNumData() {
+        app.http.Get(`dataApi/merchant/delivery/more/goods/num`, { codes: this.queryParams.codes, merge: this.queryParams.merge }, (res: any) => {
+            this.numInfo = res.data
         })
     }
     reqWuliuCompany() {
@@ -566,7 +580,7 @@ page {
     justify-content: space-between;
     width: 750rpx;
     box-sizing: border-box;
-    padding:0 100rpx;
+    padding: 0 100rpx;
     background-color: #ffffff;
     border-bottom: 2rpx solid #f7f7f7;
 
@@ -584,13 +598,15 @@ page {
         line-height: 90rpx;
         // margin-right: 100rpx;
     }
-    .smallNum{
-        font-size:20rpx;
-        margin-left:4rpx;
+
+    .smallNum {
+        font-size: 20rpx;
+        margin-left: 4rpx;
         // position:absolute;
         // right:0;
         // top:0;
     }
+
     .menuItem_select {
         color: #FA1545;
     }
@@ -605,7 +621,8 @@ page {
         left: 0;
     }
 }
-.topMenu_three{
+
+.topMenu_three {
     padding: 0 60rpx;
 }
 </style>

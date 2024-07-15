@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-07-12 16:38:49
+ * @LastEditTime: 2024-07-15 15:13:44
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -16,95 +16,107 @@
                 <!-- slot示例 -->
                 <view>
                     <slot name="list1"></slot>
-                    <template v-for="(item, index) in list1" >
+                    <template v-for="(item, index) in list1">
                         <view class="waterfall-item-grayWrap" v-if="!item.isRatingCard">
                             <view class="waterfall-item" @click="goToDetail(item)">
-                            <!-- ?x-oss-process=image/resize,m_fixed,h_100,w_100 -->
-                            <view class="waterfall-item__image">
-                                <view v-if="item.type == 'cardBook' && item.cover == ''" class="cardBook-nullpic">
-                                    <image class="wait-pic" src="@/static/illustration/icon_wait.png" />
-                                </view>
-                                <image v-else-if="item.mode"
-                                    :style="{ height: item.height + 'px', width: item.width + 'px', borderRadius: item.mode == 'widthFix' ? `5rpx 5rpx 0rpx 0rpx` : `0rpx` }"
-                                    :mode="item.mode" :src="imageUrl(item)" class="waterfall-item__image_img">
-                                </image>
-                                <view v-else class="defaultImg" style="background-color: #fff;opacity: 0;"
-                                    :style="{ width: item.width ? `${item.width}px` : `360rpx`, height: item.height ? `${item.height}px` : `430rpx` }">
-                                </view>
-                                <view class="videoIconWrap" v-if="item.video_at">
-                                    <u-icon class="videoIcon" color="#ffffff" size="26rpx" name="play-right-fill"></u-icon>
-                                </view>
-                            </view>
-                            <view class="waterfall-item__ft">
-                                <view class="waterfall-item__ft__title">
-                                    <text class="waterfall-item__ft__title__value u-line-2">{{ item.title || '发布一个新卡册'
-                                    }}</text>
-                                </view>
-                            </view>
-                            <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)"
-                                v-if="showBottom">
-                                <template v-if="showUser">
-                                    <image class="waterfall-item__bottom__avatar" mode="aspectFill" :src="userAvatar(item)">
+                                <!-- ?x-oss-process=image/resize,m_fixed,h_100,w_100 -->
+                                <view class="waterfall-item__image">
+                                    <view v-if="item.type == 'cardBook' && item.cover == ''" class="cardBook-nullpic">
+                                        <image class="wait-pic" src="@/static/illustration/icon_wait.png" />
+                                    </view>
+                                    <image v-else-if="item.mode"
+                                        :style="{ height: item.height + 'px', width: item.width + 'px', borderRadius: item.mode == 'widthFix' ? `5rpx 5rpx 0rpx 0rpx` : `0rpx` }"
+                                        :mode="item.mode" :src="imageUrl(item)" class="waterfall-item__image_img">
                                     </image>
-                                    <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName ||
-                                        (item.author && item.author.name) || '小卡迷'
-                                    }}</text>
-                                    <view class="likeWrap" @click.stop="onClickLike($event, item)">
-                                        <image
-                                            :src="isLike(item) ? '/static/cardForum/like.png' : '/static/cardForum/unLike.png'"
-                                            class="likeImg"></image>
-                                        <text class="likeNum">{{ item.likeNum }}</text>
+                                    <view v-else class="defaultImg" style="background-color: #fff;opacity: 0;"
+                                        :style="{ width: item.width ? `${item.width}px` : `360rpx`, height: item.height ? `${item.height}px` : `430rpx` }">
                                     </view>
-                                </template>
-                                <template v-if="!showUser && type != 'draftList'">
-                                    <view class="likeWrap" style="margin-right: 44rpx;">
-                                        <image src="@/static/cardForum/eye.png" style="width:31rpx;height:23rpx"
-                                            class="likeImg"></image>
-                                        <text class="likeNum">{{ item.clickNum }}</text>
+                                    <view class="videoIconWrap" v-if="item.video_at">
+                                        <u-icon class="videoIcon" color="#ffffff" size="26rpx"
+                                            name="play-right-fill"></u-icon>
                                     </view>
-                                    <view class="likeWrap" @click.stop="onClickLike($event, item)">
-                                        <image
-                                            :src="isLike(item) ? '/static/cardForum/like.png' : '/static/cardForum/unLike.png'"
-                                            class="likeImg"></image>
-                                        <text class="likeNum">{{ item.likeNum }}</text>
+                                </view>
+                                <view class="waterfall-item__ft">
+                                    <view class="waterfall-item__ft__title">
+                                        <text class="waterfall-item__ft__title__value u-line-2">{{ item.title ||
+                        '发布一个新卡册'
+                                            }}</text>
                                     </view>
-                                    <template v-if="isMine && item.private">
-                                        <view style="flex:1"></view>
-                                        <image src="@/static/cardForum/lock.png" style="width:23rpx;height:24rpx;">
+                                </view>
+                                <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)"
+                                    v-if="showBottom">
+                                    <template v-if="showUser">
+                                        <image class="waterfall-item__bottom__avatar" mode="aspectFill"
+                                            :src="userAvatar(item)">
                                         </image>
+                                        <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName ||
+                        (item.author && item.author.name) || '小卡迷'
+                                            }}</text>
+                                        <view class="likeWrap" @click.stop="onClickLike($event, item)">
+                                            <image
+                                                :src="isLike(item) ? '/static/cardForum/like.png' : '/static/cardForum/unLike.png'"
+                                                class="likeImg"></image>
+                                            <text class="likeNum">{{ item.likeNum }}</text>
+                                        </view>
                                     </template>
-                                </template>
-                                <template v-if="type == 'draftList'">
-                                    <view class="likeNum">{{ parseTime(item.create_at) }}</view>
-                                    <view style="flex:1"></view>
-                                    <view @click.stop="onClickDeleteDraft(item)">
-                                        <u-icon size="36rpx" name="trash"></u-icon>
+                                    <template v-if="!showUser && type != 'draftList'">
+                                        <view class="likeWrap" style="margin-right: 44rpx;">
+                                            <image src="@/static/cardForum/eye.png" style="width:31rpx;height:23rpx"
+                                                class="likeImg"></image>
+                                            <text class="likeNum">{{ item.clickNum }}</text>
+                                        </view>
+                                        <view class="likeWrap" @click.stop="onClickLike($event, item)">
+                                            <image
+                                                :src="isLike(item) ? '/static/cardForum/like.png' : '/static/cardForum/unLike.png'"
+                                                class="likeImg"></image>
+                                            <text class="likeNum">{{ item.likeNum }}</text>
+                                        </view>
+                                        <template v-if="isMine && item.private">
+                                            <view style="flex:1"></view>
+                                            <image src="@/static/cardForum/lock.png" style="width:23rpx;height:24rpx;">
+                                            </image>
+                                        </template>
+                                    </template>
+                                    <template v-if="type == 'draftList'">
+                                        <view class="likeNum">{{ parseTime(item.create_at) }}</view>
+                                        <view style="flex:1"></view>
+                                        <view @click.stop="onClickDeleteDraft(item)">
+                                            <u-icon size="36rpx" name="trash"></u-icon>
+                                        </view>
+                                    </template>
+                                </view>
+                            </view>
+                            <view v-if="item.isRatingCard" class="ratingCard" @click="goToDetail(item)">
+                                <view class="ratingCard_picWrap">
+                                    <view class="noPicWrap" v-for="(pic, picIndex) in item.pics"
+                                        :style="{ marginRight: picIndex == 2 ? '0rpx' : '16rpx' }">
+                                        <image class="noPic" :src="$parsePic(pic)"></image>
                                     </view>
-                                </template>
+                                </view>
+                                <view class="ratingCard_center">
+                                    <view class="goodsTitleWrap">
+                                        <view class="goodsTitle u-line-1">{{ item.title }}</view>
+                                        <view class="bg">拆卡报告</view>
+                                    </view>
+                                    <view class="ratingCard_center_bottom">
+                                        <view class="ratingNum">{{ item.ratingNum }}人已评分</view>
+                                        <view class="ratingScore">{{ item.score }}</view>
+                                    </view>
+                                </view>
+                                <view class="ratingCard_merchant">
+                                    <image class="ratingCard_merchant_logo" :src="$parsePic(item.merchantAvatar)">
+                                    </image>
+                                    <view class="ratingCard_merchant_name flex1">{{ item.merchantName }}</view>
+                                    <view class="likeWrap" @click.stop="onClickLikeWithRating($event, item)">
+                                        <image
+                                            :src="item.isLike ? '/static/cardForum/like.png' : '/static/cardForum/unLike.png'"
+                                            class="likeImg">
+                                        </image>
+                                        <text class="likeNum">{{ item.likeNum }}</text>
+                                    </view>
+                                </view>
                             </view>
                         </view>
-                        <view v-if="item.isRatingCard" class="ratingCard" @click="goToDetail(item)">
-				            <view class="ratingCard_picWrap">
-				            	<view class="noPicWrap" v-for="(pic,picIndex) in item.pics" :style="{marginRight:picIndex==2?'0rpx':'16rpx'}">
-				            		<image class="noPic" :src="$parsePic(pic)"></image>
-				            	</view>
-				            </view>
-				            <view class="ratingCard_center">
-				            	<view class="goodsTitleWrap">
-				            		<view class="goodsTitle u-line-1">{{ item.title }}</view>
-				            		<view class="bg">拆卡报告</view>
-				            	</view>
-				            	<view class="ratingCard_center_bottom">
-				            		<view class="ratingNum">{{item.ratingNum}}人已评分</view>
-				            		<view class="ratingScore">{{item.score}}</view>
-				            	</view>
-				            </view>
-				            <view class="ratingCard_merchant">
-				            	<image class="ratingCard_merchant_logo" :src="$parsePic(item.merchantAvatar)"></image>
-				            	<view class="ratingCard_merchant_name flex1">{{ item.merchantName }}</view>
-				            </view>
-			            </view>
-                    </view>
                     </template>
                 </view>
             </view>
@@ -114,97 +126,109 @@
                 <!-- slot示例 -->
                 <view>
                     <template v-for="(item, index) in list2">
-                        <view :key="item.index" class="waterfall-item-grayWrap"  v-if="!item.isRatingCard">
-                        <view class="waterfall-item" @click="goToDetail(item)">
-                            <view class="waterfall-item__image">
-                                <view v-if="item.type == 'cardBook' && item.cover == ''" class="cardBook-nullpic">
-                                    <image class="wait-pic" src="@/static/illustration/icon_wait.png" />
-                                </view>
-                                <image v-else-if="item.mode"
-                                    :style="{ height: item.height + 'px', width: item.width + 'px', borderRadius: item.mode == 'widthFix' ? `5rpx 5rpx 0rpx 0rpx` : `0rpx` }"
-                                    :mode="item.mode" :src="imageUrl(item)" class="waterfall-item__image_img">
-                                </image>
-                                <!-- <image v-else class="defaultImg" @load="h5ImageLoad($event, item)"
+                        <view :key="item.index" class="waterfall-item-grayWrap" v-if="!item.isRatingCard">
+                            <view class="waterfall-item" @click="goToDetail(item)">
+                                <view class="waterfall-item__image">
+                                    <view v-if="item.type == 'cardBook' && item.cover == ''" class="cardBook-nullpic">
+                                        <image class="wait-pic" src="@/static/illustration/icon_wait.png" />
+                                    </view>
+                                    <image v-else-if="item.mode"
+                                        :style="{ height: item.height + 'px', width: item.width + 'px', borderRadius: item.mode == 'widthFix' ? `5rpx 5rpx 0rpx 0rpx` : `0rpx` }"
+                                        :mode="item.mode" :src="imageUrl(item)" class="waterfall-item__image_img">
+                                    </image>
+                                    <!-- <image v-else class="defaultImg" @load="h5ImageLoad($event, item)"
                                     :src="thumbnail(item.cover, true)"
                                     style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
                                 </image> -->
-                                <view class="videoIconWrap" v-if="item.video_at">
-                                    <u-icon class="videoIcon" color="#ffffff" size="26rpx" name="play-right-fill"></u-icon>
+                                    <view class="videoIconWrap" v-if="item.video_at">
+                                        <u-icon class="videoIcon" color="#ffffff" size="26rpx"
+                                            name="play-right-fill"></u-icon>
+                                    </view>
                                 </view>
-                            </view>
-                            <view class="waterfall-item__ft">
-                                <view class="waterfall-item__ft__title">
-                                    <text class="waterfall-item__ft__title__value u-line-2">{{ item.title || '发布一个新卡册'
-                                    }}</text>
+                                <view class="waterfall-item__ft">
+                                    <view class="waterfall-item__ft__title">
+                                        <text class="waterfall-item__ft__title__value u-line-2">{{ item.title ||
+                        '发布一个新卡册'
+                                            }}</text>
+                                    </view>
                                 </view>
-                            </view>
-                            <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)"
-                                v-if="showBottom">
-                                <template v-if="showUser">
-                                    <image class="waterfall-item__bottom__avatar" mode="aspectFill" :src="userAvatar(item)">
-                                    </image>
-                                    <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName ||
-                                        (item.author && item.author.name) || '小卡迷'
-                                    }}</text>
-                                    <view class="likeWrap" @click.stop="onClickLike($event, item)">
-                                        <image
-                                            :src="isLike(item) ? '/static/cardForum/like.png' : '/static/cardForum/unLike.png'"
-                                            class="likeImg"></image>
-                                        <text class="likeNum">{{ item.likeNum }}</text>
-                                    </view>
-                                </template>
-                                <template v-if="!showUser && type != 'draftList'">
-                                    <view class="likeWrap" style="margin-right: 44rpx;">
-                                        <image src="@/static/cardForum/eye.png" style="width:31rpx;height:23rpx"
-                                            class="likeImg"></image>
-                                        <text class="likeNum">{{ item.clickNum }}</text>
-                                    </view>
-                                    <view class="likeWrap" @click.stop="onClickLike($event, item)">
-                                        <image
-                                            :src="isLike(item) ? '/static/cardForum/like.png' : '/static/cardForum/unLike.png'"
-                                            class="likeImg"></image>
-                                        <text class="likeNum">{{ item.likeNum }}</text>
-                                    </view>
-                                    <template v-if="isMine && item.private">
-                                        <view style="flex:1"></view>
-                                        <image src="@/static/cardForum/lock.png" style="width:23rpx;height:24rpx;">
+                                <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)"
+                                    v-if="showBottom">
+                                    <template v-if="showUser">
+                                        <image class="waterfall-item__bottom__avatar" mode="aspectFill"
+                                            :src="userAvatar(item)">
                                         </image>
+                                        <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName ||
+                        (item.author && item.author.name) || '小卡迷'
+                                            }}</text>
+                                        <view class="likeWrap" @click.stop="onClickLike($event, item)">
+                                            <image
+                                                :src="isLike(item) ? '/static/cardForum/like.png' : '/static/cardForum/unLike.png'"
+                                                class="likeImg"></image>
+                                            <text class="likeNum">{{ item.likeNum }}</text>
+                                        </view>
                                     </template>
-                                </template>
-                                <template v-if="type == 'draftList'">
-                                    <view class="likeNum">{{ parseTime(item.create_at) }}</view>
-                                    <view style="flex:1"></view>
-                                    <view @click.stop="onClickDeleteDraft(item)">
-                                        <u-icon size="36rpx" name="trash"></u-icon>
-                                    </view>
-                                </template>
+                                    <template v-if="!showUser && type != 'draftList'">
+                                        <view class="likeWrap" style="margin-right: 44rpx;">
+                                            <image src="@/static/cardForum/eye.png" style="width:31rpx;height:23rpx"
+                                                class="likeImg"></image>
+                                            <text class="likeNum">{{ item.clickNum }}</text>
+                                        </view>
+                                        <view class="likeWrap" @click.stop="onClickLike($event, item)">
+                                            <image
+                                                :src="isLike(item) ? '/static/cardForum/like.png' : '/static/cardForum/unLike.png'"
+                                                class="likeImg"></image>
+                                            <text class="likeNum">{{ item.likeNum }}</text>
+                                        </view>
+                                        <template v-if="isMine && item.private">
+                                            <view style="flex:1"></view>
+                                            <image src="@/static/cardForum/lock.png" style="width:23rpx;height:24rpx;">
+                                            </image>
+                                        </template>
+                                    </template>
+                                    <template v-if="type == 'draftList'">
+                                        <view class="likeNum">{{ parseTime(item.create_at) }}</view>
+                                        <view style="flex:1"></view>
+                                        <view @click.stop="onClickDeleteDraft(item)">
+                                            <u-icon size="36rpx" name="trash"></u-icon>
+                                        </view>
+                                    </template>
+                                </view>
                             </view>
                         </view>
-                    </view>
-                    <view v-if="item.isRatingCard" class="ratingCard" @click="goToDetail(item)">
-				            <view class="ratingCard_picWrap">
-				            	<view class="noPicWrap" v-for="(pic,picIndex) in item.pics" :style="{marginRight:picIndex==2?'0rpx':'16rpx'}">
-				            		<image mode="aspectFill" class="noPic" :src="$parsePic(pic)"></image>
-				            	</view>
-				            </view>
-				            <view class="ratingCard_center">
-				            	<view class="goodsTitleWrap">
-				            		<view class="goodsTitle u-line-1">{{ item.title }}</view>
-				            		<view class="bg">拆卡报告</view>
-				            	</view>
-				            	<view class="ratingCard_center_bottom">
-				            		<view class="ratingNum">{{item.ratingNum}}人已评分</view>
-				            		<view class="ratingScore">{{item.score}}</view>
-				            	</view>
-				            </view>
-				            <view class="ratingCard_merchant">
-				            	<image mode="aspectFill" class="ratingCard_merchant_logo" :src="$parsePic(item.merchantAvatar)"></image>
-				            	<view class="ratingCard_merchant_name flex1">{{ item.merchantName }}</view>
-				            </view>
-			            </view>
-               </template>
-                   
-                    
+                        <view v-if="item.isRatingCard" class="ratingCard" @click="goToDetail(item)">
+                            <view class="ratingCard_picWrap">
+                                <view class="noPicWrap" v-for="(pic, picIndex) in item.pics"
+                                    :style="{ marginRight: picIndex == 2 ? '0rpx' : '16rpx' }">
+                                    <image mode="aspectFill" class="noPic" :src="$parsePic(pic)"></image>
+                                </view>
+                            </view>
+                            <view class="ratingCard_center">
+                                <view class="goodsTitleWrap">
+                                    <view class="goodsTitle u-line-1">{{ item.title }}</view>
+                                    <view class="bg">拆卡报告</view>
+                                </view>
+                                <view class="ratingCard_center_bottom">
+                                    <view class="ratingNum">{{ item.ratingNum }}人已评分</view>
+                                    <view class="ratingScore">{{ item.score }}</view>
+                                </view>
+                            </view>
+                            <view class="ratingCard_merchant">
+                                <image mode="aspectFill" class="ratingCard_merchant_logo"
+                                    :src="$parsePic(item.merchantAvatar)"></image>
+                                <view class="ratingCard_merchant_name flex1">{{ item.merchantName }}</view>
+                                <view class="likeWrap" @click.stop="onClickLikeWithRating($event, item)">
+                                    <image
+                                        :src="item.isLike ? '/static/cardForum/like.png' : '/static/cardForum/unLike.png'"
+                                        class="likeImg">
+                                    </image>
+                                    <text class="likeNum">{{ item.likeNum }}</text>
+                                </view>
+                            </view>
+                        </view>
+                    </template>
+
+
                 </view>
             </view>
             <view class="uv-waterfall__gap_right" style="width:10rpx;opcity:0">
@@ -212,8 +236,8 @@
         </view>
         <empty v-if="!list1.length && !list2.length && showEmpty"></empty>
         <template v-if="list1.length || list2.length">
-            <u-loadmore :line="true" lineLength="20rpx" loadingIcon="semicircle" :status="isFetchEnd ? 'nomore' : 'loading'"
-                nomore-text="没有更多了" fontSize="24rpx" />
+            <u-loadmore :line="true" lineLength="20rpx" loadingIcon="semicircle"
+                :status="isFetchEnd ? 'nomore' : 'loading'" nomore-text="没有更多了" fontSize="24rpx" />
             <div :style="{ height: safeBottomHeight + 'px' }"></div>
         </template>
     </view>
@@ -293,30 +317,38 @@
             </div>
             <div v-else class="ratingCard">
                 <div class="ratingCard_picWrap">
-				            	<div class="noPicWrap" v-for="(pic,picIndex) in item.pics" :style="{marginRight:picIndex==2?'0rpx':'16rpx'}">
-				            		<image class="noPic" :src="parsePic(pic)"></image>
-				            	</div>
-				            </div>
-				            <div class="ratingCard_center">
-				            	<div class="goodsTitleWrap">
-				            		<text class="goodsTitle u-line-1">{{ item.title }}</text>
-				            		<text class="bg">拆卡报告</text>
-				            	</div>
-				            	<div class="ratingCard_center_bottom">
-				            		<text class="ratingNum">{{item.ratingNum}}人已评分</text>
-				            		<text class="ratingScore">{{item.score}}</text>
-				            	</div>
-				            </div>
-				            <div class="ratingCard_merchant">
-				            	<image class="ratingCard_merchant_logo" :src="parsePic(item.merchantAvatar)"></image>
-				            	<text class="ratingCard_merchant_name flex1">{{ item.merchantName }}</text>
-				            </div>
+                    <div class="noPicWrap" v-for="(pic, picIndex) in item.pics"
+                        :style="{ marginRight: picIndex == 2 ? '0rpx' : '16rpx' }">
+                        <image class="noPic" :src="parsePic(pic)"></image>
+                    </div>
+                </div>
+                <div class="ratingCard_center">
+                    <div class="goodsTitleWrap">
+                        <text class="goodsTitle u-line-1">{{ item.title }}</text>
+                        <text class="bg">拆卡报告</text>
+                    </div>
+                    <div class="ratingCard_center_bottom">
+                        <text class="ratingNum">{{ item.ratingNum }}人已评分</text>
+                        <text class="ratingScore">{{ item.score }}</text>
+                    </div>
+                </div>
+                <div class="ratingCard_merchant">
+                    <image class="ratingCard_merchant_logo" :src="parsePic(item.merchantAvatar)"></image>
+                    <text class="ratingCard_merchant_name flex1">{{ item.merchantName }}</text>
+                    <div class="likeWrap" @click="onClickLikeWithRating($event, item)">
+                        <image
+                            :src="item.isLike ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
+                            class="likeImg"></image>
+                        <text class="likeNum">{{ item.likeNum }}</text>
+                    </div>
+                </div>
             </div>
         </cell>
 
         <header style="margin-top:50rpx" v-if="copyValue.length">
-            <div @appear="appearLoadMore" @disappear="disappearLoadMore"><u-loadmore :line="true" loadingIcon="semicircle"
-                    lineLength="20rpx" :status="isFetchEnd ? 'nomore' : 'loading'" nomore-text="没有更多了" fontSize="24rpx" />
+            <div @appear="appearLoadMore" @disappear="disappearLoadMore"><u-loadmore :line="true"
+                    loadingIcon="semicircle" lineLength="20rpx" :status="isFetchEnd ? 'nomore' : 'loading'"
+                    nomore-text="没有更多了" fontSize="24rpx" />
             </div>
             <div :style="{ height: safeBottomHeight + 'px' }" v-if="bottomSafe"></div>
         </header>
@@ -467,9 +499,9 @@ export default {
             type: Boolean,
             default: false
         },
-        ratingList:{
-            type:Array,
-            default:()=>{
+        ratingList: {
+            type: Array,
+            default: () => {
                 return []
             }
         }
@@ -500,7 +532,7 @@ export default {
             let newArr = this.$uv.deepClone(this.value)
             // #ifdef APP-NVUE
             newArr = newArr.map(item => {
-                if(item.isRatingCard) return item
+                if (item.isRatingCard) return item
                 const findItem = getImageByLocal(item)
                 if (findItem) {
                     item.mode = findItem.mode
@@ -651,6 +683,17 @@ export default {
                 uni.$emit("cardForumLike", { code: item.code, bit: item.bit, likeNum: item.likeNum })
             })
         },
+        onClickLikeWithRating(event, item) {
+            // #ifdef APP-NVUE
+            event.stopPropagation();
+            // #endif
+            app.http.Post(`good/${item.goodCode}/rating/like`, {}, (res) => {
+                if (item.isLike) item.likeNum -= 1
+                if (!item.isLike) item.likeNum += 1
+                item.isLike=!item.isLike
+                // uni.$emit("cardForumLike", { code: item.code, bit: item.bit, likeNum: item.likeNum })
+            })
+        },
         goToUserProfile(event, item) {
             // #ifdef APP-NVUE
             event.stopPropagation();
@@ -662,9 +705,9 @@ export default {
             })
         },
         goToDetail(item) {
-            if(item.isRatingCard){
+            if (item.isRatingCard) {
                 uni.navigateTo({
-                    url:`/pages/goods/goods_result_list_new?chooseIds=1&code=${item.goodCode}&random=false`
+                    url: `/pages/goods/goods_result_list_new?chooseIds=1&code=${item.goodCode}&random=false`
                 })
                 return
             }
@@ -836,7 +879,7 @@ export default {
                 this.$emit('firstData', this.list1[0]);
                 this.firstEmit = true;
             }
-            if(!item.ossImg){
+            if (!item.ossImg) {
                 const deCover = this.parsePic(decodeURIComponent(item.cover))
                 const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
                 item.ossImg = isVideoSnapshot ? deCover : ossStitching(deCover, `x-oss-process=image/resize,m_lfit,${item.mode == 'widthFix' ? 'w_432' : 'h_572'}`);
@@ -1053,6 +1096,9 @@ $uvui-nvue-style: true !default;
 
 /* #endif */
 
+.flex1 {
+    flex: 1;
+}
 
 .refresh {
     display: flex;
@@ -1123,7 +1169,7 @@ $uvui-nvue-style: true !default;
 
 .waterfall-item__ft__title__value {
     font-size: 25rpx;
-    
+
     font-weight: bold;
     color: #333333;
     line-height: 33rpx;
@@ -1156,8 +1202,8 @@ $uvui-nvue-style: true !default;
 
 .waterfall-item__bottom__userName {
     font-size: 21rpx;
-    
-    
+
+
     color: #707070;
     flex: 1;
 }
@@ -1176,8 +1222,8 @@ $uvui-nvue-style: true !default;
 
 .likeNum {
     font-size: 23rpx;
-    
-    
+
+
     color: #8D8D8D;
     margin-left: 8rpx;
 }
@@ -1221,18 +1267,19 @@ $uvui-nvue-style: true !default;
     width: 91rpx;
     height: 78rpx;
 }
+
 .ratingCard {
-	width: 360rpx;
-	height: 350rpx;
-	background: #FFFFFF;
-	border-radius: 3rpx 3rpx 0rpx 0rpx;
-	// #ifndef APP-NVUE
+    width: 360rpx;
+    height: 350rpx;
+    background: #FFFFFF;
+    border-radius: 3rpx 3rpx 0rpx 0rpx;
+    // #ifndef APP-NVUE
     box-sizing: border-box;
     // #endif
-	padding: 10rpx 10rpx 20rpx 10rpx;
-	display: flex;
-	flex-direction: column;
-	
+    padding: 10rpx 10rpx 20rpx 10rpx;
+    display: flex;
+    flex-direction: column;
+
     // #ifndef APP-NVUE
     margin-bottom: 10rpx;
     // #endif
@@ -1241,110 +1288,110 @@ $uvui-nvue-style: true !default;
 }
 
 .ratingCard_picWrap {
-	display: flex;
-	flex-direction: row;
-	margin-bottom: 10rpx;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10rpx;
 
 
 }
 
 .noPicWrap {
-	width: 102rpx;
-	height: 136rpx;
-	position: relative;
-	// margin-right:10rpx;
+    width: 102rpx;
+    height: 136rpx;
+    position: relative;
+    // margin-right:10rpx;
 
 }
 
 .noPic {
-	width: 102rpx;
-	height: 136rpx;
+    width: 102rpx;
+    height: 136rpx;
 }
 
 .ratingCard_center {
-	width: 340rpx;
-	background: #F7F7F7;
-	border-radius: 3rpx;
-	height: 118rpx;
-	// #ifndef APP-NVUE
+    width: 340rpx;
+    background: #F7F7F7;
+    border-radius: 3rpx;
+    height: 118rpx;
+    // #ifndef APP-NVUE
     box-sizing: border-box;
     // #endif
-	padding: 10rpx 10rpx 12rpx 10rpx;
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	margin-bottom: 20rpx;
+    padding: 10rpx 10rpx 12rpx 10rpx;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 20rpx;
 }
 
 .goodsTitleWrap {
-	display: flex;
-	flex-direction: row;
+    display: flex;
+    flex-direction: row;
 
 
 }
 
 .goodsTitle {
-	font-weight: 500;
-	font-size: 24rpx;
-	color: #333333;
-	// #ifdef APP-NVUE
-	lines: 1;
-	text-overflow: ellipsis;
-	// #endif
-	flex: 1;
+    font-weight: 500;
+    font-size: 24rpx;
+    color: #333333;
+    // #ifdef APP-NVUE
+    lines: 1;
+    text-overflow: ellipsis;
+    // #endif
+    flex: 1;
 }
 
 .bg {
-	font-weight: 500;   
-	font-size: 24rpx;
-	color: #333333;
+    font-weight: 500;
+    font-size: 24rpx;
+    color: #333333;
 }
 
 .ratingCard_center_bottom {
-    flex:1;
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
 }
 
 .ratingNum {
-	font-weight: 400;
-	font-size: 20rpx;
-	color: #999999;
+    font-weight: 400;
+    font-size: 20rpx;
+    color: #999999;
 }
 
 .ratingScore {
-	font-weight: bold;
-	font-size: 68rpx;
-	color: #FA1545;
-	font-family: DINCondensed, DINCondensed;
-	position: absolute;
-	right: 0;
-	bottom: -10rpx;
+    font-weight: bold;
+    font-size: 68rpx;
+    color: #FA1545;
+    font-family: DINCondensed, DINCondensed;
+    position: absolute;
+    right: 0;
+    bottom: -10rpx;
     // text-decoration:flex-end;
     // line-height:82rpx;
 }
 
 .ratingCard_merchant {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 
 
 }
 
 .ratingCard_merchant_logo {
-	width: 36rpx;
-	height: 36rpx;
-	border-radius: 50%;
-	margin-right: 12rpx;
+    width: 36rpx;
+    height: 36rpx;
+    border-radius: 50%;
+    margin-right: 12rpx;
 }
 
 .ratingCard_merchant_name {
-	font-family: PingFangSC, PingFang SC;
-	font-weight: 400;
-	font-size: 20rpx;
-	color: #333333;
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 400;
+    font-size: 20rpx;
+    color: #333333;
 }
 </style>

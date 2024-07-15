@@ -58,22 +58,19 @@
 					<view class="hitContainer">
 						<scroll-view scroll-x="true" class="scroll" scroll-with-animation="true">
 							<view class="myHitCard" v-for="(item, index) in myHitList" :key="'myHitCard' + index">
-								<view
-									style="display: flex;flex-direction: column;flex-direction: column;justify-content: space-between;">
-									<view class="myHitCard_top">
-										<muqian-lazyLoad class="img" :src="$parsePic(item.pics[0])"></muqian-lazyLoad>
-										<view class="rarityWrap" v-if="item.rarity">
-											<view class="rarityItem" v-for="s in item.rarity.split('')"></view>
-										</view>
-										<view class="picNum flexCenter" v-if="item.pics.length > 1">{{ item.pics.length
-											}}
-										</view>
+								<view class="myHitCard_top">
+									<muqian-lazyLoad class="img" :src="$parsePic(item.pics[0])"></muqian-lazyLoad>
+									<view class="rarityWrap" v-if="item.rarity">
+										<view class="rarityItem" v-for="s in item.rarity.split('')"></view>
 									</view>
-									<view class="cardNameWrap">
-										<view class="noName u-line-2">
-											<image src="@/static/goods/v2/locCfg.png" class="cfgLoc" v-if="item.cfgLoc">
-											</image>{{ item.no }}
-										</view>
+									<view class="picNum flexCenter" v-if="item.pics.length > 1">{{ item.pics.length
+										}}
+									</view>
+								</view>
+								<view class="cardNameWrap">
+									<view class="noName u-line-2">
+										<image src="@/static/goods/v2/locCfg.png" class="cfgLoc" v-if="item.cfgLoc">
+										</image>{{ item.no }}
 									</view>
 								</view>
 							</view>
@@ -675,8 +672,7 @@ page {
 
 		.scroll {
 			width: 100%;
-			// white-space: nowrap;
-			display: flex;
+			white-space: nowrap;
 			align-items: center;
 		}
 	}
@@ -690,6 +686,7 @@ page {
 		border-radius: 4rpx;
 		overflow: hidden;
 		margin-right: 18rpx;
+		flex-wrap: nowrap;
 
 		.myHitCard_top {
 			position: relative;
@@ -729,7 +726,7 @@ page {
 				font-size: 24rpx;
 				color: #333333;
 				line-height: 34rpx;
-				// white-space: wrap;
+				white-space: normal !important;
 			}
 
 
