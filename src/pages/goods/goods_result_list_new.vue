@@ -397,7 +397,7 @@ export default class ClassName extends BaseNode {
 		app.http.Get(`dataApi/good/${this.goodCode}/result/home`, {}, (res: any) => {
 			this.homeData = res.data
 			this.userBeforeHasScore = this.homeData.userRatingScore != 0
-			uni.$emit("ratingInfo",{score:res.data.ratingScore,ratingNum:res.data.ratingNum,code:this.goodCode})
+			uni.$emit("ratingInfo",{score:this.getScore(res.data.ratingScore),ratingNum:res.data.ratingNum,code:this.goodCode})
 		})
 	}
 	reqMyHit() {
