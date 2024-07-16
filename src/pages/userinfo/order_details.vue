@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-06-27 13:41:43
+ * @LastEditTime: 2024-07-15 17:08:17
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -58,7 +58,7 @@
 				<view class="order-desc-index" @click="showPriceInfo=!showPriceInfo">
 					<view></view>
 					<view class="price">
-						实付款
+						实付
 						<view class="total-price">
 							¥<text class="price-text">{{ filterPrice(orderData.price).integer }}</text>
 							<text class="decimal" v-if="filterPrice(orderData.price).decimal">{{ filterPrice(orderData.price).decimal }}</text>
@@ -101,7 +101,7 @@
 				</view>
 				<!-- 卡密信息|购入信息 -->
 				<buyCardId v-show="cardTabsCurrent==0" :cardList="cardList"/>
-				<buyInfo v-show="cardTabsCurrent==1" ref="rBuyInfo" :orderCode="orderCode" :num="orderData.buyNoNum" :point="orderData.point" @goResult="onClcikResult(1)"/>
+				<buyInfo v-show="cardTabsCurrent==1" ref="rBuyInfo" :orderCode="orderCode" :num="orderData.buyNoNum" :point="orderData.point" :zuhecheData="detailZuheche" @goResult="onClcikResult(1)"/>
 			</view>
 			<!-- 订单详细信息 -->
 			<view class="order-info padding-lr" v-if="orderInfo.orderNo.desc!=''">
@@ -155,9 +155,11 @@
 	//@ts-ignore
 	import { KwwConfusion } from "@/net/kwwConfusion.js"
 	import buyInfo from "./component/buyInfo.vue"
+	import buyCardId from "./component/buyCardId.vue"
 	@Component({
 		components:{
-			buyInfo
+			buyInfo,
+			buyCardId
 		}
 	})
 	export default class ClassName extends BaseNode {
@@ -171,14 +173,14 @@
 		getGoodsPintuan = getGoodsPintuan;
 
 		activeStyle={
-			"font-size": "31rpx",
-			"font-weight": 600,
+			"font-size": "28rpx",
+			"font-weight": 500,
 			"color":" #333333",
 		}
 		inactiveStyle={
-			"font-size": "31rpx",
-			"font-weight": 600,
-			"color":" #BBBBBB",
+			"font-size": "28rpx",
+			"font-weight": 400,
+			"color":" #A2A8B4",
 		}
 		cardTabs = [
 			{id:0,name:"卡密信息"},
@@ -226,7 +228,11 @@
 		optionList:any = [];
 		onceLoad = true;
 		retryNum = 0;
-		showPriceInfo = false
+		showPriceInfo = false;
+		detailZuheche = {
+			num:0,
+			logo:""
+		}
 		onLoad(query:any) {
 			this.orderCode = query.code ?? '';
 			this.clickToPay = query.waitPay ?? false;
@@ -303,6 +309,14 @@
 				this.getGoodDesc(data);
 				this.operateData = this.orderSetOperate(data);
 				this.detailPic = parsePic(getGoodsImg(decodeURIComponent(data.good.pic)))
+				if(data.zuhecheNoNum>0){
+					this.detailZuheche = {
+						num:data.zuhecheNoNum,
+						logo:data.noList.find(x=>{
+							return uni.$u.test.object(x.zuheche)
+						}).zuheche.logo || ""
+					}
+				}
 				if(data.good.pintuanType>10){
 					app.http.Get(`me/orderInfo/buyer/${orderCode}/option`,{},(res:any)=>{
 						this.optionList = res.list || []
@@ -607,11 +621,11 @@
 	}
 	.header{
 		width: 100%;
-		height:626rpx;
-		background:url(@/static/order/card-bg.png);
+		height:360rpx;
+		background:url(@/static/order/detail_bg.png);
 		background-size: 100% 100%;
 		box-sizing: border-box;
-		padding-top:188rpx;
+		padding-top:174rpx;
 		.header-statename{
 			width:100%;
 			display: inline-flex;
@@ -620,8 +634,6 @@
 			box-sizing: border-box;
 			padding: 0 100rpx;
 			font-size: 24rpx;
-			
-			
 			color: #FFFFFF;
 		}
 		&-state{
@@ -644,7 +656,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:0 14rpx;
-		margin-top: -370rpx;
+		margin-top: -92rpx;
 	}
 	.order{
 		&-index{
@@ -676,9 +688,7 @@
 					.seller-name{
 						height:40rpx;
 						line-height: 40rpx;
-						font-size: 30rpx;
-						
-						
+						font-size: 28rpx;
 						color: rgba(0,0,0,0.9);
 					}
 				}
@@ -727,21 +737,21 @@
 			}
 			&-center{
 				width: 100%;
-				height:178rpx;
+				height:142rpx;
 				display: flex;
 				box-sizing: border-box;
 				align-items: center;
 				.goods-pic-box{
-					width: 178rpx;
-					height:178rpx;
+					width: 186rpx;
+					height:142rpx;
 					border-radius: 5rpx;
 					margin-right: 24rpx;
 					position: relative;
 					overflow: hidden;
 				}
 				.goods-image{
-					width: 178rpx;
-					height:178rpx;
+					width: 186rpx;
+					height:142rpx;
 					border-radius: 4rprx;
 					position: relative;
 					z-index: 2;
@@ -754,15 +764,13 @@
 					z-index: 1 !important;
 				}
 				.goods-content{
-					width: 480rpx;
-					height:178rpx;
+					width: 470rpx;
+					height:142rpx;
 					box-sizing: border-box;
 					position: relative;
 					.title{
 						width: 100%;
-						font-size: 26rpx;
-						
-						
+						font-size: 24rpx;
 						color: #333333;
 						margin-bottom: 20rpx;
 						word-break:break-all;
@@ -790,31 +798,24 @@
 							align-items: center;
 							justify-content: center;
 							font-size: 24rpx;
-							
-							
 							color: #F6F7FB;
 							margin-left: 0;
 						}
 						.price{
 							height:40rpx;
 							line-height: 40rpx;
-							font-size: 25rpx;
-							
-							
+							font-size: 24rpx;
 							color: #333333;
 						}
 						.price text{
-							font-size: 32rpx;
-							
-							font-weight: bold;
+							font-size: 24rpx;
 						}
 						.total-num{
 							height:40rpx;
 							line-height: 40rpx;
-							font-size: 25rpx;
-							
-							
+							font-size: 24rpx;
 							color: #88878C;
+							font-weight: 300;
 						}
 					}
 				}
@@ -877,20 +878,15 @@
 			align-items: center;
 			justify-content: space-between;
 			height:68rpx;
-			font-size: 26rpx;
-			
+			font-size: 24rpx;
 			color: #333333;
 			.name{
-				font-size: 26rpx;
-				
-				
+				font-size: 24rpx;
 				color: #333333;
 			}
 			.price{
 				height:40rpx;
 				font-size: 26rpx;
-				
-				
 				color: rgba(0,0,0,0.9);
 				line-height: 40rpx;
 				display: inline-flex;
@@ -898,25 +894,21 @@
 			.total-price{
 				height:40rpx;
 				font-size: 28rpx;
-				
 				font-weight: 600;
 				color: #000000;
-				line-height: 30rpx;
+				line-height: 36rpx;
 				margin-left: 6rpx;
 			}
 			.total-price .price-text{
 				font-size: 36rpx;
-				font-family: Impact;
+				font-family: 'DIN';
 				font-weight: 600;
 				margin-left:2rpx;
 			}
 			.total-price .decimal{
 				font-size: 28rpx;
-				font-family: Impact;
+				font-family: 'DIN';
 				font-weight: 600;
-			}
-			.info{
-				font-weight: bold;
 			}
 			.redfont{
 				color:#FA1545;
@@ -1003,10 +995,8 @@
 			height:40rpx;
 			display: flex;
 			align-items: center;
-			font-size: 23rpx;
-			
-			
-			color: #A9ABB4;
+			font-size: 24rpx;
+			color: #A2A8B4;
 			.icon-right{
 				width: 10rpx;
 				height:16rpx;
@@ -1085,9 +1075,8 @@
 		border-radius: 5rpx;
 		.title{
 			width: 100%;
-			font-size: 31rpx;
-			
-			font-weight: 600;
+			font-size: 28rpx;
+			font-weight: 500;
 			color: #333333;
 			margin-bottom: 30rpx;
 		}
@@ -1103,27 +1092,21 @@
 				height:40rpx;
 				display: flex;
 				align-items: center;
-				font-size: 24rpx;
-				
-				
+				font-size: 22rpx;
 				color: #333333;
 			}
 			.index-right{
 				min-height:40rpx;
 				display: flex;
 				align-items: center;
-				font-size: 24rpx;
-				
-				
-				color: #666666;
+				font-size: 22rpx;
+				color: #A2A8B4;
 				flex-wrap: wrap;
 				justify-content: flex-end;
 			}
 			.index-right-address{
-				font-size: 24rpx;
-				
-				
-				color: #666666;
+				font-size: 22rpx;
+				color: #A2A8B4;
 			}
 		}
 		.copy{

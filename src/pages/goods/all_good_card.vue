@@ -24,7 +24,7 @@
 					<td class="card-td"  v-for="(items,indexs) in itemListName" :key="indexs" >
 						<text v-show="!english">{{item['column'+(indexs+1)]}}</text>
 						<text v-show="english">{{item['column'+(indexs+1)+'_English']?item['column'+(indexs+1)+'_English']:item['column'+(indexs+1)]}}</text>
-						<view v-if="indexs==itemListName.length-1" class="card-tips" :style="{background:tipsData[1].background}">{{tipsData[1].text}}</view>
+						<view v-if="indexs==itemListName.length-1" class="card-tips" :style="{background:tipsData[2].background}">{{tipsData[2].text}}</view>
 					</td>
 				</tr>
 			</tbody>
@@ -41,23 +41,10 @@
 	import noAward from "./component/noAward.vue"
 	//@ts-ignore
 	import { KwwConfusion } from "@/net/kwwConfusion.js"
-	const Tips = {
-		1:{
-			text:"车位",
-			background:'linear-gradient(to right,rgba(247, 181, 0, 1),rgba(247, 181, 0, 0))'
-		},
-		2:{
-			text:"附赠车位",
-			background:'linear-gradient(to right,rgba(250, 100, 0, 1),rgba(250, 100, 0, 0))'
-		},
-		3:{
-			text:"掉落奖品",
-			background:'linear-gradient(to right,rgba(80, 231, 231, 1),rgba(80, 231, 231, 0))'
-		},
-	}
+	import { _Maps } from "@/tools/map"
 	@Component({ components:{noAward} })
 	export default class ClassName extends BaseNode {
-		tipsData = Tips;
+		tipsData = _Maps._GoodsTips;
 		goodCode = '';
 		goodType = 0;
 		searchText = '';

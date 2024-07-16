@@ -20,7 +20,6 @@
 					<view class="order-title">订单号：{{item.goodOrder}}</view>
 					<view class="card-index" :class="{'win-card-box':items.state==2}" v-for="(items,indexs) in item.nos" :key="indexs">
 						<cardNoInfo :data="items" :type="pintuanType"/>
-						<muqian-lazyLoad class="card-pic" v-if="items.state==2" :src="items.pic"  preview/>
 					</view>
 					<view class="more-text" v-show="item.nos&&(item.nos.length<item.noNum)" @click="onClickMoreNos(item)">查看更多</view>
 				</view>
@@ -28,7 +27,6 @@
 			<view class="card-box" v-else>
 				<view class="card-index" :class="{'win-card-box':items.state==2}" v-for="(items,indexs) in cardList" :key="indexs">
 					<cardNoInfo :data="items" :type="pintuanType"/>
-					<muqian-lazyLoad class="card-pic" v-if="items.state==2" :src="items.pic"  preview/>
 				</view>
 			</view>
 			<empty v-show="empty"/>
@@ -39,9 +37,6 @@
 				<view class="card-box" >
 					<view class="card-index" v-for="(item,indexs) in buyerData.hits" :key="indexs">
 						<cardNoInfo :data="item" :type="pintuanType"/>
-						<view  class="index-right">
-							<muqian-lazyLoad class="card-pic" :src="item.pic" mode="aspectFit" preview/>
-						</view>
 					</view>
 				</view>
 			</view>
@@ -49,12 +44,13 @@
 				<view class="buyer-title">拼团活动奖品</view>
 				<view class="card-box" >
 					<view class="card-index" v-for="(item,indexs) in buyerData.noAwards" :key="indexs">
-						<view class="buyerbox-index">
+						<view class="buyerbox-index small-width">
 							<view class="title">{{item.awardName}}</view>
 							<view class="cardno">中奖卡密：{{item.name}}</view>
 							<view class="desc">{{item.state}}</view>
 						</view>
-						<view  class="index-right">
+						<view  class="mycard-right">
+							<view class="icon-tips" :style="{background:tipsData[4].background}">{{tipsData[4].text}}</view>
 							<muqian-lazyLoad class="card-pic" :src="item.awardPic" mode="aspectFit" preview/>
 						</view>
 					</view>
@@ -64,11 +60,11 @@
 				<view class="buyer-title">随机正版基础卡片</view>
 				<view class="card-box" >
 					<view class="card-index">
-						<view class="buyerbox-index">
+						<view class="buyerbox-index small-width">
 							<view class="title">随机正版基础卡片x{{goodAllOrder?buyerData.totalBuyNoNum:orderNum}}</view>
 							<view class="desc">查看领取方式</view>
 						</view>
-						<view  class="index-right">
+						<view  class="mycard-right">
 							<muqian-lazyLoad class="card-pic" src="/static/order/card.png" mode="aspectFit"/>
 						</view>
 					</view>
@@ -78,11 +74,11 @@
 				<view class="buyer-title">【赠】</view>
 				<view class="card-box" >
 					<view class="card-index" @click="onClickGoMall">
-						<view class="buyerbox-index">
+						<view class="buyerbox-index small-width">
 							<view class="title">卡币x{{goodAllOrder?buyerData.totalPoint:orderPoint}}</view>
 							<view class="desc">前往卡币商城</view>
 						</view>
-						<view  class="index-right">
+						<view  class="mycard-right">
 							<muqian-lazyLoad class="card-pic" src="/static/order/kabi.png" mode="aspectFit"/>
 						</view>
 					</view>
@@ -102,6 +98,7 @@
 	import cardNoInfo from "./component/cardNoInfo.vue"
 	import navigationbarTabs from "@/components/navigationbarTabs/navigationbarTabs.vue"
 	import baseCardPopup from "@/pages/goods/component/baseCardPopup.vue"
+	import { _Maps } from "@/tools/map"
 	const title = [
 		{index:0,name:'卡密信息'},
 		{index:1,name:'购入信息'}
@@ -110,6 +107,7 @@
 		components:{navigationbarTabs,cardSort,cardNoInfo,baseCardPopup}
 	})
 	export default class ClassName extends BaseNode {
+		tipsData = _Maps._GoodsTips;
 		titles = title;
 		parsePic = parsePic;
 		cardList:{[x:string]:any} = [];
@@ -300,8 +298,8 @@
 </script>
 
 <style lang="scss">
-	@mixin fontSfTR {
-		
+	page {
+		background:#F6F7FB;
 	}
 	.card-pic{
 		width: 100rpx;
@@ -314,9 +312,7 @@
 		padding-top: 12rpx
 	}
 	.order-title{
-		@include fontSfTR;
 		font-size: 20rpx;
-		
 		color: #BBBBBB;
 		margin-bottom: 12rpx;
 	}
@@ -342,13 +338,12 @@
 		padding:0 20rpx;
 	}
 	.list-index{
-		background:#fff;
+		
 		box-sizing: border-box;
 		margin-top: -10rpx;
 		padding-bottom: 30rpx;
 	}
 	.buyer-title{
-		@include fontSfTR;
 		width: 100%;
 		box-sizing: border-box;
 		padding-left: 20rpx;
@@ -380,7 +375,7 @@
 	.card-box{
 		width: 100%;
 		box-sizing: border-box;
-		padding:0 20rpx;
+		padding:0 16rpx;
 		margin-bottom: 20rpx;
 	}
 	.card-index{
@@ -389,16 +384,16 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		background:#F6F7FB;
+		background:#FFFFFF;
 		margin-bottom: 16rpx;
 		border-radius: 4rpx;
-		padding:20rpx
+		padding-left: 20rpx;
+		position: relative;
 	}
 	.win-card-box{
 		border: 1rpx solid #FA1545;
 	}
 	.order-type-index{
-		@include fontSfTR;
 		width: 130rpx;
 		height:44rpx;
 		display: flex;
@@ -420,7 +415,6 @@
 		font-size: 26rpx;
 	}
 	.index-left{
-		@include fontSfTR;
 		width: 100%;
 		box-sizing: border-box;
 		display: -webkit-box;
@@ -436,33 +430,27 @@
 		min-height:100rpx;
 		position: relative;
 		box-sizing: border-box;
-		padding-bottom: 40rpx;
+		padding:20rpx 0 60rpx 0;
 		.title{
 			font-size: 26rpx;
-			
 			font-weight: 600;
 			color: #333333;
 		}
 		.cardno{
-			@include fontSfTR;
 			font-size: 22rpx;
-			
 			color: #999999;
 			margin-top: 8rpx;
 			line-height: 34rpx;
 		}
 		.desc{
-			@include fontSfTR;
 			position: absolute;
-			bottom:0;
+			bottom:20rpx;
 			left:0;
 			font-size: 18rpx;
-			
 			color: #DDDDDD;
 		}
 	}
 	.award-left{
-		@include fontSfTR;
 		width: 610rpx;
 		min-height: 96rpx;
 		box-sizing: border-box;
@@ -475,33 +463,9 @@
 		padding:10rpx 20rpx;
 		background: #F6F7F8;
 	}
-	.index-right{
-		width: 86rpx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 21rpx;
-		
-		
-		color:#fff;
-		margin-right: 8rpx;
-	}
+	
 	.red-color{
 		color:#FB4E3E
-	}
-	.index-right-red{
-		width: 12rpx;
-		height:22rpx;
-		background:url(../act/static/pingtai/icon_red.png) no-repeat center;
-		background-size: 100% 100%;
-		margin-left:6rpx;
-	}
-	.index-right-pt{
-		width: 12rpx;
-		height:22rpx;
-		background:url(../act/static/pingtai/icon_right.png) no-repeat center;
-		background-size: 100% 100%;
-		margin-left:6rpx;
 	}
 	.bingo-name{
 		font-weight: bold !important;
@@ -578,14 +542,12 @@
 			top:20rpx;	
 		}
 		.play-info-title{
-			@include fontSfTR;
 			width: 100%;
 			color:#FFFFFF;
 			font-size: 22rpx;
 			height:32rpx;
 		}
 		.play-info-sub{
-			@include fontSfTR;
 			width: 100%;
 			color:rgba(255, 255, 255, 0.70);
 			font-size: 22rpx;
@@ -594,11 +556,42 @@
 			align-items: center;
 		}
 		.play-info-icon{
-			@include fontSfTR;
 			width: 14rpx;
 			height:20rpx;
 			background:url(@/static/order/my_card_right.png) no-repeat center / 100% 100%;
 			margin-left: 4rpx;
+		}
+	}
+	.small-width{
+		width:550rpx !important;
+	}
+	.mycard-right{
+		width: 136rpx;
+		height:100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color:#fff;
+		background:#EDEDF0;
+		position: absolute;
+		top:0;
+		right:0;
+		.icon-tips{
+			height:24rpx;
+			position: absolute;
+			left:0;
+			top:0;
+			text-align: center;
+			line-height: 24rpx;
+			font-size: 20rpx;
+			color: #FFFFFF;
+			box-sizing: border-box;
+			padding:0 2rpx;
+			z-index: 2;
+		}
+		.card-pic{
+			width: 136rpx;
+			height:100rpx;
 		}
 	}
 </style>

@@ -48,26 +48,13 @@
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { getGoodsImg,filterPrice } from "@/tools/util";
-	const Tips = {
-		1:{
-			text:"中卡",
-			background:'linear-gradient(to right,rgba(250, 21, 69, 1),rgba(250, 21, 69, 0))'
-		},
-		2:{
-			text:"车位",
-			background:'linear-gradient(to right,rgba(250, 100, 0, 1),rgba(250, 100, 0, 0))'
-		},
-		3:{
-			text:"奖品",
-			background:'linear-gradient(to right,rgba(80, 231, 231, 1),rgba(80, 231, 231, 0))'
-		},
-	}
+	import { _Maps } from "@/tools/map"
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
 		orderList:any;
 		
-		tipsData = Tips;
+		tipsData = _Maps._GoodsTips;
 		getGoodsImg = getGoodsImg;
 		filterPrice = filterPrice;
 		countDownData:any = {};
@@ -252,7 +239,7 @@
 					left:0;
 					top:0;
 					text-align: center;
-					line-height: 26rpx;
+					line-height: 24rpx;
 					font-size: 20rpx;
 					color: #FFFFFF;
 					box-sizing: border-box;
@@ -299,7 +286,7 @@
 						font-size: 24rpx;
 						margin-right: 16rpx;
 						background:#fff;
-						border:2rpx dashed #E5E5EA;
+						border:2rpx solid #E5E5EA;
 						color:#333333;
 						font-weight: 500;
 					}

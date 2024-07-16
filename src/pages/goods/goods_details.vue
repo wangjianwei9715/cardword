@@ -87,6 +87,7 @@
 					<view class="bottom-container-left-index-name">我的卡密</view>
 				</view>
 				<view class="bottom-container-left-index" @click="onClickAllCard()">
+					<view v-if="goodsData.zuheche==1" class="icon-zuheche">增加车位</view>
 					<image class="bottom-icon" src="@/static/goods/v3/icon_card.png" mode="aspectFill" />
 					<view class="bottom-container-left-index-name">卡密列表</view>
 				</view>
@@ -812,10 +813,24 @@
 				box-sizing: border-box;
 				text-align: center;
 				margin-right: 40rpx;
+				position: relative;
 				&-name {
 					font-size: 18rpx;
 					color: #333333;
 					text-align: center;
+				}
+				.icon-zuheche{
+					width: 100rpx;
+					height:28rpx;
+					font-size: 20rpx;
+					color: #FFFFFF;
+					text-align: center;
+					line-height: 28rpx;
+					position: absolute;
+					top:-10rpx;
+					left:30rpx;
+					z-index: 2;
+					background:linear-gradient(90deg, #F7B500 0%, #F7B500 50%, rgba(247, 181, 0, 0) 100%)
 				}
 			}
 			.bottom-icon{

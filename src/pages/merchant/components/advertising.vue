@@ -33,7 +33,7 @@
 			
 			<view class="drawer-bottom" >
 				<view v-if="currentState.inEffect" class="drawer-bottom-rank">
-					<text>生效中：</text><u-count-down :time="countDown(adData.failure_at)" format="HH:mm:ss" @finish="onFinish"></u-count-down>，<text>在售期间/倒计时结束前</text>有效
+					<text>{{adData.effective_level}}级广告位生效中：</text><u-count-down :time="countDown(adData.failure_at)" format="HH:mm:ss" @finish="onFinish"></u-count-down>，<text>在售期间/倒计时结束前</text>有效
 				</view>
 				<view v-else-if="hasUsableCard" class="drawer-bottom-rank" >
 					共{{selectedHour}}小时,广告图审核通过后开始计时，<text>在售期间/倒计时结束前</text>有效
