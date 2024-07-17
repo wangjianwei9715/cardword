@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-12-16 16:23:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-08 17:19:27
+ * @LastEditTime: 2024-07-17 15:02:51
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -188,7 +188,7 @@
             const { back } = this;
             return {
                 title: back ? '未提交' : '说明',
-                text: back ? '当前申请未提交，确认返回后填写内容将清空' : '商家在填写直播时间段以及抖音直播链接后，提交审核，审核通过后app内将显示为直播状态，并推送至首页边播边拆板块，用户可通过直播链接进如观看直播'
+                text: back ? '当前申请未提交，确认返回后填写内容将清空' : '商家在填写直播时间段以及抖音直播链接后，提交审核，审核通过后app内将显示为直播状态，并推送至首页边播边拆板块，用户可通过直播链接进入观看直播'
             }
         }
         public get listHeight() : number {
@@ -516,12 +516,14 @@
                 font-family: Impact !important;
                 color: #333333;
                 line-height: 38rpx;
-                margin-right: 10rpx;
+                margin-right: 4rpx;
+                letter-spacing:1px
             }
             .decimal {
-                font-size: 14rpx;
+                font-size: 24rpx;
                 font-weight: 600;
                 color: #333333;
+                letter-spacing:1px
             }
         }
     }

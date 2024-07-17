@@ -31,13 +31,15 @@
 			</view>
 			<view class="orderlist-index-bottom">
 				<view>
-					<view v-if="item.hitNum>0" class="hitnum-bg">
-						<view class="hitnum-tips" :style="{background:tipsData[1].background}">{{tipsData[1].text}}x{{item.hitNum}}</view>
-						<muqian-lazyLoad class="tips-pic" :src="getGoodsImg(decodeURIComponent(item.good.pic))"></muqian-lazyLoad>
+					<view v-if="item.icon">
+						<view v-for="(items,indexs) in item.icon" class="hitnum-bg">
+							<view class="hitnum-tips" :style="{background:itemsTips(items).background}">{{itemsTips(items).text}}x{{items.num}}</view>
+							<muqian-lazyLoad class="tips-pic" :src="getGoodsImg(decodeURIComponent(items.icon))" mode="aspectFit"></muqian-lazyLoad>
+						</view>
 					</view>
 				</view>
 				<view class="operate" v-if="item.operate" >
-					<view :class="['btn','btn-'+btnitem.cmd]" @click="onClickOperate(item,btnitem.cmd)" v-for="btnitem in item.operate" :key="btnitem.cmd">{{btnitem.name}}</view>
+					<view v-show="(btnitem.name!='删除订单'|| !item.icon || item.icon.length<=2)" :class="['btn','btn-'+btnitem.cmd]" @click="onClickOperate(item,btnitem.cmd)" v-for="btnitem in item.operate" :key="btnitem.cmd">{{btnitem.name}}</view>
 				</view>
 			</view>
 		</view>
@@ -72,6 +74,10 @@
 		}
 		onChangeTime({minutes,seconds}:any,item:any){
 			this.countDownData[item.code] = (minutes*60) + seconds;
+		}
+		itemsTips(item){
+			const type = item.tp=='hit'?1:(item.tp=='award'?4:2);
+			return this.tipsData[type]
 		}
 	}
 </script>
@@ -227,6 +233,8 @@
 					background:#EDEDF0;
 					position: relative;
 					border-radius: 4rpx;
+					display: inline-flex;
+					margin-right: 20rpx;
 				}
 				.tips-pic{
 					width: 88rpx;

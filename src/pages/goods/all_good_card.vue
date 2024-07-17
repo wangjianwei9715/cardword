@@ -22,9 +22,8 @@
 			<tbody>
 				<tr v-for="(item,index) in teamDataList" :key="index" :class="index%2==0?'title-middle2':'title-middle3'" >
 					<td class="card-td"  v-for="(items,indexs) in itemListName" :key="indexs" >
-						<text v-show="!english">{{item['column'+(indexs+1)]}}</text>
-						<text v-show="english">{{item['column'+(indexs+1)+'_English']?item['column'+(indexs+1)+'_English']:item['column'+(indexs+1)]}}</text>
-						<view v-if="indexs==itemListName.length-1" class="card-tips" :style="{background:tipsData[2].background}">{{tipsData[2].text}}</view>
+						<text>{{itemText(item,indexs)}}</text>
+						<view v-if="indexs==itemListName.length-1&&item.zuhecheTp" class="card-tips" :style="{background:itemsTips(item).background}">{{itemsTips(item).text}}</view>
 					</td>
 				</tr>
 			</tbody>
@@ -60,13 +59,18 @@
 		goodTitle = '';
 		tabWidth:any = '';
 		teamId = 0;
-		debug = app.updateDebug == 'on'
+		debug = app.updateDebug == 'on';
+		zuhecheTp = 0;
+		zuhecheName = ""
 		onLoad(query: any) {
 			if(query.code){
 				this.goodCode = query.code;
-				this.goodType = query.type;
+				this.goodType = Number(query.type);
 				if(query.teamId){
 					this.teamId = Number(query.teamId)
+				}
+				if(query.zuhecheTp>0){
+					this.zuhecheTp = query.zuhecheTp
 				}
 				this.$nextTick(()=>{
 					// 拼团商品卡密奖励轮播图
@@ -87,19 +91,31 @@
 			//@ts-ignore
 			this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll(data)
 		}
+		
+		public get oldUrl() : boolean {
+			return [4,5,10].includes(this.goodType)
+		}
+		itemText(item,indexs){
+			const name = 'column'+(indexs+1);
+			const englishName = name+'_English';
+			const zuhecheName = indexs==0&&[1,2].includes(item.zuhecheTp)?`(${this.zuhecheName}系列车位)`:""
+			return ((this.english&&item[englishName]?item[englishName]:item[name])||'-') + zuhecheName;
+		}
 		reqNewData(cb?:Function) {
 			// 获取更多商品
 			if (this.noMoreData) {
 				return;
 			}
-			
+			const url = `dataApi/good/${this.goodCode}/${this.oldUrl?'noList':'no/list'}`;
 			let params:{[x:string]:any} = {
 				pageIndex: this.currentPage,
 				pageSize:this.pageSize,
 			}
 			if(this.teamId>0) params.teamId = this.teamId;
-			
-			app.http.GetWithCrypto("dataApi/good/"+this.goodCode+'/noList', params, (data: any) => {
+			if(this.zuhecheTp>0) params.zuhecheTp = this.zuhecheTp
+			if(this.searchText!='') params.q = encodeURIComponent(this.searchText)
+
+			app.http.GetWithCrypto(url, params, (data: any) => {
 				this.goodTitle = data.goodTitle;
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
@@ -109,8 +125,15 @@
 				this.translate = data.translate
 				if(data.list){
 					if(this.currentPage==1) this.teamDataList =  []
-					this.teamDataList = this.teamDataList.concat(data.list);
+					let list = data.list;
+					if(data.noTypes&&data.noTypes.length){
+						list.forEach((x,index) => {
+							x['zuhecheTp'] = data.noTypes[index];
+						});
+					}
+					this.teamDataList = this.teamDataList.concat(list);
 				}
+				this.zuhecheName = data.zuhecheName || ""
 				this.debug && app.platform.refrain(this.teamDataList);
 				this.currentPage++;
 				if(cb) cb()
@@ -154,7 +177,7 @@
 			this.noMoreData = false;
 			this.teamDataList = [];
 			this.scrollId = ''
-			if(this.searchText == ''){
+			if(this.searchText == '' || !this.oldUrl){
 				this.reqNewData() 
 			}else{
 				this.searchData()
@@ -163,6 +186,13 @@
 		
 		onClickTranslate() {
 			this.english = !this.english
+		}
+		itemsTips(item){
+			const type = item.zuhecheTp>0?item.zuhecheTp+1:0;
+			return {
+				background:this.tipsData[type].background,
+				text:this.tipsData[type].text
+			}
 		}
 	}
 </script>

@@ -256,7 +256,6 @@
 	.price-text {
 		font-size: 28rpx;
 		font-weight: 600;
-		margin-left: -6rpx;
 	}
 	.decimal{
 		font-size: 18rpx;

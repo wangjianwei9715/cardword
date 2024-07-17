@@ -87,7 +87,7 @@
 					<view class="bottom-container-left-index-name">我的卡密</view>
 				</view>
 				<view class="bottom-container-left-index" @click="onClickAllCard()">
-					<view v-if="goodsData.zuheche==1" class="icon-zuheche">增加车位</view>
+					<view v-if="goodsData.zuheche>=1" class="icon-zuheche">增加车位</view>
 					<image class="bottom-icon" src="@/static/goods/v3/icon_card.png" mode="aspectFill" />
 					<view class="bottom-container-left-index-name">卡密列表</view>
 				</view>
@@ -337,8 +337,8 @@
 			})
 		}
 		onClickAllCard(data ? : any) {
-			const { goodCode, pintuan_type} = this.goodsData;
-			const url = `/pages/goods/all_good_card?code=${goodCode}&type=${pintuan_type}${data?`&teamId=${data.id}`:''}`;
+			const { goodCode, pintuan_type, zuheche=0} = this.goodsData;
+			const url = `/pages/goods/all_good_card?code=${goodCode}&type=${pintuan_type}${data?`&teamId=${data.id}`:''}&zuhecheTp=${zuheche}`;
 			uni.navigateTo({ url })
 		}
 		// 客服
