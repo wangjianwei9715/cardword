@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2024-06-25 15:43:23
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-07-15 16:14:37
+ * @LastEditTime: 2024-07-18 13:58:35
  * @FilePath: \card-world\src\pages\merchant\delivery\index.vue
  * @Description: ✌✌✌✌✌✌
  * 
@@ -39,11 +39,12 @@
                     <input type="text" v-model="queryParams.q" @confirm="onInputConfirm" class="input"
                         placeholder="输入商品编号或标题">
                 </view>
-                <view class="btn" v-if="queryParams.state==1" @click="onClickBatch">批量发货</view>
+                <view class="btn" v-if="queryParams.state == 1" @click="onClickBatch">批量发货</view>
                 <picker v-else :range="tpOptions" range-key="label" @change="tpChange">
-                    <view class="btn">{{getTpName()}}
-                    <image src="@/static/merchant/donwDot.png" style="width:22rpx;height:12rpx;margin:0 4rpx"></image>
-                </view>
+                    <view class="btn">{{ getTpName() }}
+                        <image src="@/static/merchant/donwDot.png" style="width:22rpx;height:12rpx;margin:0 4rpx">
+                        </image>
+                    </view>
                 </picker>
             </view>
         </view>
@@ -108,7 +109,7 @@
         </view>
         <view class="bottomSafeArea">
 
-        <view class="batchFakerWrap" v-if="onBatchSelect" style="height:160rpx"></view>
+            <view class="batchFakerWrap" v-if="onBatchSelect" style="height:160rpx"></view>
         </view>
     </view>
 </template>
@@ -126,7 +127,7 @@ export default class ClassName extends BaseNode {
         pageSize: 10,
         state: 1,
         q: "",
-        tp:100,
+        tp: 100,
     }
     list: any = []
     totalPage: number = 0
@@ -134,7 +135,7 @@ export default class ClassName extends BaseNode {
     onBatchSelect: boolean = false
     isSelectAll: boolean = false
     loadAllPageTimer: any = null
-    tpOptions:any=[{value:100,label:"全部"},{value:1,label:"已发待收"},{value:2,label:"已完成"}]
+    tpOptions: any = [{ value: 100, label: "全部" }, { value: 1, label: "已发待收" }, { value: 2, label: "已完成" }]
     onLoad() {
         this.reqNewData()
     }
@@ -168,11 +169,13 @@ export default class ClassName extends BaseNode {
     }
     onInputConfirm() {
         this.queryParams.pageIndex = 1
+        this.selectCodes = []
+        if (this.isSelectAll) this.isSelectAll = false
         this.reqNewData()
     }
-    getTpName(){
-        const item=this.tpOptions.find((v:any)=>{
-            return v.value==this.queryParams.tp
+    getTpName() {
+        const item = this.tpOptions.find((v: any) => {
+            return v.value == this.queryParams.tp
         })
         return item.label || "全部"
     }
@@ -204,14 +207,24 @@ export default class ClassName extends BaseNode {
         if (this.queryParams.state == 2) return
         this.onBatchSelect = !this.onBatchSelect
     }
-    tpChange(event:any){
-        if(this.queryParams.tp==this.tpOptions[event.detail.value].value) return
-        this.queryParams.tp=this.tpOptions[event.detail.value].value
-        this.queryParams.pageIndex=1
+    tpChange(event: any) {
+        if (this.queryParams.tp == this.tpOptions[event.detail.value].value) return
+        this.queryParams.tp = this.tpOptions[event.detail.value].value
+        this.queryParams.pageIndex = 1
         this.reqNewData()
     }
     onClickGoodsCard(goodCode: string) {
         if (!this.onBatchSelect) return
+        if (this.isSelectAll) {
+            this.selectCodes = []
+            this.allCodes().forEach((code: any) => {
+                if (code != goodCode) {
+                    this.selectCodes.push(code)
+                }
+            })
+            this.isSelectAll = false
+            return
+        }
         if (this.selectCodes.includes(goodCode)) {
             const findIndex = this.selectCodes.findIndex((code: string) => {
                 return code == goodCode
@@ -224,14 +237,14 @@ export default class ClassName extends BaseNode {
         }
     }
     onClickDelivery() {
-        if (this.selectCodes.length == 0&&!this.isSelectAll) {
+        if (this.selectCodes.length == 0 && !this.isSelectAll) {
             uni.showToast({
                 title: "请选择商品",
                 icon: "none"
             })
             return
         }
-        if (this.isSelectAll&&this.allCodes().length==0){
+        if (this.isSelectAll && this.allCodes().length == 0) {
             uni.showToast({
                 title: "批量发货失败,无商品可发货",
                 icon: "none"
@@ -239,7 +252,7 @@ export default class ClassName extends BaseNode {
             return
         }
         uni.navigateTo({
-            url: `/pages/merchant/delivery/detail?codes=${this.isSelectAll?this.allCodes().join(','):this.selectCodes.join(',')}&merge=${this.isSelectAll?1:this.selectCodes.length > 1 ? 1 : 0}`
+            url: `/pages/merchant/delivery/detail?codes=${this.isSelectAll ? this.allCodes().join(',') : this.selectCodes.join(',')}&merge=${this.isSelectAll ? 1 : this.selectCodes.length > 1 ? 1 : 0}`
         })
     }
     onClickLookNo(item: any) {
@@ -249,24 +262,7 @@ export default class ClassName extends BaseNode {
     }
     onClickSelectAll() {
         this.isSelectAll = !this.isSelectAll
-        // if (this.isSelectAll && this.totalPage > this.queryParams.pageIndex) {
-        //     uni.showLoading({
-        //         title: "加载中",
-        //     })
-        //     const num: number = this.totalPage - this.queryParams.pageIndex
-        //     console.log(num);
-            
-        //     for (let i = 0; i < num; i++) {
-        //         ((i)=> {
-        //             // this.loadAllPageTimer && clearTimeout(this.loadAllPageTimer)
-        //             this.loadAllPageTimer = setTimeout(() => {
-        //                 this.queryParams.pageIndex += 1
-        //                 this.reqNewData()
-        //             }, i == 0 ? 0 : 600)
-        //         })(i)
-        //     }
-        // }
-        // console.log(this.isSelectAll);
+        if (!this.isSelectAll) this.selectCodes = []
 
     }
     inSelect(code: string) {

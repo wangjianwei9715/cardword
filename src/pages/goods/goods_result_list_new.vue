@@ -59,7 +59,8 @@
 						<scroll-view scroll-x="true" class="scroll">
 							<view class="myHitCard" v-for="(item, index) in myHitList" :key="'myHitCard' + index">
 								<view class="myHitCard_top">
-									<muqian-lazyLoad class="img" :src="$parsePic(item.pics[0])"></muqian-lazyLoad>
+									<muqian-lazyLoad class="img" :src="$parsePic(item.pics[0])"
+										@click="onClickPreviewCard(item.pics)"></muqian-lazyLoad>
 									<view class="rarityWrap" v-if="item.rarity">
 										<view class="rarityItem" v-for="s in item.rarity.split('')"></view>
 									</view>
@@ -96,7 +97,8 @@
 					</view>
 					<view class="resultCard_right">
 						<view class="num flexCenter" v-if="item.pics.length > 1">{{ item.pics.length }}</view>
-						<muqian-lazyLoad class="img" :src="$parsePic(item.pics[0])"></muqian-lazyLoad>
+						<muqian-lazyLoad class="img" :src="$parsePic(item.pics[0])"
+							@click="onClickPreviewCard(item.pics)"></muqian-lazyLoad>
 						<view class="rarityWrap" v-if="item.rarity">
 							<view class="rarityItem" v-for="s in item.rarity.split('')"></view>
 						</view>
@@ -376,6 +378,9 @@ export default class ClassName extends BaseNode {
 	// 	this.chooseId = index;
 	// 	this.reqSearchList()
 	// }
+	// onClickImgs(item:any){
+	// 	uni.previewImage({ urls });
+	// }
 	onClickRandomMx() {
 		if (this.randomList == '') {
 			app.http.Get('dataApi/good/' + this.goodCode + '/select/randomNo', {}, (res: any) => {
@@ -387,7 +392,12 @@ export default class ClassName extends BaseNode {
 		}
 	}
 	onClickPreviewCard(pic: any) {
-		const urls = pic.split(',').map((x: any) => parsePic(x))
+		let urls = []
+		if (typeof pic != "string") {
+			urls = pic.map((x: any) => parsePic(x))
+		} else {
+			urls = pic.split(',').map((x: any) => parsePic(x))
+		}
 		uni.previewImage({ urls });
 	}
 	replacePic(str: string) {
@@ -397,7 +407,7 @@ export default class ClassName extends BaseNode {
 		app.http.Get(`dataApi/good/${this.goodCode}/result/home`, {}, (res: any) => {
 			this.homeData = res.data
 			this.userBeforeHasScore = this.homeData.userRatingScore != 0
-			uni.$emit("ratingInfo",{score:this.getScore(res.data.ratingScore),ratingNum:res.data.ratingNum,code:this.goodCode})
+			uni.$emit("ratingInfo", { score: this.getScore(res.data.ratingScore), ratingNum: res.data.ratingNum, code: this.goodCode })
 		})
 	}
 	reqMyHit() {
