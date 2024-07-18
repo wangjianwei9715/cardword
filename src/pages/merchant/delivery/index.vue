@@ -107,8 +107,8 @@
             </view>
             <view class="bottomSafeArea"></view>
         </view>
-        <view class="bottomSafeArea">
-            <view class="batchFakerWrap" v-if="onBatchSelect" style="height:160rpx;"></view>
+        <view class="bottomSafeArea" style="pointer-events: none;">
+            <view class="batchFakerWrap" v-if="onBatchSelect" style="height:160rpx;pointer-events: none;"></view>
         </view>
     </view>
 </template>
