@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2024-06-25 15:43:23
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-07-18 13:58:35
+ * @LastEditTime: 2024-07-18 15:13:24
  * @FilePath: \card-world\src\pages\merchant\delivery\index.vue
  * @Description: ✌✌✌✌✌✌
  * 
@@ -108,8 +108,7 @@
             <view class="bottomSafeArea"></view>
         </view>
         <view class="bottomSafeArea">
-
-            <view class="batchFakerWrap" v-if="onBatchSelect" style="height:160rpx"></view>
+            <view class="batchFakerWrap" v-if="onBatchSelect" style="height:160rpx;"></view>
         </view>
     </view>
 </template>
@@ -263,7 +262,6 @@ export default class ClassName extends BaseNode {
     onClickSelectAll() {
         this.isSelectAll = !this.isSelectAll
         if (!this.isSelectAll) this.selectCodes = []
-
     }
     inSelect(code: string) {
         return this.selectCodes.includes(code)

@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-24 11:05:35
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-09 15:55:03
- * @FilePath: \jichao_app_2\src\components\transitionNav\transitionNav.vue
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2024-07-18 15:15:33
+ * @FilePath: \card-world\src\components\transitionNav\transitionNav.vue
  * @Description: 渐变导航栏（兼容nvue, nvue中把组件放到结构最下面:越后层级越高）
 -->
 <template>
@@ -274,7 +274,7 @@ export default {
     methods: {
         init() {
             // #ifdef APP-PLUS
-            if (this.changeStatusBarStyle) {
+            if (this.changeStatusBarStyle&&this.transition) {
                 plus.navigator.setStatusBarStyle(this.statusBarStyleArray[0]);
             }
             // #endif
