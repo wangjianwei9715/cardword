@@ -115,7 +115,7 @@
 		orderCode = '';
 		goodCode = '';
 		currentPage = 1;
-		pageSize = 30;
+		pageSize = 20;
 		noMoreData = false;
 		picList:any = [];
 		pintuanType = 0;
@@ -241,7 +241,7 @@
 			let url = `me/orderInfo/buyer/${this.orderCode}/nos`
 			if(this.sortParams.od) params.sort = this.sortParams.od;
 			if(this.goodAllOrder) {
-				params.noSize = 90
+				params.noSize = 30
 				params.leadOrderCode = this.orderCode;
 				url = this.sortParams.od ? `me/good/${this.goodCode}/orderNos/plain` : `me/good/${this.goodCode}/orderNos/group`;
 			};

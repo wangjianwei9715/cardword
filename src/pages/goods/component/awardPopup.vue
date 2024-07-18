@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-09 17:37:06
+ * @LastEditTime: 2024-07-18 11:37:02
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -123,7 +123,7 @@
 
 			app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/noAward/list`, listParams,
 				(res:any)=>{
-					this.awardNum.sole=res.num2;
+					this.awardNum.sole=res.num2+(res.zuhecheNum||0);
 					this.awardNum.random=res.num1;
 					res.list && (this.awardList = [...this.awardList,...res.list]);
 					this.listParams.isFetchEnd = res.totalPage<=listParams.pageIndex;

@@ -36,6 +36,11 @@
 		}
 		public get noInfo() : object {
 			const { playerChinese, player, teamChinese, team, seq, cardSet, number, name, zuheche } = this.data;
+			if(name=="等待商家搓卡"){
+				return{
+					desc:name
+				}
+			}
 			if(uni.$u.test.object(zuheche) && zuheche.tp==1){
 				return {
 					cName:`${teamChinese}`,

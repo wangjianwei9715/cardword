@@ -37,8 +37,8 @@
 
       <payNeedKnow :check.sync="gmCheck"/>
 
-      <view v-show="(goodsData.bit&32) == 32" class="kami-title" >
-        <view @click="cuokaSet(!cuokaOpne)" class="kami-gx" :class="{ 'kami-check': cuokaOpne}"></view>商家代搓
+      <view v-show="(goodsData.bit&32) == 32" class="kami-title" @click="cuokaSet(!cuokaOpne)" >
+        <view class="kami-gx" :class="{ 'kami-check': cuokaOpne}"></view>商家代搓
       </view>
 
       <view class="bottom-content-box">

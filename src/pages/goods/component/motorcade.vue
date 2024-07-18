@@ -21,12 +21,15 @@
 					<view class="chedui-rank-item">
 						<view class="chedui-rank-item-left">
 							<view class="chedui-rank-item-num" :class="`chedui-rank-item-num-${item.index}`">{{item.index}}</view>
-							<view class="chedui-avatar-box" :class="`chedui-avatar-box${item.index}`">
-								<image v-if="item.occupy" class="chedui-rank-avatar" :src="`${item.avatar&&item.avatar!=''&&!item.anonymous?decodeURIComponent(item.avatar):defaultAvatar}`"/>
+							<view class="chedui-avatar-box" :class="`chedui-avatar-box${item.index}`" >
+								<image v-if="item.occupy" class="chedui-rank-avatar" :src="`${item.avatar&&item.avatar!=''&&!item.anonymous?decodeURIComponent(item.avatar):defaultAvatar}`" @click="onClickGoMerchant(item)"/>
 								<image v-else class="chedui-rank-avatar" :src="waitAvatar"/>
 							</view>
 							<view class="chedui-rank-name" v-if="item.occupy">
-								<view class="chedui-rank-n u-line-1">{{item.anonymous?"匿名用户":item.userName}}</view>
+								<view class="chedui-rank-n">
+									<view class="name-text u-line-1" @click="onClickGoMerchant(item)">{{item.anonymous?"匿名用户":item.userName}}</view>
+									<medalIcon v-if="!item.anonymous && item.medal" :src="item.medal.pic" :userId="item.userId"/>
+								</view>
 								<view class="chedui-rank-jf u-line-1">积分 {{item.amount}}</view>
 							</view>
 						</view>
@@ -42,7 +45,10 @@
 							<image class="chedui-rank-avatar" :src="decodeURIComponent(userData.avatar)"/>
 						</view>
 						<view class="chedui-rank-name">
-							<view class="chedui-rank-n u-line-1">{{userData.name||''}}</view>
+							<view class="chedui-rank-n">
+								<view class="name-text u-line-1">{{userData.name||''}}</view>
+								<!-- <medalIcon v-if="!item.anonymous && item.medal" :src="item.medal.pic" :userId="item.userId"/> -->
+							</view>
 							<view class="chedui-rank-jf u-line-1">积分 {{cheduiData.myAmount}}</view>
 						</view>
 					</view>
@@ -101,6 +107,11 @@
 					return x.name
 				}).slice(0,5)
 			}
+		}
+		onClickGoMerchant(item){
+			app.platform.hasLoginToken(()=>{
+				app.navigateTo.goPersonHome(item.userId,item.anonymous)
+			})
 		}
 		isPullDown(isPull:boolean) {
 			//#ifdef APP-PLUS
@@ -378,11 +389,13 @@
 	}
 	.chedui-rank-n{
 		width: 100%;
-		font-size: 25rpx;
-		
-		
-		color: #333333;
 		margin-bottom: 5rpx;
+		display: flex;
+		align-items: center;
+	}
+	.name-text{
+		font-size: 25rpx;
+		color: #333333;
 	}
 	.chedui-rank-jf{
 		width: 100%;
