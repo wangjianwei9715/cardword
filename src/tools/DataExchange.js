@@ -22,7 +22,7 @@ export const indexMenu = [
     {icon:'/static/index/tabs/tab5.png',needLogin:true,name:'店铺列表',url:'/pages/userinfo/merchant_listV2'},
 ]
 export const goodsTabs = [
-    {name:'推荐',id:0,url:'main'},
+    {name:'推荐',id:0,url:'main/II'},
     {name:'篮球',id:1,url:'basketball'},
     {name:'足球',id:2,url:'football'},
     {name:'宝可梦',id:9,url:'animeTv'},

@@ -356,7 +356,6 @@
 	.price-text {
 		font-size: 28rpx;
 		font-weight: 600;
-		margin-left: -6rpx;
 	}
 	.decimal{
 		font-size: 18rpx;
@@ -528,7 +527,6 @@
 	.dy-price-text {
 		font-size: 22rpx;
 		font-weight: 600;
-		margin-left: -6rpx;
 	}
 	.dy-decimal{
 		font-size: 18rpx;
@@ -608,7 +606,6 @@
 		font-size: 28rpx;
 		font-weight: 600;
 		color:#535670;
-		margin-left: -6rpx;
 	}
 	.ad-decimal{
 		font-size: 22rpx;

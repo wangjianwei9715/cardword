@@ -1,18 +1,18 @@
 <!--
- * @FilePath: \jichao_app_2\src\components\buyCardId\buyCardId.vue
+ * @FilePath: \jichao_app_2\src\pages\userinfo\component\buyCardId.vue
  * @Author: wjw
  * @Date: 2022-06-10 16:52:20
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-25 14:42:33
+ * @LastEditTime: 2024-07-15 17:13:08
  * Copyright: 2023 .
  * @Descripttion: 
 -->
 <template>
 	<view class="buy-card">
 		<view class="card-index" v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index" @click="onClickLookCard(item)">
-			<view class="left" :class="{'bingo-name':item.bingo,'wincard':item.state==2}">
-				{{item.name}}
-			</view>
+			<text class="left" :class="{'bingo-name':item.bingo}">
+				<view v-for="(tipsItem,tipsIndex) in tipsLength(item)" :key="tipsIndex" class="card-tips" :style="{background:tipsData[tipsItem.tips].background}">{{tipsData[tipsItem.tips].text}}</view>{{cardName(item)}}
+			</text>
 			<view v-show="index<cardList.length-1" class="left-bottom-order"></view>
 		</view>
 	</view>
@@ -22,6 +22,7 @@
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { app } from "@/app";
+	import { _Maps } from "@/tools/map"
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:''})
@@ -31,6 +32,7 @@
 		@Prop({default:false})
 		waitPay:any;
 		
+		tipsData = _Maps._GoodsTips;
 		picList:any = []
 		created(){//在实例创建完成后被立即调用
 			
@@ -39,6 +41,24 @@
 		}
 		destroyed(){
 			
+		}
+		
+		cardName(item){
+			return uni.$u.test.object(item.zuheche) && item.zuheche.tp==1 ? `${item.zuheche.name}车位-${item.name}` : item.name
+		}
+		tipsLength(item){
+			const { state, zuheche, award } = item;
+			let list = [];
+			if(state==2){
+				list.push({ tips:1 })
+			};
+			if(uni.$u.test.object(zuheche)){
+				list.push({ tips:zuheche.tp==1?2:3 })
+			}
+			if(uni.$u.test.object(award)){
+				list.push({ tips:4 })
+			}
+			return list;
 		}
 		onClickLookCard(item:any){
 			if(item.state!=2) return;
@@ -78,8 +98,8 @@
 				display: flex;
 				align-items: center;
 				font-size: 22rpx;
-				
-				color: #333333;
+				color: #666666;
+				font-weight: 300;
 				line-height: 32rpx;
 				padding:10rpx 0;
 			}
@@ -111,5 +131,17 @@
 	}
 	.wincard{
 		color:#FA1545 !important
+	}
+	.card-tips{
+		display: inline-flex;
+		height:24rpx;
+		text-align: center;
+		line-height: 24rpx;
+		font-size: 20rpx;
+		color: #FFFFFF;
+		box-sizing: border-box;
+		padding:0 4rpx;
+		z-index: 2;
+		margin-right: 12rpx;
 	}
 </style>

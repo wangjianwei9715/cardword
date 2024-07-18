@@ -1,17 +1,5 @@
 <template>
 	<view class="buyinfo-box">
-		<view class="buyinfo-item" v-show="num>0" @click="showBasePopup=true">
-			<view class="item-left">
-				<view class="name">
-					<view class="title">随机正版基础卡片</view>
-					<view class="desc">查看发货说明</view>
-				</view>
-				<view class="num">x{{num}}</view>
-			</view>
-			<view class="item-right">
-				<muqian-lazyLoad class="card-pic" src="/static/order/card.png" mode="aspectFit"/>
-			</view>
-		</view>
 		<view class="buyinfo-item" v-if="buyerData.hits.length" @click="goResult">
 			<view class="item-left">
 				<view class="name">
@@ -24,6 +12,18 @@
 				<muqian-lazyLoad class="card-pic" :src="buyerData.hits[0].pic" mode="aspectFit" preview/>
 			</view>
 		</view>
+		<view class="buyinfo-item" v-if="zuhecheData.num>0">
+			<view class="item-left">
+				<view class="name">
+					<view class="title">组合车车位</view>
+					<view class="desc">组合车</view>
+				</view>
+				<view class="num">x{{zuhecheData.num}}</view>
+			</view>
+			<view class="item-right">
+				<muqian-lazyLoad class="card-pic" :src="zuhecheData.logo" mode="aspectFit" preview/>
+			</view>
+		</view>
 		<view class="buyinfo-item" v-if="buyerData.noAwards.length">
 			<view class="item-left">
 				<view class="name">
@@ -34,6 +34,18 @@
 			</view>
 			<view class="item-right">
 				<muqian-lazyLoad class="card-pic" :src="buyerData.noAwards[0].awardPic" mode="aspectFit" preview/>
+			</view>
+		</view>
+		<view class="buyinfo-item" v-show="num>0" @click="showBasePopup=true">
+			<view class="item-left">
+				<view class="name">
+					<view class="title">随机正版基础卡片</view>
+					<view class="desc">查看发货说明</view>
+				</view>
+				<view class="num">x{{num}}</view>
+			</view>
+			<view class="item-right">
+				<muqian-lazyLoad class="card-pic" src="/static/order/card.png" mode="aspectFit"/>
 			</view>
 		</view>
 		<view class="buyinfo-item">
@@ -65,6 +77,9 @@
 		num!:number;
 		@Prop({default:0})
 		point!:number;
+		@Prop({default:()=>{}})
+		zuhecheData!:any;
+		
 		@Prop({default:""})
 		orderCode!:number;
 

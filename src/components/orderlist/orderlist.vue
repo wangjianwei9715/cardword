@@ -31,13 +31,15 @@
 			</view>
 			<view class="orderlist-index-bottom">
 				<view>
-					<view v-if="item.hitNum>0" class="hitnum-bg">
-						<view class="hitnum-tips" :style="{background:tipsData[1].background}">{{tipsData[1].text}}x{{item.hitNum}}</view>
-						<muqian-lazyLoad class="tips-pic" :src="getGoodsImg(decodeURIComponent(item.good.pic))"></muqian-lazyLoad>
+					<view v-if="item.icon">
+						<view v-for="(items,indexs) in item.icon" class="hitnum-bg">
+							<view class="hitnum-tips" :style="{background:itemsTips(items).background}">{{itemsTips(items).text}}x{{items.num}}</view>
+							<muqian-lazyLoad class="tips-pic" :src="getGoodsImg(decodeURIComponent(items.icon))" mode="aspectFit"></muqian-lazyLoad>
+						</view>
 					</view>
 				</view>
 				<view class="operate" v-if="item.operate" >
-					<view :class="['btn','btn-'+btnitem.cmd]" @click="onClickOperate(item,btnitem.cmd)" v-for="btnitem in item.operate" :key="btnitem.cmd">{{btnitem.name}}</view>
+					<view v-show="(btnitem.name!='删除订单'|| !item.icon || item.icon.length<=2)" :class="['btn','btn-'+btnitem.cmd]" @click="onClickOperate(item,btnitem.cmd)" v-for="btnitem in item.operate" :key="btnitem.cmd">{{btnitem.name}}</view>
 				</view>
 			</view>
 		</view>
@@ -48,26 +50,13 @@
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { getGoodsImg,filterPrice } from "@/tools/util";
-	const Tips = {
-		1:{
-			text:"中卡",
-			background:'linear-gradient(to right,rgba(250, 21, 69, 1),rgba(250, 21, 69, 0))'
-		},
-		2:{
-			text:"车位",
-			background:'linear-gradient(to right,rgba(250, 100, 0, 1),rgba(250, 100, 0, 0))'
-		},
-		3:{
-			text:"奖品",
-			background:'linear-gradient(to right,rgba(80, 231, 231, 1),rgba(80, 231, 231, 0))'
-		},
-	}
+	import { _Maps } from "@/tools/map"
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
 		orderList:any;
 		
-		tipsData = Tips;
+		tipsData = _Maps._GoodsTips;
 		getGoodsImg = getGoodsImg;
 		filterPrice = filterPrice;
 		countDownData:any = {};
@@ -85,6 +74,10 @@
 		}
 		onChangeTime({minutes,seconds}:any,item:any){
 			this.countDownData[item.code] = (minutes*60) + seconds;
+		}
+		itemsTips(item){
+			const type = item.tp=='hit'?1:(item.tp=='award'?4:2);
+			return this.tipsData[type]
 		}
 	}
 </script>
@@ -240,6 +233,8 @@
 					background:#EDEDF0;
 					position: relative;
 					border-radius: 4rpx;
+					display: inline-flex;
+					margin-right: 20rpx;
 				}
 				.tips-pic{
 					width: 88rpx;
@@ -252,7 +247,7 @@
 					left:0;
 					top:0;
 					text-align: center;
-					line-height: 26rpx;
+					line-height: 24rpx;
 					font-size: 20rpx;
 					color: #FFFFFF;
 					box-sizing: border-box;
@@ -299,7 +294,7 @@
 						font-size: 24rpx;
 						margin-right: 16rpx;
 						background:#fff;
-						border:2rpx dashed #E5E5EA;
+						border:2rpx solid #E5E5EA;
 						color:#333333;
 						font-weight: 500;
 					}
