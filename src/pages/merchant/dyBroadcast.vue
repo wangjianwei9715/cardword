@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-12-16 16:23:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-17 15:02:51
+ * @LastEditTime: 2024-07-19 10:57:15
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -503,8 +503,7 @@
             line-height: 32rpx;
         }
         .good-container-price{
-            font-size:34rpx;
-            font-family: Impact !important;
+            font-size:30rpx;
             font-weight: 600;
             color: #333333;
             height: 40rpx;
@@ -513,17 +512,15 @@
 
             text.text-price {
                 font-size: 34rpx;
-                font-family: Impact !important;
                 color: #333333;
                 line-height: 38rpx;
-                margin-right: 4rpx;
-                letter-spacing:1px
+                margin-right: 2rpx;
             }
             .decimal {
                 font-size: 24rpx;
                 font-weight: 600;
                 color: #333333;
-                letter-spacing:1px
+                margin-bottom: 3rpx;
             }
         }
     }

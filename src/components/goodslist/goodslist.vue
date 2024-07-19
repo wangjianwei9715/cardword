@@ -2,7 +2,9 @@
 	<view class="goodsContent">
 		<view class="goods-container" v-for="(item,index) in goodsList" :key="index">
 			<view class="goods-content">
-				<muqian-lazyLoad v-if="item.pic!=''" class="goods-pic" :src="getGoodsImg(decodeURIComponent(item.pic))" borderRadius="5rpx 5rpx 0 0" @click="onClickJumpUrl(item.goodCode)"></muqian-lazyLoad>
+				<view class="goods-pic-box" @click="onClickJumpUrl(item.goodCode)"> 
+					<muqian-lazyLoad v-if="item.pic!=''" class="goods-pic" :src="getGoodsImg(decodeURIComponent(item.pic))" borderRadius="5rpx 5rpx 0 0" ></muqian-lazyLoad>
+				</view>
 				<view class="goods-index">
 					<view class="goods-progress" :style="progressStyle(item.pintuan_type)">
 						<view class="progressMask" :style="{width:(100-goodsManaager.listPlan(item,'num'))+'%'}"></view>
@@ -168,13 +170,16 @@
 		@include flexCenter;
 		flex-wrap: wrap;
 	}
-	.goods-pic{
+	.goods-pic-box{
 		width: 357rpx;
 		height: 277rpx;
 		border-top-left-radius: 5rpx;
 		border-top-right-radius: 5rpx;
 	}
-
+	.goods-pic{
+		width: 357rpx;
+		height: 277rpx;
+	}
 	.goods-index{
 		width: 357rpx;
 		background: #FFFFFF;
@@ -208,8 +213,6 @@
 		border:1rpx solid #e8e8e8;
 		border-radius: 5rpx;
 		@include flexCenter;
-		text-align: center;
-		line-height: 19rpx;
 		left:20rpx;
 		top:6rpx;
 		font-weight: 600;
@@ -258,14 +261,15 @@
 		font-weight: 600;
 	}
 	.decimal{
-		font-size: 18rpx;
-		margin-bottom: 4rpx;
+		font-size: 20rpx;
+		margin-bottom: 3rpx;
+		font-weight: 600;
 	}
 	.lowest {
-		font-size: 18rpx;
+		font-size: 20rpx;
 		color: #C0C0C0;
 		margin-left: 6rpx;
-		margin-bottom: 4rpx;
+		margin-bottom: 3rpx;
 	}
 	.goods-priceMsg-right{
 		align-items: flex-end;

@@ -331,7 +331,8 @@ page {
         }
         .decimal{
             font-size: 20rpx;
-            margin-bottom: 4rpx;
+            margin-bottom: 5rpx;
+            font-weight: 600;
         }
         .content-right{
             width: 526rpx;

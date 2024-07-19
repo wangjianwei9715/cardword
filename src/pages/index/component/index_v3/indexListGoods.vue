@@ -358,11 +358,12 @@
 		font-weight: 600;
 	}
 	.decimal{
-		font-size: 18rpx;
+		font-size: 20rpx;
 		margin-bottom: 4rpx;
+		font-weight: 600;
 	}
 	.lowest {
-		font-size: 18rpx;
+		font-size: 20rpx;
 		color: #C0C0C0;
 		margin-left: 6rpx;
 		margin-bottom: 4rpx;
