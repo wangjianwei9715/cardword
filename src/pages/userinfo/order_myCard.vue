@@ -40,6 +40,20 @@
 					</view>
 				</view>
 			</view>
+			<view v-if="buyerData.zuheche.length">
+				<view class="buyer-title">组合车车位</view>
+				<view class="card-box" >
+					<view class="card-index" v-for="(item,indexs) in buyerData.zuheche" :key="indexs">
+						<view class="buyerbox-index small-width" :style="{'padding-bottom':'20rpx'}">
+							<view class="title">{{item.awardName}}</view>
+							<view class="cardno">对应卡密：{{item.name}}</view>
+						</view>
+						<view  class="mycard-right">
+							<muqian-lazyLoad class="card-pic" :src="item.awardPic" mode="aspectFit" preview/>
+						</view>
+					</view>
+				</view>
+			</view>
 			<view v-if="buyerData.noAwards.length">
 				<view class="buyer-title">拼团活动奖品</view>
 				<view class="card-box" >
@@ -50,7 +64,6 @@
 							<view class="desc">{{item.state}}</view>
 						</view>
 						<view  class="mycard-right">
-							<view class="icon-tips" :style="{background:tipsData[4].background}">{{tipsData[4].text}}</view>
 							<muqian-lazyLoad class="card-pic" :src="item.awardPic" mode="aspectFit" preview/>
 						</view>
 					</view>
@@ -99,6 +112,19 @@
 	import navigationbarTabs from "@/components/navigationbarTabs/navigationbarTabs.vue"
 	import baseCardPopup from "@/pages/goods/component/baseCardPopup.vue"
 	import { _Maps } from "@/tools/map"
+	class OrderParams {
+		pageIndex=1;
+		pageSize=50;
+		hitsNoMore=false;
+		awardNoMore=false;
+	}
+	class Buyer {
+		hits=[];
+		zuheche=[];
+		noAwards=[];
+		totalPoint=0;
+		totalBuyNoNum=0
+	}
 	const title = [
 		{index:0,name:'卡密信息'},
 		{index:1,name:'购入信息'}
@@ -122,14 +148,10 @@
 		searchText = '';
 		typeTabClick = false;
 		debug = app.updateDebug == 'on'
-		buyerData:any = {
-			hits:[],
-			noAwards:[],
-			totalPoint:0,
-			totalBuyNoNum:0
-		}
+		buyerData:any = new Buyer()
 		orderNum = 0;
 		orderPoint = 0;
+		orderParams = new OrderParams()
 		empty=false;
 		showBasePopup=false;
 		sortTab = [];
@@ -154,7 +176,11 @@
 		}
 		//   加载更多数据
 		onReachBottom() {
-			this.reqNewData() 
+			if(this.showCardNo){
+				this.reqNewData()
+			}else{
+				this.orderInfo()
+			}
 		}
 		onPageScroll(data: any) {
 			//@ts-ignore
@@ -225,6 +251,8 @@
 				this.noMoreData = false;
 				this.reqNewData()
 			}else{
+				this.orderParams = new OrderParams();
+				this.buyerData = new Buyer();
 				this.orderInfo()
 			}
 		}
@@ -280,16 +308,30 @@
 			const urlFront = currentOrder ? "me/orderInfo/buyer/" : "me/good/";
 			const code = currentOrder ? this.orderCode : this.goodCode;
 			const params = {
-				pageIndex:1,pageSize:100,leadOrderCode:currentOrder?null:this.orderCode
+				...this.orderParams,
+				leadOrderCode:currentOrder?null:this.orderCode
 			}
-			app.http.Get(`${urlFront}${code}/hits`,params,(res:any)=>{
-				this.buyerData.hits = res.list || [];
-				res.totalPoint && (this.buyerData.totalPoint = res.totalPoint)
-				res.totalBuyNoNum && (this.buyerData.totalBuyNoNum = res.totalBuyNoNum)
-			})
-			app.http.Get(`${urlFront}${code}/noAwards`,params,(res:any)=>{
-				this.buyerData.noAwards = res.list || []
-			})
+
+			if(!this.orderParams.hitsNoMore){
+				app.http.Get(`${urlFront}${code}/hits`,params,(res:any)=>{
+					const list = res.list || [];
+					this.buyerData.hits = this.buyerData.hits.concat(list);
+					res.totalPoint && (this.buyerData.totalPoint = res.totalPoint)
+					res.totalBuyNoNum && (this.buyerData.totalBuyNoNum = res.totalBuyNoNum);
+					this.orderParams.hitsNoMore = this.orderParams.pageIndex >= res.totalPage
+				})
+			}
+			
+			if(!this.orderParams.awardNoMore){
+				app.http.Get(`${urlFront}${code}/noAwards`,params,(res:any)=>{
+					const list = res.list || [];
+					const noAwards = list.filter(x=>(x.state!='999'));
+					const zuheche = list.filter(x=>(x.state=='999'));
+					this.buyerData.noAwards = this.buyerData.noAwards.concat(noAwards);
+					this.buyerData.zuheche = this.buyerData.zuheche.concat(zuheche);
+					this.orderParams.awardNoMore = this.orderParams.pageIndex >= res.totalPage
+				})
+			}
 		}
 		onClickGoMall(){
 			app.navigateTo.goMallIndex()
