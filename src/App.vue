@@ -316,7 +316,10 @@
 		font-family: "DIN";
 		src: url("~@/common/DIN/DINAlternateBold.ttf");
 	}
-
+	@font-face {
+		font-family: "DINCondensed";
+		src: url("~@/common/DIN/DINCondensedBold.ttf");
+	}
 	@font-face {
 		font-family: "eryaxindahei";
 		src: url("~@/common/Tao/CountDownNum.ttf");

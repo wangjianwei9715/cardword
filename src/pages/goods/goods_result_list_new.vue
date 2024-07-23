@@ -513,8 +513,9 @@ page {
 
 
 		.ratingNum {
-			font-family: Impact;
+			font-family: DINCondensed;
 			font-size: 72rpx;
+			font-weight: bold;
 			color: #FA1545;
 			position: absolute;
 			right: 0;

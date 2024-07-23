@@ -1390,7 +1390,7 @@ $uvui-nvue-style: true !default;
     font-weight: bold;
     font-size: 68rpx;
     color: #FA1545;
-    font-family: DINCondensed, DINCondensed;
+    font-family: DINCondensed;
     position: absolute;
     right: 0;
     bottom: -10rpx;
