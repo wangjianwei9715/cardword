@@ -33,7 +33,7 @@
         <view class="goodsContainer">
             <view class="goodsItem" v-for="(item, index) in goodsList" :key="index">
                 <view class="goodsItem_top">
-                    <muqian-lazyLoad class="logo" borderRadius="3rpx" :src="cardImg[item.tp]"></muqian-lazyLoad>
+                    <muqian-lazyLoad class="logo" borderRadius="3rpx" :src="item.tp==2?cardImg[item.tp]:item.pic"></muqian-lazyLoad>
                 </view>
                 <view class="goodsItem_bottom">
                     <view class="goodsName">{{ item.name }}</view>
