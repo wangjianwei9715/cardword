@@ -15,17 +15,19 @@
 					<view class="drawer-header-left">共计<text>{{currentAdCardListLength}}</text>张</view>
 					<view class="drawer-header-right" @click="onClickSelectAll()">全选</view>
 				</view>
-				<view class="drawer-center-item" v-for="(item,index) in currentAdCardList" :key="index">
-					<view class="drawer-item-box">
-						<view class="drawer-item-surplus">剩{{item.remaining_quantity}}次</view>
-						<view>
-							<view class="drawer-item-time">{{item.hour}}小时</view>
+				<view class="drawer-adcard-container">
+					<view class="drawer-center-item" v-for="(item,index) in currentAdCardList" :key="index">
+						<view class="drawer-item-box">
+							<view class="drawer-item-surplus">剩{{item.remaining_quantity}}次</view>
+							<view>
+								<view class="drawer-item-time">{{item.hour}}小时</view>
+							</view>
 						</view>
-					</view>
-					<view class="drawer-item-operate">
-						<view class="operate-btn" @click="onClickReduceNum(item)"><image class="icon-reduce" src="@/static/merchant/icon_reduce.png" /></view>
-						<input type="number" class="drawer-item-input" v-model.number="item.num" @blur="onBlurNum($event,item)"/>
-						<view class="operate-btn" @click="onClickAddNum(item)"><image  class="icon-add" src="@/static/merchant/icon_add.png" /></view>
+						<view class="drawer-item-operate">
+							<view class="operate-btn" @click="onClickReduceNum(item)"><image class="icon-reduce" src="@/static/merchant/icon_reduce.png" /></view>
+							<input type="number" class="drawer-item-input" v-model.number="item.num" @blur="onBlurNum($event,item)"/>
+							<view class="operate-btn" @click="onClickAddNum(item)"><image  class="icon-add" src="@/static/merchant/icon_add.png" /></view>
+						</view>
 					</view>
 				</view>
 				<view v-if="!hasUsableCard&&currentAdCardList.length==0" class="nouse-card">暂无可用的广告卡</view>
@@ -353,6 +355,11 @@
 		display: flex;
 		flex-wrap: wrap;
 	}
+	.drawer-adcard-container{
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+	}
 	.drawer-center-item{
 		width: 160rpx;
 		height:220rpx;
@@ -424,6 +431,9 @@
 			align-items: center;
 			justify-content: center;
 		}
+	}
+	.drawer-center-item:nth-child(4n){
+		margin-right: 0;
 	}
 	.good-act-content .drawer-item-inuse /deep/ .u-count-down__text{
 		font-size: 20rpx !important;
