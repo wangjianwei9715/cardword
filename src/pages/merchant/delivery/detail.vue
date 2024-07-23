@@ -102,6 +102,7 @@
             <view class="confirmBtn" v-if="queryParams.tp == 1" @click="onClickSubmit(item)">确认发货信息</view>
         </view>
         <view class="fake" style="height: 200rpx;"></view>
+        <empty v-if="list&& !list.length"/>
         <view class="bottomAction" v-if="queryParams.isDetail!=1">
             <view class="actionWrap uni-flex">
                 <view class="btn btn_white" @click="companySelectShow = true">默认物流</view>

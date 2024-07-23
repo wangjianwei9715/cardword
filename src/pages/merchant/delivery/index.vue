@@ -1,18 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
- * @Date: 2024-06-25 15:43:23
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-07-18 15:13:24
- * @FilePath: \card-world\src\pages\merchant\delivery\index.vue
- * @Description: ✌✌✌✌✌✌
- * 
- * Copyright (c) 2024 by ${lsj}, All Rights Reserved. 
--->
-<!--
- * @Author: lsj a1353474135@163.com
  * @Date: 2024-06-17 10:05:21
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-06-27 14:25:17
+ * @LastEditTime: 2024-07-23 14:09:42
  * @FilePath: \card-world\src\pages\merchant\delivery\index.vue
  * @Description: ✌✌✌✌✌✌
  * 
@@ -94,6 +84,7 @@
                     :class="[inSelect(item.goodCode) || isSelectAll ? 'cardSelect' : 'cardUnSelect']"></view>
             </view>
         </view>
+        <empty v-if="list&& !list.length"/>
         <view class="bottomActionWrap" v-if="onBatchSelect">
             <view class="btmWrap">
                 <view class="radio" :class="{ radio_select: isSelectAll }" @click="onClickSelectAll">

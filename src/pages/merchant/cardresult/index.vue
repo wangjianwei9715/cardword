@@ -67,6 +67,7 @@
 
             </view>
         </view>
+        <empty v-if="list&& !list.length"/>
         <view class="bottomSafeArea"></view>
     </view>
 </template>
