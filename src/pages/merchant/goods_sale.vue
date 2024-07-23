@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-12-16 16:23:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-11 16:22:48
+ * @LastEditTime: 2024-07-19 10:56:23
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -238,28 +238,23 @@
             justify-content: space-between;
         }
         .item-price{
-            font-size: 18rpx;
-            font-family: Impact !important;
+            font-size: 22rpx;
             font-weight: 600;
             color: #333333;
-            height: 40rpx;
             display: flex;
             align-items: flex-end;
-            
+            font-family: Impact !important;
             text.text-price {
-                font-size: 33rpx;
-                font-family: Impact !important;
+                font-size: 28rpx;
                 color: #333333;
-                line-height: 38rpx;
-                margin-right: 10rpx;
+                margin-right: 4rpx;
                 letter-spacing:3rpx;
             }
 
             text:last-child {
-                font-size: 23rpx;
-                
+                font-size: 20rpx;
                 font-weight: 600;
-                color: #959695;
+                color: #999999;
             }
         }
         .item-num{

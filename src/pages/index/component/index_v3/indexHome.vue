@@ -24,7 +24,7 @@
 					<div class="feature-live-box">
 						<image class="feature-live-pic" :src="decodeURIComponent(broadCastData.merchantLogo)" mode="aspectFill"/>
 					</div>
-					<text class="feature-live-name">{{broadCastData.merchantName}}</text>
+					<text class="feature-live-name u-line-1">{{broadCastData.merchantName}}</text>
 				</div>
 				<div class="feature-live-right">
 					<swiper class="broadCast-box"  :current="broadCurrent" autoplay circular @change="e=> broadCurrent=e.detail.current">

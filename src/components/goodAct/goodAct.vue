@@ -128,7 +128,7 @@
 			display: flex;
 			align-items: flex-start;
 			.act-box-name{
-				margin:18rpx 0;
+				margin:16rpx 0;
 				width:82rpx;
 				font-size: 22rpx;
 				color: #333333;

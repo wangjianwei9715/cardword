@@ -43,8 +43,8 @@
 			}
 			if(uni.$u.test.object(zuheche) && zuheche.tp==1){
 				return {
-					cName:`${teamChinese}`,
-					eName:`${team}`,
+					cName:`${this.type==3?playerChinese:teamChinese}`,
+					eName:`${this.type==3?player:team}`,
 					desc:`${zuheche.name} 组合车车位`
 				}
 			}

@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-15 17:08:17
+ * @LastEditTime: 2024-07-19 14:50:17
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -310,11 +310,14 @@
 				this.operateData = this.orderSetOperate(data);
 				this.detailPic = parsePic(getGoodsImg(decodeURIComponent(data.good.pic)))
 				if(data.zuhecheNoNum>0){
-					this.detailZuheche = {
-						num:data.zuhecheNoNum,
-						logo:data.noList.find(x=>{
-							return uni.$u.test.object(x.zuheche)
-						}).zuheche.logo || ""
+					const zuhecheData = data.noList.find(x=>{
+						return x.zuheche && uni.$u.test.object(x.zuheche)
+					})
+					if(zuhecheData){
+						this.detailZuheche = {
+							num:data.zuhecheNoNum,
+							logo:zuhecheData.zuheche.logo || ""
+						}
 					}
 				}
 				if(data.good.pintuanType>10){

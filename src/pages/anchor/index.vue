@@ -94,7 +94,14 @@
 			app.http.Get('my/cuoka/home',params,(res:any)=>{
 				for (const key in this.merchantData) {
 					if (Object.prototype.hasOwnProperty.call(res, key)) {
-						this.merchantData[key] = res[key];
+						if(key=='list'){
+							if(params.pageIndex==1){
+								this.merchantData.list = [];
+							}
+							this.merchantData.list = this.merchantData.list.concat(res.list);
+						}else{
+							this.merchantData[key] = res[key];
+						}
 					}
 				}
 				params.totalPage = res.totalPage

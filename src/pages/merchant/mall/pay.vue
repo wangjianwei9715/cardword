@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 16:19:36
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2024-02-05 17:57:51
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-07-23 10:14:00
  * @FilePath: \jichao_app_2\src\pages\merchant\mall\pay.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -111,7 +111,7 @@ export default class ClassName extends BaseNode {
         return this.goodsDetail.tp===1
     }
     onClickPay() {
-        if (!this.addressData.id) {
+        if (this.needAddress&&!this.addressData.id) {
             uni.showToast({
                 title: '请选择一个收货地址',
                 icon: 'none'
@@ -172,7 +172,7 @@ export default class ClassName extends BaseNode {
         });
         app.http.Get("me/delivery", {}, (res: any) => {
             if (res.list && res.list.length) {
-                this.addressData = res.list.find((item: any) => item.default)
+                this.addressData = res.list.find((item: any) => item.default) || {}
             }
         });
 
