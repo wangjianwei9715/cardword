@@ -194,7 +194,7 @@
 			}
 			if (cmd == "resultCard") {
 				uni.navigateTo({
-					url:`/pages/userinfo/goods_result_list?chooseIds=1&code=${good.goodCode}&order=${orderCode}&random=${good.state>0}`
+					url:`/pages/goods/goods_result_list_new?chooseIds=1&code=${good.goodCode}`
 				});
 			}
 			if (["receive_good","cancel","buy_delete_order"].includes(cmd)) {

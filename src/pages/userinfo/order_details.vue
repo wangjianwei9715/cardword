@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-19 14:50:17
+ * @LastEditTime: 2024-07-24 15:05:09
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -101,7 +101,7 @@
 				</view>
 				<!-- 卡密信息|购入信息 -->
 				<buyCardId v-show="cardTabsCurrent==0" :cardList="cardList"/>
-				<buyInfo v-show="cardTabsCurrent==1" ref="rBuyInfo" :orderCode="orderCode" :num="orderData.buyNoNum" :point="orderData.point" :zuhecheData="detailZuheche" @goResult="onClcikResult(1)"/>
+				<buyInfo v-show="cardTabsCurrent==1" ref="rBuyInfo" :orderCode="orderCode" :num="orderData.buyNoNum" :point="orderData.point" :zuhecheData="detailZuheche" @goResult="onClcikResult()"/>
 			</view>
 			<!-- 订单详细信息 -->
 			<view class="order-info padding-lr" v-if="orderInfo.orderNo.desc!=''">
@@ -459,7 +459,7 @@
 				})
 			}
 			if(cmd=='resultCard'){
-				this.onClcikResult(1)
+				this.onClcikResult()
 			}
 			if(cmd=='giving'){
 				if(this.orderData.isCuoka) {
@@ -547,10 +547,9 @@
 				}
 			});
 		}
-		onClcikResult(chooseID:any){
-			const random = this.orderData.good.state>0?true:false
+		onClcikResult(){
 			uni.navigateTo({
-				url: '/pages/userinfo/goods_result_list?chooseIds=' + chooseID+'&code='+this.orderGoodCode+'&order='+this.orderData.code+'&random='+random
+				url:`/pages/goods/goods_result_list_new?chooseIds=1&code=${this.orderGoodCode}`
 			})
 		}
 		// 取消支付
