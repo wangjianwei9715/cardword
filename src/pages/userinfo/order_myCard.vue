@@ -18,14 +18,14 @@
 			<view v-if="goodAllOrder&&!sortParams.od">
 				<view class="card-box" v-for="(item,index) in cardList" :key="index">
 					<view class="order-title">订单号：{{item.goodOrder}}</view>
-					<view class="card-index" :class="{'win-card-box':items.state==2}" v-for="(items,indexs) in item.nos" :key="indexs">
+					<view class="card-index" v-for="(items,indexs) in item.nos" :key="indexs">
 						<cardNoInfo :data="items" :type="pintuanType"/>
 					</view>
 					<view class="more-text" v-show="item.nos&&(item.nos.length<item.noNum)" @click="onClickMoreNos(item)">查看更多</view>
 				</view>
 			</view>
 			<view class="card-box" v-else>
-				<view class="card-index" :class="{'win-card-box':items.state==2}" v-for="(items,indexs) in cardList" :key="indexs">
+				<view class="card-index" v-for="(items,indexs) in cardList" :key="indexs">
 					<cardNoInfo :data="items" :type="pintuanType"/>
 				</view>
 			</view>
