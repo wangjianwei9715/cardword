@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-06-10 16:52:20
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-15 17:13:08
+ * @LastEditTime: 2024-07-25 16:58:28
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -135,12 +135,12 @@
 	.card-tips{
 		display: inline-flex;
 		height:24rpx;
-		text-align: center;
-		line-height: 24rpx;
-		font-size: 20rpx;
+		align-items: center;
+		justify-content: center;
+		font-size: 18rpx;
 		color: #FFFFFF;
 		box-sizing: border-box;
-		padding:0 4rpx;
+		padding:0 6rpx;
 		z-index: 2;
 		margin-right: 12rpx;
 	}

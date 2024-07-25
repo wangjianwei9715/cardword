@@ -248,7 +248,7 @@
 					top:0;
 					text-align: center;
 					line-height: 24rpx;
-					font-size: 20rpx;
+					font-size: 18rpx;
 					color: #FFFFFF;
 					box-sizing: border-box;
 					padding:0 2rpx;

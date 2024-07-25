@@ -334,7 +334,7 @@
 		top:0;
 		text-align: center;
 		line-height: 28rpx;
-		font-size: 20rpx;
+		font-size: 18rpx;
 		color: #FFFFFF;
 	}
 </style>

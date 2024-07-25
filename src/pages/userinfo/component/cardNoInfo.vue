@@ -44,8 +44,7 @@
 			if(uni.$u.test.object(zuheche) && zuheche.tp==1){
 				return {
 					cName:`${zuheche.name}车位-${this.type==3?playerChinese:teamChinese}`,
-					eName:`${this.type==3?player:team}`,
-					desc:`${zuheche.name}车位-${this.type==3?playerChinese:teamChinese}`
+					desc:`${this.type==3?player:team}`
 				}
 			}
 			switch(this.type){
@@ -188,7 +187,7 @@
 			top:0;
 			text-align: center;
 			line-height: 24rpx;
-			font-size: 20rpx;
+			font-size: 18rpx;
 			color: #FFFFFF;
 			box-sizing: border-box;
 			padding:0 2rpx;
