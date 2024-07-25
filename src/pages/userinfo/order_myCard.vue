@@ -45,8 +45,8 @@
 				<view class="card-box" >
 					<view class="card-index" v-for="(item,indexs) in buyerData.zuheche" :key="indexs">
 						<view class="buyerbox-index small-width" :style="{'padding-bottom':'20rpx'}">
-							<view class="title">{{item.awardName}}</view>
-							<view class="cardno">对应卡密：{{item.name}}</view>
+							<view class="title">{{zuhecheTp==1?(zuhecheName+'车位-'):""}}{{item.name}}</view>
+							<view class="cardno">对应卡密：{{zuhecheTp==1?(zuhecheName+'车位-'):""}}{{item.name}}</view>
 						</view>
 						<view  class="mycard-right">
 							<muqian-lazyLoad class="card-pic" :src="item.awardPic" mode="aspectFit" preview/>
@@ -159,7 +159,8 @@
 			genre:1,
 			sort:""
 		};
-
+		zuhecheName="";
+		zuhecheTp=0;
 		onLoad(query:any) {
 			this.orderCode = query.code || '';
 			this.goodCode = query.goodCode;
@@ -327,6 +328,8 @@
 					const list = res.list || [];
 					const noAwards = list.filter(x=>(x.state!='999'));
 					const zuheche = list.filter(x=>(x.state=='999'));
+					this.zuhecheName = res.zuhecheName || "";
+					this.zuhecheTp = res.zuhecheTp || 0
 					this.buyerData.noAwards = this.buyerData.noAwards.concat(noAwards);
 					this.buyerData.zuheche = this.buyerData.zuheche.concat(zuheche);
 					this.orderParams.awardNoMore = this.orderParams.pageIndex >= res.totalPage

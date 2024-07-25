@@ -98,8 +98,8 @@
 		itemText(item,indexs){
 			const name = 'column'+(indexs+1);
 			const englishName = name+'_English';
-			const zuhecheName = indexs==0&&[1,2].includes(item.zuhecheTp)?`(${this.zuhecheName}系列车位)`:""
-			return ((this.english&&item[englishName]?item[englishName]:item[name])||'-') + zuhecheName;
+			const zuhecheName = indexs==0&&item.zuhecheTp==1?`${this.zuhecheName}车位-`:""
+			return zuhecheName + ((this.english&&item[englishName]?item[englishName]:item[name])||'-');
 		}
 		reqNewData(cb?:Function) {
 			// 获取更多商品
