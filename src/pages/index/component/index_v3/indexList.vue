@@ -162,20 +162,22 @@
 				this.$emit('update:current', e.detail.current)
 			},
 			onSortChange(data){
-				this.$set(this.sortData, this.current, data)
-				this.reload()
+				this.$set(this.sortData, this.current, data);
+				this.goTop(false)
+				this.reload(true,200)
 			},
-			reload(pullingdown=false){
+			reload(pullingdown=false,pullingdownTime=1000){
 				pullingdown&&(this.refreshing=true);
 				setTimeout(()=>{
 					this.$set(this.goodsList, this.current, { list:[], ...new ListParams()})
 					this.reqNewMainList()
-				},pullingdown?1000:0);
+				},pullingdown?pullingdownTime:0);
 			},
-			goTop(){
+			goTop(animated=true){
 				// #ifdef APP-NVUE
 				dom.scrollToElement(this.$refs.goTop[this.current], {
-					animated: true
+					offset:animated?0:-40,
+					animated
 				})
 				// #endif
 			},
