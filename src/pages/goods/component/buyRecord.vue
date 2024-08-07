@@ -46,7 +46,7 @@
 		padding:24rpx 20rpx 0 20rpx;
 		background: #FFFFFF;
 		border-radius: 4rpx;
-		margin-bottom: 14rpx;
+		margin-bottom: 12rpx;
 		.title{
 			font-weight: 600;
 			font-size: 24rpx;

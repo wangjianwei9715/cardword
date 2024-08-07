@@ -320,17 +320,17 @@ page {
             align-items: flex-end;
         }
         .price-icon{
-            font-size:38rpx;
+            font-size:40rpx;
             font-weight: 600;
             color: #333333;
         }
         .price-text {
-            font-size: 38rpx;
+            font-size: 40rpx;
             font-weight: 600;
             margin-left: -6rpx;
         }
         .decimal{
-            font-size: 20rpx;
+            font-size: 22rpx;
             margin-bottom: 5rpx;
             font-weight: 600;
         }

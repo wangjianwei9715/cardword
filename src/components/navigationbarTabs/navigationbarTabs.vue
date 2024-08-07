@@ -8,7 +8,7 @@
 			<view class="tab-header">
 				<view class="icon-back" :class="{'icon-back-white':scrollTopPercent<1 && !colorBlack}" v-show="showBack" @click="onClickBack"></view>
 				<view class="header-title">
-					<u-tabs :list="titles" lineHeight="0" :activeStyle="activeStyle" :inactiveStyle="inactiveStyle" itemStyle="height:88rpx;line-height:88rpx;" :current="current" @click="onClickTabs"></u-tabs>
+					<u-tabs :list="titles" lineHeight="0" :activeStyle="activeStyle" :inactiveStyle="inactiveStyle" itemStyle="height:88rpx;line-height:88rpx;padding:0 50rpx 0 50rpx" :current="current" @click="onClickTabs"></u-tabs>
 				</view>
 				<view class="header-icon" v-if="custom">
 					<slot name="right"></slot>
@@ -59,20 +59,16 @@ export default class navigationbar extends BaseComponent {
 	scrollTop=0;
 	navColor = "255,255,255"
 	activeStyle={
-		"font-size": "36rpx",
+		"font-size": "32rpx",
 		"font-weight": 600,
-		"color":"rgba(255,255,255,0.9)",
+		"color":"rgba(51,51,51,0.9)",
 	}
 	inactiveStyle={
 		"font-size": "32rpx",
 		"font-weight": 400,
-		"color":"rgba(255,255,255,0.6)",
+		"color":"#A2A8B4",
 	}
 	created() {//在实例创建完成后被立即调用
-		if(this.colorBlack){
-			this.activeStyle.color = "#333"
-			this.inactiveStyle.color = "#333"
-		}
 	}
 	mounted() {//挂载到实例上去之后调用
 		this.$nextTick(() => {

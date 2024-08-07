@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2024-06-26 13:37:24
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-09 15:13:41
+ * @LastEditTime: 2024-08-07 11:17:45
  * Copyright: 2024 .
  * @Descripttion: 
 -->
@@ -48,7 +48,7 @@
 
 <style lang="scss" scoped>
 	.specplay{
-		width: 750rpx;
+		width: 718rpx;
 		box-sizing: border-box;
 		height: 106rpx;
 		background: #FFFFFF;
@@ -56,7 +56,7 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		margin-bottom: 16rpx;
+		margin-bottom: 12rpx;
 		.border{
 			border-left: 1rpx solid #F2F2F7;
 			border-right: 1rpx solid #F2F2F7;

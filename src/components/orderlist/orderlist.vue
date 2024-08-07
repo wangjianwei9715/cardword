@@ -94,7 +94,7 @@
 			border-radius: 5rpx;
 			background:#fff;
 			box-sizing: border-box;
-			margin-bottom: 14rpx;
+			margin-bottom: 12rpx;
 			&-header{
 				width: 100%;
 				height:100rpx;
@@ -158,9 +158,9 @@
 					position: relative;
 					.title{
 						width: 100%;
-						font-size: 24rpx;
-						color: #333333;
-						line-height: 34rpx;
+						font-size: 28rpx;
+						color: rgba(0,0,0,0.9);
+						line-height: 40rpx;
 						margin-bottom: 0;
 						box-sizing: border-box;
 					}
@@ -196,7 +196,7 @@
 							height:40rpx;
 							line-height: 40rpx;
 							font-size: 24rpx;
-							color: rgba(0,0,0,0.9);
+							color: #333333;
 							display: inline-flex;
 						}
 						.total-price{
@@ -206,14 +206,15 @@
 							color: #000000;
 							line-height: 38rpx;
 							margin-left: 6rpx;
+							margin-top: 2rpx;
 						}
 						.total-price .price-text{
-							font-size: 36rpx;
+							font-size: 28rpx;
 							font-weight: 600;
 							margin-left:2rpx;
 						}
 						.total-price .decimal{
-							font-size: 24rpx;
+							font-size: 18rpx;
 							font-weight: 600;
 						}
 

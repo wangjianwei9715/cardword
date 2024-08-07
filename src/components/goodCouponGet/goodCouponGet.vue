@@ -92,12 +92,12 @@
 			}
 			.coupon-item{
 				height:36rpx;
+				background: url(@/static/goods/v3/coupon_bg.png) no-repeat center / 100% 100%;
 				border-radius: 2rpx;
 				box-sizing: border-box;
 				padding: 0 10rpx;
-				background: #FF5441;
-				font-size: 19rpx;
-				color: #FFFFFF;
+				font-size: 18rpx;
+				color: #FA1545;
 				text-align: center;
 				display: flex;
 				align-items: center;

@@ -121,7 +121,7 @@ export default class ClassName extends BaseComponent {
     height: 220rpx;
     background: #FFFFFF;
     border-radius: 5rpx;
-    margin-bottom: 14rpx;
+    margin-bottom: 12rpx;
     display: flex;
     box-sizing: border-box;
     align-items: center;
@@ -187,35 +187,21 @@ export default class ClassName extends BaseComponent {
 
         .goodsPriceContainer {
             flex: 1;
-            // font-size: 33rpx;
-            
             font-weight: bold;
             color: #333333;
-            font-size: 28rpx;
-            font-family: ArialBold !important;
-            
+            font-size: 26rpx;
             color: #333333;
-            // line-height: 38rpx;
-            // margin-right: 10rpx;
             letter-spacing: -2rpx;
-
             text:first-child {
                 font-size: 28rpx;
                 font-weight: 600;
             }
-
             .decimal {
                 font-size: 14rpx;
             }
-
             .priceTips {
-                // font-size: 23rpx;
-                // 
-                // 
-                // color: #959695;
                 margin-left: 14rpx;
-                font-size: 23rpx;
-                
+                font-size: 24rpx;
                 font-weight: 600;
                 color: #959695;
             }

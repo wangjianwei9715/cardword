@@ -53,7 +53,7 @@
 		box-sizing: border-box;
 		background: #FFFFFF;
 		border-radius: 4rpx;
-		margin-bottom: 14rpx;
+		margin-bottom: 12rpx;
 		.detail-box-title{
 			font-weight: 600;
 			font-size: 24rpx;

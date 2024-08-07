@@ -274,16 +274,14 @@
 	}
 	
 	.title-middle {
-		font-size: 26rpx;
-		
-		
+		font-size: 24rpx;
 		color: #333333;
 		line-height: 32rpx;
 		display: flex;
 	}
 
 	.title-middle2 {
-		background: #F0F0F2;
+		background: #F6F7FB;
 	}
 	.title-middle3 {
 		background: #FFFFFF;
@@ -294,7 +292,6 @@
 		box-sizing: border-box;
 		text-align: center;
 		font-size: 24rpx;
-		
 		font-weight: 600;
 		color: #333333;
 	}
@@ -305,12 +302,10 @@
 	.rules-table tr td{
 		height:76rpx;
 		line-height: 40rpx;
-		font-size: 23rpx;
-		
-		
-		color: #34363A;
+		font-size: 20rpx;
+		color: #333333;
 		text-align: center;
-		padding:10rpx ;
+		padding:20rpx ;
 	}
 	.item-content td{
 		height:60rpx !important;

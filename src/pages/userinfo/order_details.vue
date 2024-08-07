@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-12-14 14:35:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-24 15:05:09
+ * @LastEditTime: 2024-08-07 11:39:39
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -392,7 +392,7 @@
 				if(res.total>0){
 					const type = this.orderData.good.title.indexOf('足球')!=-1?1:0
 					uni.navigateTo({
-						url:`/pages/drawCard/drawCard?code=${this.orderCode}&data=${encodeURIComponent(JSON.stringify(res.list))}&num=${res.total}&hasNumber=${res.hasNumber}&picType=${type}&sp=${res.sp}&once=${once?1:0}&bit=${res.bit||0}`
+						url:`/pages/drawCard/drawCard?code=${this.orderCode}&data=${encodeURIComponent(JSON.stringify(res.list))}&num=${res.total}&hasNumber=${res.hasNumber}&picType=${type}&sp=${res.sp}&once=${once?1:0}&bit=${res.bit||0}&zuhecheName=${res.zuhecheName||''}`
 					})
 				}else{
 					if( res.retry && this.retryNum==0 ){
@@ -709,7 +709,6 @@
 					}
 					&-count{
 						font-size: 32rpx;
-						font-family: 'DIN';
 						font-weight: bold;
 						color: #FF4349;
 						margin-left: 14rpx;
@@ -772,8 +771,8 @@
 					position: relative;
 					.title{
 						width: 100%;
-						font-size: 24rpx;
-						color: #333333;
+						font-size: 28rpx;
+						color: rgba(0,0,0,0.9);
 						margin-bottom: 20rpx;
 						word-break:break-all;
 						display: -webkit-box;
@@ -843,13 +842,11 @@
 					box-sizing: border-box;
 					&-index{
 						font-size: 24rpx;
-						font-family:'DIN';
 						font-weight: bold;
 						color: #14151A;
 					}
 					&-num{
 						font-size: 32rpx;
-						font-family:'DIN';
 						font-weight: bold;
 						color: #14151A;
 					}
@@ -860,7 +857,7 @@
 	.order-desc{
 		width: 100%;
 		box-sizing: border-box;
-		border-bottom: 14rpx solid $content-bg;
+		border-bottom: 12rpx solid $content-bg;
 		padding:20rpx 20rpx 15rpx 20rpx;
 		background: #fff;
 		border-bottom-left-radius: 5rpx;
@@ -888,7 +885,7 @@
 			}
 			.price{
 				height:40rpx;
-				font-size: 26rpx;
+				font-size: 24rpx;
 				color: rgba(0,0,0,0.9);
 				line-height: 40rpx;
 				display: inline-flex;
@@ -903,13 +900,11 @@
 			}
 			.total-price .price-text{
 				font-size: 36rpx;
-				font-family: 'DIN';
 				font-weight: 600;
 				margin-left:2rpx;
 			}
 			.total-price .decimal{
-				font-size: 28rpx;
-				font-family: 'DIN';
+				font-size: 20rpx;
 				font-weight: 600;
 			}
 			.redfont{
@@ -947,13 +942,11 @@
 			.price{
 				&-index{
 					font-size: 24rpx;
-					font-family:'DIN';
 					font-weight: bold;
 					color: #FF4349;
 				}
 				&-num{
 					font-size: 32rpx;
-					font-family:'DIN';
 					font-weight: bold;
 					color: #FF4349;
 				}
@@ -1013,14 +1006,14 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:30rpx;
-		border-bottom: 14rpx solid $content-bg;
+		border-bottom: 12rpx solid $content-bg;
 		background: #fff;
 		border-radius: 5rpx;
 	}
 	.address-content{
 		width: 100%;
 		box-sizing: border-box;
-		border-bottom: 14rpx solid $content-bg;
+		border-bottom: 12rpx solid $content-bg;
 		padding:30rpx 25rpx;
 		background: #fff;
 		.title{
@@ -1073,7 +1066,7 @@
 		box-sizing: border-box;
 		background: #fff;
 		padding:30rpx 22rpx 20rpx 22rpx;
-		border-bottom: 14rpx solid $content-bg;
+		border-bottom: 12rpx solid $content-bg;
 		border-radius: 5rpx;
 		.title{
 			width: 100%;

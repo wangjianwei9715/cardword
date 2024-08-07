@@ -3,9 +3,9 @@
 		
 		<view class="detail-act-box">
 			<view v-show="cheduiData.list" class="act-box" @click.prevent="cheduiShowDrawer=true;isPullDown(false)">
-				<text class="box-name-text">车队排行榜</text>
+				<view class="box-name-icon"></view>
 				<view class="act-box-desc flex-between">
-					<u-notice-bar style="padding:0;text-align:right;height:32rpx;" :fontSize="'20rpx'" :text="rewardList" direction="column" icon="" color="#C4873B" bgColor="rgba(0,0,0,0)" :duration="3000" :flexEnd="true"></u-notice-bar>
+					<u-notice-bar style="padding:0;text-align:right;height:32rpx;" :fontSize="'20rpx'" :text="rewardList" direction="column" icon="" color="#23232B" bgColor="rgba(0,0,0,0)" :duration="3000" :flexEnd="true"></u-notice-bar>
 					<view class="detail-act-right"></view>
 				</view>
 			</view>
@@ -139,7 +139,7 @@
 		background: url(@/static/goods/v3/chedui_bg.png) no-repeat center / 100% 100%;
 		box-sizing: border-box;
 		margin:0 auto;
-		margin-bottom: 16rpx;
+		margin-bottom: 12rpx;
 	}
 	.detail-act-box{
 		width: 100%;
@@ -148,7 +148,7 @@
 			width: 100%;
 			height: 60rpx;
 			box-sizing: border-box;
-			padding:0 26rpx;
+			padding:0 20rpx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
@@ -161,12 +161,10 @@
 				padding-left: 2rpx;
 				background: linear-gradient(90deg, #DEC18B 0%, #C99C49 100%);
 			}
-			.box-name-text{
-				font-family: YouSheBiaoTiHei;
-				font-size: 28rpx;
-				color: #C4873B;
-				display: flex;
-				align-items: center;
+			.box-name-icon{
+				width: 170rpx;
+				height:34rpx;
+				background: url(@/static/goods/v3/chedui_title.png) no-repeat center / 100% 100%;
 			}
 			.icon-name{
 				width: 32rpx;
@@ -420,8 +418,8 @@
 		border-bottom: 1rpx solid #E6E6E6;
 	}
 	.detail-act-right{
-		width: 12rpx;
-		height:20rpx;
+		width: 10rpx;
+		height:16rpx;
 		background:url(@/static/goods/v3/chedui_right.png) no-repeat center /100% 100%;
 		margin-left: 12rpx;
 	}

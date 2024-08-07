@@ -117,7 +117,7 @@
 		width: 718rpx;
 		border-radius: 3rpx;
 		background:#fff;
-		margin-bottom: 14rpx;
+		margin-bottom: 12rpx;
 	}
 	.detail-act-box{
 		width: 100%;

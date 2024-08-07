@@ -61,7 +61,7 @@
 		box-sizing: border-box;
 		background: #FFFFFF;
 		border-radius: 4rpx;
-		margin-bottom: 14rpx;
+		margin-bottom: 12rpx;
 		.merchant-header{
 			width: 100%;
 			height: 46rpx;

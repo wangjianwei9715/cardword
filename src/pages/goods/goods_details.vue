@@ -20,6 +20,7 @@
 		<view class="detail-index-bg">
 			<!-- 详情头部信息 -->
 			<view class="detail-header">
+				<view class="detail-header-bg"></view>
 				<view class="header-base">
 					<view class="base-left">
 						<view class="header-price">
@@ -87,7 +88,7 @@
 					<view class="bottom-container-left-index-name">我的卡密</view>
 				</view>
 				<view class="bottom-container-left-index" @click="onClickAllCard()">
-					<view v-if="goodsData.zuheche>=1" class="icon-zuheche">增加车位</view>
+					<view v-if="goodsData.zuheche==1" class="icon-zuheche">增加车位</view>
 					<image class="bottom-icon" src="@/static/goods/v3/icon_card.png" mode="aspectFill" />
 					<view class="bottom-container-left-index-name">卡密列表</view>
 				</view>
@@ -100,7 +101,7 @@
 				<view class="btn-small" @click="onClickResult(1)">拆卡报告</view>
 			</view>
 		</view>
-		<share :operationShow="shareObj.shareShow" :shareData="shareObj.shareData" @operacancel="shareObj.shareShow=false" />
+		<share :operationShow="shareObj.shareShow" :shareData="shareObj.shareData" :favorType.sync="favorType" :goodCode="goodCode" @operacancel="shareObj.shareShow=false" />
 
 		<!-- 自选球队 -->
 		<checkTeamPay :teamCheckShow="choiceTeamData.teamCheckShow" :choiceTeamData="choiceTeamData"
@@ -362,12 +363,6 @@
 				}
 				shareObj.shareShow = true
 			}
-		}
-		onClickFavor() {
-			let url = !this.favorType ? "good/favor/" : "good/unfavor/"
-			app.http.Post(url + this.goodCode, {}, (data: any) => {
-				this.favorType = !this.favorType
-			})
 		}
 		onClickBuy() { 
 			app.platform.hasLoginToken(() => {
@@ -820,13 +815,15 @@
 					text-align: center;
 				}
 				.icon-zuheche{
-					width: 100rpx;
-					height:28rpx;
-					font-size: 20rpx;
+					width: 80rpx;
+					height:24rpx;
+					font-size: 18rpx;
 					color: #FFFFFF;
 					text-align: center;
-					line-height: 28rpx;
 					position: absolute;
+					display: flex;
+					align-items: center;
+					justify-content: center;
 					top:-10rpx;
 					left:30rpx;
 					z-index: 2;
@@ -1126,11 +1123,21 @@
 		color: #FFFFFF;
 	}
 	.detail-header{
-		width: 750rpx;
-		// background: url(@/static/goods/v3/title_bg.png) no-repeat top / 100% 296rpx;
+		width: 718rpx;
 		background: #fff;
 		box-sizing: border-box;
 		padding: 0 26rpx 26rpx 26rpx;
+		margin-top: 12rpx;
+		position:relative;
+		border-radius: 4rpx 4rpx 0rpx 0rpx;
+		.detail-header-bg{
+			width: 346rpx;
+			height:62rpx;
+			background: url(@/static/goods/detail/header_bg.png) no-repeat center / 100% 100%;
+			position: absolute;
+			right:0;
+			top:-7rpx;
+		}
 		.header-base{
 			width: 100%;
 			height:97rpx;
@@ -1171,28 +1178,28 @@
 				.countdown-custom{
 					width: 36rpx;
 					height:36rpx;
-					background: url(@/static/goods/v3/time_bg.png) no-repeat center / 100% 100%;
-					@include font(20rpx);
+					font-size: 24rpx;
+					color:#333333;
 					font-weight: 600;
 					display: inline-flex;
 					align-items: center;
 					justify-content: center;
-					margin:0 6rpx;
 				}
 				.countdown-doc{
 					height:inherit;
 					font-size: 20rpx;
-					color: #6F7277;
+					color: #AEAEB2;
 					display: inline-flex;
 					align-items: center;
 					justify-content: center;
+					margin:0 4rpx;
 				}
 			}
 		}
 		.goods-title {
 			width: 100%;
 			font-weight: 400;
-			font-size: 26rpx;
+			font-size: 28rpx;
 			color: #333333;
 			line-height: 35rpx;
 			word-break:break-all;
@@ -1201,7 +1208,7 @@
 	// 进度条
 	.goods-progress {
 		background: linear-gradient(to right,#FFBAC9,#FA1545);
-		width: 750rpx;
+		width: 718rpx;
 		height: 8rpx;
 		display: flex;
 		justify-content: flex-end;

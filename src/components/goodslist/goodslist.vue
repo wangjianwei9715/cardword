@@ -14,7 +14,7 @@
 							<text class="icon-text" :style="{color:gameplayType[item.pintuan_type].color}">{{goodsData(item).typeName1}}</text>
 							<text class="icon-text">{{goodsData(item).typeName2}}</text>
 						</view>
-						<text class="title-text u-line-2" :style="{'text-indent': isAndroid? '86rpx' :'70rpx'}">{{item.title}}</text>
+						<text class="title-text u-line-2" :style="{'text-indent': isAndroid? '86rpx' :'74rpx'}">{{item.title}}</text>
 					</view>
 					
 					<view class="goods-priceMsg" @click="onClickJumpUrl(item.goodCode)">
@@ -214,7 +214,7 @@
 		border-radius: 5rpx;
 		@include flexCenter;
 		left:20rpx;
-		top:6rpx;
+		top:8rpx;
 		font-weight: 600;
 	}
 	.icon-text{
