@@ -57,8 +57,8 @@
 			
 			if (process.env.NODE_ENV === "development") {
 				//   console.log("开发环境"); 
-				// app.bussinessApiDomain = `http://192.168.8.35:8701${app.requestVersion}`;
-				// app.bussinessApiDomain = `http://server.ssltest.ka-world.com${app.requestVersion}`; 
+				// app.bussinessApiDomain = `http://192.168.7.8:8701${app.requestVersion}`;
+				// app.dataApiDomain = `http://192.168.7.8:8701${app.requestVersion}`; 
 				// app.launch_url = ['http://service.s777.ka-world.com']
 				// app.funcApiDomain = "http://functest.ssl.ka-world.com/api/v2/";
 				// 正式服测试环境 

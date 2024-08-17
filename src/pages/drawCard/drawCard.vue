@@ -1,12 +1,3 @@
-<!--
- * @FilePath: \jichao_app_2\src\pages\drawCard\drawCard.vue
- * @Author: wjw
- * @Date: 2022-11-16 11:38:59
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-29 11:35:20
- * Copyright: 2022 .
- * @Descripttion: 
--->
 <template>
   <view>
     <!-- 启动动画 -->
@@ -41,7 +32,7 @@
 			<movable-area class="movable-area">
 				<movable-view
 					class="movable-content"
-          :disabled=" item.index != cardData.step || DrawCardOver || animationStart"
+          :disabled=" item.index != cardData.step || DrawCardOver || disabledMove"
           v-for="item in showList"
 					:key="item.index"
 					direction="all"
@@ -54,14 +45,33 @@
           @touchend.prevent="picTouchEnd"
 				>
           <view v-if="item.index == 0" class="movable-box dangban" ></view>
+          <!-- 大小车球队挡板 -->
+          <view v-else-if="!item.known&&item.zuhecheTeam" class="movable-box dangban-team"></view>
           <view v-else-if="item.index==nextStep(1)&&animationStart"></view>
           <animationCard v-else-if="item.color=='gold'&&animationSwitch" :start="item.index==cardData.step&&animationStart" :cardMove="item.index==nextStep(1)&&cardMove" :data="{team:(item.extra&&item.extra.team)?item.extra.team:'',position:(item.extra&&item.extra.position)?item.extra.position:'',rc:item.rc}" @over="onAnimationOver">
             <cardBox :item="item" :bit="cardBit" :defultPic="defultPic" @errorPic="parseImage()"/>
           </animationCard>
           <cardBox v-else :item="item" :bit="cardBit" :defultPic="defultPic" :animation="(item.index==nextStep(1))&&item.color=='gold'" @errorPic="parseImage()"/>
+          
 				</movable-view>
 			</movable-area>
       
+      <!-- 大小车内容 -->
+      <!-- 大小车动效2s -->
+      <!-- <image v-if="animationTeamStart" mode="aspectFit" src="@/static/drawCard/team/dynamic.gif" class="image-dynamic"></image>
+      <video id="myVideo" class="drawcard-video" v-if="showVideo" :controls="false" :show-fullscreen-btn="false" :show-play-btn="false" :enable-play-gesture="false" :vslide-gesture-in-fullscreen="false" :show-center-play-btn="false" :direction="0" :autoplay="true"
+      :show-loading="false" :enable-progress-gesture="false" src="@/static/drawCard/video/huangfeng.mp4" @ended="onVideoEnd" >
+        <cover-view class="video-skip">
+          <cover-view class="video-skip-text" @click="onVideoEnd">跳过动画</cover-view>
+          <cover-view class="video-skip-line"></cover-view>
+        </cover-view>
+      </video>
+      <view v-if="showVideoImage" class="zuheche-container">
+        <view class="zuheche-team-title">恭喜获得{{zuhecheName}}车位！</view>
+        <image class="zuheche-team-image" src="@/static/drawCard/video/hf.png"/>
+        <view class="zuheche-team-btn" @click="onTeamEnd">返回搓卡</view>
+      </view> -->
+
       <!-- 指定卡密奖励 -->
       <noAward :popupShow.sync="showNoAward" :award="noAwardData" @noShow="once=0"/>
       
@@ -164,13 +174,17 @@
     noAwardData:any={};
     once=0;
     cardBit=0;
+    animationTeamStart=false
+    showVideo=false;
+    showVideoImage=false;
+    zuhecheName=""
     /**是否最后一张卡片 */
     public get DrawCardOver():boolean {
       return this.cardData.step  >= this.cardData.total;
     }
     public get cardname() : string {
       if(this.cardData.step===0) return '拖动卡片解锁卡密';
-      return this.animationStart?'':this.codeList[this.cardData.step].name
+      return this.disabledMove?'':this.codeList[this.cardData.step].name
     }
     public get showList(): Array<any|DarwCard.Code>{
       const endNum = this.codeList.length;
@@ -188,6 +202,11 @@
     public get isPokemom() : boolean {
       return this.sceneData.bg=="bj_004"
     }
+    
+    public get disabledMove() : boolean {
+      return  this.animationStart || this.animationTeamStart
+    }
+    
     onLoad(query:any){
       this.fitCardPosition();
       this.initEvent(query)
@@ -228,7 +247,7 @@
         this.sceneData.picType = Number(query.picType) || 0;
       }
       this.once = query.once;
-      
+      this.zuhecheName = query.zuhecheName
       if(query.picType == 1){
         this.defultPic = '../../static/goods/drawcard/default_.png';
       } 
@@ -242,6 +261,7 @@
       initList.forEach((x:DarwCard.Code,index:number)=>{
         x['newPic'] = parsePic(decodeURIComponent(x.pic))
         x['index'] = index+1
+        x['known'] = false
       });
       this.codeList = [{index:0},...initList]
       this.cardData.total = query.num;
@@ -273,7 +293,7 @@
       }, 10); 
     }
     onClickNavigation(item:{ type:string; name:string; }){
-      if(this.animationStart) return;
+      if(this.disabledMove) return;
       if(item.type=='scene') this.sceneData.show=true ;
       if(item.type=='music') this.musicData.show=true ;
       if(item.type=='ani'){
@@ -304,7 +324,7 @@
         },3000)
       }
       
-      !this.animationStart && (this.cardMove=true)
+      !this.disabledMove && (this.cardMove=true)
     }
     /**移动中 */
     onChangeMovable(event:any) {
@@ -314,7 +334,7 @@
     }
     /**移动结束 计算位置 */
     picTouchEnd() {
-      if(this.DrawCardOver || this.animationStart) return;
+      if(this.DrawCardOver || this.disabledMove) return;
       const { x_init: iX, y_init: iY } = this.moveData; 
       const { x: mX, y: mY } = this.changeMove; 
       this.moveData.x = mX;
@@ -330,8 +350,17 @@
           if(!this.DrawCardOver && ['gold','SP'].includes(this.codeList[step+1].color)){
             uni.vibrateLong({})
           }
-          // 特效卡并且动画开启
-          if(item.color=='gold'&&this.animationSwitch){
+          if(item.zuhecheTeam){
+            // 大小车
+            this.animationTeamStart = true
+            setTimeout(()=>{
+              this.showVideo = true;
+              this.showVideoImage = true;
+              this.animationTeamStart = false;
+              this.$set(item, 'known', true);
+            },2000)
+          }else if(item.color=='gold'&&this.animationSwitch){
+            // 特效卡并且动画开启
             this.animationStart = true;
           }else{
             this.setShowLuckyBox()
@@ -342,6 +371,12 @@
         this.cardMove = false;
         this.getMore();
       }, 50);
+    }
+    onVideoEnd(){
+      this.showVideo = false;
+    }
+    onTeamEnd(){
+      this.showVideoImage=false;
     }
     onAnimationOver(){
       this.animationStart=false;
@@ -396,7 +431,8 @@
               ...rest,
               pic,
               newPic: parsePic(decodeURIComponent(pic)),
-              index: index + i
+              index: index + i,
+              known: false
             }))
           );
         }
@@ -599,6 +635,10 @@
 		background: url(@/static/drawCard/card_dangban.png) no-repeat 8rpx 8rpx;
 		background-size: 513rpx 722rpx;
 	}
+  .dangban-team{
+    background: url(@/static/drawCard/team/bg.png) no-repeat 8rpx 8rpx;
+		background-size: 513rpx 722rpx;
+  }
   .bottom-box{
     width: 524rpx;
     position: fixed;
@@ -774,4 +814,80 @@
               transform: translateX(-3px) rotate(-1.2deg);
     }
   }
+  .drawcard-video{
+    position: fixed;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    bottom:0;
+    right: 0;
+    z-index: 888;
+  }
+  .video-skip{
+    position: fixed;
+    bottom: calc(100rpx);
+		bottom: calc(100rpx + constant(safe-area-inset-bottom));
+		bottom: calc(100rpx + env(safe-area-inset-bottom));
+    right: 40rpx;
+    z-index: 999;
+  }
+  .video-skip-text{
+    color:#fff;
+    font-size: 24rpx;
+  }
+  .video-skip-line{
+    width: 100%;
+    height:1px;
+    background:#fff;
+    margin-top: 1px;
+  }
+  .zuheche-container{
+    position: fixed;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    bottom:0;
+    right: 0;
+    z-index: 777;
+  }
+  .zuheche-team-title{
+    width: 100%;
+    color:#fff;
+    position: absolute;
+    left:0;
+    top:300rpx;
+    font-size: 38rpx;
+    text-align: center;
+    z-index: 1;
+  }
+  .zuheche-team-image{
+    width:100%;
+    height:100%;
+  }
+  .zuheche-team-btn{
+    width: 460rpx;
+    height:80rpx;
+		background: #FA1545;
+    color:#fff;
+    position: absolute;
+    left:50%;
+    margin-left: -230rpx;
+    bottom: calc(150rpx);
+		bottom: calc(150rpx + constant(safe-area-inset-bottom));
+		bottom: calc(150rpx + env(safe-area-inset-bottom));
+    font-size: 36rpx;
+    text-align: center;
+    line-height: 80rpx;
+    z-index: 1;
+  }
+  .image-dynamic{
+		width: 100%;
+		height:100%;
+		position: fixed;
+		z-index: 66;
+		left:0;
+		top:0
+	}
 </style>

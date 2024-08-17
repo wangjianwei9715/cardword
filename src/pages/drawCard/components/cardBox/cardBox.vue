@@ -3,14 +3,14 @@
  * @Author: wjw
  * @Date: 2022-11-17 15:05:16
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-11-21 15:22:52
+ * @LastEditTime: 2024-08-07 15:35:39
  * Copyright: 2022 .
  * @Descripttion: 
 -->
 <template>
 	<view class="card-content">
 		<view
-			v-show="item.picTp!=2&&(bit&1)!=1"
+			v-show="!isSpCard"
 			class="movable-box"
 			:class="[animation?'container':'',item.color==''?'movable-box-silver':'movable-box-' + item.color]"
 		>
@@ -19,7 +19,7 @@
 			<image class="movable-pic" :src="item.newPic||defultPic" @error="error"/>
 			<view class="movable-name" :class="{'long-name':ifNameTooLong(item.player)}">{{item.player}}</view>
 		</view>
-		<image v-show="item.picTp==2||(bit&1)==1" mode="aspectFit" :src="item.newPic||defultPic" @error="error" class="sp-card-image"></image>
+		<image v-show="isSpCard" mode="aspectFit" :src="item.newPic||defultPic" @error="error" class="sp-card-image"></image>
 	</view>
 </template>
 
@@ -39,6 +39,11 @@
 		mounted(){
 			
 		}
+		
+		public get isSpCard() : boolean {
+			return this.item.picTp==2||(this.bit&1)==1||this.item.zuhecheTeam
+		}
+		
 		error(){
 			this.$emit('errorPic')
 		}

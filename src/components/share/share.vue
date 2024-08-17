@@ -2,10 +2,14 @@
 	<view >
 		<view class="operation-shadow" v-show="operationShow" @click="onClickOperaCancel"></view>
 		<view class="operation-content" :class="operationShow?'operation-show':''">
-			<view class="operation-index">
+			<view class="operation-index" :class="{'padding-small':goodCode}">
 				<view class="operation-btn" @click="operationStart(item)" v-for="item in operationData" :key="item.id"> 
 					<image class="operation-img" :src="item.img" mode=""></image>
 					<view class="operation-text">{{item.text}}</view>
+				</view>
+				<view class="operation-btn" v-if="goodCode"  @click="onClickFavor"> 
+					<view :class="['operation-img','icon-collect',{'icon-favored':favor}]"></view>
+					<view class="operation-text">收藏商品</view>
 				</view>
 			</view>
 			<view class="operation-cancel" @click="onClickOperaCancel">取消</view>
@@ -35,7 +39,12 @@
 			return []
 		} })
 		extra!:Array<Object>;
-		
+		@Prop({ default: "" })
+		goodCode?:string;
+		@PropSync("favorType",{
+			type:Boolean
+		}) favor?: Boolean;
+
 		operationData:any = [
 			{img:'/static/share/weixin@2x.png',text:'微信好友',scene:'WXSceneSession'},
 			{img:'/static/share/pyq@2x.png',text:'朋友圈',scene:'WXSenceTimeline'},
@@ -145,6 +154,12 @@
 			this.$emit("operacancel");
 			this.showValue=false
 		}
+		onClickFavor() {
+			const url = `good/${!this.favor?'favor':'unfavor'}/${this.goodCode}`
+			app.http.Post(url, {}, (data: any) => {
+				this.favor = !this.favor
+			})
+		}
 	}
 </script>
 
@@ -185,6 +200,9 @@
 		align-items: center;
 		justify-content: space-between;
 	}
+	.padding-small{
+		padding: 0 30rpx;
+	}
 	.operation-btn{
 		width: 120rpx;
 		height:170rpx;
@@ -216,4 +234,14 @@
 		color: #A9ABB4;
 		border-top: 1px solid #F4F3F2;
 	}
+	.icon-collect {
+		background: url(@/static/goods/v2/icon_collect.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+
+	.icon-favored {
+		background: url(@/static/goods/v2/icon_collect_.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+
 </style>
