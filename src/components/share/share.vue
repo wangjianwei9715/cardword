@@ -2,7 +2,7 @@
 	<view >
 		<view class="operation-shadow" v-show="operationShow" @click="onClickOperaCancel"></view>
 		<view class="operation-content" :class="operationShow?'operation-show':''">
-			<view class="operation-index" :class="{'padding-small':goodCode}">
+			<view class="operation-index" :class="{'padding-small':goodCode||report}">
 				<view class="operation-btn" @click="operationStart(item)" v-for="item in operationData" :key="item.id"> 
 					<image class="operation-img" :src="item.img" mode=""></image>
 					<view class="operation-text">{{item.text}}</view>
@@ -46,9 +46,9 @@
 		}) favor?: Boolean;
 
 		operationData:any = [
-			{img:'/static/share/weixin@2x.png',text:'微信好友',scene:'WXSceneSession'},
-			{img:'/static/share/pyq@2x.png',text:'朋友圈',scene:'WXSenceTimeline'},
-			{img:'/static/share/lianjie@2x.png',text:'分享链接',scene:''},
+			{img:'/static/share/weixin.png',text:'微信好友',scene:'WXSceneSession'},
+			{img:'/static/share/pyq.png',text:'朋友圈',scene:'WXSenceTimeline'},
+			{img:'/static/share/link.png',text:'分享链接',scene:''},
 		];
 		created(){//在实例创建完成后被立即调用
 			
@@ -205,23 +205,22 @@
 	}
 	.operation-btn{
 		width: 120rpx;
-		height:170rpx;
+		height:140rpx;
 		display: flex;
 		justify-content: center;
 		flex-wrap: wrap;
 	}
 	.operation-img{
-		width: 120rpx;
-		height:120rpx;
+		width: 84rpx;
+		height:84rpx;
 		margin-bottom: 14rpx;
 	}
 	.operation-text{
 		width: 100%;
 		text-align: center;
 		font-size: 22rpx;
-		
 		font-weight: normal;
-		color: #3B3B3B;
+		color: #333333;
 	}
 	.operation-cancel{
 		width: 100%;
@@ -235,12 +234,12 @@
 		border-top: 1px solid #F4F3F2;
 	}
 	.icon-collect {
-		background: url(@/static/goods/v2/icon_collect.png) no-repeat center;
+		background: url(@/static/share/collect.png) no-repeat center;
 		background-size: 100% 100%;
 	}
 
 	.icon-favored {
-		background: url(@/static/goods/v2/icon_collect_.png) no-repeat center;
+		background: url(@/static/share/collect_.png) no-repeat center;
 		background-size: 100% 100%;
 	}
 

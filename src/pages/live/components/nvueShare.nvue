@@ -37,16 +37,16 @@ export default {
     return {
       operationData: [
         {
-          img: "/static/share/weixin@2x.png",
+          img: "/static/share/weixin.png",
           text: "微信好友",
           scene: "WXSceneSession"
         },
         {
-          img: "/static/share/pyq@2x.png",
+          img: "/static/share/pyq.png",
           text: "朋友圈",
           scene: "WXSenceTimeline"
         },
-        { img: "/static/share/lianjie@2x.png", text: "分享链接", scene: "" }
+        { img: "/static/share/link.png", text: "分享链接", scene: "" }
       ]
     };
   },

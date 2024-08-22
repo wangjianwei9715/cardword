@@ -42,7 +42,7 @@
 			<div class="feature-box feature-center" @click="onClickGoProgressRank">
 				<text class="feature-title">即将组齐</text>
 				<div class="feature-pic-box">
-					<!-- <image class="feature-pic" :src="decodeURIComponent()" mode="aspectFill" /> -->
+					<image class="feature-pic" src="/static/index/v3/progress.png" mode="aspectFill" />
 				</div>
 			</div>
 			<div class="feature-box" @click="onClickSeries">
@@ -292,7 +292,7 @@
 		color: #333333;
 		@include flexCenter;
 		text-align: center;
-		margin-bottom: 17rpx;
+		margin-bottom: 12rpx;
 	}
 	.feature-pic-box{
 		width: 200rpx;
