@@ -105,8 +105,8 @@ page {
     background: #F5F5F5;
     border-radius: 3rpx;
     font-size: 26rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
+    
+    
     color: #14151A;
     padding-left: 76rpx
 }
@@ -124,7 +124,7 @@ page {
 
 .btn-search {
     font-size: 27rpx;
-    font-family: PingFang SC;
+    
     font-weight: 600;
     color: #333333;
     margin-left: 20rpx

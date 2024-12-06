@@ -104,8 +104,8 @@
 		padding-left: 12rpx;
 		line-height: 66rpx;
 		font-size: 28rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #666666;
 		border-bottom: 1rpx solid #E7E7E7;
 	}
@@ -132,8 +132,8 @@
 		display: flex;
 		align-items: center;
 		font-size: 22rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #666666;
 		padding:0 13rpx;
 	}
@@ -145,8 +145,8 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 26rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color:#666666;
 	}
 	.red-color{

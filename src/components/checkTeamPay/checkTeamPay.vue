@@ -497,16 +497,16 @@
 			.header-teamname{
 				width: 100%;
 				font-size: 24rpx;
-				font-family: Microsoft YaHei;
+				
 				text-indent: -10rpx;
-				font-weight: 400;
+				
 				color: #34363A;
 			}
 			.header-teamtip{
 				width: 100%;
 				font-size: 22rpx;
-				font-family: Microsoft YaHei;
-				font-weight: 400;
+				
+				
 				color: #AAAAAA;
 		
 			}
@@ -518,8 +518,8 @@
 				line-height: 60rpx;
 				border-radius: 30rpx;
 				font-size: 28rpx;
-				font-family: Microsoft YaHei;
-				font-weight: 400;
+				
+				
 				color: #FFFFFF;
 				position: absolute;
 				right:0;
@@ -537,7 +537,7 @@
 		width: 100%;
 		height:40rpx;
 		font-size: 28rpx;
-		font-family: Microsoft YaHei;
+		
 		font-weight: bold;
 		color: #34363A;
 		position: relative;
@@ -546,8 +546,8 @@
 	}
 	.teamtion-title-tip{
 		font-size: 18rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #AAAAAA;
 	}
 	.team-check{
@@ -589,8 +589,8 @@
 				&-name{
 					width:120rpx;
 					font-size: 22rpx;
-					font-family: Microsoft YaHei;
-					font-weight: 400;
+					
+					
 					color: #34363A;
 					text-align: center;
 				}
@@ -625,8 +625,8 @@
 	.random-all{
 		margin-left: 8rpx;
 		font-size: 24rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #AAAAAA;
 	}
 	.teamtion-center{
@@ -666,8 +666,8 @@
 		border: 1rpx solid #E2E2E3;
 		border-radius: 23rpx;
 		font-size: 22rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #34363A;
 		text-align: center;
 		line-height: 46rpx;
@@ -686,8 +686,8 @@
 		text-overflow:ellipsis;
 		white-space: nowrap;
 		font-size: 22rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #34363A;
 		line-height: 46rpx;
 	}
@@ -698,8 +698,8 @@
 		text-overflow:ellipsis;
 		white-space: nowrap;
 		font-size: 22rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #34363A;
 		line-height: 46rpx;
 	}
@@ -716,8 +716,8 @@
 		text-align: center;
 		line-height: 27rpx;
 		font-size: 16rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #AAAAAA;
 	}
 	.branch-reward{
@@ -728,8 +728,8 @@
 		border: 1rpx solid #FFFFFF;
 		border-radius: 12rpx 2rpx 12rpx 2rpx;
 		font-size: 16rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #FFFFFF;
 		position: absolute;
 		right:-54rpx;
@@ -744,8 +744,8 @@
 		border-radius: 12rpx 2rpx 12rpx 2rpx;
 		border: 1rpx solid #FFFFFF;
 		font-size: 16rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #FF3C00;
 		position: absolute;
 		right:-10rpx;
@@ -790,8 +790,8 @@
 			background: $content-bg;
 			border-radius: 4rpx;
 			font-size: 20rpx;
-			font-family: Microsoft YaHei;
-			font-weight: 400;
+			
+			
 			color: #34363A;
 			text-align: center;
 			line-height: 46rpx;
@@ -811,8 +811,8 @@
 			text-overflow:ellipsis;
 			white-space: nowrap;
 			font-size: 22rpx;
-			font-family: Microsoft YaHei;
-			font-weight: 400;
+			
+			
 			color: #34363A;
 			line-height: 46rpx;
 		}
@@ -830,7 +830,7 @@
 			height:88rpx;
 			line-height: 88rpx;
 			font-size: 30rpx;
-			font-family: Microsoft YaHei;
+			
 			font-weight: bold;
 			color: #AAAAAA;
 			display: flex;
@@ -894,7 +894,7 @@
 				height:30rpx;
 				line-height: 30rpx;
 				font-size: 28rpx;
-				font-family: Microsoft YaHei;
+				
 				font-weight: bold;
 				color: #FFFFFF;
 			}
@@ -907,7 +907,7 @@
 			text-align: center;
 			line-height: 88rpx;
 			font-size: 28rpx;
-			font-family: Microsoft YaHei;
+			
 			font-weight: bold;
 			color: #FFFFFF;
 		}
@@ -919,7 +919,7 @@
 			text-align: center;
 			line-height: 88rpx;
 			font-size: 28rpx;
-			font-family: Microsoft YaHei;
+			
 			font-weight: bold;
 			color: #FB4E3E;
 		}
@@ -931,7 +931,7 @@
 			text-align: center;
 			line-height: 88rpx;
 			font-size: 28rpx;
-			font-family: Microsoft YaHei;
+			
 			font-weight: bold;
 			color: #FFFFFF;
 		}
@@ -943,7 +943,7 @@
 			text-align: center;
 			line-height: 88rpx;
 			font-size: 28rpx;
-			font-family: Microsoft YaHei;
+			
 			font-weight: bold;
 			color: #5D5E61;
 		}
@@ -1003,7 +1003,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 32rpx;
-		font-family: Microsoft YaHei;
+		
 		font-weight: bold;
 		color: #34363A;
 		background:#fff;
@@ -1028,8 +1028,8 @@
 		right:32rpx;
 		top:0;
 		font-size: 26rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #AAAABB;
 	}
 	.checkteam-popup-list{
@@ -1094,21 +1094,21 @@
 		width: 100%;
 		height:50rpx;
 		font-size: 30rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #34363A;
 	}
 	.checkteam-popup-detail-name{
 		width: 100%;
 		font-size: 24rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #AAAABB;
 		margin-bottom: 10rpx;
 	}
 	.checkteam-popup-detail-soldout{
 		width: 100%;
-		font-family: Adobe Fan Heiti Std;
+		
 		font-weight: normal;
 		color: #AAAABB;
 		font-size: 30rpx;
@@ -1116,7 +1116,7 @@
 	.checkteam-popup-detail-price{
 		width: 100%;
 		font-size: 25rpx;
-		font-family: Adobe Fan Heiti Std;
+		
 		font-weight: normal;
 		color: #FB4E3E;
 	}
@@ -1154,7 +1154,7 @@
 		align-items: center;
 		box-sizing: border-box;
 		font-size: 24rpx;
-		font-family: Microsoft YaHei;
+		
 		font-weight: bold;
 		color: #FFBB04;
 	}
@@ -1191,7 +1191,7 @@
 	.rules-title{
 		width: 100%;
 		font-size: 30rpx;
-		font-family: Microsoft YaHei;
+		
 		font-weight: bold;
 		color: #34363A;
 		margin-bottom: 30rpx;
@@ -1199,7 +1199,7 @@
 	.rules-index{
 		width: 100%;
 		font-size: 28rpx;
-		font-family: Microsoft YaHei;
+		
 		font-weight: normal;
 		color: #34363A;
 		margin-bottom: 40rpx;
@@ -1213,8 +1213,8 @@
 		height:76rpx;
 		line-height: 76rpx;
 		font-size: 26rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #34363A;
 		text-align: center;
 		border:1px solid #D6D6D6
@@ -1224,8 +1224,8 @@
 		right:0;
 		top:10rpx;
 		font-size: 16rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #AAAABB;
 		width: 150rpx;
 		display: flex;
@@ -1247,8 +1247,8 @@
 		text-align: right;
 		line-height: 20rpx;
 		font-size: 18rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #AAAABB;;
 		margin-bottom:10rpx			
 	}
@@ -1286,7 +1286,7 @@
 		margin-bottom: 50rpx;
 		text-align: center;
 		font-size: 34rpx;
-		font-family: Microsoft YaHei;
+		
 		font-weight: bold;
 		color: #34363A;
 	}
@@ -1295,8 +1295,8 @@
 		box-sizing: border-box;
 		padding:0 50rpx;
 		font-size: 28rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #34363A;
 		line-height: 50rpx;
 		text-align: center;
@@ -1314,7 +1314,6 @@
 		margin-left:-231rpx;
 		border-radius: 30rpx;
 		font-size: 30rpx;
-		font-family: Adobe Heiti Std;
 		font-weight: normal;
 		color: #FFFFFF;
 	}

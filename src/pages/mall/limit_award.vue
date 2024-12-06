@@ -207,7 +207,7 @@
 
 <style lang="scss">
 	page {
-		font-family: PingFang SC;
+		
 		background-color: #f6f7fb;
 	}
 
@@ -223,7 +223,7 @@
 		text-align: center;
 		line-height: 96rpx;
 		font-size: 28rpx;
-		font-weight: 400;
+		
 		color: #959699;
 	}
 
@@ -265,8 +265,8 @@
 
 		.normal {
 			font-size: 25rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #333333;
 		}
 	}
@@ -299,7 +299,7 @@
 			background: #dbdbdb;
 			border-radius: 3rpx;
 			font-size: 25rpx;
-			font-weight: 400;
+			
 			color: #ffffff;
 			text-align: center;
 			line-height: 39rpx;

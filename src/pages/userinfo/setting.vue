@@ -1,3 +1,12 @@
+<!--
+ * @FilePath: \jichao_app_2\src\pages\userinfo\setting.vue
+ * @Author: wjw
+ * @Date: 2024-06-19 15:38:03
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-06-20 11:38:33
+ * Copyright: 2024 .
+ * @Descripttion: 
+-->
 <template>
   <view class="content">
     <view class="orther-setting">
@@ -44,7 +53,8 @@ import permision from "@/js_sdk/wa-permission/permission"
 export default class ClassName extends BaseNode {
   settingTab = [
     // { id: 1, name: "修改密码/设置登录密码", url: "/pages/login/change_password" },
-    { id: 1, name: "账号与安全", url: "/pages/userinfo/security/route" },
+    // { id: 1, name: "账号与安全", url: "/pages/userinfo/security/route" },
+    { id: 1, name: "账号与安全", url: "/pages/userinfo/security/route_v3" },
     { id: 2, name: "地址管理", url: "/pages/userinfo/setting_addresses" },
     { id: 3, name: "消息通知", url: "" },
     { id: 7, name: "卡密特效", url: "" },
@@ -159,9 +169,7 @@ export default class ClassName extends BaseNode {
     app.token = {accessToken:'',refreshToken:''};
     uni.setStorageSync('reLaunch',true);
     uni.removeStorageSync('ksjUserId')
-    uni.reLaunch({
-      url: "/pages/index/index",
-    });
+    app.navigateTo.reLaunchIndex()
   }
 }
 </script>
@@ -192,7 +200,6 @@ export default class ClassName extends BaseNode {
     border-bottom: 1px solid #f1f1f4;
     .name {
       font-size: 24rpx;
-      font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 600;
       color: #14151a;
     }
@@ -202,8 +209,8 @@ export default class ClassName extends BaseNode {
       align-items: center;
       justify-content: flex-end;
       font-size: 24rpx;
-      font-family: PingFangSC-Regular, PingFang SC;
-      font-weight: 400;
+      
+      
       color: #aaaabb;
     }
   }
@@ -221,7 +228,6 @@ uni-switch .uni-switch-input {
   text-align: center;
   line-height: 88rpx;
   font-size: 28rpx;
-  font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 600;
   color: #ffffff;
 }

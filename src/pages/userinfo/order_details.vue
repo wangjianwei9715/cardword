@@ -1,25 +1,40 @@
+<!--
+ * @FilePath: \jichao_app_2\src\pages\userinfo\order_details.vue
+ * @Author: wjw
+ * @Date: 2023-12-14 14:35:27
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-08-07 11:39:39
+ * Copyright: 2023 .
+ * @Descripttion: 
+-->
 <template >
 	<view class="content" >
+		<transitionNav ref='transitionNav' :whiteTitle="true" :needIconShadow="false" :title="orderData.stateName"/>
 		<!-- 头部状态 -->
 		<view class="header">
-			<view class="header-state">{{orderRefund?'已退款':orderState[orderData.state]}}</view>
-			<view class="header-state-desc" v-if="!orderRefund">{{orderData.state==1?'订单将于'+countDownStr+'后关闭':orderStateDesc(orderData)}}</view>
+			<view class="header-statename" @click="onClickStateDesc">
+				{{orderData.state==1?'订单将于'+countDownStr+'后关闭':orderData.desc}}
+				<view v-if="orderData.state==2&&orderData.good.state==1">
+					<view class="good-progress">
+						<view class="progressMask" :style="{width:(100-goodsManaager.listPlan(orderData.good,'num'))+'%'}"></view>
+					</view>
+				</view>
+			</view>
 		</view>
-		
-		<view class="order-box">
+		<view class="order-box" v-if="orderData.good">
 			<!-- 商品信息 -->
-			<view class="order-index" v-if="orderData.seller" @click="onClickGoodDetail"> 
+			<view class="order-index padding-lr"> 
 				<view class="order-index-header">
 					<view class="header-left">
 						<muqian-lazyLoad class="seller-image" :src="orderData.seller.avatar?decodeURIComponent(orderData.seller.avatar):defaultAvatar" mode="aspectFill" :borderRadius="'50%'"></muqian-lazyLoad>
 						<view class="seller-name">{{orderData.seller.name}}</view>
 					</view>
-					<view class="header-right">
-						<view :class="['header-right-index','state'+orderData.state]">{{orderGoodsStateStr(orderData)}}</view>
-					</view>
 				</view>
-				<view class="order-index-center">
-					<image class="goods-image" :src="detailPic" mode="aspectFill"></image>
+				<view class="order-index-center" @click="onClickGoodDetail">
+					<view class="goods-pic-box">
+						<image class="goods-image blur-bg" :src="detailPic" mode="heightFix"></image>
+						<image class="goods-image" :src="detailPic" mode="aspectFit"></image>
+					</view>
 					<view class="goods-content">
 						<view class="title">{{orderData.good.title}}</view>
 						<view class="desc" v-if="orderData.good.pintuanType>10">
@@ -32,26 +47,38 @@
 					</view>
 				</view>
 			</view>
+			<!-- 金额计算 -->
+			<view class="order-desc padding-lr">
+				<u-divider lineColor="#F6F6F6" style="margin-top:0;margin-bottom:15rpx"></u-divider>
+				<view class="orderPInfo" :class="{'show-pinfo':showPriceInfo}">
+					<view class="order-desc-index" v-for="item in orderDesc" :key="item.id" v-show="item.desc!='- ¥0'">
+						<view class="name">{{item.name}}</view><view class="info" :class="{'redfont':item.desc.indexOf('-')!=-1}">{{item.desc}}</view>
+					</view>
+				</view>
+				<view class="order-desc-index" @click="showPriceInfo=!showPriceInfo">
+					<view></view>
+					<view class="price">
+						实付
+						<view class="total-price">
+							¥<text class="price-text">{{ filterPrice(orderData.price).integer }}</text>
+							<text class="decimal" v-if="filterPrice(orderData.price).decimal">{{ filterPrice(orderData.price).decimal }}</text>
+						</view>
+						<view class="icon-up" :class="{'icon-down':!showPriceInfo}"></view>
+					</view>
+				</view>
+			</view>
 			<!-- 选队随机 自选卡种 -->
 			<view class="randomh-box" v-show="optionList!=''" >
 				<view class="randomh-index" v-for="(item,index) in optionList" :key="index">
 					<view class="randomh-index-left">{{item.name}}</view>
 					<view class="randomh-index-right">
 						<view class="randomh-index-price">￥{{item.amount}}</view>
-						<view class="randomh-index-num">x{{item.num}}件</view>
+						<view class="randomh-index-num">x{{item.num}}</view>
 					</view>
 				</view>
 			</view>
-			<!-- 金额计算 -->
-			<view class="order-desc">
-				<view class="order-desc-index" v-for="item in orderDesc" :key="item.id" v-show="item.desc!='- ¥0'">
-					<view class="name">{{item.name}}</view><view class="info">{{item.desc}}</view>
-				</view>
-				<view class="order-desc-index">
-					<view class="name">合计：</view><view class="info order-totalprice">￥{{orderData.price}}</view>
-				</view>
-			</view>
-			<view class="buyer-cotnent" v-if="cartList.length && cardList.length==0">
+			
+			<view class="buyer-cotnent padding-lr" v-if="cartList.length && cardList.length==0">
 				<view class="card-header">
 					<view class="card-header-title">已选编号</view>
 				</view>
@@ -64,30 +91,32 @@
 			<!-- 预测卡密 -->
 
 			<!-- 我的编号 -->
-			<view class="buyer-cotnent" v-if="cardList!='' && !clickToPay">
+			<view class="buyer-cotnent padding-lr" v-if="cardList!='' && !clickToPay">
 				<view class="card-header">
-					<view class="card-header-title">我的卡密<view class="card-header-title-desc">{{orderData.state>2?'+'+orderData.point:'未中卡可获得卡币'}}<image class="order-gold" src="../../static/order/gold.png" /></view></view>
-					<view class="card-header-right" @click="onClickAllCard">查看全部<view class="icon-right"></view></view>
+					<u-tabs :list="cardTabs" :itemStyle="{padding:0,paddingRight:'28rpx'}" :activeStyle="activeStyle" :inactiveStyle="inactiveStyle" :current="cardTabsCurrent" lineHeight="0" @click="clickCurrentCardTab"></u-tabs>
+					<view class="card-header-right" @click="onClickAllCard">
+						{{cardTabsCurrent==0?`查看全部${orderData.num}条`:"查看全部"}}
+						<view class="icon-right"></view>
+					</view>
 				</view>
-				<buyCardId :cardList="cardList"/>
-			</view>
-			<!-- 收货地址 -->
-			<view class="address-content" v-if="orderData.receiver">
-				<view class="index">
-					<view class="address-icon"></view>
-					<view class="address-desc">{{orderData.receiver.name}} {{orderData.receiver.phone}}</view>
-				</view>
-				<view class="address-info">
-					{{orderData.receiver.address}}
-				</view>
+				<!-- 卡密信息|购入信息 -->
+				<buyCardId v-show="cardTabsCurrent==0" :cardList="cardList"/>
+				<buyInfo v-show="cardTabsCurrent==1" ref="rBuyInfo" :orderCode="orderCode" :num="orderData.buyNoNum" :point="orderData.point" :zuhecheData="detailZuheche" @goResult="onClcikResult()"/>
 			</view>
 			<!-- 订单详细信息 -->
-			<view class="order-info" v-if="orderInfo.orderNo.desc!=''">
+			<view class="order-info padding-lr" v-if="orderInfo.orderNo.desc!=''">
 				<view class="title">订单信息</view>
+				<view class="index">
+					<view class="index-left">收货信息</view>
+					<view class="index-right">
+						<view class="index-right-address">{{orderData.receiver.address}}</view>
+						<view class="index-right-address">{{orderData.receiver.name}} {{orderData.receiver.phone}}</view>
+					</view>
+				</view>
 				<view class="index" v-for="item in orderInfo" :key="item.id" v-show="item.desc!=0">
 					<view class="index-left">{{item.title}}</view>
 					<view class="index-right">
-						{{item.title=='订单编号'||item.title=='支付方式'?item.desc:(item.desc>0?dateFormat(item.desc):'')}}
+						{{item.title=='订单编号'||item.title=='支付方式'?item.desc:(item.desc>0?$u.timeFormat(item.desc,"yyyy-mm-dd hh:MM:ss"):'')}}
 						<view v-if="item.title=='订单编号'" class="copy" @click="onClickCopyInfo(item.desc)"></view>
 					</view>
 				</view>
@@ -98,10 +127,10 @@
 				<view class="tab-index" @click="onClickComplain"><view class="icon-tousu"></view>投诉订单</view>
 			</view>
 
-			<!-- 猜你喜欢 -->
-			<guessYouLikeIt v-if="orderData.good&&orderData.good.goodCode" :goodCode="orderData.good.goodCode" />
+			
 		</view>
-
+		<!-- 猜你喜欢 -->
+		<guessYouLikeIt v-if="orderData.good&&orderData.good.goodCode" :goodCode="orderData.good.goodCode" />
 		<!-- 底部按钮 -->
 		<view class="bottom-btn" v-if="operateData!='' && !orderRefund">
 			<view class="small-btn-content" >
@@ -120,23 +149,44 @@
 	import BaseNode from '../../base/BaseNode.vue';
 	import {getCountDownTime, parsePic} from '@/tools/util';
 	import { app } from "@/app";
-	import {
-		getGoodsImg,dateFormat
-	} from "../../tools/util";
+	import { getGoodsImg, filterPrice } from "@/tools/util";
 	import {orderState} from "@/tools/DataExchange"
-	import { orderStateDesc,orderGoodsStateStr,orderSetOperate, getGoodsPintuan } from "@/tools/switchUtil"
-import { Md5 } from "ts-md5";
-	@Component({})
+	import { orderStateDesc,orderSetOperate, getGoodsPintuan } from "@/tools/switchUtil"
+	//@ts-ignore
+	import { KwwConfusion } from "@/net/kwwConfusion.js"
+	import buyInfo from "./component/buyInfo.vue"
+	import buyCardId from "./component/buyCardId.vue"
+	@Component({
+		components:{
+			buyInfo,
+			buyCardId
+		}
+	})
 	export default class ClassName extends BaseNode {
+		goodsManaager = app.goods;
 		parsePic = parsePic;
 		getGoodsImg = getGoodsImg;
-		dateFormat = dateFormat;
+		filterPrice = filterPrice;
 		orderState = orderState;
 		orderStateDesc = orderStateDesc;
-		orderGoodsStateStr = orderGoodsStateStr;
 		orderSetOperate = orderSetOperate;
 		getGoodsPintuan = getGoodsPintuan;
 
+		activeStyle={
+			"font-size": "28rpx",
+			"font-weight": 500,
+			"color":" #333333",
+		}
+		inactiveStyle={
+			"font-size": "28rpx",
+			"font-weight": 400,
+			"color":" #A2A8B4",
+		}
+		cardTabs = [
+			{id:0,name:"卡密信息"},
+			{id:1,name:"购入信息"}
+		]
+		cardTabsCurrent = 0;
 		defaultAvatar = app.defaultAvatar;
 		detailPic = '';
 		countDownInter:any;
@@ -144,12 +194,12 @@ import { Md5 } from "ts-md5";
 		countDownStr = '';
 		orderCode = '';
 		orderData:{[x:string]:any} = [];
-		orderDesc = [
-			{id:1,name:'商品金额',desc:''},
-			{id:2,name:'优惠（阶梯奖励）',desc:''},
-			{id:3,name:'优惠券',desc:''},
-			{id:4,name:'运费',desc:'包邮'},
-		];
+		orderDesc = {
+			price:{id:1,name:'总价',desc:''},
+			discount:{id:2,name:'优惠（阶梯奖励）',desc:''},
+			mCoupon:{id:3,name:'商家优惠券',desc:''},
+			oCoupon:{id:4,name:'平台优惠券',desc:''},
+		}
 		cardList:{[x:string]:any} = [];
 		orderInfo:any = {
 			orderNo:{id:1,title:'订单编号',desc:''},
@@ -178,19 +228,24 @@ import { Md5 } from "ts-md5";
 		optionList:any = [];
 		onceLoad = true;
 		retryNum = 0;
+		showPriceInfo = false;
+		detailZuheche = {
+			num:0,
+			logo:""
+		}
 		onLoad(query:any) {
 			this.orderCode = query.code ?? '';
 			this.clickToPay = query.waitPay ?? false;
 			setTimeout(()=>{
 				this.initEvent(()=>{
 					if(this.clickToPay){
-						this.getNoShowList();
+						this.getNoShowList(true);
 						if(this.guessNum>0){
 							this.guessSuccess = true
 						}
 					}
 				});
-			},200)
+			},this.clickToPay?200:0)
 
 			this.onEventUI('orderchange',()=>{
 				this.initEvent();
@@ -204,19 +259,31 @@ import { Md5 } from "ts-md5";
 			if(this.clickToPay && !this.onceLoad){
 				clearInterval(this.countDownInter);
 				this.clickPayShowLoading(()=>{
-					this.getNoShowList();
+					this.getNoShowList(true);
 					if(this.guessNum>0){
 						this.guessSuccess = true
 					}
 				})
 			}
-			
+		}
+		onPageScroll(data: any) {
+			//@ts-ignore
+			this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll(data)
 		}
 		onHide(){
 			clearInterval(this.countDownInter);
 		}
+		public get orderGoodCode() : string {
+			return this.orderData.good.goodCode;
+		}
 		public get orderRefund() : boolean {
 			return this.orderData.refund
+		}
+		clickCurrentCardTab({id}:any){
+			this.cardTabsCurrent = id;
+			if(id==1){
+				this.$refs.rBuyInfo.orderInfo()
+			}
 		}
 		clickPayShowLoading(cb?:Function){
 			uni.showLoading({
@@ -232,17 +299,27 @@ import { Md5 } from "ts-md5";
 		}
 		initEvent(cb?:Function){
 			const {orderCode} = this;
-			app.http.Get(`me/orderInfo/buyer/${orderCode}`,{},(res:any)=>{
+			app.http.Get(`me/orderInfo/buyer/${orderCode}/detail`,{},(res:any)=>{
 				const data = res.data;
 				this.onceLoad = false;
 				this.orderData = data
 				this.payChannel = data.good.payChannel??[]
 				this.countDown = data.leftSec
 				this.getCountDown();
-				uni.setNavigationBarTitle({ title: data.stateName });
 				this.getGoodDesc(data);
 				this.operateData = this.orderSetOperate(data);
 				this.detailPic = parsePic(getGoodsImg(decodeURIComponent(data.good.pic)))
+				if(data.zuhecheNoNum>0){
+					const zuhecheData = data.noList.find(x=>{
+						return x.zuheche && uni.$u.test.object(x.zuheche)
+					})
+					if(zuhecheData){
+						this.detailZuheche = {
+							num:data.zuhecheNoNum,
+							logo:zuhecheData.zuheche.logo || ""
+						}
+					}
+				}
 				if(data.good.pintuanType>10){
 					app.http.Get(`me/orderInfo/buyer/${orderCode}/option`,{},(res:any)=>{
 						this.optionList = res.list || []
@@ -297,7 +374,7 @@ import { Md5 } from "ts-md5";
 			
 		}
 		// 获取解锁卡密效果
-		getNoShowList(){
+		getNoShowList(once=false){
 			if(!app.orderRich) {
 				uni.showToast({
 					title:'卡密特效未开启',
@@ -315,7 +392,7 @@ import { Md5 } from "ts-md5";
 				if(res.total>0){
 					const type = this.orderData.good.title.indexOf('足球')!=-1?1:0
 					uni.navigateTo({
-						url:`/pages/drawCard/drawCard?code=${this.orderCode}&data=${encodeURIComponent(JSON.stringify(res.list))}&num=${res.total}&hasNumber=${res.hasNumber}&picType=${type}&sp=${res.sp}`
+						url:`/pages/drawCard/drawCard?code=${this.orderCode}&data=${encodeURIComponent(JSON.stringify(res.list))}&num=${res.total}&hasNumber=${res.hasNumber}&picType=${type}&sp=${res.sp}&once=${once?1:0}&bit=${res.bit||0}&zuhecheName=${res.zuhecheName||''}`
 					})
 				}else{
 					if( res.retry && this.retryNum==0 ){
@@ -331,9 +408,10 @@ import { Md5 } from "ts-md5";
 		}
 		
 		getGoodDesc(data:any){
-			this.orderDesc[0].desc ='¥'+this.keepTwoDecimal(data.price+data.discount+(data.coupon?data.coupon:0));
-			this.orderDesc[1].desc ='- ¥'+data.discount;
-			this.orderDesc[2].desc ='- ¥'+(data.coupon?data.coupon:0);
+			this.orderDesc.price.desc ='¥'+this.keepTwoDecimal(data.price+data.discount+(data.coupon?data.coupon:0));
+			this.orderDesc.discount.desc ='- ¥'+data.discount;
+			this.orderDesc.mCoupon.desc ='- ¥'+(data.merchantCoupon?data.merchantCoupon:0);
+			this.orderDesc.oCoupon.desc ='- ¥'+(data.coupon?this.keepTwoDecimal(data.coupon-data.merchantCoupon):0);
 			if(data.payInfo){
 				for (const key in this.orderInfo) {
 					if (Object.prototype.hasOwnProperty.call(data.payInfo, key)) {
@@ -358,17 +436,18 @@ import { Md5 } from "ts-md5";
 			},1)
 		}
 		onClickAllCard(){
+			const { good, buyNoNum, point } = this.orderData
 			uni.navigateTo({
-				url:'/pages/userinfo/order_myCard?code='+this.orderCode+'&goodCode='+this.orderData.good.goodCode+'&pintuanType='+this.orderData.good.pintuanType
+				url:`/pages/userinfo/order_myCard?code=${this.orderCode}&goodCode=${this.orderGoodCode}&pintuanType=${good.pintuanType}&num=${buyNoNum}&point=${point}&type=${this.cardTabsCurrent}&state=${good.state}&pic=${encodeURIComponent(good.pic)}`
 			})
 		}
 		onClickGoodDetail(){
-			app.navigateTo.goGoodsDetails(this.orderData.good.goodCode)
+			app.navigateTo.goGoodsDetails(this.orderGoodCode)
 		}
 		onClickKefu(){
 			let params = {
 				agentExten:this.orderData.kefu||'',
-				businessParam:'goodCode:'+this.orderData.good.goodCode
+				businessParam:'goodCode:'+this.orderGoodCode
 			}
 			app.platform.heliService(params)
 		}
@@ -376,11 +455,11 @@ import { Md5 } from "ts-md5";
 			let params:{[x:string]:any}
 			if(cmd=='viewGood'){
 				uni.redirectTo({
-					url: '/pages/goods/goods_details?id='+this.orderData.good.goodCode
+					url: `/pages/goods/goods_details?id=${this.orderGoodCode}&referer=Order`
 				})
 			}
 			if(cmd=='resultCard'){
-				this.onClcikResult(1)
+				this.onClcikResult()
 			}
 			if(cmd=='giving'){
 				if(this.orderData.isCuoka) {
@@ -392,7 +471,7 @@ import { Md5 } from "ts-md5";
 				};
 				
 				uni.navigateTo({
-					url:'/pages/userinfo/giving/giving_list?code='+this.orderData.good.goodCode+'&pintuanType='+this.orderData.good.pintuanType+'&orderCode='+this.orderData.code
+					url:'/pages/userinfo/giving/giving_list?code='+this.orderGoodCode+'&pintuanType='+this.orderData.good.pintuanType+'&orderCode='+this.orderData.code
 				})
 			}
 			if(cmd == 'wuliu'){
@@ -468,50 +547,43 @@ import { Md5 } from "ts-md5";
 				}
 			});
 		}
-		onClcikResult(chooseID:any){
-			const random = this.orderData.good.state>0?true:false
+		onClcikResult(){
 			uni.navigateTo({
-				url: '/pages/userinfo/goods_result_list?chooseIds=' + chooseID+'&code='+this.orderData.good.goodCode+'&order='+this.orderData.code+'&random='+random
+				url:`/pages/goods/goods_result_list_new?chooseIds=1&code=${this.orderGoodCode}`
 			})
 		}
 		// 取消支付
 		onClickCancelPay(){
 			this.showPayMent = false;
 		}
-		onClickPayGoods(data:any){
+		async onClickPayGoods(data:any){
 			// 1：支付宝 2：微信
 			if (data == '') {
 				return;
 			}
-			uni.showLoading({
-				title: '加载中'
-			});
-
+			uni.showLoading({ title: '加载中' });
+			const userId = await app.user.getAppDataUserId();
 			let params:any = {
 				channelId:data.channelId??'',
 				channel: data.channel,
 				delivery:0,
-				num:Number(this.orderData.num)
+				num:Number(this.orderData.num),
 			}
+			const hash = KwwConfusion.toPayForGoodOrder(userId,this.orderData.code)
 			if(uni.getSystemInfoSync().platform === "android"){
 				params.nativeSdk = 'qmf_android'
 			}
-			app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
+			app.http.Pay('order/topay/'+this.orderData.code,{...params,...hash},(res:any)=>{
 				if(['alipay','alipay_h5'].includes(data.channel)){
-					if(res.appPayRequest){
-						app.payment.paymentAlipayQmfSdk(JSON.stringify(res.appPayRequest));
-						this.onClickCancelPay()
-					}else if(res.alipay.orderInfo!=''){
-						this.clickToPay = true;
-						uni.hideLoading()
-						this.onClickCancelPay()
-						app.payment.paymentAlipay(res.pay_type,res.alipay.orderInfo)
-					}
+					this.clickToPay = true;
+					uni.hideLoading()
+					this.onClickCancelPay()
+					app.payment.paymentAlipay(res.h5CashierAddress,res.alipay.orderInfo)
 				}else{
 					if(res.wechat){
 						this.clickToPay = true;
 						uni.hideLoading()
-						app.payment.paymentWxpay(res.pay_type,res.wechat)
+						app.payment.paymentWxpay(res.wechat)
 						this.onClickCancelPay()
 					}
 				}
@@ -526,14 +598,23 @@ import { Md5 } from "ts-md5";
 			result = Math.round(num * 100) / 100;
 			return result > 0 ? result : 0;
 		}
-		
-		
+		onClickStateDesc(){
+			app.platform.goZgLive({
+				roomID: this.orderData.roomId,
+				isAnchor: false,
+				goodCode:this.orderData.good.goodCode
+			})
+		}
 	}
 </script>
 
 <style lang="scss">
 	page{
 		background:$content-bg;
+	}
+	.padding-lr{
+		padding-left: 26rpx !important;
+		padding-right: 26rpx !important;
 	}
 	.content{
 		width: 100%;
@@ -542,15 +623,25 @@ import { Md5 } from "ts-md5";
 	}
 	.header{
 		width: 100%;
-		height:354rpx;
-		background:url(../../static/order/top_bg.png);
+		height:360rpx;
+		background:url(@/static/order/detail_bg.png);
 		background-size: 100% 100%;
 		box-sizing: border-box;
-		padding:40rpx 40rpx;
+		padding-top:174rpx;
+		.header-statename{
+			width:100%;
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			box-sizing: border-box;
+			padding: 0 100rpx;
+			font-size: 24rpx;
+			color: #FFFFFF;
+		}
 		&-state{
 			width: 100%;
 			font-size: 37rpx;
-			font-family: PingFangSC-Regular;
+			
 			font-weight: 600;
 			color: #FFFFFF;
 			margin-bottom: 5rpx;
@@ -558,8 +649,8 @@ import { Md5 } from "ts-md5";
 		&-state-desc{
 			width: 100%;
 			font-size: 27rpx;
-			font-family: PingFangSC-Regular;
-			font-weight: 400;
+			
+			
 			color: #FFFFFF;
 		}
 	}
@@ -567,16 +658,17 @@ import { Md5 } from "ts-md5";
 		width: 100%;
 		box-sizing: border-box;
 		padding:0 14rpx;
+		margin-top: -92rpx;
 	}
 	.order{
 		&-index{
 			width: 100%;
 			// height:305rpx;
-			padding:0 22rpx 31rpx 22rpx;
-			border-radius: 4rpx;
+			padding:0 20rpx 0 20rpx;
+			border-top-left-radius: 5rpx;
+			border-top-right-radius: 5rpx;
 			background:#fff;
 			box-sizing: border-box;
-			margin-top: -188rpx;
 			&-header{
 				width: 100%;
 				height:93rprx;
@@ -585,7 +677,7 @@ import { Md5 } from "ts-md5";
 				align-items: center;
 				justify-content: space-between;
 				.header-left{
-					height:93rpx;
+					height:100rpx;
 					box-sizing: border-box;
 					display: flex;
 					align-items: center;
@@ -593,15 +685,13 @@ import { Md5 } from "ts-md5";
 						width: 40rpx;
 						height:40rpx;
 						border-radius: 50%;
-						margin-right: 16rpx;
+						margin-right: 8rpx;
 					}
 					.seller-name{
 						height:40rpx;
 						line-height: 40rpx;
-						font-size: 27rpx;
-						font-family: PingFangSC-Regular;
-						font-weight: 400;
-						color: #333333;
+						font-size: 28rpx;
+						color: rgba(0,0,0,0.9);
 					}
 				}
 				.header-right{
@@ -613,13 +703,12 @@ import { Md5 } from "ts-md5";
 						display: flex;
 						align-items: center;
 						font-size: 25rpx;
-						font-family: PingFangSC-Medium, PingFang SC;
-						font-weight: 500;
+						
+						font-weight: 600;
 						color: #EBBF7C;
 					}
 					&-count{
 						font-size: 32rpx;
-						font-family: 'DIN';
 						font-weight: bold;
 						color: #FF4349;
 						margin-left: 14rpx;
@@ -649,27 +738,41 @@ import { Md5 } from "ts-md5";
 			}
 			&-center{
 				width: 100%;
-				height:137rpx;
+				height:142rpx;
 				display: flex;
 				box-sizing: border-box;
 				align-items: center;
-				.goods-image{
-					width: 178rpx;
-					height:137rpx;
-					border-radius: 4rprx;
+				.goods-pic-box{
+					width: 186rpx;
+					height:142rpx;
+					border-radius: 5rpx;
 					margin-right: 24rpx;
+					position: relative;
+					overflow: hidden;
+				}
+				.goods-image{
+					width: 186rpx;
+					height:142rpx;
+					border-radius: 4rprx;
+					position: relative;
+					z-index: 2;
+				}
+				.blur-bg{
+					filter: blur(2px);
+					position: absolute;
+					top:0;
+					left:0;
+					z-index: 1 !important;
 				}
 				.goods-content{
-					width: 480rpx;
-					height:137rpx;
+					width: 470rpx;
+					height:142rpx;
 					box-sizing: border-box;
 					position: relative;
 					.title{
 						width: 100%;
 						font-size: 28rpx;
-						font-family: PingFangSC-Regular;
-						font-weight: 400;
-						color: #333333;
+						color: rgba(0,0,0,0.9);
 						margin-bottom: 20rpx;
 						word-break:break-all;
 						display: -webkit-box;
@@ -696,31 +799,24 @@ import { Md5 } from "ts-md5";
 							align-items: center;
 							justify-content: center;
 							font-size: 24rpx;
-							font-family: PingFang SC;
-							font-weight: 400;
 							color: #F6F7FB;
 							margin-left: 0;
 						}
 						.price{
 							height:40rpx;
 							line-height: 40rpx;
-							font-size: 25rpx;
-							font-family: PingFangSC-Regular;
-							font-weight: 400;
+							font-size: 24rpx;
 							color: #333333;
 						}
 						.price text{
-							font-size: 32rpx;
-							font-family: PingFangSC-Medium;
-							font-weight: bold;
+							font-size: 24rpx;
 						}
 						.total-num{
 							height:40rpx;
 							line-height: 40rpx;
-							font-size: 25rpx;
-							font-family: PingFangSC-Regular;
-							font-weight: 400;
+							font-size: 24rpx;
 							color: #88878C;
+							font-weight: 300;
 						}
 					}
 				}
@@ -739,20 +835,18 @@ import { Md5 } from "ts-md5";
 					align-items: center;
 					justify-content: flex-end;
 					font-size: 20rpx;
-					font-family: PingFangSC-Regular, PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #14151A;
 					padding-right: 20rpx;
 					box-sizing: border-box;
 					&-index{
 						font-size: 24rpx;
-						font-family:'DIN';
 						font-weight: bold;
 						color: #14151A;
 					}
 					&-num{
 						font-size: 32rpx;
-						font-family:'DIN';
 						font-weight: bold;
 						color: #14151A;
 					}
@@ -763,24 +857,73 @@ import { Md5 } from "ts-md5";
 	.order-desc{
 		width: 100%;
 		box-sizing: border-box;
-		border-top:13rpx solid $content-bg;
-		border-bottom: 13rpx solid $content-bg;
-		padding: 20rpx 22rpx 0 22rpx;
+		border-bottom: 12rpx solid $content-bg;
+		padding:20rpx 20rpx 15rpx 20rpx;
 		background: #fff;
+		border-bottom-left-radius: 5rpx;
+		border-bottom-right-radius: 5rpx;
+		.orderPInfo{
+			max-height: 0;
+			transition: all 0.3s linear;
+			overflow: hidden;
+		}
+		.show-pinfo{
+			max-height: 600rpx;
+		}
 		&-index{
 			width: 100%;
 			box-sizing: border-box;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			margin-bottom: 20rpx;
-			font-size: 25rpx;
-			font-weight: 400;
+			height:68rpx;
+			font-size: 24rpx;
 			color: #333333;
+			.name{
+				font-size: 24rpx;
+				color: #333333;
+			}
+			.price{
+				height:40rpx;
+				font-size: 24rpx;
+				color: rgba(0,0,0,0.9);
+				line-height: 40rpx;
+				display: inline-flex;
+			}
+			.total-price{
+				height:40rpx;
+				font-size: 28rpx;
+				font-weight: 600;
+				color: #000000;
+				line-height: 36rpx;
+				margin-left: 6rpx;
+			}
+			.total-price .price-text{
+				font-size: 36rpx;
+				font-weight: 600;
+				margin-left:2rpx;
+			}
+			.total-price .decimal{
+				font-size: 20rpx;
+				font-weight: 600;
+			}
+			.redfont{
+				color:#FA1545;
+			}
+			.icon-up{
+				width: 20rpx;
+				height:12rpx;
+				margin-left: 8rpx;
+				background:url(@/static/order/up.png) no-repeat center / 100% 100%;
+				margin-top: 14rpx;
+			}
+			.icon-down{
+				transform: rotate(180deg);
+			}
 		}
 		.order-totalprice{
 			font-size: 27rpx;
-			font-family: PingFangSC-Medium;
+			
 			font-weight: 600;
 			color: #333333;
 		}
@@ -793,19 +936,17 @@ import { Md5 } from "ts-md5";
 			justify-content: flex-end;
 			border-top: 1px solid #F1F1F4;
 			font-size: 20rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #14151A;
 			.price{
 				&-index{
 					font-size: 24rpx;
-					font-family:'DIN';
 					font-weight: bold;
 					color: #FF4349;
 				}
 				&-num{
 					font-size: 32rpx;
-					font-family:'DIN';
 					font-weight: bold;
 					color: #FF4349;
 				}
@@ -824,7 +965,7 @@ import { Md5 } from "ts-md5";
 			height:40rpx;
 			line-height: 40rpx;
 			font-size: 31rpx;
-			font-family: PingFangSC-Medium;
+			
 			font-weight: 600;
 			color: #333333;
 			display: flex;
@@ -834,8 +975,8 @@ import { Md5 } from "ts-md5";
 				align-items: center;
 				line-height: 40rpx;
 				font-size: 25rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
+				
+				
 				color: #88878C;
 				margin-left: 17rpx;
 			}
@@ -849,10 +990,8 @@ import { Md5 } from "ts-md5";
 			height:40rpx;
 			display: flex;
 			align-items: center;
-			font-size: 23rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
-			color: #A9ABB4;
+			font-size: 24rpx;
+			color: #A2A8B4;
 			.icon-right{
 				width: 10rpx;
 				height:16rpx;
@@ -866,20 +1005,21 @@ import { Md5 } from "ts-md5";
 	.buyer-cotnent{
 		width: 100%;
 		box-sizing: border-box;
-		padding:20rpx;
-		border-bottom: 13rpx solid $content-bg;
+		padding:30rpx;
+		border-bottom: 12rpx solid $content-bg;
 		background: #fff;
+		border-radius: 5rpx;
 	}
 	.address-content{
 		width: 100%;
 		box-sizing: border-box;
-		border-bottom: 13rpx solid $content-bg;
+		border-bottom: 12rpx solid $content-bg;
 		padding:30rpx 25rpx;
 		background: #fff;
 		.title{
 			width: 100%;
 			font-size: 28rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 600;
 			color: #14151A;
 			margin-bottom: 24rpx;
@@ -899,8 +1039,8 @@ import { Md5 } from "ts-md5";
 			.address-desc{
 				width: 620rpx;
 				font-size: 31rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
+				
+				
 				color: #333333;
 				line-height: 34rpx;
 			}
@@ -910,8 +1050,8 @@ import { Md5 } from "ts-md5";
 			box-sizing: border-box;
 			padding-left: 56rpx;
 			font-size: 27rpx;
-			font-family: PingFangSC-Regular;
-			font-weight: 400;
+			
+			
 			color: #88878C;
 			display: flex;
 			align-items: center;
@@ -925,41 +1065,43 @@ import { Md5 } from "ts-md5";
 		width: 100%;
 		box-sizing: border-box;
 		background: #fff;
-		padding:30rpx 22rpx 10rpx 22rpx;
-		border-bottom: 13rpx solid $content-bg;
-		
+		padding:30rpx 22rpx 20rpx 22rpx;
+		border-bottom: 12rpx solid $content-bg;
+		border-radius: 5rpx;
 		.title{
 			width: 100%;
-			font-size: 31rpx;
-			font-family: PingFangSC-Medium;
-			font-weight: 600;
+			font-size: 28rpx;
+			font-weight: 500;
 			color: #333333;
 			margin-bottom: 30rpx;
 		}
 		.index{
 			width: 100%;
 			display: flex;
-			height:40rpx;
-			align-items: center;
+			min-height:40rpx;
+			align-items: flex-start;
 			margin-bottom: 20rpx;
 			justify-content: space-between;
 			.index-left{
+				width:150rpx;
 				height:40rpx;
 				display: flex;
 				align-items: center;
-				font-size: 25rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
+				font-size: 22rpx;
 				color: #333333;
 			}
 			.index-right{
-				height:40rpx;
+				min-height:40rpx;
 				display: flex;
 				align-items: center;
-				font-size: 25rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
-				color: #C6C6C8;
+				font-size: 22rpx;
+				color: #A2A8B4;
+				flex-wrap: wrap;
+				justify-content: flex-end;
+			}
+			.index-right-address{
+				font-size: 22rpx;
+				color: #A2A8B4;
 			}
 		}
 		.copy{
@@ -978,31 +1120,45 @@ import { Md5 } from "ts-md5";
 		background:#fff;
 		display: flex;
 		align-items: center;
-		padding:0 96rpx;
 		justify-content: space-between;
+		border-radius: 5rpx;
+		position: relative;
 		.tab-index{
+			width:50%;
 			height:80rpx;
 			display: flex;
+			justify-content: center;
 			align-items: center;
-			font-size: 27rpx;
-			font-family: PingFangSC-Regular;
-			font-weight: 400;
+			font-size: 24rpx;
+			
+			
 			color: #333333;
 			.icon-lianxi{
-				width: 42rpx;
-				height:40rpx;
+				width: 28rpx;
+				height:24rpx;
 				background:url(../../static/order/kefu.png) no-repeat center;
 				background-size: 100% 100%;
-				margin-right:16rpx
+				margin-right:8rpx
 			}
 			.icon-tousu{
-				width: 36rpx;
-				height:38rpx;
+				width: 34rpx;
+				height:30rpx;
 				background:url(../../static/order/tousu.png) no-repeat center;
 				background-size: 100% 100%;
-				margin-right:16rpx
+				margin-right:6rpx
 			}
 		}
+	}
+	.info-tab::after{
+		content: "";
+		width: 2rpx;
+		height: 32rpx;
+		background:#EEEEEE;
+		position: absolute;
+		left:50%;
+		top:50%;
+		margin-left: -1rpx;
+		margin-top: -16rpx;
 	}
 	.bottom-btn{
 		width: 100%;
@@ -1027,23 +1183,23 @@ import { Md5 } from "ts-md5";
 			justify-content: flex-end;
 			
 			.mini-btn{
-				width: 180rpx;
-				border:1px solid #DADADA;
+				width: 168rpx;
+				border:1px solid #E0E0E0;
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				font-family: PingFangSC-Regular;
-				color: #88878c;
+				
+				color: #333333;
 				margin-left: 15rpx;
-				height: $btn-height;
-				line-height: $btn-height;
-				font-size: $btn-fontSize;
+				height: 72rpx;
+				line-height: 72rpx;
+				font-size: 28rpx;
 				border-radius:$btn-radius;
-				font-weight: $btn-weight;
+				
 			}
 			.right{
-				width: 180rpx;
-				background: $btn-red;
+				width: 168rpx;
+				background: linear-gradient(90deg, #FA1545 0%, #CF004F 100%);
 				border:1px solid $btn-red;
 				color: #fff;
 				margin-left: 15rpx;
@@ -1065,7 +1221,7 @@ import { Md5 } from "ts-md5";
 }
 .item-name {
   font-size: 24rpx;
-  font-family: PingFangSC-Medium, PingFang SC;
+  
   font-weight: 600;
   color: #14151a;
   line-height: 34rpx;
@@ -1085,6 +1241,7 @@ import { Md5 } from "ts-md5";
   border-bottom-left-radius: 5rpx;
   border-bottom-right-radius: 5rpx;
   position: relative;
+  margin-bottom: 20rpx;
 }
 .randomh-box::after{
   content: '';
@@ -1116,8 +1273,8 @@ import { Md5 } from "ts-md5";
 	text-align: center;
 	line-height: 40rpx;
 	font-size: 23rpx;
-	font-family: PingFang SC;
-	font-weight: 400;
+	
+	
 	color: #333333;
 	box-sizing: border-box;
 	padding:0 12rpx;
@@ -1135,8 +1292,8 @@ import { Md5 } from "ts-md5";
   .randomh-index-price{
 	height:40rpx;
 	font-size: 25rpx;
-	font-family: PingFang SC;
-	font-weight: 400;
+	
+	
 	color: #333333;
 	display: flex;
 	align-items: center;
@@ -1149,10 +1306,26 @@ import { Md5 } from "ts-md5";
 	align-items: center;
 	justify-content: flex-end;
 	font-size: 25rpx;
-	font-family: PingFang SC;
-	font-weight: 400;
+	
+	
 	color: #88878C;
   }
 }
+.good-progress {
+	background: linear-gradient(90deg, #FF829C 0%, #FA1545 100%);
+	width: 160rpx;
+	height: 12rpx;
+	position: relative;
+	display: flex;
+	justify-content: flex-end;
+	margin:0 auto;
+	margin-left: 12rpx;
+	.progressMask {
+		height: inherit;
+		background-color: #FFFFFF;
+		width: 0%;
+	}
+}
+
 // 
 </style>

@@ -187,8 +187,8 @@ import { Component } from "vue-property-decorator";
 	}
 	.header-title{
 		font-size: 34rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #000000;
 	}
 	.header-del{
@@ -206,8 +206,8 @@ import { Component } from "vue-property-decorator";
 	}
 	.del-text{
 		font-size: 26rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #14151A;
 	}
 	.del-bottom{
@@ -231,7 +231,7 @@ import { Component } from "vue-property-decorator";
 			align-items: center;
 			justify-content: center;
 			font-size: 28rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 600;
 		}
 		.btn-all{

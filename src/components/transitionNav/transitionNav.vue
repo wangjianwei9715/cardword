@@ -2,25 +2,29 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-24 11:05:35
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-12-22 15:17:21
+ * @LastEditTime: 2024-07-18 15:15:33
  * @FilePath: \card-world\src\components\transitionNav\transitionNav.vue
  * @Description: 渐变导航栏（兼容nvue, nvue中把组件放到结构最下面:越后层级越高）
 -->
 <template>
     <view id="pageTopContainer" class="pageTopContainer"
-        :style="{ zIndex, backgroundColor: `rgba(${navColor},${scrollTopPercent})` }">
+        :style="{ zIndex, backgroundColor: scrollTopPercent >= 1 ? `rgb(${navColor})` : `rgba(${navColor},${scrollTopPercent})` }">
+        <view v-if="navBgImage" class="nav-bg-container" :style="{opacity:(1-scrollTopPercent)}">
+            <image class="nav-bg-image" :src="navBgImage" mode="widthFix"/>
+            <view class="nav-blur"></view>
+        </view>
         <view class="status" :style="{ paddingTop: app.statusBarHeight + 'px', }">
         </view>
         <view id="pageTop" class="pageTop">
-            <view class="pageTitle" :style="[opacityStyle]">
+            <view class="pageTitle" :style="[opacityStyle,showWhiteTitle]">
                 <text class="titleText">{{ title }}</text>
             </view>
-            <view class="leftBackContainer" :class="{ whiteBack: needIconShadow }" @click="app.platform.pageBack()">
-                <template v-if="needIconShadow">
-                    <image class="back" src="/static/index/v3/icon_back.png" />
+            <view class="leftBackContainer" :class="{ whiteBack: needIconShadow&&!customBack }" @click="app.platform.pageBack()">
+                <template v-if="needIconShadow&&!customBack">
+                    <image class="back" src="/static/index/back_b.png" />
                 </template>
-                <template v-else>
-                    <image class="back" :src="`/static/index/v3/${navBackGroundShow ? 'icon_back' : 'back'}.png`" />
+                <template v-if="!needIconShadow && showBack&&!customBack">
+                    <image class="back" :src="`/static/index/${navBackGroundShow&&!whiteBack ? 'back_b' : 'back_w'}.png`" />
                     <!-- #ifndef APP-NVUE -->
                     <!-- 非nvue下利用css滤镜改变方向键颜色 -->
                     <!-- <image class="back" :class="{ filterBlack: navBackGroundShow }" src="/static/index/v3/back.png"
@@ -31,11 +35,15 @@
                         @click="app.platform.pageBack()" /> -->
                     <!--  #endif -->
                 </template>
+                <template v-if="customBack">
+                    <slot name="slotBack"/>
+                </template>
             </view>
             <view class="slotContainer_left flex1" :style="[opacityStyleRevers]"
                 :class="{ slotHidden: scrollTopPercent >= 1 }">
                 <slot name="slotLeft" />
             </view>
+            <slot name="custom" />
             <view class="toolsContainer">
                 <slot name="slotRight" />
                 <view class="tools" @click="onClickTools(item)" :class="{ whiteBack: needIconShadow }"
@@ -44,7 +52,8 @@
                         <image :style="[item.style]" class="centerImg" :src="item.icon_black" />
                     </template>
                     <template v-else>
-                        <image :style="[item.style]" class="centerImg"
+                        <text v-if="item.text" class="toolsText" :class="navBackGroundShow?'colorBlack':'colorWhite'">{{item.text}}</text>
+                        <image v-else :style="[item.style]" class="centerImg"
                             :src="navBackGroundShow ? item.icon_black : item.icon" />
                     </template>
                 </view>
@@ -52,11 +61,11 @@
         </view>
         <template v-if='needRightTools.includes("分享")'>
             <!-- #ifndef APP-NVUE -->
-            <share :operationShow.sync="operationShow" :shareData="shareData">
+            <share :operationShow.sync="operationShow" :shareData="shareData" :report="report" @report="$emit('report')">
             </share>
             <!--  #endif -->
             <!-- #ifdef APP-NVUE -->
-            <nvueShare :visible.sync="operationShow" :shareData="shareData">
+            <nvueShare :visible.sync="operationShow" :shareData="shareData" :report="report" @report="$emit('report')">
             </nvueShare>
             <!--  #endif -->
         </template>
@@ -91,6 +100,16 @@ let toolsMap = {
             height: "34rpx",
         }
 
+    },
+    "规则":{
+        emitAction:"onClickRule",
+        icon: "/static/index/v3/rule.png",
+        icon_black:"/static/index/v3/rule_black.png",
+        style: {
+            width: "36rpx",
+            height: "36rpx",
+            // marginRight: "20rpx"
+        }
     }
 }
 export default {
@@ -154,8 +173,39 @@ export default {
             default: () => {
                 return {}
             }
+        },
+        report: {
+            type: Boolean,
+            default: false
+        },
+        showBack: {
+            type: Boolean,
+            default: true
+        },
+        transition: {
+            type: Boolean,
+            default: true
+        },
+        customBack:{
+            type:Boolean,
+            default:false
+        },
+        whiteTitle:{
+            type:Boolean,
+            default:false
+        },
+        whiteBack:{
+            type:Boolean,
+            default:false
+        },
+        slotLeftReverseSide:{
+            type:Boolean,
+            default:false
+        },
+        navBgImage:{
+            type:String,
+            default:""
         }
-
     },
     data() {
         return {
@@ -167,27 +217,44 @@ export default {
         }
     },
     computed: {
+        showWhiteTitle(){
+            if(this.whiteTitle && this.scrollTopPercent < 1){
+                return { opacity:1,color:'#fff' }
+            }
+            return {}
+        },
         scrollTopPercent() {
-            return this.scrollTop / (this.MAX_HEIGHT * 1.4)
+            if (!this.transition) return 100
+            return this.scrollTop / (this.MAX_HEIGHT.toFixed(2) * 1.4)
         },
         opacityStyle() {
+            if (!this.transition) {
+                return {
+                    opacity: 1
+                }
+            }
             return {
-                opacity: this.scrollTopPercent
+                opacity: this.scrollTopPercent > 1 ? 1 : this.scrollTopPercent
             }
         },
         opacityStyleRevers() {
             return {
-                opacity: 1 - this.scrollTopPercent
+                opacity: this.slotLeftReverseSide ? this.scrollTopPercent  : 1 - this.scrollTopPercent
             }
         },
         navBackGroundShow() {
+            if (!this.transition) return true
             return (this.scrollTop / (this.MAX_HEIGHT * 1.4)) > 0.6
         },
         scrollTopOpacity() {
+            if (!this.transition) return true
             return 1 - (this.scrollTop / (this.MAX_HEIGHT * 1.4))
         },
+        toolsMapCom(){
+            return Object.assign(toolsMap, this.toolsMapCustomNew)
+        },
         toolsList() {
-            const list = this.needRightTools.map(key => toolsMap[key])
+            const list = this.needRightTools.map(key => this.toolsMapCom[key])
             return list.filter(item => Boolean(item))
         }
     },
@@ -203,25 +270,20 @@ export default {
     },
     mounted() {
         this.init()
-        if (Object.keys(this.toolsMapCustomNew).length) {
-            toolsMap = Object.assign(toolsMap, this.toolsMapCustomNew)
-        }
     },
     methods: {
         init() {
             // #ifdef APP-PLUS
-            if (this.changeStatusBarStyle) {
+            if (this.changeStatusBarStyle&&this.transition) {
                 plus.navigator.setStatusBarStyle(this.statusBarStyleArray[0]);
             }
-
             // #endif
             this.$nextTick(() => {
-                const query = uni.createSelectorQuery().in(this)
-                query
+                uni.createSelectorQuery()
                     .select('#pageTopContainer')
-                    .boundingClientRect((data) => {
-                        this.MAX_HEIGHT = data.height
-                        this.$emit('getNavHeight', data.height)
+                    .boundingClientRect((rect) => {
+                        this.MAX_HEIGHT = rect.height
+                        this.$emit('getNavHeight', rect.height)
                     })
                     .exec();
             })
@@ -271,7 +333,7 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 0 36rpx;
+    padding: 0 36rpx 0 12rpx;
     width: 750rpx;
     height: 88rpx;
     position: relative;
@@ -280,11 +342,11 @@ export default {
 
 /* #ifndef APP-NVUE */
 .pageTitle {
-    font-size: 32rpx;
-    color: #3C3C3C;
+    font-size: 18px;
+    
+    color: #333;
     position: absolute;
-    font-family: HYQiHei;
-    font-weight: bold;
+    font-weight: 600;
     left: 0;
     right: 0;
     margin: auto;
@@ -306,10 +368,10 @@ export default {
 }
 
 .titleText {
-    font-size: 32rpx;
-    color: #3C3C3C;
-    font-family: HYQiHei;
-    font-weight: bold;
+    font-size: 18px;
+    
+    font-weight: 600;
+    color: #333;
 }
 
 /* #endif */
@@ -326,7 +388,7 @@ export default {
 }
 
 .leftBackContainer {
-    width: 19rpx;
+    /* width: 19rpx; */
     height: 55rpx;
     border-radius: 50%;
     margin-right: 14rpx;
@@ -361,15 +423,52 @@ export default {
 }
 
 .back {
-    width: 19rpx;
-    height: 35rpx;
+    width: 56rpx;
+    height: 56rpx;
 }
-
+.toolsText{
+    font-size: 28rpx;
+}
+.colorWhite{
+    color:#fff;
+}
+.colorBlack{
+    color:#000
+}
 /* #ifndef APP-NVUE */
 .filterBlack {
     -webkit-filter: invert(1) hue-rotate(270deg);
     filter: invert(1) hue-rotate(270deg);
 }
-
+.nav-bg-container{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    overflow: hidden;
+}
+.nav-bg-image{
+    width: 100%;
+    height:100%;
+    position: absolute;
+    top:0;
+    left:0;
+    -webkit-filter: blur(20px);
+    filter: blur(20px);
+    -webkit-transform: scale(1.5);
+    -ms-transform: scale(1.5);
+    transform: scale(1.5);
+}
+.nav-blur{
+    width: 100%;
+    height:100%;
+    position: absolute;
+    top:0;
+    left:0;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(30px);
+}
 /* #endif */
 </style>

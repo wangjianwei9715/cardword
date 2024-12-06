@@ -1,6 +1,6 @@
 
 <template>
-    <view class="content">
+    <view>
         <bottomDrawer title="领取优惠券" :showDrawer.sync="showValue" drawerBg="#F5F7FB">
             <!-- <view class="coupon-list"> -->
                 <scroll-view scroll-y="true" class="coupon-list" @scrolltolower="lower">
@@ -97,7 +97,7 @@
                 padding-top: 35rpx;
                 .left-price{
                     font-size: 29rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 600;
                     color: #FFFFFF;
                     text-align: center;
@@ -109,8 +109,8 @@
                     margin-top: 5rpx;
                     text-align: center;
                     font-size: 23rpx;
-                    font-family: PingFang SC;
-                    font-weight: 400;
+                    
+                    
                     color: #FFFFFF;
                 }
             }
@@ -128,15 +128,15 @@
                 .right-title{
                     width: 300rpx;
                     font-size: 29rpx;
-                    font-family: PingFang SC;
+                    
                     font-weight: 600;
                     color: #333333;
                     margin-bottom: 2rpx;
                 }
                 .right-time{
                     font-size: 21rpx;
-                    font-family: PingFang SC;
-                    font-weight: 400;
+                    
+                    
                     color: #88878C;
                     margin-top: 2rpx;
                 }
@@ -150,8 +150,8 @@
                     align-items: center;
                     justify-content: center;
                     font-size: 25rpx;
-                    font-family: PingFang SC;
-                    font-weight: 500;
+                    
+                    font-weight: 600;
                     color: #FFFFFF;
                     position: absolute;
                     right:31rpx;
@@ -169,8 +169,8 @@
                 }
                 .right-b-font{
                     font-size: 21rpx;
-                    font-family: PingFang SC;
-                    font-weight: 400;
+                    
+                    
                     color: #88878C;
                 }
                 .coupon-right-down{

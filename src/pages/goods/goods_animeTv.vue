@@ -8,14 +8,14 @@
             </view>
         </view>
         <view class="goodsMenu">
-            <view class="menu" v-for="(item, index) in     goodsMenu.list"
+            <view class="menu" v-for="(item, index) in goodsMenu.list" :key="index"
                 :class="{ menu_select: goodsMenu.index == index }" @click="onClickGoodsMenu(item, index)">{{
                     item.label }}</view>
         </view>
         <view class="goodsList">
             <view class="anGoods" v-for="(item, index) in goodsList" :key="index" @click="onClickGoods(item)">
                 <muqian-lazyLoad class="pic" borderRadius="3rpx"
-                    :src="$parsePic(decodeURIComponent(item.pic))"></muqian-lazyLoad>
+                    :src="$parsePic(item.pic)"></muqian-lazyLoad>
                 <view class="goodsInfo">
                     <view class="name u-line-1">{{ item.title }}</view>
                     <view class="typePro">
@@ -151,8 +151,6 @@ export default class ClassName extends BaseNode {
             this.queryParams.st = item.id
             this.seriesType.index = item.index
         }
-        console.log(this.queryParams);
-        
         this.reqNewData()
     }
     onClickGoodsMenu(item: any, index: number) {
@@ -174,7 +172,7 @@ export default class ClassName extends BaseNode {
                     id: item.id,
                     name: item.title,
                     //@ts-ignore
-                    pic_url: this.$parsePic(decodeURIComponent(item.pic_url)),
+                    pic_url: this.$parsePic(item.pic_url),
                 }
             })
             if (this.seriesId) {
@@ -187,7 +185,7 @@ export default class ClassName extends BaseNode {
     }
     reqNewData(cb?: any) {
         this.queryParams.timeStamp = Math.round(+new Date() / 1000)
-        app.http.Get(`dataApi/goodlist/forsale/animeTv`, this.queryParams, (res: any) => {
+        app.http.GetWithCrypto(`dataApi/goodlist/forsale/animeTv`, this.queryParams, (res: any) => {
             const list = res.goodList || []
             this.isEnd = res.isFetchEnd
             this.queryParams.fetchFrom == 1 ? this.goodsList = list : this.goodsList.push(...list)
@@ -224,14 +222,14 @@ page {
         text-align: center;
         // margin-right: 10rpx;
         font-size: 28rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #959699;
     }
 
     .menu_select {
         // color: #fb374e;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #FA1545;
         font-size: 31rpx;
@@ -275,7 +273,7 @@ page {
 
         .name {
             font-size: 25rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #333333;
             margin-bottom: 20rpx;
@@ -287,8 +285,8 @@ page {
 
             .type {
                 font-size: 20rpx;
-                font-family: PingFang SC;
-                font-weight: 400;
+                
+                
                 color: #949494;
                 padding: 0rpx 6rpx;
                 height: 28rpx;
@@ -322,8 +320,8 @@ page {
 
                 .text {
                     font-size: 20rpx;
-                    font-family: PingFang SC;
-                    font-weight: 400;
+                    
+                    
                     color: #333333;
                     // line-height: 28rpx;
                     z-index: 2;
@@ -339,8 +337,8 @@ page {
 
             .merchantName {
                 font-size: 23rpx;
-                font-family: PingFang SC;
-                font-weight: 400;
+                
+                
                 color: #333333;
                 margin-left: 10rpx;
                 flex: 1;
@@ -348,12 +346,12 @@ page {
 
             .goodsPriceContainer {
                 // font-size: 33rpx;
-                font-family: PingFang SC;
+                
                 font-weight: bold;
                 color: #333333;
                 font-size: 31rpx;
                 font-family: ArialBold !important;
-                font-weight: 400;
+                
                 color: #333333;
                 letter-spacing: -2rpx;
 
@@ -369,8 +367,8 @@ page {
                 .priceTips {
                     margin-left: 10rpx;
                     font-size: 23rpx;
-                    font-family: PingFangSC-Regular;
-                    font-weight: 500;
+                    
+                    font-weight: 600;
                     color: #959695;
                 }
             }

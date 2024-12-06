@@ -1,88 +1,38 @@
-// 首页tab列表
-export var indexTabList = [
-    {icon:'../../static/index/v3/icon1.png',name:'卡币商城',url:'/pages/mall/mallIndex'},
-    {icon:'../../static/index/v3/icon2.png',name:'领券中心',url:'/pages/userinfo/coupon/coupon_get'},
-    {icon:'../../static/index/v3/icon3.png',name:'资讯公告',url:'/pages/information/list'},
-    {icon:'../../static/index/v3/icon4.png',name:'商家列表',url:'/pages/userinfo/merchant_listV2'},
-    {icon:'../../static/index/v3/icon5.png',name:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'}
-]
-
-// 首页hot列表
-export var indexHotList = {
-    progress:{
-        title:'拼团进度榜',
-        tips:'快速开拆',
-        pic:'http://cdn.ka-world.com/admin/2022.10.05/goods/pintuan0/1664909622406h0bq65q4rt.jpg',
-        url:'/pages/goods/goods_progressRank',
-        bg:{
-            src:'../../static/index/v3/index_f.png',
-            width:'155rpx',
-            height:'46rpx'
-        },
-        icon:{
-            src:'../../static/index/v3/index_icon_f.png',
-            width:'161rpx',
-            height:'103rpx',
-            top:'47rpx',
-            right:'13rpx'
-        }
-    },
-    fresh:{
-        // title:'最新上架',
-        title:'动漫专区',
-        // tips:'新车和预售',
-        tips:"跨越次元之旅",
-        pic:'http://cdn.ka-world.com/admin/2022.10.05/goods/pintuan0/1664909622406h0bq65q4rt.jpg',
-        // url:'/pages/goods/goods_assign_list?type=fresh',
-        url:"/pages/goods/goods_animeTv",
-        bg:{
-            src:'../../static/index/v3/Anime.png',
-            width:'197rpx',
-            height:'45rpx'
-        },
-        icon:{
-            src:'',
-            width:'139rpx',
-            height:'80rpx',
-            top:'44rpx',
-            right:'16rpx'
-        }
-    },
-    hot:{
-        title:'新手体验',
-        tips:'球星卡入门',
-        pic:'http://cdn.ka-world.com/admin/2022.10.05/goods/pintuan0/1664909622406h0bq65q4rt.jpg',
-        url:'/pages/goods/goods_assign_list?type=cheap',
-        bg:{
-            src:'../../static/index/v3/index_t.png',
-            width:'120rpx',
-            height:'45rpx'
-        },
-        icon:{
-            src:'../../static/index/v3/index_icon_t.png',
-            width:'146rpx',
-            height:'106rpx',
-            top:'35rpx',
-            right:'16rpx'
-        }
-    },
-    broadCast:{
-        title:'拆卡围观',
-        tips:'入门体验',
-        list:[],
-        bg:{
-            src:'../../static/index/v3/index_b.png',
-            width:'199rpx',
-            height:'45rpx'
-        },
-        icon:{
-            top:'23rpx',
-            right:'29rpx'
-        }
-    }
+export const gameplayType = {
+    1:{ name:"卡种随机", color:"#FA1545", progressLeft:"#FFBAC9", progressRight:"#FA1545" },
+    2:{ name:"球队随机", color:"#1FDFCB", progressLeft:"#92FBFA", progressRight:"#0ACDB8" },
+    3:{ name:"球员随机", color:"#ECBE32", progressLeft:"#FFF772", progressRight:"#E8B929" },
+    4:{ name:"卡盒随机", color:"#FA1545", progressLeft:"#FFBAC9", progressRight:"#FA1545" },
+    5:{ name:"卡包随机", color:"#FA1545", progressLeft:"#FFBAC9", progressRight:"#FA1545" },
+    10:{ name:"球队自选", color:"#2A93FF", progressLeft:"#9AF2FF", progressRight:"#1F85EE" },
+    11:{ name:"选队随机", color:"#692EFF", progressLeft:"#DDBBFF", progressRight:"#5E23F3" },
+    12:{ name:"卡种自选", color:"#FA1545", progressLeft:"#FFBAC9", progressRight:"#FA1545" }
 }
+// 首页tab列表
+export const indexMenu = {
+    front:[
+        {icon:'/static/index/tabs/1.png',needLogin:false,name:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'},
+        {icon:'/static/index/tabs/2.png',needLogin:false,name:'动漫专区',url:"/pages/goods/goods_animeTv",},
+        {icon:'/static/index/tabs/3.png',needLogin:false,name:'玩家卡册',url:'/pages/information/list'},
+        {icon:'/static/index/tabs/4.png',needLogin:false,name:'查卡价',url:'/pages/act/service/ref'},
+        {icon:'/static/index/tabs/5.png',needLogin:true,name:'卡币商城',url:'/pages/mall/mallIndex'},
+    ],
+    back:[
+        {icon:'/static/index/tabs/6.png',needLogin:true,name:'商家列表',url:'/pages/userinfo/merchant_listV2'},
+        {icon:'/static/index/tabs/7.png',needLogin:true,name:'领券中心',url:"/pages/userinfo/coupon/coupon_get",},
+        {icon:'/static/index/tabs/8.png',needLogin:true,name:'发售日历',url:'/pages/act/calendar/list'},
+    ]
+};
+export const goodsTabs = [
+    {name:'推荐',id:0,url:'main'},
+    {name:'篮球',id:1,url:'basketball'},
+    {name:'足球',id:2,url:'football'},
+    {name:'宝可梦',id:9,url:'animeTv'},
+    {name:'综合体育',id:20,url:'zhty'},
+    {name:'其他',id:100,url:'other'},
+]
 // 商品列表类型
-export var goodsListType: { [x: string]: any } = {
+export const goodsTypeTitle: { [x: string]: any } = {
     'activity': '活动专区',
     'cheap': '新手专区',
     'select': '自选玩法',
@@ -90,25 +40,16 @@ export var goodsListType: { [x: string]: any } = {
 	'yifen':'一分上组',
     'fresh':'最新上架'
 }
-/**
- * @goodDetailSpe   商品详情 规格类型
- * @spec            拼团规格
- * @pintuan_type    拼团形式
- * @random_type     随机方式
- * @spec_str        查看卡密
- *  @value ｛number｝ id   id标识
- *  @value ｛string｝ name 内容
- *  @value ｛string｝ desc 描述
- *  @value ｛string｝ icon 图标
- */
-export var goodDetailSpe: {
-    [x: string]: any
-} = {
-    spec:{id:3,name:'',desc:'规格'},
-    num:{id:4,name:'',desc:'卡片数量'},
-    pintuan_type:{id:1,name:'',desc:'玩法'},
-    random_type:{id:2,name:'',desc:'随机形式'}
-};
+export const countDownList = [
+    {type:'str',name:'剩'},
+    {type:'time',name:'days'},
+    {type:'str',name:'天'},
+    {type:'time',name:'hours'},
+    {type:'str',name:':'},
+    {type:'time',name:'minutes'},
+    {type:'str',name:':'},
+    {type:'time',name:'seconds'}
+]
 // 状态
 export var stateArray = [
     {
@@ -119,10 +60,10 @@ export var stateArray = [
     //     name: "即将发售",
     //     value: 0
     // },
-    {
-        name: "已拼成",
-        value: 2
-    }
+    // {
+    //     name: "已拼成",
+    //     value: 2
+    // }
 ]
 //玩法
 export var palyArray = [
@@ -152,7 +93,7 @@ export var palyArray = [
     }
 ]
 // 中文数字
-export var chineseNumber = {
+export const chineseNumber = {
     1: '一',
     2: '二',
     3: '三',
@@ -164,7 +105,6 @@ export var chineseNumber = {
     9: '九',
     10: '十'
 }
-
 // 订单状态 //1 等待支付 2 进行中 3 等待发货 4 等待收货 5 收货成功  10 未中卡
 export var orderState = {
     '1': '等待支付',
@@ -197,6 +137,10 @@ export const mallStateMap: any = {
     },
     "-1": {
         tip: "等待支付完成"
+    },
+    "-2":{
+        tip: "奖品发放失败",
+        userTip: '奖品发放失败'
     }
 }
 export const mallStatusMap: any = {
@@ -207,4 +151,64 @@ export const mallStatusMap: any = {
     "-2": "支付已取消",
     "-3":"已退款"
 }
-
+export const comment_reason_tp:any=[
+    {
+        label:"站外导流",
+        value:1
+    },
+    {
+        label:"违法违规",
+        value:2
+    },
+    {
+        label:"色情低俗",
+        value:3
+    },
+    {
+        label:"广告",
+        value:4
+    },
+    {
+        label:"不友善、引战",
+        value:5
+    },
+    {
+        label:"时政不实信息",
+        value:6
+    },
+    {
+        label:"涉未成年人",
+        value:7
+    },
+    {
+        label:"内容不相关",
+        value:8
+    },
+    {
+        label:"其他",
+        value:100
+    }
+]
+export const MerchantLevel:{[x:number]:any} = {
+    0:{level:'L1',name:'',icon:''},
+    1:{level:'V1',name:'星耀商家',icon:'v1'},
+    2:{level:'V2',name:'星耀商家',icon:'v1'},
+    3:{level:'V3',name:'星耀商家',icon:'v1'},
+    4:{level:'V4',name:'荣耀商家',icon:'v2'},
+    5:{level:'V5',name:'荣耀商家',icon:'v2'},
+    6:{level:'V6',name:'荣耀商家',icon:'v2'},
+    7:{level:'V7',name:'荣耀商家',icon:'v2'},
+}
+export const phoneTypeArray = [
+    '+86',
+    '+852',
+    '+853',
+    '+886'
+]
+export const PhoneCodeType={
+    LOGIN:'login',
+    FORGET:"forget",
+    SET_PWD:"setPwd",
+    BIND_PHONE:"bind",
+    CHANGE_BIND_PHONE:"changeBindPhone"
+}

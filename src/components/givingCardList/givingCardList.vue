@@ -18,30 +18,22 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import BaseComponent from "@/base/BaseComponent.vue";
 import { dateFormatMSHMS } from "@/tools/util";
+import { app } from "@/app";
 @Component({})
 export default class ClassName extends BaseComponent {
-  @Prop({
-    default: [],
-  })
-  codeList: any;
-  @Prop({
-    default: 1,
-  })
-  type: number|undefined;
-  dateFormatMSHMS = dateFormatMSHMS;
-  
-  created() {
-    //在实例创建完成后被立即调用
-  }
-  mounted() {
-    
-  }
-  onClickGivingOrder(item:any){
-	  uni.navigateTo({
-		  url:'/pages/userinfo/order_details?code='+item.orderCode
-	  })
-  }
-  
+	@Prop({
+		default: [],
+	})
+	codeList: any;
+	@Prop({
+		default: 1,
+	})
+	type: number|undefined;
+	dateFormatMSHMS = dateFormatMSHMS;
+	onClickGivingOrder(item:any){
+		app.navigateTo.goOrderDetails(item.orderCode)
+	}
+
 }
 </script>
 
@@ -69,16 +61,16 @@ export default class ClassName extends BaseComponent {
 			height:30rpx;
 			line-height: 30rpx;
 			font-size: 26rpx;
-			font-family: Source Han Sans CN;
-			font-weight: 400;
+			
+			
 			color: #333333;
 		}
 		.giving-index-time{
 			height:30rpx;
 			line-height: 30rpx;
 			font-size: 24rpx;
-			font-family: Source Han Sans CN;
-			font-weight: 400;
+			
+			
 			color: #88878C;
 		}
 	}
@@ -89,8 +81,8 @@ export default class ClassName extends BaseComponent {
 		border-radius: 5rpx;
 		padding: 25rpx 28rpx;
 		font-size: 26rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #333333;
 		line-height: 40rpx;
 		margin-bottom: 20rpx;
@@ -104,8 +96,8 @@ export default class ClassName extends BaseComponent {
 	}
 	.giving-index-bottom-left{
 		font-size: 24rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #88878C;
 	}
 	.giving-index-bottom-btn{
@@ -114,8 +106,8 @@ export default class ClassName extends BaseComponent {
 		background: $btn-red;
 		border-radius: 28rpx;
 		font-size: 28rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #FFFFFF;
 		line-height: 55rpx;
 		text-align: center;

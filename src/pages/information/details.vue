@@ -1,12 +1,9 @@
 <template>
 	<view class="content" >
-		<navigationShare navigatetoTitle="详情" :shareData="shareData"/>
+		<navigationbar title="详情" :shareData="shareData"/>
 		
 		<view class="index">
-			<view style="padding-top:88rpx">
-				<statusbar/>
-			</view>
-			<comments :articleData="articleData" :commentsList="commentsList" :isFetchEnd="commentParams.isFetchEnd" @reply="onReply" @moreComments="onMoreComments"/>
+			<comments ref="comments" :articleData="articleData" :commentsList="commentsList" :isFetchEnd="commentParams.isFetchEnd" @reply="onReply" @moreComments="onMoreComments"/>
 		</view>
 		
 		<commentsTabbar :data="articleData" :commentNum="articleData.comment" :show="chatData.focus" @comment="onReply" @chat="onReply"/>
@@ -69,6 +66,12 @@
 		onClickBack(){
 			uni.navigateBack({ delta: 1 });
 		}
+		onPageScroll() {
+			//@ts-ignore
+			this.$refs.comments.tapTimer && clearTimeout(this.$refs.comments.tapTimer)
+			//@ts-ignore
+			this.$refs.comments.lontapTimer && clearTimeout(this.$refs.comments.lontapTimer)
+		}
 		// 获取资讯详情
 		getArticleDetail(){
 			app.http.Get('dataApi/article/detail/'+this.code,{channel:Number(this.typeAD)},(res:any)=>{
@@ -125,6 +128,13 @@
 		// 提交评论或回复
 		onChatConfirm(content:string){
 			console.log('评论内容：',content);
+			if (!content||!content.replace(/\s/g,"")){
+				uni.showToast({
+					title:"请输入评论内容",
+					icon:"none"
+				})
+				return
+			}
 			app.platform.hasLoginToken(()=>{
 				const data = this.chatData;
 				const url = data.replyId == 0 ? `article/comment/issue/${this.code}` : `article/reply/comment/${data.replyId}`;
@@ -191,8 +201,8 @@
 			line-height: 62rpx;
 			padding:0 38rpx;
 			font-size: 20rpx;
-			font-family: Microsoft YaHei;
-			font-weight: 400;
+			
+			
 			color: #BDBEC5;
 		}
 		.desc-index{
@@ -201,8 +211,8 @@
 			display: flex;
 			align-items: center;
 			font-size: 20rpx;
-			font-family: Microsoft YaHei;
-			font-weight: 400;
+			
+			
 			color: #BDBEC5;
 			justify-content: flex-end;
 		}
@@ -256,7 +266,7 @@
 			height:88rpx;
 			line-height: 88rpx;
 			font-size: 34rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}

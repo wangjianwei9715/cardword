@@ -1,26 +1,15 @@
 <template>
     <view class="goodslistHorizontal">
         <view class="goodsCard" v-for="(item, index) in goodsList" :key="index" @click="onClickJumpUrl(item.goodCode)">
-            <muqian-lazyLoad class="goodsImg" borderRadius="3rpx" :src="$parsePic(decodeURIComponent(item.pic))" />
+            <muqian-lazyLoad class="goodsImg" borderRadius="3rpx" :src="$parsePic(item.pic)" />
             <view class="goodsRight">
-                <view class="goodsRight-top">
-                    <view class="goodsName" :class="{ onLineOver: isOneLine }">{{ item.title }}</view>
-                    <view v-if="item.state == 0 || item.state == -1" class="startTime">
-                        {{ dateFormatMSHMS(item.startAt) + '开售' }}
+                <view class="goodsName" :class="{ onLineOver: isOneLine }">{{ item.title }}</view>
+                
+                <view class="goodsRight-bottom">
+                    <view class="goodsMerchant uni-flex" @click.stop="onClickSellerShop(item)">
+                        <merchantAvatar :level="item.merchantLevel" :src="decodeURIComponent(item.merchantLogo)"/>
+                        <view class="merchantName">{{ item.merchantName }}</view>
                     </view>
-                    <view class="goodsProgress uni-flex" v-else>
-                        <view class="progressContainer">
-                            <view class="progress" :style="{ width: (goodsManaager.listPlan(item, 'num')) + '%' }"></view>
-                        </view>
-                        <view class="progressPercnet">{{ goodsManaager.listPlan(item, 'num') + '%' }}</view>
-                    </view>
-                    <view class="goodsType" v-if="isOneLine">
-                        <view>{{ getGoodsPintuan(item.pintuan_type) }}</view>
-                        <!-- <view class="goodsTypeLine"></view>
-                        <view>1箱</view> -->
-                    </view>
-                </view>
-                <view class="goodsRight-bottom uni-flex">
                     <view class="goodsPriceContainer">
                         <text>￥</text>
                         <text>{{ filterPrice(item.price).integer }}</text>
@@ -28,15 +17,18 @@
                             v-if="filterPrice(item.price).decimal">{{ filterPrice(item.price).decimal }}</text>
                         <text class="priceTips">{{ goodsManaager.hasLowestPrice(item) ? '起' : '' }}</text>
                     </view>
-                    <view class="goodsMerchant uni-flex" @click.stop="onClickSellerShop(item)">
-                        <merchantAvatar :level="item.merchantLevel" :src="decodeURIComponent(item.merchantLogo)"/>
-                        <view class="merchantName">{{ item.merchantName }}</view>
-                    </view>
                 </view>
             </view>
-            <view class="rankContainer" v-if="needRank" :class="[`rank${index + 1}`, index >= 3 ? 'rankOther' : '']">
-                <view class="rankTop">TOP</view>
-                <view class="rankNum">{{ index + 1 }}</view>
+            <view class="progress-box">
+                <circleProgress :value="goodsManaager.listPlan(item, 'num')" :widths="124" activeColor="linear-gradient(to bottom right, #FA1545,#FF98BB) " defaultColor="rgba(250, 21, 69, 0.06)" bgColor="#fff">
+                    <template slot="inner">
+                        <view class="progress-inner">
+                            <view class="progress-text">{{goodsManaager.listPlan(item, 'num')}}%</view>
+                        </view>
+                    </template>
+                </circleProgress>
+            </view>
+            <view class="rankContainer" v-if="needRank" :class="[`rank${index + 1}`]">
             </view>
         </view>
     </view>
@@ -52,18 +44,10 @@ import {
     dateFormatMSHMS,
     dateFormatMS
 } from "@/tools/util"
-import {
-    getGoodsImg
-} from "../../tools/util";
-import {
-    app
-} from "@/app";
-import {
-    getGoodsPintuan
-} from '@/tools/switchUtil';
-import {
-    Md5
-} from "ts-md5";
+import { getGoodsImg } from "../../tools/util";
+import { app } from "@/app";
+import { getGoodsPintuan } from '@/tools/switchUtil';
+import { Md5 } from "ts-md5";
 @Component({})
 export default class ClassName extends BaseComponent {
     goodsManaager = app.goods;
@@ -112,81 +96,55 @@ export default class ClassName extends BaseComponent {
 }
 
 .rankContainer {
-    width: 58rpx;
-    height: 67rpx;
+    width: 46rpx;
+    height:55rpx;
     background-size: 100% 100%;
-
     position: absolute;
     top: 0;
     left: 0;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-
-    .rankTop {
-        font-size: 16rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
-        color: #333333;
-        margin-top: 4rpx;
-    }
-
-    .rankNum {
-        font-size: 33rpx;
-        font-family: PingFang SC;
-        font-weight: bold;
-        color: #333333;
-        position: relative;
-        bottom: 12rpx;
-    }
 }
 
 .rank1 {
-    background-image: url('../../static/goods/v2/rank1.png');
+    background-image: url('@/static/goods/v2/top1.png');
 }
 
 .rank2 {
-    background-image: url('../../static/goods/v2/rank2.png');
+    background-image: url('@/static/goods/v2/top2.png');
 }
 
 .rank3 {
-    background-image: url('../../static/goods/v2/rank3.png');
-}
-
-.rankOther {
-    background-image: url('../../static/goods/v2/rankOther.png');
+    background-image: url('@/static/goods/v2/top3.png');
 }
 
 .goodsCard {
     width: 710rpx;
-    height: 216rpx;
+    height: 220rpx;
     background: #FFFFFF;
     border-radius: 5rpx;
-    margin-bottom: 14rpx;
+    margin-bottom: 12rpx;
     display: flex;
     box-sizing: border-box;
-    padding: 20rpx;
     align-items: center;
     position: relative;
+    padding-right: 20rpx;
 
     .goodsImg {
-        width: 229rpx;
-        height: 176rpx;
+        width: 284rpx;
+        height: 220rpx;
         background: #333333;
-        margin-right: 27rpx;
+        margin-right: 22rpx;
     }
 
     .goodsRight {
         flex: 1;
         display: flex;
-        height: 176rpx;
+        height: 180rpx;
         justify-content: space-between;
         flex-direction: column;
-
         .goodsName {
             // font-size: 25rpx;
-            // font-family: PingFang SC;
-            // font-weight: 400;
+            // 
+            // 
             // color: #333333;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -195,9 +153,7 @@ export default class ClassName extends BaseComponent {
             -webkit-box-orient: vertical;
             line-height: 34rpx;
             -webkit-line-clamp: 2;
-            font-size: 25rpx;
-            font-family: PingFangSC-Light;
-            font-weight: 400;
+            font-size: 24rpx;
             color: #333333;
         }
 
@@ -205,50 +161,10 @@ export default class ClassName extends BaseComponent {
             -webkit-line-clamp: 1;
         }
 
-        .goodsProgress {
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 18rpx;
-        }
-
-        .startTime {
-            font-size: 21rpx;
-            font-family: PingFang SC;
-            font-weight: 600;
-            color: #454645;
-            margin-top: 17rpx;
-        }
-
-        .progressContainer {
-            // width: 331rpx;
-            flex: 1;
-            height: 8rpx;
-            background-color: #f6f7fb;
-            position: relative;
-        }
-
-        .progress {
-            // width: 50%;
-            height: inherit;
-            background: linear-gradient(90deg, #F4B5C5 0%, #EA3345 100%);
-        }
-
-        .progressPercnet {
-            margin-left: 18rpx;
-            font-size: 23rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
-            width: 86rpx;
-            // background-color: red;
-            text-align: right;
-            color: #959695;
-            white-space: nowrap;
-        }
-
         .goodsType {
             font-size: 21rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
+            
+            
             color: #959695;
             display: flex;
             align-items: center;
@@ -271,55 +187,59 @@ export default class ClassName extends BaseComponent {
 
         .goodsPriceContainer {
             flex: 1;
-            // font-size: 33rpx;
-            font-family: PingFang SC;
             font-weight: bold;
             color: #333333;
-            font-size: 31rpx;
-            font-family: ArialBold !important;
-            font-weight: 400;
+            font-size: 26rpx;
             color: #333333;
-            // line-height: 38rpx;
-            // margin-right: 10rpx;
             letter-spacing: -2rpx;
-
             text:first-child {
-                font-size: 18rpx;
+                font-size: 28rpx;
                 font-weight: 600;
             }
-
             .decimal {
-                font-size: 23rpx;
+                font-size: 14rpx;
             }
-
             .priceTips {
-                // font-size: 23rpx;
-                // font-family: PingFang SC;
-                // font-weight: 400;
-                // color: #959695;
-                margin-left: 10rpx;
-                font-size: 23rpx;
-                font-family: PingFangSC-Regular;
-                font-weight: 500;
+                margin-left: 14rpx;
+                font-size: 24rpx;
+                font-weight: 600;
                 color: #959695;
             }
         }
-
         .goodsMerchant {
+            height:40rpx;
             align-items: center;
-
+            margin-bottom: 20rpx;
             .merchantLogo {
-                width: 35rpx;
-                height: 35rpx;
+                width: 40rpx;
+                height: 40rpx;
             }
 
             .merchantName {
-                font-size: 23rpx;
-                font-family: PingFang SC;
-                font-weight: 400;
-                color: #333333;
+                font-size: 20rpx;
+                color: #A2A8B4;
             }
         }
     }
+}
+.progress-box{
+    width: 121rpx;
+    height:121rpx;
+    position: absolute;
+    bottom:10rpx;
+    right:30rpx;
+}
+.progress-inner{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.progress-text{
+    width: 100%;
+    text-align: center;
+    color:#000000;
+    font-size: 20rpx;
+    font-weight: 600;
 }
 </style>

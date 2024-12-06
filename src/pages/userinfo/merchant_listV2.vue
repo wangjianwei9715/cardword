@@ -1,19 +1,10 @@
 <template>
     <view class="content">
-        <view class="header-banner">
-            <statusbar />
-            <view class="tab-header">
-                <view class="icon-back" @click="onClickBack"></view>
-                <view class="header-title">商家列表</view>
-                <view class="header-icon" @click="onClickSearch">
-                    <view class="icon-share"></view>
-                </view>
-            </view>
-        </view>
-
-        <view style="padding-top:88rpx">
-            <statusbar />
-        </view>
+        <navigationbar title="商家列表" :custom="true">
+			<template slot="right">
+                <view class="icon-share" @click="onClickSearch"></view>
+			</template>
+		</navigationbar>
         <view class="topBanner" @click.stop="toMerchantJoin"></view>
         <view style="background-color: #fff;padding-top: 40rpx;">
             <template v-if="onLiveList&&onLiveList.length">
@@ -24,7 +15,7 @@
                             @click="onClickJumpUrl(item)">
                             <view class="merchantAvatar_block flexCenter">
                                 <muqian-lazyLoad class="avatar" borderRadius="50%"
-                                    :src="$parsePic(decodeURIComponent(item.logo))">
+                                    :src="$parsePic(item.logo)">
                                 </muqian-lazyLoad>
                                 <view class="liveEffects"></view>
                             </view>
@@ -43,7 +34,7 @@
                     v-for="(item,index) in hotRank" :key="index" @click="goMerchantPage(item.alias)">
                     <view class="hot_picBlock">
                         <muqian-lazyLoad class="hot_pic" borderRadius="3rpx"
-                            :src="$parsePic(decodeURIComponent(item.logo))" />
+                            :src="$parsePic(item.logo)" />
                         <view class="rankItem flexCenter" v-if="index<=2" :class="[`rank${index+1}`]">
                             <!-- <view class="top">TOP</view> -->
                             <view class="rank">{{index+1}}</view>
@@ -58,10 +49,10 @@
                 @click="goMerchantPage(item.alias)">
                 <view class="merchantCard_top">
                     <muqian-lazyLoad class="merchantBack" borderRadius="3rpx"
-                        :src="$parsePic(decodeURIComponent(item.back_img || item.logo))" />
+                        :src="$parsePic(item.back_img || item.logo)" />
                     <view class="merchantMask"></view>
                     <muqian-lazyLoad class="merchantAvatr" borderRadius="3rpx"
-                        :src="$parsePic(decodeURIComponent(item.logo))" />
+                        :src="$parsePic(item.logo)" />
                     <view class="merchantMsg">
                         <view class="name">{{item.name}}</view>
                         <view class="msg">{{item.groupGoodNum}}拼成 · {{item.fans}}粉丝</view>
@@ -72,11 +63,11 @@
                 </view>
                 <view class="merchantCard_bottom">
                     <view class="uni-flex reativeBlock" v-if="item.goodData&&item.goodData.length">
-                        <view class="goodsItem" v-for="(goodsItem,goodsIndex) in item.goodData"
+                        <view class="goodsItem" v-for="(goodsItem,goodsIndex) in item.goodData" :key="goodsIndex"
                             @click.stop="onClickJumpDetails(goodsItem.goodCode)">
                             <view class="goodsImgContainer flexCenter">
                                 <muqian-lazyLoad class="goodsImg" borderRadius="3rpx"
-                                    :src="$parsePic(decodeURIComponent(goodsItem.pic))" />
+                                    :src="$parsePic(goodsItem.pic)" />
                             </view>
                             <view class="goodsName">{{goodsItem.goodName}}</view>
                             <view class="goodsPrice" v-if="goodsItem.status==1">
@@ -311,7 +302,7 @@ page {
 
             .name {
                 font-size: 29rpx;
-                font-family: PingFang SC;
+                
                 font-weight: bold;
                 color: #FFFFFF;
                 margin-bottom: 16rpx;
@@ -319,8 +310,8 @@ page {
 
             .msg {
                 font-size: 21rpx;
-                font-family: PingFang SC;
-                font-weight: 400;
+                
+                
                 color: #FFFFFF;
             }
         }
@@ -347,8 +338,8 @@ page {
             width: inherit;
             height: inherit;
             font-size: 25rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
+            
+            
             color: #959695;
         }
 
@@ -368,8 +359,8 @@ page {
 
         .goodsName {
             // font-size: 25rpx;
-            // font-family: PingFang SC;
-            // font-weight: 400;
+            // 
+            // 
             height: 65rpx;
             // color: #333333;
             overflow: hidden;
@@ -380,20 +371,19 @@ page {
             line-height: 33rpx;
             -webkit-line-clamp: 2;
             font-size: 25rpx;
-            font-family: PingFangSC-Light;
-            font-weight: 400;
+            
             color: #333333;
         }
 
         .goodsPrice {
             // font-size: 33rpx;
-            // font-family: PingFang SC;
+            // 
             // font-weight: bold;
             // color: #333333;
             margin-top: 10rpx;
             font-size: 31rpx;
             font-family: ArialBold !important;
-            font-weight: 400;
+            
             color: #333333;
             // line-height: 38rpx;
             // margin-right: 10rpx;
@@ -406,8 +396,8 @@ page {
 
         .goodsSpell {
             font-size: 25rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
+            
+            
             color: #959695;
             margin-top: 10rpx;
         }
@@ -448,8 +438,8 @@ page {
     .hot_name {
 
         font-size: 23rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
+        
+        
         color: #333333;
         white-space: nowrap;
         overflow: hidden;
@@ -467,15 +457,15 @@ page {
 
         .top {
             font-size: 15rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
+            
+            
             color: #333333;
             text-align: center;
         }
 
         .rank {
             font-size: 27rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #333333;
             text-align: center;
@@ -500,7 +490,7 @@ page {
 
 .merchant_title {
     font-size: 31rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #333333;
     padding: 0 25rpx;
@@ -525,8 +515,8 @@ page {
     border: 1rpx solid #C0C0C0;
     border-radius: 3rpx;
     font-size: 22.92rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
+    
+    
     color: #333333;
 }
 
@@ -593,8 +583,8 @@ page {
 
 .merchantName {
     font-size: 22rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
+    
+    
     color: #333333;
     width: 126rpx;
     text-align: center;
@@ -608,75 +598,9 @@ page {
 .merchantItem:first-child {
     margin-left: 25rpx;
 }
-
-.header-banner {
-    width: 100%;
-    background: #fff;
-    position: fixed;
-    left: 0;
-    top: 0;
-    box-sizing: border-box;
-    z-index: 10;
-    border-bottom: 1px solid #F4F3F2;
-
-    .tab-header {
-        width: 100%;
-        height: 88rpx;
-        display: flex;
-        box-sizing: border-box;
-        padding: 0 30rpx;
-        position: relative;
-        z-index: 10;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .icon-back {
-        width: 80rpx;
-        height: 88rpx;
-        background: url(../../static/goods/back@2x.png) no-repeat center;
-        background-size: 100% 100%;
-        position: absolute;
-        left: 0;
-        top: 0;
-    }
-
-    .header-title {
-        height: 88rpx;
-        line-height: 88rpx;
-        font-size: 34rpx;
-        font-family: PingFangSC-Regular, PingFang SC;
-        font-weight: 600;
-        color: #000000;
-    }
-
-    .header-icon {
-        height: 88rpx;
-        display: flex;
-        align-items: center;
-        position: absolute;
-        right: 40rpx;
-        top: 0;
-    }
-
-    .icon-collect {
-        width: 44rpx;
-        height: 41rpx;
-        background: url(../../static/goods/v2/icon_collect.png) no-repeat center;
-        background-size: 100% 100%;
-        margin-right: 40rpx;
-    }
-
-    .icon-favored {
-        background: url(../../static/goods/v2/icon_collect_.png) no-repeat center;
-        background-size: 100% 100%;
-    }
-
-    .icon-share {
-        width: 46rpx;
-        height: 46rpx;
-        background: url(../../static/userinfo/v2/icon_search.png) no-repeat center;
-        background-size: 100% 100%;
-    }
+.icon-share {
+    width: 46rpx;
+    height:46rpx;
+    background: url(@/static/userinfo/v2/icon_search.png) no-repeat center / 100% 100%;
 }
 </style>

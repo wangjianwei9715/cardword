@@ -12,7 +12,7 @@ export const nowTime = () => {
 }
 export const goIndex = () => {
     uni.switchTab({
-        url: '/pages/index/index'
+        url: '/pages/index/index_v3'
     })
 }
 export const $confirm = (content = "提示", title = "直播间提示", showCancel = true) => {

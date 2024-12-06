@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 16:08:27
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-05 15:40:48
- * @FilePath: \card-world\src\pages\mall\detail.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-08-24 14:41:32
+ * @FilePath: \jichao_app_2\src\pages\mall\goodsDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -12,7 +12,7 @@
             :rowsHeight="[`280rpx`, `40rpx`, `200rpx`, `600rpx`]" :title="false"
             :loading="!goodsDetail.id"></u-skeleton>
         <view class="topImage">
-            <image mode="aspectFill" :src="$parsePic(decodeURIComponent(goodsDetail.logo))"></image>
+            <image mode="aspectFill" :src="$parsePic(goodsDetail.logo)"></image>
         </view>
         <view class="goodsInfoContainer">
             <view class="goodsName">{{ goodsDetail.name }}</view>
@@ -29,15 +29,15 @@
                         <view class="tips">距离开始</view>
                         <view class="timeBlockContainer">
                             <view class="timeBlock flexCenter"
-                                v-for="time in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).hours">{{ time }}
+                                v-for="(time,tIndex) in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).hours" :key="`hours${tIndex}`">{{ time }}
                             </view>
                             <view class="colon">:</view>
                             <view class="timeBlock flexCenter"
-                                v-for="time in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).minutes">{{ time }}
+                                v-for="(time,tIndex) in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).minutes" :key="`minutes${tIndex}`">{{ time }}
                             </view>
                             <view class="colon">:</view>
                             <view class="timeBlock flexCenter"
-                                v-for="time in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).seconds">{{ time }}
+                                v-for="(time,tIndex) in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).seconds" :key="`seconds${tIndex}`">{{ time }}
                             </view>
                         </view>
                     </template>
@@ -61,7 +61,7 @@
             <view class="title">商品详情</view>
             <muqian-lazyLoad class="img" borderRadius="3rpx" @click="onClickPreviewImage(index)"
                 v-for="(item, index) in goodsDetail.pic" :key="index"
-                :src="$parsePic(decodeURIComponent(item))"></muqian-lazyLoad>
+                :src="$parsePic(item)"></muqian-lazyLoad>
         </view>
         <view class="bottomSafeArea" style="height: 150rpx"></view>
         <view class="bottomFixedPay">
@@ -78,7 +78,7 @@
         <u-popup mode="center" closeable round="3rpx" :show="exchangeModal" @close="exchangeModal = false"
             :safeAreaInsetBottom="false">
             <view class="coninExchange">
-                <image class="exchangeImg" :src="$parsePic(decodeURIComponent(goodsDetail.logo))" mode="aspectFill" />
+                <image class="exchangeImg" :src="$parsePic(goodsDetail.logo)" mode="aspectFill" />
                 <view class="exchangeGoodsPrice">
                     <view class="exchangeText">兑换所需：<text style="color: #e53b4b">{{ goodsDetail.price }}卡币</text></view>
                     <view class="exchangeText">当前卡币：<text>{{ meBeanPoint }}</text></view>
@@ -317,8 +317,8 @@ page {
 
     .exchangeText {
         font-size: 29rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
+        
+        
         color: #333333;
     }
 
@@ -328,7 +328,7 @@ page {
         background: #fa1545;
         border-radius: 3rpx;
         font-size: 33rpx;
-        font-family: PingFang SC;
+        
         font-weight: 600;
         letter-spacing: 4rpx;
         color: #ffffff;
@@ -338,8 +338,8 @@ page {
 
     .exchangeTips {
         font-size: 23rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
+        
+        
         color: #949494;
         white-space: nowrap;
     }
@@ -360,7 +360,7 @@ page {
 
     .goodsName {
         font-size: 31rpx;
-        font-family: PingFang SC;
+        
         font-weight: 600;
         color: #333333;
     }
@@ -373,7 +373,7 @@ page {
         .goodsInfoBottom_left {
             .price {
                 font-size: 33rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 600;
                 color: #e53b4b;
             }
@@ -385,8 +385,8 @@ page {
                 border-radius: 16rpx;
                 overflow: hidden;
                 font-size: 20rpx;
-                font-family: PingFang SC;
-                font-weight: 400;
+                
+                
                 color: #ffffff;
                 display: flex;
                 white-space: nowrap;
@@ -412,8 +412,8 @@ page {
         .goodsInfoBottom_right {
             .tips {
                 font-size: 21rpx;
-                font-family: PingFang SC;
-                font-weight: 400;
+                
+                
                 color: #515151;
                 text-align: right;
             }
@@ -430,8 +430,8 @@ page {
                     background: #000000;
                     border-radius: 3rpx;
                     font-size: 21rpx;
-                    font-family: PingFang SC;
-                    font-weight: 400;
+                    
+                    
                     color: #ffffff;
                     margin-left: 4rpx;
                 }
@@ -456,7 +456,7 @@ page {
 
     .title {
         font-size: 31rpx;
-        font-family: PingFang SC;
+        
         font-weight: 600;
         color: #333333;
         margin-bottom: 18rpx;
@@ -465,8 +465,8 @@ page {
     .desContent {
         text-align: left;
         font-size: 23rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
+        
+        
         color: #333333;
         white-space: pre-wrap
     }
@@ -485,7 +485,7 @@ page {
 
     .title {
         font-size: 31rpx;
-        font-family: PingFang SC;
+        
         font-weight: 600;
         color: #333333;
         margin-bottom: 18rpx;
@@ -524,7 +524,7 @@ page {
 
             .price {
                 font-size: 33rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 600;
                 color: #333333;
                 margin-bottom: 10rpx;
@@ -533,8 +533,8 @@ page {
 
             .myPoint {
                 font-size: 23rpx;
-                font-family: PingFang SC;
-                font-weight: 400;
+                
+                
                 color: #949494;
             }
         }
@@ -545,7 +545,7 @@ page {
             background: #fa1545;
             border-radius: 3rpx;
             font-size: 33rpx;
-            font-family: PingFang SC;
+            
             font-weight: 600;
             letter-spacing: 4rpx;
             color: #ffffff;

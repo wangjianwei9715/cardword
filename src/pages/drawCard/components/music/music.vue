@@ -109,7 +109,7 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 33rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #FFFFFF;
 			.music-close{
@@ -141,14 +141,14 @@
 				.music-index-name{
 					width: 100%;
 					font-size: 27rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 600;
 					color: #FFFFFF;
 				}
 				.music-index-singer{
 					font-size: 23rpx;
-					font-family: PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #949494;
 				}
 				.music-index-right{
@@ -165,7 +165,7 @@
 					border: 1rpx solid #FFFFFF;
 					border-radius: 3rpx;
 					font-size: 25rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 600;
 					color: #FFFFFF;
 					line-height: 48rpx;

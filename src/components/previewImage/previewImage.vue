@@ -159,7 +159,7 @@ export default class ClassName extends BaseComponent {
             text-align: center;
             font-size: 40rpx;
             font-weight: 600;
-            font-family: PingFang SC;
+            
             color: #fff;
             margin-top: 6rpx;
         }

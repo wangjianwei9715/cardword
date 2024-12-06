@@ -55,9 +55,7 @@
 		}
 		onLoad() {
 			if (app.token.accessToken == "") {
-				uni.navigateTo({
-					url: "/pages/login/login"
-				});
+				app.login.arouseLogin()
 				return;
 			}
 			this.getList()
@@ -89,7 +87,7 @@
 		}
 		getList(cb ? : Function) {
 			app.http.Get('funcApi/brodcast/third/1001/achor/roomlist', this.queryParams, (res: any) => {
-				this.isFetchEnd = res.isFetchEnd || true
+				this.isFetchEnd = res.isFetchEnd
 				const dataList = res.list || []
 				this.dataList = this.queryParams.fetchFrom == 1 ? dataList : [...this.dataList, ...dataList]
 				cb && cb()
@@ -100,6 +98,7 @@
 
 <style lang='scss'>
 	.liveContent {
+		padding-bottom:20rpx;
 		padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
 	}
 
@@ -121,7 +120,7 @@
 
 		.name {
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 			margin-left: 17rpx;
@@ -152,8 +151,8 @@
 
 		.goodsName {
 			font-size: 29rpx;
-			font-family: PingFang SC;
-			font-weight: 500;
+			
+			font-weight: 600;
 			color: #333333;
 			white-space: nowrap;
 			overflow: hidden;
@@ -162,8 +161,8 @@
 
 		.startTime {
 			font-size: 25rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #88878C;
 			margin-top: 18rpx;
 		}
@@ -180,7 +179,7 @@
 
 		.state {
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}

@@ -42,6 +42,7 @@
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { dateFormatYMS } from '@/tools/util'
+	import { app } from "@/app";
 	const everyData = [
 		{ name: 'tp', val: 1, errMsg: '不同类型优惠券不能叠加使用' },
 		{ name: 'overlay', val:true, errMsg: '此优惠券不能叠加使用' }
@@ -53,6 +54,7 @@
 		@Prop({default:[]})
 		couponList!:any
 
+		isPullDown = app.platform.isPullDown;
 		dateFormatYMS = dateFormatYMS;
 		showPopup = false;
 		checkCouponList:any = [];
@@ -66,13 +68,15 @@
 		onShowChanged(val: any, oldVal: any){
 			if(val){
 				setTimeout(()=>{
-					this.showPopup = true
+					this.showPopup = true;
+					this.isPullDown(false)
 				},100)
 			}else{
 				this.checkCouponList= JSON.parse(JSON.stringify(this.confirmList))
 				this.checkTp = this.confirmTp
 				this.checkPrice = this.confirmPrice
-				this.showPopup = false
+				this.showPopup = false;
+				this.isPullDown(true)
 			}
 			
 		}
@@ -182,7 +186,6 @@
 			box-sizing: border-box;
 			padding: 26rpx 0 20rpx 0;
 			font-size: 26rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 600;
 			color: #14151A;
 			text-align: center;
@@ -243,8 +246,8 @@
 			.coupon-price{
 				width: 100%;
 				font-size: 29rpx;
-				font-family: PingFang SC;
-				font-weight: 400;
+				
+				
 				color: #FFFFFF;
 				text-align: center;
 				font-weight: bold;
@@ -256,8 +259,8 @@
 				width: 100%;
 				text-align: center;
 				font-size: 23rpx;
-				font-family: PingFang SC;
-				font-weight: 500;
+				
+				font-weight: 600;
 				color: #FFFFFF;
 			}
 		}
@@ -286,15 +289,15 @@
 					display: flex;
 					align-items: center;
 					font-size: 30rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 600;
 					color: #333333;
 				}
 				.coupon-time{
 					width: 100%;
 					font-size: 21rpx;
-					font-family: PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #88878C;
 					margin-top: 10rpx;
 				}
@@ -309,8 +312,7 @@
 					height:50rpx;
 					line-height: 50rpx;
 					font-size: 20rpx;
-					font-family: Microsoft YaHei;
-					font-weight: 400;
+					
 					color: #B8B7B7;
 				}
 			}
@@ -358,7 +360,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 33rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #F6F7FB;
 		line-height: 40rpx;

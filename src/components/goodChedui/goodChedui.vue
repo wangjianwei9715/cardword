@@ -63,7 +63,7 @@
 				height:76rpx;
 				width:82rpx;
 				font-size: 25rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #333333;
 				display: flex;
@@ -83,8 +83,8 @@
 			}
 			.act-box-desc-item{
 				font-size: 25rpx;
-				font-family: PingFang SC;
-				font-weight: 400;
+				
+				
 				color: #333333;
 				margin:22rpx 0;
 			}
@@ -110,15 +110,15 @@
 		height:40rpx;
 		line-height: 40rpx;
 		font-size: 27rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		
+		
 		color: #C0C0C0;
 	}
 	.detail-act-desc{
 		width: 550rpx;
-		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		font-size: 26rpx;
+		
+		
 		color: #333333;
 		overflow: hidden;
 		text-overflow:ellipsis;
@@ -146,8 +146,8 @@
 		border:1px solid #F4919F;
 		margin-right: 24rpx;
 		font-size: 24rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		
+		
 		color: #EA4055;
 	}
 	.drawer-helpmsg{
@@ -157,7 +157,7 @@
 	}
 	.drawer-help-title{
 		font-size: 27rpx;
-		font-family: PingFangSC-Medium;
+		
 		font-weight: bold;
 		color:#333333;
 		margin:15rpx 0rpx;
@@ -165,8 +165,8 @@
 	.drawer-help-content{
 		width: 100%;
 		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		
+		
 		color: #7D8288;
 		white-space: pre-wrap;
 		line-height: 35rpx;
@@ -175,8 +175,8 @@
 	.drawer-help-cd{
 		width: 100%;
 		font-size: 25rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #333333;
 		line-height: 46rpx;
 		white-space: pre-wrap;
@@ -202,8 +202,8 @@
 	}
 	.drawer-header-name{
 		font-size: 23rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #959695;
 	}
 	.drawer-chedui{
@@ -241,7 +241,7 @@
 		height:78rpx;
 		font-size: 38rpx;
 		font-family: Impact;
-		font-weight: 400;
+		
 		color: #908D8B;
 		display: flex;
 		align-items: center;
@@ -265,14 +265,14 @@
 	.chedui-rank-name{
 		width: 300rpx;
 		font-size: 25rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #333333;
 	}
 	.chedui-rank-item-reward{
 		font-size: 25rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #333333;
 	}
 	.font-bold{

@@ -1,9 +1,7 @@
 <template>
     <view class='content'>
-        <navigationShare navigatetoTitle="店铺简介" rightText='完成' @onClickRightText="onClickRightText" />
-        <view style="padding-top:88rpx">
-            <statusbar />
-        </view>
+        <navigationbar title="店铺简介" rightText='完成' @onClickRightText="onClickRightText" />
+
         <view class="inputContainer flexCenter">
             <u--textarea v-model='brief_intr' style="height: 90%;" confirmType='done' @confirm="onClickRightText"
                 :maxlength='60' placeholder="请输入店铺简介" count></u--textarea>
@@ -89,8 +87,8 @@
         margin-top: 28rpx;
         position: relative;
         font-size: 27rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
+        
+        
     }
 
     .inputContainer ::v-deep .u-border {

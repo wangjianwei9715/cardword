@@ -129,8 +129,8 @@
 		box-sizing: border-box;
 		padding:0 12rpx;
 		font-size: 19rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		
+		
 		color: rgba(228, 78, 78,0.97);;
 	}
 	.guess-icon-kefu{
@@ -143,7 +143,7 @@
 		display: flex;
 		align-items: center;
 		font-size: 28rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 	}
@@ -167,7 +167,7 @@
 		display: flex;
 		align-items: center;
 		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: normal;
 		color: rgba(101, 98, 98, 0.84);
 	}
@@ -175,7 +175,6 @@
 		height:67rpx;
 		line-height: 67rpx;
 		font-size: 27rpx;
-		font-family: FZLanTingHeiS-B-GB;
 		font-weight: bold;
 		color: #333333;
 	}
@@ -183,7 +182,7 @@
 		height:67rpx;
 		line-height: 67rpx;
 		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
+		
 		font-weight: normal;
 		color: rgba(101, 98, 98, 0.84);
 		margin-right: 10rpx;
@@ -237,8 +236,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 36rpx;
-		font-family: FZLanTingHei-M-GBK;
-		font-weight: 400;
+		
 		color: #333333;
 		position: absolute;
 		left:50%;
@@ -257,16 +255,16 @@
 	.drawer-contnet-desc{
 		width: 100%;
 		font-size: 26rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		
+		
 		color: #525151;
 		line-height: 40rpx;
 		margin-top: 40rpx;
 	}
 	.drawer-content-tips{
 		font-size: 24rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		
+		
 		color: #CF3737;
 		line-height: 40rpx;
 		margin-top: 60rpx;
@@ -304,8 +302,8 @@
 		box-sizing: border-box;
 		padding-left: 12rpx;
 		font-size: 20rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		
+		
 		color: #FFFFFF;
 	}
 	.order-guess-successbox{
@@ -332,7 +330,7 @@
 	}
 	.drawer-help-title{
 		font-size: 27rpx;
-		font-family: PingFangSC-Medium;
+		
 		font-weight: bold;
 		color:#333333;
 		margin:15rpx 0rpx;
@@ -340,8 +338,8 @@
 	.drawer-help-content{
 		width: 100%;
 		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		
+		
 		color: #7D8288;
 		white-space: pre-wrap;
 		line-height: 35rpx;

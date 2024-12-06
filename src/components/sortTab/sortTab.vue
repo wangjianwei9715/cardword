@@ -79,8 +79,8 @@
 			align-items: center;
 			box-sizing: border-box;
 			font-size: 26rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #333333;
 		}
 		.current-name{
@@ -136,8 +136,8 @@
 				display: flex;
 				align-items: center;
 				font-size: 24rpx;
-				font-family: PingFangSC-Medium, PingFang SC;
-				font-weight: 500;
+				
+				font-weight: 600;
 				color: #14151A;
 			}
 			&-index:last-child{

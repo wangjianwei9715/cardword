@@ -15,8 +15,8 @@
   pageJump(`/pages/mall/orderDetail?orderCode=${item.code}&pay_tp=${item.pay_tp}`)
 ">
       <view class="goodsInfoWrap">
-        <muqian-lazyLoad borderRadius="3rpx" @click.stop="onClickPreviewImage($parsePic(decodeURIComponent(item.logo)))"
-          class="img" :src="$parsePic(decodeURIComponent(item.logo))" />
+        <muqian-lazyLoad borderRadius="3rpx" @click.stop="onClickPreviewImage($parsePic(item.logo))"
+          class="img" :src="$parsePic(item.logo)" />
         <view class="goodsInfoWrap_right">
           <view class="goodsInfoWrap_right_goodsName">
             <view class="name u-line-1">{{ item.name }}</view>
@@ -218,7 +218,7 @@ export default class ClassName extends BaseNode {
 
 <style lang="scss">
 page {
-  font-family: PingFang SC;
+  
   background-color: #f6f7fb;
 }
 
@@ -243,8 +243,8 @@ page {
   .searchItem {
     width: 50%;
     font-size: 27rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
+    
+    
     color: #333333;
   }
 }
@@ -291,8 +291,8 @@ page {
     &_exchangeTime {
       flex: 1;
       font-size: 23rpx;
-      font-family: PingFang SC;
-      font-weight: 400;
+      
+      
       color: #949494;
     }
 
@@ -303,22 +303,22 @@ page {
       .name {
         flex: 1;
         font-size: 25rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
+        
+        
         color: #333333;
       }
 
       .state {
         font-size: 25rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
+        
+        
         color: #fa1545;
       }
     }
 
     &_price {
       font-size: 25rpx;
-      font-family: PingFang SC;
+      
       font-weight: 600;
       color: #fa1545;
     }
@@ -337,8 +337,8 @@ page {
       border: 2rpx solid rgba(148, 148, 148, 0.4);
       border-radius: 3rpx;
       font-size: 25rpx;
-      font-family: PingFang SC;
-      font-weight: 400;
+      
+      
       color: #333333;
       margin-left: 35rpx;
     }

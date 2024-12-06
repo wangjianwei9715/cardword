@@ -156,8 +156,8 @@ page {
     background: #5D5D5D;
     border-radius: 3rpx;
     font-size: 23rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
+    
+    
     color: #FFFFFF;
     position: absolute;
     right: 0;
@@ -185,7 +185,7 @@ page {
 
 .niceTime-name {
     font-size: 25rpx;
-    font-family: PingFang SC;
+    
     color: #333333;
     text-overflow: -o-ellipsis-lastline;
     overflow: hidden;
@@ -217,8 +217,8 @@ page {
 
 .niceTime-userName {
     font-size: 21rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
+    
+    
     color: #333333;
     flex: 1;
     /* max-width: 200rpx; */
@@ -229,8 +229,8 @@ page {
 
 .niceTime-time {
     font-size: 21rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
+    
+    
     color: #999999;
 }
 </style>

@@ -3,10 +3,13 @@
 		<view class="coupon-list" v-if="list!=''">
 			<view class="coupon-list-left">
 				<view class="coupon-box" v-for="(item,index) in list" :key="index">
-					<view class="coupon-item u-border">{{item}}</view>
+					<view class="coupon-item">{{item}}</view>
 				</view>
 			</view>
-			<view class="coupon-list-right" @click="onClickMoreCoupon">领券<image class="icon-r" src="@/static/goods/v2/icon_right_new.png"/></view>
+			<view class="coupon-list-right" @click="onClickMoreCoupon">
+				<image class="coupon-line" src="@/static/goods/v3/coupon_line.png"/>
+				<text class="coupon-text">去领券</text>
+			</view>
 		</view>
 
 		<couponGetDrawer :showDrawer.sync="showDrawer" :goodPage="goodPage" :couponList="couponList" @lower="getCouponList"/>
@@ -69,54 +72,63 @@
 <style lang="scss">
 	.coupon-list{
 		width: 100%;
-		height:42rpx;
+		height:36rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-bottom: 20rpx;
-		.icon-r{
-			width: 11rpx;
-			height:17rpx;
-			margin-left: 11rpx;
-		}
+		margin-bottom: 10rpx;
 		.coupon-list-left{
 			width:550rpx;
-			height:42rpx;
+			height:36rpx;
 			overflow: hidden;
 			display: flex;
 			align-items: center;
 			.coupon-box{
-				height:42rpx;
+				height:36rpx;
 				position: relative;
 				overflow: hidden;
-				margin-right: 20rpx;
-				margin-left: 2rpx;
+				margin-right: 27rpx;
 			}
 			.coupon-item{
-				height:37rpx;
-				background: #FBF2F3;
+				height:36rpx;
+				background: url(@/static/goods/v3/coupon_bg.png) no-repeat center / 100% 100%;
+				border-radius: 2rpx;
 				box-sizing: border-box;
-				padding:0 20rpx;
+				padding: 0 10rpx;
+				font-size: 18rpx;
+				color: #FA1545;
+				text-align: center;
 				display: flex;
 				align-items: center;
-				justify-content: center;
-				border-color: #F2C9CE !important;
-				border-radius: 3rpx;
-				font-size: 24rpx;
-				font-family: PingFang SC;
-				font-weight: 400;
-				color: #FA1545;
 			}
 		}
 		.coupon-list-right{
-			height:38rpx;
+			height:30rpx;
 			display: flex;
 			align-items: center;
+			font-family: YouSheBiaoTiHei;
 			font-size: 24rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
-			color: #c0c0c0;
+			color: #333333;
+			box-sizing: border-box;
+			position: relative;
+			.coupon-line{
+				width: 44rpx;
+				height:6rpx;
+				position: absolute;
+				bottom:4rpx;
+				left:50%;
+				margin-left: -22rpx;
+				z-index: 1;
+			}
+			.coupon-text{
+				height:30rpx;
+				font-family: YouSheBiaoTiHei;
+				font-size: 24rpx;
+				color: #333333;
+				position: relative;
+				z-index: 2;
+			}
 		}
 	}
 </style>

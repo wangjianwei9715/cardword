@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\app.ts
  * @Author: wjw
  * @Date: 2022-10-10 11:00:00
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-17 16:58:47
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-10-13 16:45:50
  * Copyright: 2022 .
  * @Descripttion: 
  */
@@ -11,6 +11,8 @@ import PlatformManager from "./manager/PlatformManager";
 import PayManager from "./manager/PayManager";
 import navigateManager from "./manager/navigateManager";
 import goodsManager from "./manager/goodsManager";
+import userManager from "./manager/userManager"
+import loginManager from "./manager/loginManager"
 import HttpRequest from "./net/HttpRequest";
 import { SocketServer } from "./net/SocketServer";
 export module app{
@@ -20,31 +22,28 @@ export module app{
     };
     export let sever:SocketServer;
     export let socketInfo = {tcp:'',tcpToken:''};
-    export let requestVersion = '/api/v2.1/';
-    // 发布环境
-    export let localTest=false;
-    export let bussinessApiDomain=`https://server.ssl1.ka-world.com${requestVersion}`;
-    // export let bussinessApiDomain=`https://server.ssltest.ka-world.com${requestVersion}`;
-    // 热更新地址
-    export let update_url='http://service.s1.ka-world.com/';
-    // 请求的service地址
-    export let service_url='';
-    export let dataApiDomain='';
+    export let requestVersion = '/api/v3/';
+    export let localTest=false; // 是否测试
+    export let bussinessApiDomain=`https://server.ssl1.ka-world.com${requestVersion}`; //主域名地址
+    export let update_url='http://service.s1.ka-world.com/'; // 热更新地址
+    export let service_url=''; // 请求的service地址
+    export let dataApiDomain=''; //数据地址
 	export let funcApiDomain='';
     export let launch_url=['https://service.s824.ka-world.com','https://service.s387.ka-world.com','https://service.s189.ka-world.com','https://service.s1.ka-world.com'];
-    // export let launch_url = ['http://service.s777.ka-world.com']
     export let H5Url='http://share01.ka-world.com'
     // export let goodShareOrigin=""
     // export let activityShareOrigin=""
     export let liveWebView='http://www.ka-world.com/live/#/pages/liveStreaming/tools'
     export let playBackWebView='http://www.ka-world.com/live/#/pages/liveStreaming/chart'
-    export let webViewVersion="1.7"
+    export let webViewVersion="1.8"
     export let statusBarHeight:any = 0;
     export let platform = PlatformManager.getIns();
 	export let payment = PayManager.getIns();
     export let http =  HttpRequest.getIns();
     export let navigateTo =  navigateManager.getIns();
     export let goods =  goodsManager.getIns();
+    export let user =  userManager.getIns();
+    export let login=loginManager.getIns();
     export let refreshIng = false;
     export let needPushIdentifier = true;
     export let protobuf:any = null; 
@@ -60,7 +59,16 @@ export module app{
     export let familial = false;
     export let coupon = 0;  //优惠券张数
     export let updateDebug = '';  //更新debug模式
+    export let appBeta = ''; //beta
+    export let appBetaDomain = `http://server.beta_bigstone.ka-world.com${requestVersion}`; //beta
     export let orderRich = true; //卡密特效默认开启
 	export let broadcastActor = false; 
 	export let picEncryptionKey='ksjreskey2022%^&'
+    export let viewerId=uni.getStorageSync("viewerId") || "";
+    export let guide = {
+        request:false,
+        illustration:true,
+        cardCircle:true
+    }
+    export let cardForumImgLocal={}
 }

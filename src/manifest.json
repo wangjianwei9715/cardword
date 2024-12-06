@@ -2,8 +2,8 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "3.4.43",
-    "versionCode" : 203,
+    "versionName" : "3.6.2",
+    "versionCode" : 3610,
     "transformPx" : false,
     "networkTimeout" : {
         "request" : 5000,
@@ -18,6 +18,14 @@
         }
     ],
     "app-plus" : {
+        "confusion" : {
+            "description" : "原生混淆",
+            "resources" : {
+                "net/httpOpsign.js" : {},
+                "net/kwwConfusion.js" : {},
+                "net/Crypto.js" : {}
+            }
+        },
         "compatible" : {
             "ignoreVersion" : true
         },
@@ -31,7 +39,6 @@
             "Payment" : {},
             "FaceID" : {},
             "OAuth" : {},
-            "Geolocation" : {},
             "Share" : {},
             "Push" : {},
             "VideoPlayer" : {}
@@ -189,8 +196,8 @@
             },
             "splashscreen" : {
                 "useOriginalMsgbox" : true,
-                "iosStyle" : "common",
-                "androidStyle" : "common",
+                "iosStyle" : "storyboard",
+                "androidStyle" : "default",
                 "ios" : {
                     "storyboard" : "unpackage/res/CustomStoryboard.zip"
                 },
@@ -202,7 +209,7 @@
             }
         },
         /* SDK配置 */
-        "usingComponents" : true,
+        "usingComponents" : false,
         "uniStatistics" : {
             "enable" : true
         },
@@ -246,6 +253,20 @@
                     "isCloud" : true,
                     "bought" : 1,
                     "pid" : "3617",
+                    "parameters" : {}
+                }
+            },
+            "YD-Login" : {
+                "__plugin_info__" : {
+                    "name" : "易盾号码认证",
+                    "description" : "直连三大运营商，一步校验手机号与当前SIM卡号一致性。优化注册/登录/支付等场景验证流程",
+                    "platforms" : "Android,iOS",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=2274",
+                    "android_package_name" : "com.kawowang.card",
+                    "ios_bundle_id" : "com.kawowang.card",
+                    "isCloud" : true,
+                    "bought" : 1,
+                    "pid" : "2274",
                     "parameters" : {}
                 }
             }
@@ -295,7 +316,8 @@
         }
     },
     "uniStatistics" : {
-        "enable" : true
+        "enable" : true,
+        "version" : "1"
     },
     "h5" : {
         "uniStatistics" : {

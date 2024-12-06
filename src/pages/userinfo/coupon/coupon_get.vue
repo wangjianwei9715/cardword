@@ -174,8 +174,8 @@ import { Md5 } from "ts-md5";
 				}
 				.info-title{
 					font-size: 25rpx;
-					font-family: PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #333333;
 					line-height: 34rpx;
 				}
@@ -184,8 +184,8 @@ import { Md5 } from "ts-md5";
 					align-items: center;
 					margin-top: 10rpx;
 					font-size: 23rpx;
-					font-family: PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #7C7C7C;
 				}
 				.logo-m{
@@ -199,13 +199,13 @@ import { Md5 } from "ts-md5";
 					bottom:0;
 					left:0;
 					font-size: 21rpx;
-					font-family: PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #7C7C7C;
 				}
 				.info-bottom text{
 					font-size: 21rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 600;
 					color: #333333;
 				}
@@ -214,7 +214,7 @@ import { Md5 } from "ts-md5";
 				}
 				.price-text{
 					font-size: 33rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 600;
 					color: #333333;
 				}
@@ -233,7 +233,7 @@ import { Md5 } from "ts-md5";
 					width: 100%;
 					text-align: center;
 					font-size: 32rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 600;
 					color: #FA1545;
 				}
@@ -244,8 +244,8 @@ import { Md5 } from "ts-md5";
 					width: 100%;
 					text-align: center;
 					font-size: 20rpx;
-					font-family: PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #7C7C7C;
 				}
 				.right-btn{
@@ -260,8 +260,8 @@ import { Md5 } from "ts-md5";
 					left:50%;
 					margin-left: -61rpx;
 					font-size: 25rpx;
-					font-family: PingFang SC;
-					font-weight: 500;
+					
+					font-weight: 600;
 					color: #F6F7FB;
 					display: flex;
 					align-items: center;

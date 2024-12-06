@@ -17,14 +17,18 @@
 					</view>
 					<view class="drawer-item-operate">
 						<view class="operate-btn" @click="onClickReduceNum(item)"><image class="icon-reduce" src="@/static/merchant/icon_reduce.png" /></view>
-						<input type="number" class="drawer-item-input" disabled v-model.number="item.num" @blur="onChangeNumber"/>
+						<input type="number" class="drawer-item-input" v-model.number="item.num" @blur="onBlurNum($event,item)"/>
 						<view class="operate-btn" @click="onClickAddNum(item)"><image  class="icon-add" src="@/static/merchant/icon_add.png" /></view>
 					</view>
 				</view>
 			</view>
-			<view class="drawer-bottom" >
+			<view class="drawer-bottom" v-if="hasUsableCard">
 				<view class="drawer-bottom-rank">已选<text class="choice-num">{{totalNum}}</text>张 预计排名提升<text class="rnak-red">{{rankUp.old_rank}}名→{{rankUp.new_rank}}名</text></view>
 				<view class="drawer-bottom-btn" @click="onClickConfirmUse">确认使用</view>
+			</view>
+			<view class="drawer-bottom" v-else>
+				<view class="drawer-bottom-rank">暂无权重卡可用</view>
+				<view class="drawer-bottom-btn" @click="redirectToMall">去积分中心兑换</view>
 			</view>
 		</bottomDrawer>
 
@@ -90,6 +94,12 @@
 		destroyed(){
 			clearInterval(this.cDInterval)
 		}
+		public get hasUsableCard() : boolean {
+			return this.equitycard.length>0&&this.equitycard.some((item:any)=>item.remaining_quantity>0)
+		}
+		redirectToMall(){
+			uni.redirectTo({url:"/pages/merchant/mall/index"});
+		}
 		initChoiceCard(){
 			this.totalNum = 0;
 			this.rankUp = {
@@ -105,6 +115,11 @@
 		onClickAddNum(item:any){
 			if(item.num>=item.remaining_quantity) return;
 			item.num++;
+			this.onChangeNumber()
+		}
+		onBlurNum(event:any,item:any){
+			if(item.num<=0) item.num = 0;
+			if(item.num>=item.remaining_quantity) item.num = item.remaining_quantity;
 			this.onChangeNumber()
 		}
 		onChangeNumber(){
@@ -171,7 +186,7 @@
 				height:76rpx;
 				width:82rpx;
 				font-size: 25rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #333333;
 				display: flex;
@@ -191,8 +206,8 @@
 			}
 			.act-box-desc-item{
 				font-size: 25rpx;
-				font-family: PingFang SC;
-				font-weight: 400;
+				
+				
 				color: #333333;
 				margin:22rpx 0;
 			}
@@ -218,15 +233,15 @@
 		height:40rpx;
 		line-height: 40rpx;
 		font-size: 27rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		
+		
 		color: #C0C0C0;
 	}
 	.detail-act-desc{
 		width: 550rpx;
 		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		
+		
 		color: #333333;
 		overflow: hidden;
 		text-overflow:ellipsis;
@@ -246,8 +261,8 @@
 		border:1px solid #F4919F;
 		margin-right: 24rpx;
 		font-size: 24rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		
+		
 		color: #EA4055;
 	}
 	.drawer-helpmsg{
@@ -257,7 +272,7 @@
 	}
 	.drawer-help-title{
 		font-size: 27rpx;
-		font-family: PingFangSC-Medium;
+		
 		font-weight: bold;
 		color:#333333;
 		margin:15rpx 0rpx;
@@ -265,8 +280,8 @@
 	.drawer-help-content{
 		width: 100%;
 		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		
+		
 		color: #7D8288;
 		white-space: pre-wrap;
 		line-height: 35rpx;
@@ -275,8 +290,8 @@
 	.drawer-help-cd{
 		width: 100%;
 		font-size: 25rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #333333;
 		line-height: 46rpx;
 		white-space: pre-wrap;
@@ -302,8 +317,8 @@
 	}
 	.drawer-header-name{
 		font-size: 23rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #959695;
 	}
 	.drawer-chedui{
@@ -333,7 +348,7 @@
 			background: #FA1545;
 			border-radius: 5rpx;
 			font-size: 33rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #FFFFFF;
 			text-align: center;
@@ -383,7 +398,7 @@
 			width: 100%;
 			text-align: center;
 			font-size: 63rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}
@@ -391,8 +406,8 @@
 			width: 100%;
 			text-align: center;
 			font-size: 23rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #959695;
 		}
 		.drawer-item-surplus{
@@ -406,8 +421,8 @@
 			text-align: center;
 			line-height: 38rpx;
 			font-size: 23rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #FFFFFF;
 		}
 		.drawer-item-inuse{
@@ -419,8 +434,8 @@
 			bottom:0;
 			left:0;
 			font-size: 20rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #FA1545;
 			display: flex;
 			align-items: center;
@@ -442,7 +457,7 @@
 		height: 40rpx;
 		background: #F5F5F5;
 		font-size: 25rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #333333;
 		text-align: center;

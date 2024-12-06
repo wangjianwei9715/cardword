@@ -98,8 +98,8 @@
 	.left-title {
 		width: 100%;
 		font-size: 24rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #7F7F8E;
 		line-height: 30rpx;
 		text-align: left;
@@ -107,7 +107,7 @@
 	.left-des {
 		width: 100%;
 		font-size: 28rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 		line-height: 40rpx;
@@ -121,8 +121,8 @@
 		background:url(../../static/userinfo/paimai@2x.png) no-repeat center;
 		background-size: 100% 100%;
 		font-size: 20rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #FFFFFF;
 		margin-right: 12rpx;
 		text-align: center;
@@ -153,7 +153,7 @@
 		text-align: center;
 		line-height: 88rpx;
 		font-size: 28rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #FFFFFF;
 	}

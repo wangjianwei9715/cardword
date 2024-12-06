@@ -1,49 +1,23 @@
-<!--
- * @FilePath: \jichao_app_2\src\components\merchantAvatar\merchantAvatar.vue
- * @Author: wjw
- * @Date: 2023-03-14 09:46:45
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-03-14 10:43:54
- * Copyright: 2023 .
- * @Descripttion: 
--->
 <template>
-    <view class="logo-box" 
-		:style="{
-			width,
-			height
-		}"
-	>
+    <view class="logo-box" :style="{ width, height }" >
 		<muqian-lazyLoad 
-			:style="{
-				width,
-				height
-			}"
+			:style="{ width, height }"
 			v-if="src!=''"
 			:src="src"
 			:borderRadius="borderRadius"
 		></muqian-lazyLoad>
-		<image v-if="level>0" class="avatar-level" :class="MerchantLevel[level].icon"/>
+		<image v-if="level>0" class="avatar-level" :class="merchantLevelItem['icon']"/>
 	</view>
 </template>
 
 <script lang="ts">
 	import { Component, Prop,Vue, } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
-	const MerchantLevel = {
-		0:{level:'L1',name:'',icon:''},
-		1:{level:'V1',name:'星耀商家',icon:'v1'},
-		2:{level:'V2',name:'星耀商家',icon:'v1'},
-		3:{level:'V3',name:'星耀商家',icon:'v1'},
-		4:{level:'V4',name:'荣耀商家',icon:'v2'},
-		5:{level:'V5',name:'荣耀商家',icon:'v2'},
-		6:{level:'V6',name:'荣耀商家',icon:'v2'},
-	}
+	import { MerchantLevel } from "@/tools/DataExchange"
 	@Component({})
 	export default class ClassName extends BaseComponent {
-		MerchantLevel = MerchantLevel;
 		@Prop({ default: 0 })
-		level?:number;
+		level!:number;
 		@Prop({ default: '' })
 		src?:string;
 		@Prop({ default: '50%' })
@@ -52,6 +26,10 @@
 		width?:string
 		@Prop({ default: '34rpx' })
 		height?:string
+
+		public get merchantLevelItem() : any {
+			return MerchantLevel[this.level] ?? {level:'',name:'',icon:''}
+		}
 	}
 </script>
 

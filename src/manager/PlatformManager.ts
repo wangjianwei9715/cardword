@@ -12,6 +12,7 @@ export default class PlatformManager {
 	imei = '';
 	deviceID = '';
 	isIos = false;
+	generator = null;
 	urlIndex = 0;
 	private constructor() {
 		this.deviceID = this.systemInfo.deviceId;
@@ -69,7 +70,20 @@ export default class PlatformManager {
 		}
 		return PlatformManager.instance;
 	}
+	// 登录记录
+	loginRecord(){
+		const loginToken = uni.getStorageSync("token");
+		if(!loginToken) return;
 
+		const currentDate = new Date().toDateString();
+		const loginRecordDate = uni.getStorageSync("loginRecordDate")
+		app.user.getAppDataUserId().then((userId:any)=>{
+			if(loginRecordDate[userId]==currentDate) return;
+
+			uni.setStorageSync("loginRecordDate",{...loginRecordDate,[userId]:currentDate});
+			app.http.Post("medal/login/record",{})
+		});
+	}
 	// 微信直播间
 	goWeChatLive(item: any) {
 		let ts = Math.floor(new Date().getTime()/1000);
@@ -158,6 +172,12 @@ export default class PlatformManager {
 			alias: obj.alias
 		})
 	}
+	pageScrollTop(){
+		uni.pageScrollTo({
+			scrollTop: 0,
+			duration: 100
+		});
+	}
 	clearCache(){
 		//@ts-ignore
 		plus.cache.clear(() => {});
@@ -185,37 +205,60 @@ export default class PlatformManager {
 		// 	url: 'plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=' + id
 		// })
 		// #endif
-
+	}
+	getGuideData(){
+		if(!app.guide.request){
+			app.http.Get("social/guide/isNeed",{uuid:app.platform.deviceID},(res:any)=>{
+				app.guide = {
+					request:true,
+					illustration:res.data.illustration,
+					cardCircle:res.data.cardCircle
+				},
+				this.setGuideData()
+			})
+		}
+	}
+	finishGuideData(tp:number){ //tp 1 图鉴，2 卡圈
+		this.setGuideData()
+		app.http.Post("social/guide/finish",{uuid:app.platform.deviceID,tp})
+	}
+	setGuideData(){
+		uni.setStorageSync("GUIDE_DATA",app.guide);
 	}
 	pageBack(params?:number | UniApp.NavigateBackOptions) {
+		// #ifdef APP-NVUE
+		uni.navigateBack({delta:1})
+		// #endif
+		// #ifndef APP-NVUE
 		let delta:any = 1
 		const IS_NUMBER = typeof params === 'number'
 		if (!IS_NUMBER && !params) delta = 1
 		if (IS_NUMBER) delta = params
 		let curPage: any = getCurrentPages();
 		if (!curPage || curPage.length <= 1) {
-			uni.switchTab({
-				url: '/pages/index/index'
-			})
+			app.navigateTo.switchTab(0)
 			return
 		}
 		//@ts-ignore
 		const data:any = IS_NUMBER ? { delta } : { ...params }
 		uni.navigateBack(data)
-
+		// #endif
 	}
 	//ui触觉反馈(单次)
-	UIClickFeedBack (){
+	UIClickFeedBack (style?:number){
 		// #ifdef APP-PLUS
 		if (app.platform.systemInfo.platform == "ios") {
-    	    let UIImpactFeedbackGenerator = plus.ios.importClass(
-    	        "UIImpactFeedbackGenerator"
-    	    );
-    	    let generator = new UIImpactFeedbackGenerator();
+    	   if(!this.generator){
+				let UIImpactFeedbackGenerator=plus.ios.importClass("UIImpactFeedbackGenerator")
+				this.generator=new UIImpactFeedbackGenerator()
+		   	}
     	    //因为系统准备触觉反馈需要一段时间，Apple 建议，触发触觉效果之前，在你的生成器 (generator) 内调用 prepare() 方法。如果你不这么做的话，在视觉效果和对应的震动之间确实会有一个小小的延迟
-    	    generator.prepare();
-    	    generator.init(1);
-    	    generator.impactOccurred();
+    	    //@ts-ignore
+			this.generator.prepare();
+			//@ts-ignore
+    	    this.generator.init(style,1);
+			//@ts-ignore
+    	    this.generator.impactOccurred();
     	} else {
 			//@ts-ignore
     	    uni.vibrateShort();
@@ -425,7 +468,11 @@ export default class PlatformManager {
 	// 	if(!app.activityShareOrigin) app.activityShareOrigin=app.H5Url
 	// }
 	appLuanch(loginToken: any, cb?: Function) {
-		if(app.localTest) return;
+		if(app.bussinessApiDomain.indexOf("192.168")>-1 || app.bussinessApiDomain.indexOf("ssltest")>-1){
+			return
+		}else{
+			app.localTest=false;
+		}
 		// launchUrl             储存打乱顺序后的launch
 		// configLaunchUrl       access保存的launch数据
 		app.service_url = uni.getStorageSync('launchUrl') || ''
@@ -450,7 +497,7 @@ export default class PlatformManager {
 			// let activityShareOrigin = this.lastCharacter(res.shareDomain?res.shareDomain.activity:"")
 			app.bussinessApiDomain = `${bussinessApiDomain}${app.requestVersion}`;
 			app.dataApiDomain = `${App.dataApiDomain?dataApiDomain:bussinessApiDomain}${app.requestVersion}`;
-			app.funcApiDomain = `${App.funcApiDomain?funcApiDomain:bussinessApiDomain}/api/v2/`;
+			app.funcApiDomain = `${App.funcApiDomain?funcApiDomain:bussinessApiDomain}${app.requestVersion}`;
 			// app.goodShareOrigin = goodShareOrigin
 			// app.activityShareOrigin = activityShareOrigin
 			if (cb) cb()
@@ -526,10 +573,8 @@ export default class PlatformManager {
 	}
 	async hasLoginToken(cb?:Function){
 		if(app.token.accessToken == ''){
-			const redirect = await this.currentPage();
-			uni.redirectTo({
-				url:`/pages/login/login?redirect=/${redirect}`
-			})
+			const redirect:any = await this.currentPage();
+			app.login.arouseLogin(`/${redirect}`)
 			return;
 		}
 		cb && cb()
@@ -583,9 +628,7 @@ export default class PlatformManager {
 			key = code.match(inviteCode);
 			app.requestKey = key[0];
 			if(app.token.accessToken == ''){
-				uni.navigateTo({
-					url:'/pages/login/login'
-				})
+				app.login.arouseLogin()
 				return;
 			}
 			this.checkShareNo(app.requestKey)
@@ -785,6 +828,9 @@ export default class PlatformManager {
 			}
 		});
 		return isEmpty;
+	}
+	currentTimestamp():number{
+		return Math.round(+new Date() / 1000);
 	}
 	isPullDown(isPull:boolean) {
 		//#ifdef APP-PLUS

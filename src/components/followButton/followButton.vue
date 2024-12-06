@@ -108,8 +108,8 @@ export default class ClassName extends BaseComponent {
   background: #FA1545;
   border-radius: 3rpx;
   font-size: 29rpx;
-  font-family: PingFang SC;
-  font-weight: 500;
+  
+  font-weight: 600;
   color: #F6F7FB;
 }
 
@@ -123,9 +123,9 @@ export default class ClassName extends BaseComponent {
   width: 144rpx;
   height: 56rpx;
   font-size: 25rpx;
-  font-family: PingFangSC-Regular;
+  
   box-sizing: border-box;
-  font-weight: 400;
+  
   color: #88878c;
   // line-height: 56rpx;
   display: flex;

@@ -109,8 +109,8 @@
 		background: #F5F5F8;
 		border-radius: 4rpx;
 		font-size: 24rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 500;
+		
+		font-weight: 600;
 		color: #14151A;
 		padding-left:76rpx ;
 	}
@@ -128,8 +128,8 @@
 		height:50rpx;
 		line-height: 50rpx;
 		font-size: 26rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #14151A;
 	}
 	.top-center{
@@ -143,7 +143,7 @@
 		height:40rpx;
 		box-sizing: border-box;
 		font-size: 28rpx;
-		font-family: HYQiHei;
+		
 		font-weight: bold;
 		color: #3B3B3B;
 		display: flex;
@@ -172,8 +172,8 @@
 		border-radius: 4rpx;
 		text-align: center;
 		font-size: 24rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #767880;
 		margin-right: 16rpx;
 		margin-bottom: 16rpx;
@@ -209,7 +209,7 @@
 		display: flex;
 		align-items: flex-end;
 		font-size: 26rpx;
-		font-family: HYQiHei;
+		
 		font-weight: bold;
 		color: #FFFFFF;
 	}
@@ -218,7 +218,7 @@
 		display: flex;
 		align-items: flex-end;
 		font-size: 24rpx;
-		font-family: HYQiHei;
+		
 		font-weight: bold;
 		color: #FFFFFF;
 	}
@@ -242,7 +242,7 @@
 		display: flex;
 		align-items: center;
 		font-size: 26rpx;
-		font-family: Adobe Heiti Std;
+		
 		font-weight: normal;
 		color: #3B3B3B;
 	}
@@ -251,7 +251,7 @@
 		height: 80rpx;
 		line-height: 80rpx;
 		font-size: 20rpx;
-		font-family: Adobe Heiti Std;
+		
 		font-weight: normal;
 		color: #7B7B7B;
 	}
@@ -264,7 +264,7 @@
 		text-align: center;
 		line-height: 26rpx;
 		font-size: 22rpx;
-		font-family: HYQiHei;
+		
 		font-weight: normal;
 		color: #FFFFFF;
 	}
@@ -277,7 +277,7 @@
 		text-align: center;
 		line-height: 26rpx;
 		font-size: 22rpx;
-		font-family: HYQiHei;
+		
 		font-weight: normal;
 		color: #FFFFFF;
 	}
@@ -290,7 +290,7 @@
 		text-align: center;
 		line-height: 26rpx;
 		font-size: 22rpx;
-		font-family: HYQiHei;
+		
 		font-weight: normal;
 		color: #FFFFFF;
 	}
@@ -303,7 +303,7 @@
 		text-align: center;
 		line-height: 26rpx;
 		font-size: 22rpx;
-		font-family: HYQiHei;
+		
 		font-weight: normal;
 		color: #FFFFFF;
 	}

@@ -1,0 +1,219 @@
+<template>
+	<view>
+		<view id="pageTopContainer" class="navigation-header" :style="{ backgroundColor: `rgba(${navColor},${scrollTopPercent})` }">
+			<view class="content" :style="'height:' + statusBarHeight + 'px'"></view>
+			<view v-if="navBgImage" class="nav-bg-container">
+				<image class="nav-bg-image" :src="navBgImage" mode="widthFix"/>
+			</view>
+			<view class="tab-header">
+				<view class="icon-back" :class="{'icon-back-white':scrollTopPercent<1 && !colorBlack}" v-show="showBack" @click="onClickBack"></view>
+				<view class="header-title">
+					<u-tabs :list="titles" lineHeight="0" :activeStyle="activeStyle" :inactiveStyle="inactiveStyle" itemStyle="height:88rpx;line-height:88rpx;padding:0 50rpx 0 50rpx" :current="current" @click="onClickTabs"></u-tabs>
+				</view>
+				<view class="header-icon" v-if="custom">
+					<slot name="right"></slot>
+				</view>
+				<view class="icon-share" v-else-if='shareData' @click="onClickShare"></view>
+				<view class='right-text' v-else @click="onClickRightText">{{ rightText }}</view>
+			</view>
+			<slot name="bottom"></slot>
+		</view>
+		<share v-if='shareData' :operationShow="operationShow" :shareData="shareData" @operacancel="onClickShareCancel">
+		</share>
+	</view>
+</template>
+
+<script lang="ts">
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import BaseComponent from "@/base/BaseComponent.vue";
+import { app } from "@/app";
+@Component({})
+export default class navigationbar extends BaseComponent {
+	@Prop({ default: [] })
+	titles!: string[];
+	@Prop({ default: false })
+	custom?: Boolean;
+	@Prop({ default: true })
+	showBack?: Boolean;
+	@Prop({ default: false })
+	customBack?: Boolean;
+	@Prop({ default: '' })
+	shareData?: any;
+	@Prop({ default: '' })
+	rightText?: string;
+	@Prop({ default: '#ffffff' })
+	backgroundColor?: string;
+	@Prop({ default: '1px solid #F4F3F2' })
+	borderBottom?:string
+	@Prop({ default: '#000' })
+	backColor?:string
+	@Prop({ default: 0 })
+	current!:number
+	@Prop({ default: false })
+	colorBlack ?:Boolean
+	@Prop({ default: '' })
+	navBgImage?:string
+	operationShow = false;
+	statusBarHeight = app.statusBarHeight;
+	MAX_HEIGHT:any=0;
+	scrollTop=0;
+	navColor = "255,255,255"
+	activeStyle={
+		"font-size": "32rpx",
+		"font-weight": 600,
+		"color":"rgba(51,51,51,0.9)",
+	}
+	inactiveStyle={
+		"font-size": "32rpx",
+		"font-weight": 400,
+		"color":"#A2A8B4",
+	}
+	created() {//在实例创建完成后被立即调用
+	}
+	mounted() {//挂载到实例上去之后调用
+		this.$nextTick(() => {
+			uni.createSelectorQuery()
+				.select('#pageTopContainer')
+				.boundingClientRect((rect) => {
+					this.MAX_HEIGHT = rect.height
+					this.$emit('getNavHeight', rect.height)
+				})
+				.exec();
+		})
+	}
+	destroyed() {
+
+	}
+	public get scrollTopPercent() {
+		if(this.navBgImage!="") return 1;
+		return this.scrollTop / (this.MAX_HEIGHT.toFixed(2) * 1.4)
+	}
+	public get opacityStyle() {
+		return {
+			opacity: this.scrollTopPercent>1 ? 1 : this.scrollTopPercent
+		}
+	}
+	setPageScroll(scroll:any) {
+		this.scrollTop = scroll.scrollTop
+		if(this.colorBlack) return
+		if(this.scrollTopPercent>=1){
+			this.activeStyle.color = "#333"
+			this.inactiveStyle.color = "#333"
+		}else{
+			this.activeStyle.color = "rgba(255,255,255,0.9)"
+			this.inactiveStyle.color = "rgba(255,255,255,0.9)"
+		}
+	}
+	onClickBack() {
+		if(this.customBack){
+			this.$emit("back")
+			return;
+		}
+		app.platform.pageBack()
+	}
+	// 分享
+	onClickShare() {
+		if (!this.operationShow) {
+			this.operationShow = true
+		}
+	}
+	onClickShareCancel() {
+		this.operationShow = false
+	}
+	onClickRightText() {
+		this.$emit('onClickRightText')
+	}
+	onClickTabs(e:any){
+		this.$emit('tabsClisk',e)
+	}
+}
+</script>
+
+<style lang="scss">
+.navigation-header {
+	width: 100%;
+	background: #fff;
+	position: fixed;
+	left: 0;
+	top: 0;
+	box-sizing: border-box;
+	z-index: 20;
+	.tab-header {
+		width: 100%;
+		height: 88rpx;
+		display: flex;
+		box-sizing: border-box;
+		padding: 0 30rpx;
+		position: relative;
+		z-index: 10;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.icon-back {
+		width: 56rpx;
+		height:56rpx;
+		position: absolute;
+		left: 12rpx;
+		top: 50%;
+		margin-top: -28rpx;
+		background: url(@/static/index/back_b.png) no-repeat center / 100% 100%;
+	}
+	.icon-back-white{
+		background: url(@/static/index/back_w.png) no-repeat center / 100% 100% !important;
+	}
+
+	.header-title {
+		height: 88rpx;
+		line-height: 80rpx;
+		font-size: 18px;
+		
+		font-weight: 600;
+		color: #333;
+	}
+
+	.icon-share {
+		width: 38rpx;
+		height: 37rpx;
+		position: absolute;
+		right: 32rpx;
+		top: 50%;
+		margin-top: -19rpx;
+		background: url(../../static/goods/v2/icon_share.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+
+	.right-text {
+		font-size: 28rpx;
+		
+		
+		color: #333333;
+		position: absolute;
+		right: 32rpx;
+	}
+
+	.header-icon {
+		height: 88rpx;
+		display: flex;
+		align-items: center;
+		position: absolute;
+		right: 40rpx;
+		top: 0;
+	}
+	.nav-bg-container{
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top:0;
+		left:0;
+		right:0;
+		overflow: hidden;
+	}
+	.nav-bg-image{
+		width: 100%;
+		height:100%;
+		position: absolute;
+		top:0;
+		left:0;
+	}
+}</style>

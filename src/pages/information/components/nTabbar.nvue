@@ -160,8 +160,8 @@
 	}
 	.chat-text{
 		font-size: 25rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #88878C;
 	}
 	.tabbar-gn{
@@ -199,8 +199,8 @@
 	.num{
 		width: 50rpx;
 		font-size: 23rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #FFFFFF;
 		text-align: center;
 	}

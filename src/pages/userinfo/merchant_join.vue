@@ -1,19 +1,10 @@
 <template>
   <view class="content">
-    <view class="header-banner">
-      <statusbar />
-      <view class="tab-header">
-        <view class="icon-back" @click="onClickBack(true)"></view>
-        <view class="header-title">商家入驻</view>
-        <view class="header-icon">
-          <view class="icon-share" @click="onClickKef"></view>
-        </view>
-      </view>
-    </view>
-
-    <view style="padding-top:88rpx">
-      <statusbar />
-    </view>
+    <navigationbar title="商家入驻" :custom="true">
+      <template slot="right">
+        <view class="icon-share" @click="onClickKef"></view>
+      </template>
+    </navigationbar>
     <template v-if='(merchantHelloState == 0)'>
       <view class="title" style="margin-top: 30rpx;">入驻流程</view>
       <view class="step-content">
@@ -100,15 +91,14 @@
         <view class="info-index">
           <view class="info-left">社群情况</view>
         </view>
-        <u--textarea u--textarea class="textarea" :adjust-position="false" v-model="merchant.active_platform" placeholder="请输入" :heigth="57"
-          :maxlength="200" count :showConfirmBar="false" confirmType="done"></u--textarea>
+        <u--textarea u--textarea class="textarea" :adjust-position="false" v-model="merchant.active_platform"
+          placeholder="请输入" :heigth="57" :maxlength="200" count :showConfirmBar="false" confirmType="done"></u--textarea>
         <view class="tips" style="margin-top:20rpx">请描述主要活动的平台</view>
         <view class="imgContainer uni-flex" style="margin-top:40rpx">
-          <image class="info-img" v-for="(item, index) in merchant.colony_pics"
-            :src="parsePic(decodeURIComponent(item))" mode="aspectFill" @longtap="delResources('colony_pics', index)" />
-          <image class="info-img" v-if="(merchant.colony_pics.length < 6)"
-            @click="onClickUpload('Images', 'colony_pics')" src="../../static/userinfo/v2/addImage.png"
-            mode="aspectFill" />
+          <image class="info-img" v-for="(item, index) in merchant.colony_pics" :src="parsePic(decodeURIComponent(item))"
+            mode="aspectFill" @longtap="delResources('colony_pics', index)" />
+          <image class="info-img" v-if="(merchant.colony_pics.length < 6)" @click="onClickUpload('Images', 'colony_pics')"
+            src="../../static/userinfo/v2/addImage.png" mode="aspectFill" />
         </view>
         <view class="tips" style="margin-bottom:40rpx">图片上传【举例:抖音、微信社群截图、月销总额截图,最大6张】</view>
         <view class="imgContainer uni-flex" style="z-index: 1;">
@@ -134,15 +124,15 @@
         <view class="info-tip">提交信息后我们将在1个工作日内和您取得联系</view>
       </view>
       <!-- <cover-view v-if="deviceInfo.platform=='android'" class="info-btn" @click="onClickConfirm">提交</cover-view> -->
-      <button  class="info-btn" @click="onClickConfirm">提交</button>
+      <button class="info-btn" @click="onClickConfirm">提交</button>
       <view class="safeBottom"></view>
     </template>
-    
+
     <template v-if="(merchantHelloState != 0)">
       <view class="alreadySubmit" :class="[`joinState${merchantHelloState}`]"></view>
       <view class="alreadyTips">
         {{
-            merchantHelloState == 2 ? reason : `您的入驻信息已递交至平台，我们会尽快审核并与您联系，请留意消息通知`
+          merchantHelloState == 2 ? reason : `您的入驻信息已递交至平台，我们会尽快审核并与您联系，请留意消息通知`
         }}
       </view>
       <button class="info-btn" @click='onClickBack(false)'>{{ merchantHelloState == 2 ? '重新申请' : '确定' }}</button>
@@ -156,6 +146,7 @@ import { Component } from "vue-property-decorator";
 import BaseNode from "../../base/BaseNode.vue";
 import ossUtils from "@/tools/ossUtils";
 import { parsePic } from "@/tools/util";
+import Upload from "@/tools/upload"
 const isRealOptions: any = [
   {
     label: "线下实体店",
@@ -237,7 +228,7 @@ const cargo_sourceRange: any = ["睿卡", "美盘", "香港", "淘宝", "其他"
 export default class ClassName extends BaseNode {
   stepData = ["提交个人信息", "等待客服联系", "对接入驻材料", "入驻成功"];
   parsePic: any = parsePic
-  deviceInfo:any=app.platform.systemInfo;
+  deviceInfo: any = app.platform.systemInfo;
   merchant: any = {
     name: "",
     shop: "",
@@ -255,7 +246,7 @@ export default class ClassName extends BaseNode {
     inventory_description: "",//库存情况描述
     open_card_description: "",//近三个月开卡强度描述
   };
-  keyHeight:any=0;
+  keyHeight: any = 0;
   ossutils = ossUtils.getInstance();
   checkMap: any = Object.assign({}, checkMap)
   isRealOptions: any = isRealOptions;
@@ -289,7 +280,7 @@ export default class ClassName extends BaseNode {
     })
   }
   //键盘高度变化
-  keyBoardHeightChange(event:any) {
+  keyBoardHeightChange(event: any) {
     const _heightDiff =
       this.deviceInfo.screenHeight - this.deviceInfo.windowHeight;
     const _diff = event.height - _heightDiff;
@@ -297,7 +288,7 @@ export default class ClassName extends BaseNode {
     const height = (_diff > 0 ? _diff : 0) - 2;
     this.keyHeight = height;
     console.log(this.keyHeight);
-    
+
   }
   pickerChange(event: any, range: any, assignData: any, assignDataKey: any, valueKey = 'value') {
     const index = +event.detail.value
@@ -323,42 +314,56 @@ export default class ClassName extends BaseNode {
   async onClickUpload(type: string, keyName: string) {
     //type: "Video" || "Image" || "Images"
     try {
-      if (!this.sign) this.setOssSing()
+      // if (!this.sign) this.setOssSing()
       const ossUtilsTypeMap: any = {
         "Video": "getVideo",
         "Image": "getImage",
         "Images": "getImages"
       }
       //@ts-ignore
-      const src: any = type == "Images" ? await this.ossutils[ossUtilsTypeMap[type]](6 - this.merchant.colony_pics.length) : await this.ossutils[ossUtilsTypeMap[type]]();
-      this.upLoad(src, type, keyName)
+      if (type == "Video") {
+        const videoSrc = await Upload.getInstance().uploadVideo(`merchantJoinVideo/`)
+        this.merchant[keyName] = videoSrc.path
+        return
+      } else {
+        const picArr: any = await Upload.getInstance().uploadImgs(keyName == 'colony_pics' ? 6 - this.merchant.colony_pics.length : 1, `merchantJoinImage/`, ["album"])
+        if (keyName == 'colony_pics') {
+          this.merchant[keyName].push(...picArr)
+        } else {
+          this.merchant[keyName] = picArr[0]
+        }
+        return
+      }
     } catch (err) {
       //@ts-ignore
       uni.showToast(err.message || err)
     }
   }
-  upLoad(src: any, type: string, keyName: string) {
-    const isArr: boolean = typeof src != 'string';
-    const filePaths = (isArr ? src : [src]).map((item: any) => {
-      return {
-        fileName: `merchantJoin${type}/${this.ossutils.getFileName(item)}`,
-        url: item
-      }
-    })
-    uni.showLoading({
-      title: "上传中..."
-    });
-    this.uniUpLoad(filePaths).then((result: any) => {
-      uni.hideLoading()
-      console.log(result);
-      //@ts-ignore
-      isArr ? this.merchant[keyName].push(...result) : this.merchant[keyName] = result[0]
-    }).catch((err: any) => {
-      uni.showToast({
-        title: err,
-        icon: 'none'
-      })
-    })
+  async upLoad(src: any, type: string, keyName: string) {
+
+
+    // const picArr: any = await Upload.getInstance().uploadSocialImgs(1, `merchantJoin${type=="Video"?"Video":"Image"}`, ["album"])
+    // isArr ? this.merchant[keyName].push(...result) : this.merchant[keyName] = result[0]
+    // const filePaths = (isArr ? src : [src]).map((item: any) => {
+    //   return {
+    //     fileName: `merchantJoin${type=="Video"?"Video":"Image"}/${this.ossutils.getFileName(item)}`,
+    //     url: item
+    //   }
+    // })
+    // uni.showLoading({
+    //   title: "上传中..."
+    // });
+    // this.uniUpLoad(filePaths).then((result: any) => {
+    //   uni.hideLoading()
+    //   console.log(result);
+    //   //@ts-ignore
+    //   isArr ? this.merchant[keyName].push(...result) : this.merchant[keyName] = result[0]
+    // }).catch((err: any) => {
+    //   uni.showToast({
+    //     title: err,
+    //     icon: 'none'
+    //   })
+    // })
   }
   uniUpLoad(filePaths: any) {
     let fileArr: any = []
@@ -421,9 +426,9 @@ export default class ClassName extends BaseNode {
     app.platform.heliService(params)
   }
   onClickConfirm() {
-    if(this.merchantHelloState!=0){
+    if (this.merchantHelloState != 0) {
       app.platform.pageBack()
-      return 
+      return
     }
     const deepData = JSON.parse(JSON.stringify(this.merchant));
     deepData.open_card_videos = [deepData.open_card_video];
@@ -441,6 +446,8 @@ export default class ClassName extends BaseNode {
         if (!this.checkItemUtil(checkKey, formCheckItem, deepData)) return
       }
     }
+    console.log(deepData);
+    
     app.http.Post("me/merchant/hello/apply", deepData, (res: any) => {
       this.merchantHelloState = 99
     });
@@ -482,7 +489,7 @@ export default class ClassName extends BaseNode {
 .title {
   width: 100%;
   font-size: 34rpx;
-  font-family: HYQiHei;
+  
   font-weight: bold;
   color: #1b1b1d;
 }
@@ -499,8 +506,8 @@ export default class ClassName extends BaseNode {
 
 .tips {
   font-size: 24rpx;
-  font-family: Microsoft YaHei;
-  font-weight: 400;
+  
+  
   color: #c7c8c8;
 }
 
@@ -536,80 +543,9 @@ export default class ClassName extends BaseNode {
   height: 60rpx;
   text-align: center;
   font-size: 24rpx;
-  font-family: Microsoft YaHei;
-  font-weight: 400;
+  
+  
   color: #34363a;
-}
-
-.header-banner {
-  width: 100%;
-  background: #fff;
-  position: fixed;
-  left: 0;
-  top: 0;
-  box-sizing: border-box;
-  z-index: 10;
-  border-bottom: 1px solid #F4F3F2;
-
-  .tab-header {
-    width: 100%;
-    height: 88rpx;
-    display: flex;
-    box-sizing: border-box;
-    padding: 0 30rpx;
-    position: relative;
-    z-index: 10;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .icon-back {
-    width: 80rpx;
-    height: 88rpx;
-    background: url(../../static/goods/back@2x.png) no-repeat center;
-    background-size: 100% 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-
-  .header-title {
-    height: 88rpx;
-    line-height: 88rpx;
-    font-size: 34rpx;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #000000;
-  }
-
-  .header-icon {
-    height: 88rpx;
-    display: flex;
-    align-items: center;
-    position: absolute;
-    right: 40rpx;
-    top: 0;
-  }
-
-  .icon-collect {
-    width: 44rpx;
-    height: 41rpx;
-    background: url(../../static/goods/v2/icon_collect.png) no-repeat center;
-    background-size: 100% 100%;
-    margin-right: 40rpx;
-  }
-
-  .icon-favored {
-    background: url(../../static/goods/v2/icon_collect_.png) no-repeat center;
-    background-size: 100% 100%;
-  }
-
-  .icon-share {
-    width: 46rpx;
-    height: 46rpx;
-    background: url(../../static/userinfo/v2/kef.png) no-repeat center;
-    background-size: 100% 100%;
-  }
 }
 
 .info-content {
@@ -632,8 +568,8 @@ export default class ClassName extends BaseNode {
   display: flex;
   align-items: center;
   font-size: 30rpx;
-  font-family: Microsoft YaHei;
-  font-weight: 400;
+  
+  
   color: #34363a;
 }
 
@@ -643,34 +579,38 @@ export default class ClassName extends BaseNode {
   height: 80rpx;
   line-height: 80rpx;
   font-size: 30rpx;
-  font-family: Microsoft YaHei;
-  font-weight: 400;
+  
+  
   color: #34363a;
 }
 
 .textarea {
   font-size: 30rpx;
-  font-weight: 400;
+  
   color: #34363a;
 }
 
 .info-tip {
   margin-top: 30rpx;
   font-size: 24rpx;
-  font-family: Microsoft YaHei;
-  font-weight: 400;
+  
+  
   color: #c7c8c8;
 }
-.hidden{
+
+.hidden {
   width: 0;
-  height: 0;top: 0;left: 0;
+  height: 0;
+  top: 0;
+  left: 0;
   opacity: 0;
 }
+
 .info-btn {
   width: 668rpx;
   background: #fb4e3e;
   text-align: center;
-  font-family: Microsoft YaHei;
+  
   color: #ffffff;
   position: fixed;
   bottom: 64rpx;
@@ -726,7 +666,7 @@ export default class ClassName extends BaseNode {
   // background: #c8c8c8;
   // border-radius: 50%;
   // font-size: 42rpx;
-  // font-family: HYQiHei;
+  // 
   // font-weight: normal;
   // color: #ffffff;
   margin-top: 265rpx;
@@ -746,7 +686,7 @@ export default class ClassName extends BaseNode {
 
 .alreadyTips {
   font-size: 30rpx;
-  font-family: HYQiHei;
+  
   font-weight: normal;
   color: #010000;
   text-align: center;
@@ -755,5 +695,11 @@ export default class ClassName extends BaseNode {
   padding: 0 82rpx;
   line-height: 60rpx;
   margin-top: 47rpx;
+}
+
+.icon-share {
+  width: 46rpx;
+  height: 46rpx;
+  background: url(@/static/userinfo/v2/kef.png) no-repeat center / 100% 100%;
 }
 </style>

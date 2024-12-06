@@ -175,8 +175,8 @@
 			.coupon-price{
 				width: 100%;
 				font-size: 29rpx;
-				font-family: PingFang SC;
-				font-weight: 400;
+				
+				
 				color: #FFFFFF;
 				text-align: center;
 				font-weight: bold;
@@ -188,8 +188,8 @@
 				width: 100%;
 				text-align: center;
 				font-size: 23rpx;
-				font-family: PingFang SC;
-				font-weight: 500;
+				
+				font-weight: 600;
 				color: #FFFFFF;
 			}
 		}
@@ -218,15 +218,15 @@
 					display: flex;
 					align-items: center;
 					font-size: 30rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 600;
 					color: #333333;
 				}
 				.coupon-time{
 					width: 100%;
 					font-size: 21rpx;
-					font-family: PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #88878C;
 					margin-top: 10rpx;
 				}
@@ -238,8 +238,8 @@
 					text-align: center;
 					line-height: 47rpx;
 					font-size: 25rpx;
-					font-family: PingFang SC;
-					font-weight: 500;
+					
+					font-weight: 600;
 					color: #FFFFFF;
 					position: absolute;
 					right:0rpx;
@@ -256,8 +256,8 @@
 					height:50rpx;
 					line-height: 50rpx;
 					font-size: 20rpx;
-					font-family: Microsoft YaHei;
-					font-weight: 400;
+					
+					
 					color: #B8B7B7;
 				}
 				.coupon-right-down{
@@ -308,8 +308,8 @@
 		text-align: center;
 		line-height: 58rpx;
 		font-size: 28rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #545659;
 	}
 	.btn-exchange{
@@ -337,8 +337,8 @@
 	.explain-index{
 		width: 100%;
 		font-size: 24rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #B8B7B7;
 		line-height: 36rpx;
 	}

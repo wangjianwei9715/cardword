@@ -1,21 +1,16 @@
 <template>
 	<view class="content">
-		<view class="header">
-			<statusbar style="background:#fff" />
-			<view class="tab-header">
-				<view class="icon-back" @click="onClickBack">
-					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
-				</view>
-				<view class="header-title">卡片分解</view>
+		<navigationbar title="卡片分解" :custom="true">
+			<template slot="right">
 				<view class="icon-help" @click="onClickShowRule"></view>
-			</view>
-		    <view class="header-tab">
-		        <tabc :tabc="tabData" :tabsCheck="tabCheck" @tabsClick="onClickListTabs"></tabc>
-		    </view>
-		</view>
-		
+			</template>
+			<template slot="bottom">
+				<view class="header-tab">
+					<tabc :tabc="tabData" :tabsCheck="tabCheck" @tabsClick="onClickListTabs"></tabc>
+				</view>
+			</template>
+		</navigationbar>
 		<view class="box-content">
-			<statusbar/>
 			<view class="box-index" v-for="(item,index) in goodsList" :key="index" @click="onClickCardList(item)">
 				
 				<view class="index-header">商品编号:{{item.goodCode}}</view>
@@ -155,36 +150,6 @@
 		height:100%;
 		background:#F6F7F8;
 	}
-	.tab-header{
-		width: 100%;
-		height:88rpx;
-		display: flex;
-		box-sizing: border-box;
-		padding:0 30rpx;
-		position: relative;
-		z-index: 10;
-		align-items: center;
-		justify-content: center;
-		background:#fff;
-	}
-	.icon-back{
-		width: 80rpx;
-		height: 88rpx;
-		position: absolute;
-		left: 0;
-		top: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.header-title{
-		height:88rpx;
-		line-height: 88rpx;
-		font-size: 34rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #000000;
-	}
 	.icon-help{
 		width: 40rpx;
 		height:40rpx;
@@ -198,13 +163,6 @@
 	.content{
 		width: 100%;
 		box-sizing:border-box;
-	}
-	.header{
-	    width: 100%;
-	    position: fixed;
-	    left:0;
-	    top:0;
-	    z-index: 99;
 	}
 	.header-tab{
 		width: 100%;
@@ -236,8 +194,8 @@
 		height:70rpx;
 		line-height: 70rpx;
 		font-size: 28rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #666666;
 		border-bottom:1rpx solid #E7E7E7;
 		margin-bottom: 22rpx;
@@ -283,16 +241,16 @@
 	.index-right-title{
 		width: 100%;
 		font-size: 30rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #666666;
 		line-height: 48rpx;
 		margin-bottom: 20rpx;
 	}
 	.index-right-num{
 		font-size: 24rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #B8B7B7;
 	}
 	.index-right-icon{
@@ -314,8 +272,8 @@
 		right:0;
 		bottom:20rpx;
 		font-size: 26rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #FFFFFF;
 		background: #FB4E3E;
 		border-radius: 30rpx;
@@ -330,8 +288,8 @@
 		height:40rpx;
 		line-height: 40rpx;
 		font-size: 28rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #666666;
 	}
 	.index-bottom-reward-box{

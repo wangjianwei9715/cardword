@@ -1,7 +1,9 @@
 import HttpRequest from "../net/HttpRequest";
 import * as Base64 from '../lib/base64';
+//@ts-ignore
+import {decHex} from "@/net/Crypto.js"
 var Crypto = require("crypto-js");
-const uploadFileSize = 1024 * 1024 * 100; // 上传文件的大小限制100m
+const uploadFileSize = 1024 * 1024 * 300; // 上传文件的大小限制300m
 export default class ossUtils {
     osstoken:{[x: string]: any} = {};
     private static instance: ossUtils;
@@ -39,8 +41,8 @@ export default class ossUtils {
         return suffix;
     }
     getFileName(filename: any) {
-        // console.log('filename:', filename)
-        return new Date().getTime() + Math.random().toString(36).substring(3, 20) + this._getSuffix(filename)
+        console.log('filename:', filename)
+        return new Date().getTime() + Math.random().toString(36).substring(3, 20) + this._getSuffix(filename.name)
     }
     getImage(sourceType='album'):Promise<string> {
         return new Promise((resolve, reject) => {
@@ -92,21 +94,23 @@ export default class ossUtils {
             })
         })
     }
-    getToken(){
+    getToken(type=''){
         if (!this.osstoken.expire_at || (new Date().getTime() / 1000) >= this.osstoken.expire_at) {
             return new Promise((resolve, reject) => {
-               HttpRequest.getIns().Get('dataApi/oss/token',{},async (res:any) =>{
+                const ossUrlPath = type=='social' ? '/social' : '';
+                HttpRequest.getIns().GetWithCrypto(`dataApi/oss${ossUrlPath}/token`,{},async (res:any) =>{
+                    res.data.access_key_secret=decHex(res.data.access_key_secret)
                     this.osstoken = res.data;
                     resolve(res.data);
-               })
+                })
             })
         }else{
             return this.osstoken;
         }
     }
     // 获取STS签名
-    async getSTS() {
-        let token = await this.getToken();
+    async getSTS(type='') {
+        let token:any = await this.getToken(type);
         // 读取接口
         return new Promise((resolve, reject) => {
             let policy = this._getPolicy();

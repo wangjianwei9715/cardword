@@ -1,20 +1,24 @@
-// #ifndef APP-NVUE
-import { Md5 } from 'ts-md5'
-import { app } from '@/app'
-// #endif
+import { ossStitching } from "@/pages/cardForum/func/index"
+//@ts-ignore
+import {decHex} from "@/net/Crypto.js"
+//@ts-ignore
+import { KwwConfusion } from "@/net/kwwConfusion.js"
 /**
  * 图片特殊处理
  * @param src String 图片路径 
  * @returns String 图片路径
  */
-export function parsePic(src: string) {
-	if (!src) return ''
-	if (src.indexOf('res_ksj') == -1 && src.indexOf('resources.ka-world.com') == -1) return src
-	const httpUrl = src.indexOf('resources.ka-world.com') != -1 ? 'resources.ka-world.com' : 'res.ka-world.com'
-	const tsString = (Math.round(+new Date() / 1000)).toString(16).toUpperCase();
-	const noneOrigin = src.replace(/^http:\/\/[^/]+/, "");
-	const md5Key = Md5.hashStr(app.picEncryptionKey + noneOrigin + tsString)
-	return `http://${httpUrl}/${md5Key}/${tsString}${noneOrigin}`
+export function parsePic(picUrl: string) {
+	if (!picUrl) return '';
+	const decHexSrc = decHex(decodeURIComponent(picUrl));
+	return KwwConfusion.kwwParsePic(decHexSrc);
+}
+export function thumbnail(cover:string, width=100) {
+    if (!cover) return cover
+    let deCover = parsePic(cover)
+    const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
+    if (isVideoSnapshot) return deCover
+    return ossStitching(deCover, `x-oss-process=image/resize,m_lfit,w_${width}`)
 }
 /**
  * 数字处理 大于万/亿 调整为字符串
@@ -111,6 +115,22 @@ export function dateFormatYMSHM(time: number | string) {
 	var second = ("0" + date.getSeconds()).slice(-2);
 	// 拼接
 	var result = year + "-" + month + "-" + sdate + " " + hour + ":" + minute;
+	// var result =  month + "月" + sdate + "日 " + hour + ":" + minute //+ ":" + second
+	// 返回
+	return result;
+}
+// 时间戳 年月日时分秒
+export function dateFormatYMSHMS(time: number | string) {
+	if(time ==0) return 0;
+	var date = new Date(Number(time) * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+	var year = date.getFullYear();
+	var month = ("0" + (date.getMonth() + 1)).slice(-2);
+	var sdate = ("0" + date.getDate()).slice(-2);
+	var hour = ("0" + date.getHours()).slice(-2);
+	var minute = ("0" + date.getMinutes()).slice(-2);
+	var second = ("0" + date.getSeconds()).slice(-2);
+	// 拼接
+	var result = year + "-" + month + "-" + sdate + " " + hour + ":" + minute + ":" + second;
 	// var result =  month + "月" + sdate + "日 " + hour + ":" + minute //+ ":" + second
 	// 返回
 	return result;
@@ -481,6 +501,22 @@ export function liveCountDownV2(startDate: number, endDate: number = 0, mmbol: b
 		return day + hour + minute + (!day && !hour && !minute ? second : '')
 	}
 }
+export function filterPrice(price: number) {
+	let data = {
+		integer: 0,
+		decimal: 0,
+	}
+	if (!price) return data
+	const priceArr: any = String(price).split('.')
+	if (priceArr.length == 1) {
+		data.integer = priceArr[0]
+		return data
+	}
+	return {
+		integer: priceArr[0],
+		decimal: '.' + priceArr[1]
+	}
+}
 export const weekDay = function (time: number, type?: number) {
 	const weekNum: number = new Date(time * 1000).getDay();
 	const week: any = {
@@ -536,6 +572,106 @@ export function toThousands(num = 0) {
 		return n.replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
 	});
 };
+
+const multipliers: { [key: number]: number } = {
+	0: 23,
+	1: 25,
+	2: 27,
+};
+
+export function decodeNoCode(code: string,seqIndex:number): string {
+	const sCodeBs: string[] = [code[0], code[2], code[4], code[6], code[8], code[10]];
+	const sCode: string = sCodeBs.join("");
+
+	const seqBs: string[] = [code[1], code[3], code[5], code[7], code[9], code[11]];
+	let TMP: string;
+	if (seqBs[0] === "G" || seqBs[0] === "I" || seqBs[0] === "K") {
+		seqBs[0] = String.fromCharCode(seqBs[0].charCodeAt(0) - 6);
+
+		TMP = seqBs[5];
+		seqBs[5] = seqBs[0];
+		seqBs[0] = TMP;
+
+		TMP = seqBs[4];
+		seqBs[4] = seqBs[2];
+		seqBs[2] = TMP;
+
+		TMP = seqBs[3];
+		seqBs[3] = seqBs[1];
+		seqBs[1] = TMP;
+	} else if (seqBs[0] === "H" || seqBs[0] === "J" || seqBs[0] === "L") {
+		seqBs[0] = String.fromCharCode(seqBs[0].charCodeAt(0) - 6);
+
+		TMP = seqBs[5];
+		seqBs[5] = seqBs[0];
+		seqBs[0] = TMP;
+
+		TMP = seqBs[4];
+		seqBs[4] = seqBs[1];
+		seqBs[1] = TMP;
+
+		TMP = seqBs[3];
+		seqBs[3] = seqBs[2];
+		seqBs[2] = TMP;
+	}
+
+	const seqStr: string = seqBs.join("");
+	const v: number = parseInt(seqStr, 16);
+	const iv: number = v;
+	const ss: number = iv % 10000;
+	const number: number = Math.floor((iv - ss) / 10000);
+	const noCode = generateNoCode(sCode, number,seqIndex);
+	return noCode;
+}
+
+function generateNoCode(sCode: string, number: number, seqIndex: number): string {
+	if (seqIndex <= 0) {
+		seqIndex = 1;
+	}
+
+	const multiplier: number = multipliers[sCode.charCodeAt(0) % 3];
+
+	const seed: number = number * 10000 + seqIndex * multiplier;
+
+	let hex: any = seed.toString(16).toUpperCase();
+	if (hex.length < 6) {
+		hex = "0".repeat(6 - hex.length) + hex;
+	}
+	const bs: string[] = Array(13).fill("");
+
+	for (let i = 0; i < 6; i++) {
+		bs[i * 2 + 1] = sCode[i];
+	}
+	for (let i = 0; i < 6; i++) {
+		bs[i * 2 + 1 + 1] = hex[i];
+	}
+
+	if (hex[5] >= "A" && hex[0] <= "9") {
+		let TMP: string = bs[12];
+		bs[12] = bs[2];
+		bs[2] = TMP;
+
+		if (hex[5] % 2 === 0) {
+		TMP = bs[10];
+		bs[10] = bs[4];
+		bs[4] = TMP;
+
+		TMP = bs[8];
+		bs[8] = bs[6];
+		bs[6] = TMP;
+		} else {
+		TMP = bs[10];
+		bs[10] = bs[6];
+		bs[6] = TMP;
+
+		TMP = bs[8];
+		bs[8] = bs[4];
+		bs[4] = TMP;
+		}
+		bs[2] = String.fromCharCode(bs[2].charCodeAt(0) + 6);
+	}
+	return bs.slice(1).join("");
+}
 //加法函数 用来得到精确的加法结果   
 const add = (a: any, b: any) => {
 	var c, d, e;

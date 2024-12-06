@@ -80,7 +80,7 @@
 			width: 100%;
 			text-align: center;
 			font-size: 33rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 			height:88rpx;
@@ -101,8 +101,8 @@
 		.popup-explain{
 			width: 100%;
 			font-size: 25rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #333333;
 			margin-top: 25rpx;
 			line-height: 30rpx;
@@ -110,8 +110,8 @@
 		.popup-ts{
 			width: 100%;
 			font-size: 21rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #E34B4B;
 			line-height: 30rpx;
 			margin-top: 15rpx;
@@ -124,8 +124,8 @@
 			margin:0 auto;
 			margin-top: 44rpx;
 			font-size: 27rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #FFFFFF;
 			line-height: 69rpx;
 			text-align: center;

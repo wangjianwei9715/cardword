@@ -8,12 +8,14 @@
 			</view>
 			<view class="payment-center">¥<text class="payment-price">{{payPrice}}</text></view>
 			<view class="payment-tip">支付方式</view>
-			<view class="payment-list" v-for="(item,index) in newPayChannel" :key="index">
-				<view class="payment-list-left">
-					<view :class="item.name=='微信支付'?'icon-wx':'icon-zfb'"></view>{{item.name}}
-				</view>
-				<view class="payment-list-right" @click="checkPay=index">
-					<view :class="checkPay==index?'payment-checked':'payment-check'"></view>
+			<view class="payment-list-box">
+				<view class="payment-list" v-for="(item,index) in newPayChannel" :key="index">
+					<view class="payment-list-left">
+						<view :class="item.name=='微信支付'?'icon-wx':'icon-zfb'"></view>{{item.name}}
+					</view>
+					<view class="payment-list-right" @click="checkPay=index">
+						<view :class="checkPay==index?'payment-checked':'payment-check'"></view>
+					</view>
 				</view>
 			</view>
 			
@@ -145,9 +147,9 @@
 		}
 		&-popup{
 			width: 100%;
-			height:calc(626rpx);
-			height:calc(626rpx + constant(safe-area-inset-bottom));
-			height:calc(626rpx + env(safe-area-inset-bottom));
+			height:calc(656rpx);
+			height:calc(656rpx + constant(safe-area-inset-bottom));
+			height:calc(656rpx + env(safe-area-inset-bottom));
 			position: fixed;
 			box-sizing: border-box;
 			background:#fff;
@@ -157,15 +159,15 @@
 			left:0;
 			transition:transform 0.2s;
 			-webkit-transition: -webkit-transform 0.2s;
-			transform: translateY(626rpx);
+			transform: translateY(656rpx);
 		}
 		.payment-header{
 			width: 100%;
 			box-sizing: border-box;
 			padding-top: 50rpx;
 			font-size: 33rpx;
-			font-family: PingFangSC-Medium;
-			font-weight: 500;
+			
+			font-weight: 600;
 			color: #333333;
 			text-align: center;
 			position: relative;
@@ -176,7 +178,7 @@
 			margin-top: 46rpx;
 			line-height: 84rpx;
 			font-size: 50rpx;
-			font-family: PingFangSC-Regular;
+			
 			font-weight: 600;
 			color: #333333;
 			text-align: center;
@@ -190,11 +192,18 @@
 			margin:0 auto;
 			box-sizing: border-box;
 			font-size: 27rpx;
-			font-family: PingFangSC-Regular;
-			font-weight: 400;
+			
+			
 			color: #333333;
 			padding-bottom: 30rpx;
 			border-bottom: 1px solid #EDEDED;
+		}
+		.payment-list-box{
+			width: 100%;
+			height:170rpx;
+			overflow: auto;
+			box-sizing: border-box;
+			margin-top:30rpx;
 		}
 		.payment-list{
 			width:100%;
@@ -204,15 +213,15 @@
 			justify-content: space-between;
 			box-sizing: border-box;
 			padding:0 30rpx;
-			margin-top: 32rpx;
+			margin-bottom: 30rpx;
 			&-left{
 				height:44rpx;
 				display: flex;
 				box-sizing: border-box;
 				align-items: center;
 				font-size: 31rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
+				
+				
 				color: #333333;
 			}
 			.icon-zfb{
@@ -240,7 +249,7 @@
 			.payment-checked{
 				width: 36rpx;
 				height:36rpx;
-				background:url(../../static/pay/xuanzhong@2x.png) no-repeat center;
+				background:url(../../static/userinfo/pay_gou.png) no-repeat center;
 				background-size: 100% 100%;
 			}
 		}
@@ -250,7 +259,7 @@
 			text-align: center;
 			box-sizing: border-box;
 			margin:0 auto;
-			font-family: PingFangSC-Regular;
+			
 			color: #FFFFFF;
 			position:absolute;
 			bottom:calc(18rpx );

@@ -3,7 +3,7 @@
 		<view class="header-banner">
 			<statusbar />
 			<view class="tab-header">
-				<view class="icon-back" @click="navigateBack">
+				<view class="icon-back" @click="navigateBack()">
 					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
 				</view>
 				<view v-for="(item,index) in tabList" :key="index" :class="chooseId==index?'header-title':'header-title2'" @click="onClickTab(index)" :style="{marginLeft:index==1?'112rpx':''}">{{item}}
@@ -27,7 +27,11 @@
 			<view v-if="teamDataList.length==0" class="empty">暂无数据</view>
 			<view class="card-index" v-for="(item,index) in teamDataList" :key="index">
 				<view class="left" :style="{width:chooseId==0?'100%':''}">
-					<view class="title"><muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit" :borderRadius="'50%'"></muqian-lazyLoad> {{item.userName}}</view>
+					<view class="title">
+						<muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit" :borderRadius="'50%'" @click="goPersonHome(item.userId,item.anonymous)"></muqian-lazyLoad>
+						<text @click="goPersonHome(item.userId,item.anonymous)">{{item.userName}}</text>
+						<medalIcon v-if="!item.anonymous && item.medal" :src="item.medal.pic" :userId="item.userId"/>
+					</view>
 					<view class="desc">{{item.no}}</view>
 					<view class="time">{{$u.timeFormat(item.time,'yyyy-mm-dd hh:MM:ss')}}</view>
 				</view>
@@ -55,6 +59,7 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import { getGoodsImg, parsePic } from "../../tools/util";
+	import { anonymousInfo } from "./manager/detailsManager"
 	const Tab = {
 		0:'拼团结果',
 		1:'拆卡报告'
@@ -63,22 +68,29 @@
 		pageIndex:1,
 		pageSize:10,
 	}
+	class CardParams {
+		fromId = 0;
+		fetchSize = 10;
+		remainNum = -1;
+	}
 	@Component({})
 	export default class ClassName extends BaseNode {
 		navigateBack = app.navigateTo.navigateBack;
 		parsePic = parsePic;
 		getGoodsImg = getGoodsImg;
+		goPersonHome = app.navigateTo.goPersonHome;
 		defaultAvatar = app.defaultAvatar;
 		tabList = Tab;
 		chooseId = 0;
 		goodCode = '';
-		teamDataList = [];
+		teamDataList:any = [];
 		listParams = {...ListParams};
 		searchQ = '';
 		noMore = false;
 		hasRandom = false;
 		showRulePopup = false;
 		randomList:any = [];
+		cardNoParams = new CardParams();
 		onLoad(query: any) {
 			if (query.chooseIds) {
 				this.chooseId = query.chooseIds;
@@ -97,11 +109,35 @@
 		}
 		getList(){
 			if(this.noMore) return;
-			const { listParams } = this;
-			const httpUrl = this.chooseId==0 ? 'cardNo' : 'cardNoResult';
-			app.http.Get(`dataApi/good/${this.goodCode}/${httpUrl}`,{...listParams,q:this.searchQ},(res:any)=>{
+			if(this.chooseId!=0){
+				this.getResult()
+			}else{
+				this.getCardNo()
+			}
+		}
+		getCardNo(){
+			const { cardNoParams } = this;
+			app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/result`,{...cardNoParams,q:this.searchQ},(res:any)=>{
 				if(res.list){
-					this.teamDataList = this.teamDataList.concat(res.list)
+					const list = res.list.map(({anonymous,dicKey,...rest}:any)=>{
+						const userData = anonymous ? anonymousInfo : res.dic[dicKey];
+						return {...rest,anonymous,...userData}
+					})
+					this.teamDataList = this.teamDataList.concat(list)
+				}
+				this.noMore = res.isFetchEnd;
+				cardNoParams.fromId = this.teamDataList[this.teamDataList.length-1].id;
+				cardNoParams.remainNum = res.remainNum || -1
+			})
+		}
+		getResult(){
+			const { listParams } = this;
+			app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/cardNoResult`,{...listParams,q:this.searchQ},(res:any)=>{
+				if(res.list){
+					const list = res.list.map(({anonymous,userName,...rest}:any)=>{
+						return {...rest,userName:anonymous?"匿名用户":userName}
+					})
+					this.teamDataList = this.teamDataList.concat(list)
 				}
 				if(listParams.pageIndex>=res.totalPage){
 					this.noMore = true
@@ -110,7 +146,8 @@
 			})
 		}
 		resetList(){
-			this.listParams = {...ListParams}
+			this.listParams = {...ListParams};
+			this.cardNoParams = new CardParams();
 			this.noMore = false;
 			this.teamDataList = [];
 		}
@@ -181,7 +218,7 @@
 
 		.header-title {
 			font-size: $font-32;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 600;
 			color: #14151A;
 			line-height: 88rpx;
@@ -200,8 +237,8 @@
 
 		.header-title2 {
 			font-size: $font-32;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #A9ABB4;
 			line-height: 88rpx;
 
@@ -243,8 +280,8 @@
 
 	.title-middle {
 		font-size: $font-22;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 500;
+		
+		font-weight: 600;
 		color: #FFFFFF;
 		line-height: 32rpx;
 	}
@@ -258,7 +295,7 @@
 		justify-content: space-around;
 
 		font-size: $font-24;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 		line-height: 34rpx;
@@ -273,7 +310,7 @@
 		justify-content: space-around;
 
 		font-size: $font-24;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 		line-height: 34rpx;
@@ -327,7 +364,7 @@
 		justify-content: space-around;
 
 		font-size: $font-24;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 		line-height: 34rpx;
@@ -344,7 +381,7 @@
 		justify-content: space-around;
 
 		font-size: $font-24;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 		line-height: 34rpx;
@@ -387,8 +424,8 @@
 		background: #F5F5F8;
 		border-radius: 4rpx;
 		font-size: 24rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 500;
+		
+		font-weight: 600;
 		color: #14151A;
 		
 	}
@@ -417,8 +454,8 @@
 			padding:20rpx 22rpx 20rpx 32rpx;
 			.title{
 				font-size: 24rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
-				font-weight: 400;
+				
+				
 				color: #7F7F8E;
 				margin-bottom: 8rpx;
 				display: flex;
@@ -432,7 +469,7 @@
 			}
 			.desc{
 				font-size: 24rpx;
-				font-family: PingFangSC-Medium, PingFang SC;
+				
 				font-weight: 600;
 				color: #14151A;
 				line-height: 34rpx;
@@ -446,8 +483,8 @@
 			}
 			.time{
 				font-size: 24rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
-				font-weight: 400;
+				
+				
 				color: #AAAABB;
 			}
 		}
@@ -460,7 +497,7 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 24rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 600;
 			color: #828292;
 			.right-img{
@@ -531,7 +568,7 @@
 		margin-bottom: 80rpx;
 		text-align: center;
 		font-size: 34rpx;
-		font-family: Microsoft YaHei;
+		
 		font-weight: bold;
 		color: #34363A;
 	}
@@ -540,8 +577,8 @@
 		box-sizing: border-box;
 		padding:0 50rpx;
 		font-size: 28rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #34363A;
 		line-height: 50rpx;
 		text-align: center;
@@ -559,7 +596,7 @@
 		margin-left:-231rpx;
 		border-radius: 30rpx;
 		font-size: 30rpx;
-		font-family: Adobe Heiti Std;
+		
 		font-weight: normal;
 		color: #FFFFFF;
 	}
@@ -592,7 +629,7 @@
 			margin-bottom: 40rpx;
 			text-align: center;
 			font-size: 34rpx;
-			font-family: Microsoft YaHei;
+			
 			font-weight: bold;
 			color: #34363A;
 		}
@@ -629,7 +666,7 @@
 			margin-bottom: 40rpx;
 			text-align: center;
 			font-size: 34rpx;
-			font-family: Microsoft YaHei;
+			
 			font-weight: bold;
 			color: #34363A;
 		}
@@ -649,8 +686,8 @@
 		box-sizing: border-box;
 		padding:20rpx 0;
 		font-size: 26rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #34363A;
 		line-height: 40rpx;
 		border-bottom:1rpx solid #D6D6D6

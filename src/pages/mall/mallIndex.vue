@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 17:50:05
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-06 16:43:41
- * @FilePath: \card-world\src\pages\mall\mallIndex.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-08-23 15:34:34
+ * @FilePath: \jichao_app_2\src\pages\mall\mallIndex.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -35,7 +35,7 @@
             indicator indicatorMode="line" circular></u-swiper>
         <view class="uTabs">
             <view class="tabsItem" :class="{ tabsItem_select: index == tab.index }" @click="tabChange(item, index)"
-                v-for="(item, index) in tab.list">{{ item.name }}</view>
+                v-for="(item, index) in tab.list" :key="index">{{ item.name }}</view>
         </view>
         <!-- <u-sticky v-if="navHeight" :customNavHeight="navHeight">
             
@@ -48,19 +48,19 @@
                 v-for="(item, index) in goodsList" :key="index">
                 <view class="goodsItem_top">
                     <muqian-lazyLoad class="logo" borderRadius="3rpx"
-                        :src="$parsePic(decodeURIComponent(item.logo))"></muqian-lazyLoad>
+                        :src="$parsePic(item.logo)"></muqian-lazyLoad>
                     <view class="startTimeBlock" v-if="item.start_at > 0">
                         <view class="startTimeBlock_leftFont">{{ item.start_at > nowTimeStamp ? '距离开始' : '开抢中' }}</view>
                         <view class="startTimeBlock_rightCountDown"
                             v-if="item.start_at && item.start_at > 0 && nowTimeStamp < item.start_at">
                             <view class="timeBlock flexCenter"
-                                v-for="time in getCountDownInfo(nowTimeStamp, item.start_at).hours">{{ time }}</view>
+                                v-for="(time,tIndex) in getCountDownInfo(nowTimeStamp, item.start_at).hours" :key="`hours${tIndex}`">{{ time }}</view>
                             <view class="colon">:</view>
                             <view class="timeBlock flexCenter"
-                                v-for="time in getCountDownInfo(nowTimeStamp, item.start_at).minutes">{{ time }}</view>
+                                v-for="(time,tIndex) in getCountDownInfo(nowTimeStamp, item.start_at).minutes" :key="`minutes${tIndex}`">{{ time }}</view>
                             <view class="colon">:</view>
                             <view class="timeBlock flexCenter"
-                                v-for="time in getCountDownInfo(nowTimeStamp, item.start_at).seconds">{{ time }}</view>
+                                v-for="(time,tIndex) in getCountDownInfo(nowTimeStamp, item.start_at).seconds" :key="`seconds${tIndex}`">{{ time }}</view>
                         </view>
                     </view>
                 </view>
@@ -302,8 +302,8 @@ page {
         &_font {
             margin-left: 16rpx;
             font-size: 25rpx;
-            font-family: PingFang SC;
-            font-weight: 500;
+            
+            font-weight: 600;
             color: #333333;
         }
     }
@@ -316,14 +316,14 @@ page {
         &_redFont {
             font-size: 33rpx;
             font-family: YouSheBiaoTiHei;
-            font-weight: 400;
+            
             color: #FA1545;
         }
 
         &_point {
             font-size: 33rpx;
             font-family: YouSheBiaoTiHei;
-            font-weight: 400;
+            
             color: #333333;
             display: flex;
             align-items: center;
@@ -355,8 +355,8 @@ page {
         width: 25%;
         text-align: center;
         font-size: 28rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
+        
+        
         color: #333333;
         white-space: nowrap;
     }
@@ -364,7 +364,7 @@ page {
     .tabsItem_select {
         font-size: 40rpx;
         font-family: YouSheBiaoTiHei;
-        font-weight: 400;
+        
         color: #F91E44;
     }
 
@@ -382,7 +382,7 @@ page {
 
 .leftTitle {
     font-size: 35rpx;
-    font-family: PingFang SC;
+    
     font-weight: 600;
     color: #FFFFFF;
 }
@@ -432,8 +432,8 @@ page {
         align-items: center;
         padding: 0 14rpx;
         font-size: 21rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
+        
+        
         color: #FFFFFF;
         justify-content: space-between;
 
@@ -447,8 +447,8 @@ page {
                 background: #FFFFFF;
                 border-radius: 3rpx;
                 font-size: 21rpx;
-                font-family: PingFang SC;
-                font-weight: 400;
+                
+                
                 color: #515151;
                 margin-left: 4rpx;
             }
@@ -462,8 +462,8 @@ page {
 
         &_leftFont {
             font-size: 21rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
+            
+            
             color: #FFFFFF;
         }
     }
@@ -481,8 +481,8 @@ page {
 
     .goodsName {
         font-size: 27rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
+        
+        
         color: #333333;
     }
 
@@ -499,8 +499,8 @@ page {
 
         .leftNum {
             font-size: 21rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
+            
+            
             color: #999999;
         }
     }
@@ -512,8 +512,8 @@ page {
 
     .money {
         font-size: 25rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
+        
+        
         color: #F91E44;
         position: relative;
     }

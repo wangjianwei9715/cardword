@@ -156,9 +156,7 @@
 
 		onLoad(query: any) {
 			if (app.token.accessToken == "") {
-				uni.navigateTo({
-					url: "/pages/login/login"
-				});
+				app.login.arouseLogin()
 				return;
 			}
 			this.reqTimeLimitData();
@@ -339,8 +337,8 @@
 	.drawer-help {
 		width: 100%;
 		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		
+		
 		color: #7d8288;
 		line-height: 38rpx;
 		margin-bottom: 50rpx;
@@ -361,15 +359,15 @@
 			box-sizing: border-box;
 			font-size: 69rpx;
 			font-family: hei;
-			font-weight: 400;
+			
 			color: #ffffff;
 			margin-bottom: 49rpx;
 		}
 
 		.mall-my-point {
 			font-size: 27rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #ffffff;
 			letter-spacing: 5rpx;
 		}
@@ -382,7 +380,7 @@
 			.point-num {
 				height: 80rpx;
 				font-size: 50rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #ffffff;
 				text-shadow: 3px 3px 6rpx rgba(50, 46, 164, 0.8);
@@ -419,8 +417,8 @@
 			display: flex;
 			align-items: center;
 			font-size: 23rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #ffffff;
 
 			.mall-top-img {
@@ -459,8 +457,8 @@
 					display: flex;
 					align-items: center;
 					font-size: 23rpx;
-					font-family: PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #333333;
 					line-height: 32rpx;
 
@@ -474,8 +472,8 @@
 				.limit-header-right {
 					height: 32rpx;
 					font-size: 23rpx;
-					font-family: PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #333333;
 					line-height: 32rpx;
 
@@ -539,8 +537,8 @@
 							background: #b9d7ef;
 							line-height: 31rpx;
 							font-size: 22rpx;
-							font-family: PingFang SC;
-							font-weight: 400;
+							
+							
 							// color: #ffffff;
 						}
 					}
@@ -554,8 +552,8 @@
 							height: 70rpx;
 							line-height: 70rpx;
 							font-size: 27rpx;
-							font-family: PingFang SC;
-							font-weight: 400;
+							
+							
 							color: #333333;
 							text-align: center;
 							overflow: hidden;
@@ -567,8 +565,8 @@
 							width: 100%;
 							height: 34rpx;
 							font-size: 25rpx;
-							font-family: PingFang SC;
-							font-weight: 400;
+							
+							
 							color: #ef3333;
 							text-align: center;
 							line-height: 20rpx;
@@ -582,8 +580,8 @@
 							text-align: center;
 							line-height: 46rpx;
 							font-size: 27rpx;
-							font-family: PingFang SC;
-							font-weight: 400;
+							
+							
 							color: #ffffff;
 						}
 					}
@@ -604,15 +602,15 @@
 
 		.point-title {
 			font-size: 31rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}
 
 		.point-tips {
 			font-size: 23rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #333333;
 		}
 	}
@@ -622,6 +620,7 @@
 		box-sizing: border-box;
 		display: flex;
 		flex-wrap: wrap;
+		padding-bottom:20rpx;
 		padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
 
 		.point-index {
@@ -660,8 +659,8 @@
 			height: 36rpx;
 			line-height: 36rpx;
 			font-size: 25rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #333333;
 			text-align: center;
 			overflow: hidden;
@@ -674,8 +673,8 @@
 			height: 50rpx;
 			line-height: 50rpx;
 			font-size: 23rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #ef3333;
 			text-align: center;
 			overflow: hidden;
@@ -691,8 +690,8 @@
 			text-align: center;
 			line-height: 43rpx;
 			font-size: 25rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #ffffff;
 			margin: 0 auto;
 		}
@@ -705,8 +704,8 @@
 		background: url(../../static/mall/limit_num.png) no-repeat center;
 		background-size: 100% 100%;
 		font-size: 20rpx;
-		font-family: PingFang SC;
-		font-weight: 500;
+		
+		font-weight: 600;
 		color: #ffffff;
 		text-align: center;
 		line-height: 22rpx;

@@ -1,3 +1,12 @@
+<!--
+ * @FilePath: \jichao_app_2\src\pages\webView\index.vue
+ * @Author: wjw
+ * @Date: 2022-08-10 11:07:48
+ * @LastEditors: 
+ * @LastEditTime: 2023-06-05 15:10:51
+ * Copyright: 2023 .
+ * @Descripttion: 
+-->
 <template>
 	<view>
 		<web-view :src="webViewSrc"></web-view>
@@ -19,9 +28,7 @@
 		}
 		onHide(){
 			if(this.orderCode != ''){
-				uni.redirectTo({
-					url: "/pages/userinfo/order_details?code=" + this.orderCode + "&waitPay=true",
-				});
+				app.navigateTo.goOrderDetails(this.orderCode,'&waitPay=true',true)
 			}
 		}
 		

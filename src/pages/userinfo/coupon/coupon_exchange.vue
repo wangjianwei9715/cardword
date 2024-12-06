@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\pages\userinfo\coupon\coupon_exchange.vue
  * @Author: wjw
  * @Date: 2022-08-24 17:06:44
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-11-21 14:21:06
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-09-04 10:50:32
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -34,9 +34,7 @@
 		}
 		onClickExchange(){
 			if (!app.token.accessToken) {
-				uni.redirectTo({
-					url: '/pages/login/login?redirect=/pages/userinfo/coupon/coupon_exchange'
-				});
+				app.login.arouseLogin("/pages/userinfo/coupon/coupon_exchange")
 				return;
 			}
 			if(this.exchangeVal=='') return;
@@ -69,8 +67,8 @@
 		width: 100%;
 		box-sizing: border-box;
 		font-size: 28rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #545659;
 		line-height: 48rpx;
 	}
@@ -82,8 +80,8 @@
 		box-sizing: border-box;
 		padding:0 22rpx;
 		font-size: 28rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #545659;
 		margin-top: 30rpx;
 	}
@@ -96,8 +94,8 @@
 		text-align: center;
 		line-height: 60rpx;
 		font-size: 28rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		
+		
 		color: #FFFFFF;
 		margin-top: 57rpx;
 	}

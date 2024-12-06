@@ -326,13 +326,13 @@
     }
     .swiper-number{
       font-size: 42rpx;
-      font-family: PingFangSC-Regular;
-      font-weight: 500;
+      
+      font-weight: 600;
       color: #333333;
     }
     .swiper-number text{
       font-size: 63rpx;
-      font-family: PingFangSC-Medium;
+      
       font-weight: bold;
       color: #333333;
     }
@@ -384,8 +384,8 @@
     .title {
       width: 100%;
       font-size: 33rpx;
-      font-family: PingFangSC-Regular;
-      font-weight: 400;
+      
+      
       color: #333333;
       overflow: hidden;
       text-overflow:ellipsis;
@@ -395,8 +395,8 @@
       margin-top: 15rpx;
       width: 100%;
       font-size: 25rpx;
-      font-family: PingFangSC-Regular;
-      font-weight: 400;
+      
+      
       color: #595959;
       line-height: 35rpx;
     }
@@ -404,8 +404,8 @@
       width: 100%;
       height:40rpx;
       font-size: 24rpx;
-      font-family: PingFangSC-Regular;
-      font-weight: 400;
+      
+      
       color: #777777;
       margin-top: 20rpx;
       display: flex;
@@ -480,8 +480,8 @@
     .special-name{
       width: 100%;
       font-size: 25rpx;
-      font-family: PingFangSC-Regular;
-      font-weight: 400;
+      
+      
       color: #333333;
       text-align: center;
       margin-top: 13rpx;

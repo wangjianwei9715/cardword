@@ -1,194 +1,74 @@
-<!--
- * @FilePath: \jichao_app_2\src\pages\goods\goods_details.vue
- * @Author: wjw
- * @Date: 2023-01-04 15:59:01
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-04 11:10:43
- * Copyright: 2023 .
- * @Descripttion: 
--->
-<!--
- * @FilePath: \jichao_app_2\src\pages\goods\goods_details.vue
- * @Author: wjw
- * @Date: 2023-01-04 15:59:01
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-03-13 17:40:06
- * Copyright: 2023 .
- * @Descripttion: 
--->
+
 <template>
-	<view class="content" v-show="goodsData!=''" :class="{'body-hidden':choiceTeamData.teamCheckShow||choiceTRData.show}">
-		<!-- #ifndef MP -->
-		<view class="header-banner">
-			<statusbar />
-			<view class="tab-header">
-				<view class="icon-back" @click="navigateBack">
-					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
+	<view class="detail-container" :class="{'body-hidden':choiceTeamData.teamCheckShow||choiceTRData.show}">
+		<transitionNav ref='transitionNav' title=" " :navBgImage="picData.carousel[swiperCurrent]" :needIconShadow="false">
+			<template v-slot:custom>
+                <view class="custom-nav-center">
+                    <input class="nav-input" :adjust-position="false" type="text" v-model="navSearchText" confirm-type="search" @confirm="onClickSearch()" />
+                </view>
+            </template>
+			<template slot="slotRight">
+				<view class="custom-nav-right">
+					<view class="icon-weixin" @click="onClickKefu()"></view>
+					<view class="icon-ttf" @click="onClickShare()">&#xe537;</view>
 				</view>
-				<view class="header-title">商品详情</view>
-				<view class="header-icon">
-					<view :class="['icon-collect',{'icon-favored':favorType}]" @click="onClickFavor"></view>
-					<view class="icon-share" @click="onClickShare"></view>
-				</view>
-			</view>
-		</view>
-
-		<view style="padding-top:88rpx">
-			<statusbar />
-		</view>
-		<!-- #endif -->
-		<!-- 商品图片价格 -->
-		<view class="pic-content">
-			<swiper class="swiper" :current="swiperData.swiperCurrent" autoplay="true" circular="true"
-				indicator-active-color="#ffffff" @change="onChangeSwiperCurrent">
-				<swiper-item v-for="(item,index) in picData.carousel" :key="index" @click="onClickPreviewImage(index)">
-					<view class="goods-img-content">
-						<image class="goods-img" :src="item" mode="aspectFill" />
-					</view>
-				</swiper-item>
-			</swiper>
-			<view class="swiper-popup">
-				<view class="swiper-dots">{{swiperData.swiperCurrent+1}}/{{picData.carousel.length}}</view>
-				<view class="swiper-btn" v-show="goodsData.pic&&goodsData.pic.yuanfeng"
-					:class="{'swiper-btn-current':swiperData.swiperTabCurrent==index}" v-for="(item,index) in swiperData.swiperTab"
-					:key="index" @click="onClickSwiperTab(index)">{{item}}</view>
-			</view>
-		</view>
+            </template>
+        </transitionNav>
+		<statusbar/>
+		<!-- 商品图片 -->
+		<detailCarousel :carousel="picData.carousel" :current.sync="swiperCurrent" :yfLength="(goodsData.pic&&goodsData.pic.yuanfeng)?goodsData.pic.yuanfeng.length:0"/>
 		<view class="detail-index-bg">
-			<view class="detail-bg">
-				<view class="header-content-end" v-if="goodsData.state>=2">
-					<view class="header-price">¥<text>{{goodsData.price}}</text><text
-							class="price-qi">{{getPriceStart?'起':''}}</text></view>
-				</view>
-				<view class="header-content" :class="{'random-bg':getSelectType}" v-else-if="goodsData.state==1||goodsData.state==0">
-					<view class="header-price">¥<text>{{goodsData.price}}</text><text
-							class="price-qi">{{getPriceStart?'起':''}}</text></view>
-					<view class="header-right">
-						<view class="icon-end">{{goodsData.state==0?'距开售':'距结束'}}</view>
-						<view class="countdown-content">
-							<view v-if="countData.countDay>0" class="countdown-index countdown-day">{{countData.countDay}}<text>天</text></view>
-							<view class="countdown-index">{{`${countData.countHour} : ${countData.countMinute} : ${countData.countSecond}`}}</view>
+			<!-- 详情头部信息 -->
+			<view class="detail-header">
+				<view class="detail-header-bg"></view>
+				<view class="header-base">
+					<view class="base-left">
+						<view class="header-price">
+							¥<text>{{goodsData.price}}</text>
 						</view>
+						<baseCard :getPriceStart="getPriceStart"/>
 					</view>
-				</view>
-				<view class="header">
-					<view class="header-top">
-						<goodCouponGet :goodCode="goodsData.goodCode" :goodPage="true" :list="getCouponList" />
-						<view class="header-top-title">{{goodsData.title}}</view>
-						<view class="header-top-plan">
-							<view class="plan-top-line">
-								<view class="header-top-plan-num-state" >
-									{{goodsData.state>=2?'拼团已完成':'拼团进行中'}}
+					<view v-if="[0,1].includes(goodsData.state)" class="time-container">
+						<u-count-down :time="countDown*1000" format="DD:HH:mm:ss" autoStart @change="onChangeCountDown" @finish="onFinishCountDown">
+							<view class="countdown-box">
+								<view v-for="(item,index) in countDownList" :key="index" :class="[`countdown-${item.type=='str'?'doc':'custom'}`]">
+									{{item.type=='str'?item.name:countDownStr(item.name)}}
 								</view>
-								<view class="header-top-plan-num-str" v-if="planData.showMsg">
-									<view class="header-shengyu">剩余</view><u-count-to :style="{'font-family':'ArialBold','letter-spacing':'-2rpx'}" :start-val="goodsData.totalNum" :end-val="goodSurplusNum" :duration="1000" :fontSize="15" :bold="true" color="#333"></u-count-to>/{{goodsData.totalNum}}{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}
-								</view>
-								<view class="header-top-plan-num-state" v-else > {{planData.str}}{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}</view>
 							</view>
-							<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType}">
-								<view class="progress-mask" :style="{width:(100-planData.width)+'%'}"> </view>
-							</view>
-						</view>
+						</u-count-down>
 					</view>
-
-					<view class="header-bottom">
-						<view class="header-bottom-index" v-for="item in goodsSpe" :key="item.id"
-							@click="onClickCardPlay(item)">
-							<view class="header-bottom-index-name">{{item.name}}</view>
-							<view class="header-bottom-index-desc">{{item.desc}}</view>
-						</view>
-					</view>
+					<view v-else class="time-container">拼团已完成</view>
 				</view>
+				<goodCouponGet :goodCode="goodsData.goodCode" :goodPage="true" :list="getCouponList" />
+				<scroll-view class="header-discount" :scroll-x="true" v-if="goodsData.discount">
+					<view class="discount-item" v-for="(item,index) in goodsData.discount" :key="`discount_${index}`">
+						<view class="discount-text">满{{item.minNum}}组丨每组{{item.price}}元</view>
+					</view>
+				</scroll-view>
+				<view class="goods-title u-line-2">{{goodsData.title}}</view>
 			</view>
-
-			<!-- 邀请新人步骤图 -->
-			<inviteStep v-if="goodsData.specialType&&goodsData.specialType.indexOf('invite')!=-1" :goodsStep="true" />
-			<!-- 邀请新人步骤图 -->
-
+			<!-- 进度条 -->
+			<view class="goods-progress" :style="progressStyle">
+				<view class="progress-mask" :style="{width:(100-planData.width)+'%'}"> </view>
+			</view>
+			<!-- 规格 玩法 进度 -->
+			<specPlay :data="specPlayData"/>
+			<!-- 车队 -->
+			<motorcade :goodsData="goodsData" :showChedui.sync="showCheduiDraw" :cheduiData="cheduiData" :userData="userData"/>
+			<!-- 卡密奖励 -->
+			<noAward ref="rNoAward" :price="goodsData.price" :state="goodsData.state" @buy="onClickBuy"/>
 			<!-- 活动展示 -->
-			<goodAct :goodsData="goodsData" :showChedui.sync="showCheduiDraw" :cheduiData="cheduiData" :userData="userData" />
-			
-			<!-- 预售商品 -->
-			<view class="detail-bg" v-if="goodsData.book">
-				<view class="book-box">
-					<view class="book-tips">预售</view>
-					{{`该产品正式发售时间为${$u.timeFormat(goodsData.book.saleAt,'yyyy年mm月dd日')}，最晚拆卡时间为${$u.timeFormat(goodsData.book.latestLiveAt,'yyyy年mm月dd日')}。超过最晚拆卡时间且距拼成时间＞${goodsData.book.hour1}小时未拆卡补偿订单实付金额${goodsData.book.compensate1}%无门槛优惠券；＞${goodsData.book.hour2}小时未拆卡则拼团失败全额退款。`}}
-				</view>
-			</view>
-			<!-- 卖家信息 -->
-			<view class="detail-bg">
-				<view class="goods-seller" v-if="goodsData.publisher">
-					<view class="goods-seller-desc-js">商品由该商家在平台寄售</view>
-					<view class="goods-seller-left" @click="onClickShops">
-						<muqian-lazyLoad class="goods-seller-left-avatar"
-							:src="goodsData.publisher.avatar!=''?decodeURIComponent(goodsData.publisher.avatar):defaultAvatar"
-							mode="aspectFill" :borderRadius="'50%'"/>
-						<view class="goods-seller-left-desc">
-							<view class="goods-seller-left-desc-name">
-								{{goodsData.publisher.name}}
-								<merchantLevel :level="goodsData.publisher.level"/>
-							</view>
-							<view class="goods-seller-left-desc-tips">粉丝{{goodsData.publisher.fans}} |
-								在售{{goodsData.publisher.sale}}</view>
-						</view>
-						<view class="goods-seller-right"></view>
-					</view>
-				</view>
-				<seriesCard style="width:100%" :list="cardList" @goMore="onClickNiceTime" :isFetchEnd="seriesCardEnd"/>
-			</view>
-
+			<goodAct :goodsData="goodsData" />
 			<!-- 购买记录 -->
-			<view class="detail-bg" v-if="buyRecordList!=''">
-				<view class="goods-desc" style="padding-bottom:8rpx">
-					<view class="goods-desc-title" style="margin-bottom:28rpx">
-						<view class="goods-desc-title-left">购买记录</view>
-					</view>
-					<view class="goods-desc-explain">
-						<view class='goods-desc-explain-text flex-between' style="margin-bottom:20rpx" v-for="(item,index) in buyRecordList" :key="index">
-							<image class="record-item-avatar" :src="decodeURIComponent(item.avatar||defaultAvatar)" />
-							<view class="record-item-name u-line-1">{{item.userName}}</view>
-							<view class="record-item-title u-line-1">{{goodsData.title}}</view>
-							<view class="record-item-num u-line-1">x{{item.num}}</view>
-							<view class="record-item-time u-line-1">{{$u.timeFrom(item.time)}}</view>
-						</view>
-					</view>
-				</view>
-			</view>
-
+			<buyRecord :list="buyRecordList"/>
+			<!-- 预售商品 -->
+			<detailBook v-if="goodsData.book" :book="goodsData.book"/>
+			<!-- 卖家信息 -->
+			<detailMerchant v-if="goodsData.publisher" :publisher="goodsData.publisher" @publisherFollowed="goodsData.publisher.followed=$event"/>
 			<!-- 商品详情 -->
-			<view class="detail-bg">
-				<view class="goods-desc">
-					<view class="goods-desc-title">
-						<view class="goods-desc-title-left">拼团详情</view>
-						<view class="goods-desc-title-right" @click.stop="showDrawer = true">
-							规则<image class="goods-desc-title-help" src="../../static/goods/v2/icon_right_new.png" />
-						</view>
-					</view>
-					<view class="goods-desc-explain">
-						<view class="special-explain">{{goodsData.extraDesc}}</view>
-						<view class='goods-desc-explain-box' v-for="item in goodsDesc" :key="item.id">
-							<view class="explain-name">{{item.name}}</view>
-							<view class="explain-desc">{{item.desc}}</view>
-						</view>
-					</view>
-				</view>
-			</view>
-		</view>
-		<view class="detail-bottom-box">
-			<view v-show="goodsData.pic&&goodsData.pic.yuanfeng">
-				<view class="detail-title">原封图实拍<text>（以下照片为商家拍摄）</text></view>
-				<view class="detail-bottom-picbox">
-					<image @click="onClickPreviewDetailImage(index)" class="detail-bottom-image" mode="aspectFill"
-						v-for="(item,index) in picData.detailImg" :key="index" :src="item" />
-				</view>
-			</view>
-			<view class="detail-title">购买须知</view>
-			<view class="detail-bottom-explain">商家所拆商品全部为原封，上架前会提交原箱/原盒视频，同时也会在直播之前展示原箱/原盒包装。卡片生产商在生产过程中，有机率出现装箱误差，商品详情描述仅供参考，最终拆卡结果以商品实物为准，希望各位用户悉知这种情况的发生。产品宣传图均为发行商官方制作，最终该系列卡片以箱内拆出的实物为准，请各位玩家在购买前知悉。</view>
-			<view class="detail-title">常见问题</view>
-			<view class="detail-bottom-explain" v-for="(item,index) in goodsDetailRules" :key="index">
-				<view class="detail-bottom-explain-title">{{item.title}}</view>
-				{{item.desc}}
-			</view>
+			<detailDesc v-if="!detilIsEmpty" :goodsData="goodsData"/>
+			<!-- 购买须知 -->
+			<detailExplain/>
 		</view>
 		<!-- 猜你喜欢 -->
 		<guessYouLikeIt v-if="goodCode" :goodCode="goodCode" />
@@ -201,36 +81,27 @@
 		</movable-area>
 
 		<!-- 底部按钮 -->
-		<view class="btn-content" v-if="goodsData.state==1||(goodsData.state==0&&getPriceStart)">
-			<view class="btn-content-left">
-				<view class="btn-content-left-index" v-for="item in tipBtn" :key="item.id" @click="onClickTipBtn(item)">
-					<image :class="'icon-'+item.class" :src="item.url" mode="aspectFill" />
-					<view class="btn-content-left-index-name">{{item.name}}</view>
+		<view class="bottom-container" v-if="goodsData.state>=1||(goodsData.state==0&&getPriceStart)">
+			<view class="bottom-container-left">
+				<view v-if="myJoined" class="bottom-container-left-index" @click="onClickMyCard()">
+					<image class="bottom-icon" src="@/static/goods/v3/icon_card_my.png" mode="aspectFill" />
+					<view class="bottom-container-left-index-name">我的卡密</view>
+				</view>
+				<view class="bottom-container-left-index" @click="onClickAllCard()">
+					<view v-if="goodsData.zuheche==1" class="icon-zuheche">增加车位</view>
+					<image class="bottom-icon" src="@/static/goods/v3/icon_card.png" mode="aspectFill" />
+					<view class="bottom-container-left-index-name">卡密列表</view>
 				</view>
 			</view>
-			<view class="btn-cardlist" @click="onClickAllCard">
-				<image class="cardlist-icon" src="@/static/goods/v2/icon_list_v3.png"></image>列表 
+			<view class="btn-confirm" @click="onClickBuy()" v-if="goodsData.state<=1">
+				{{isRandomType?'选择编号':'立即购买'}}
 			</view>
-			<view v-if="goodsData.specialType&&goodsData.specialType.indexOf('invite')!=-1" class="btn-confirm"
-				@click="onClickCopyInviteKey">复制口令给新人</view>
-			<view v-else class="btn-confirm" :style="{width:`${tipBtn.length==2?'310rpx':'395rpx'}`}" :class="{'random-confirm':getSelectType}" @click="onClickBuy()">
-				{{goodsData.isSelect?'选择编号':'立即购买'}}
+			<view v-else class="btn-container">
+				<view class="btn-small btn-pt" @click="onClickResult(0)">拼团结果</view>
+				<view class="btn-small" @click="onClickResult(1)">拆卡报告</view>
 			</view>
 		</view>
-		<view class="btn-contented joined" v-else-if="goodsData.state>=2">
-			<view class="btn-content-left">
-				<view class="btn-content-left-index" @click="onClickAllCard">
-					<image class="icon-order" :src="'../../static/goods/v2/icon_list_v3.png'" mode="aspectFill" />
-					<view class="btn-content-left-index-name">卡片列表</view>
-				</view>
-			</view>
-			<view class="btn-pt" @click="onClickResult(0)">拼团结果</view>
-			<view class="btn-ck" @click="onClickResult(1)">拆卡报告</view>
-		</view>
-
-		<cardplay :operationShow="operaData.operaShow" :operaType="operaData.operaType" @operacancel="operaData.operaShow=false" />
-
-		<share :operationShow="shareObj.shareShow" :shareData="shareObj.shareData" @operacancel="shareObj.shareShow=false" />
+		<share :operationShow="shareObj.shareShow" :shareData="shareObj.shareData" :favorType.sync="favorType" :goodCode="goodCode" @operacancel="shareObj.shareShow=false" />
 
 		<!-- 自选球队 -->
 		<checkTeamPay :teamCheckShow="choiceTeamData.teamCheckShow" :choiceTeamData="choiceTeamData"
@@ -244,17 +115,6 @@
 			@teamRandomCancel="onClickteamRandomCancel" @cardCode="onClickAllCard" @buy="onClickTeamBuy"
 			@randomBuy="onClickTeamRandomBuy" @randomCountOver="getGoodSelectTeamRandom" />
 
-		<!-- 邀请新人活动弹窗 -->
-		<invitePopup :showInvitePopup="showInvitePopup" :inviteResult="668"
-			@cancelInvitePopup="showInvitePopup=false" @popupBtn="onClickInviteCopy" />
-
-		<!-- 底部弹窗 -->
-		<bottomDrawer :showDrawer.sync="showDrawer" :title="'拼团规则'">
-			<view class="drawer-box" v-for="(item,index) in goodsDetailHelp" :key="index">
-				<view class="drawer-help">{{item.content}}</view>
-			</view>
-		</bottomDrawer>
-
 		<!-- 免单 -->
 		<view class="guess-num-box" v-if="goodsData.freeNoNum>0">
 			<view class="guess-num-center">
@@ -262,8 +122,8 @@
 				可免单{{goodsData.freeNoNum}}组
 			</view>
 		</view>
-
 		
+		<customerService :show.sync="customerServiceShow" :kefu="goodsData.kefu" :goodCode="goodCode" :kefuWechat="goodsData.publisher&&goodsData.publisher.kefu_wechat"/>
 	</view>
 </template>
 
@@ -271,295 +131,238 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
-	import {
-		getGoodsPintuanDetail,
-		getGoodsRandom,
-	} from '@/tools/switchUtil';
-	import { goodsDetailRules, goodsDetailHelp } from "@/tools/DataRules";
-	import { goodDetailSpe } from "@/tools/DataExchange"
-	import { Md5 } from "ts-md5";
-	import { parsePic,secondsFormat } from "@/tools/util";
+	import { gameplayType, countDownList } from "@/tools/DataExchange"
+	import { parsePic } from "@/tools/util";
+	import { Goods, Share } from "./utils/class";
+	import detailCarousel from "./component/detailCarousel.vue"
 	import detailsManager from "./manager/detailsManager"
+	import noAward from "./component/noAward.vue"
+	import customerService from "./component/customerService.vue"
+	import motorcade from "./component/motorcade.vue"
+	import baseCard from "./component/baseCard.vue"
+	import specPlay from "./component/specPlay.vue"
+	import buyRecord from "./component/buyRecord.vue"
+	import detailMerchant from "./component/detailMerchant.vue"
+	import detailBook from "./component/detailBook.vue"
+	import detailDesc from "./component/detailDesc.vue"
+	import detailExplain from "./component/detailExplain.vue"
 	const Manager =  detailsManager.getIns();
-	const shareData = { shareUrl: '', title: '', summary: '', thumb: '' }
-	@Component({})
+	@Component({
+		components:{ 
+			detailCarousel, noAward, customerService, motorcade, baseCard, specPlay, buyRecord, detailMerchant, detailBook, detailDesc, detailExplain
+		}
+	})
 	export default class ClassName extends BaseNode {
 		parsePic = parsePic;
+		countDownList = countDownList;
 		navigateBack = app.navigateTo.navigateBack;
 		isPullDown = app.platform.isPullDown;
 		defaultAvatar = app.defaultAvatar;
-		goodsDetailRules = goodsDetailRules
-		goodsDetailHelp = goodsDetailHelp;
-		goodsSpe = goodDetailSpe;
+		goodsManaager:any = app.goods;
 		shareObj = {
 			shareShow:false,
-			shareData:{...shareData}
+			shareData:new Share()
 		};
 		buyRecordList:any = [];
-		goodsDesc:any = [];
-		favorType = Manager.favorType;
-		operaData = {...Manager.operaData};
-		countData = {...Manager.countData};
-		swiperData = {...Manager.swiperData};
-		picData = {...Manager.picData}
-		tipBtn = {...Manager.tipBtn};
+		favorType = false;
+		picData:any = Goods.Pic();
 		goodCode = '';
 		goodsData: any = [];
-		choiceTeamData = {...Manager.choiceTeamData};
-		choiceTRData = {...Manager.choiceTRData};
-		// 支付方式
-		payChannel: any = [];
-		showInvitePopup = false;
-		// 底部抽屉
-		showDrawer = false;
+		choiceTeamData:any = Goods.ChoiceTeam();
+		choiceTRData:any = Goods.ChoiceTR();
+		payChannel: any = [];// 支付方式
 		source="";
-		// 猜你喜欢
-		planData = {...Manager.planData}
-		// 可领取优惠券列表
-		getCouponList:any = [];
+		planData = Goods.Plan()
+		getCouponList:any = [];// 可领取优惠券列表
 		userData = app.data;
 		cheduiData = {};
 		showCheduiDraw = false;
 		cheduiDataAva:any = '';
-		// 商家好卡
-		cardList = [];
-		seriesCardEnd = true;
 		AD_id=null;
+		referer="";//来源
+		customerServiceShow=false;
+		countDown = 0;
+		countDownData:any={};
+		myJoined=false;
+		swiperCurrent=0;
+		navSearchText="";
 		onLoad(query: any) {
 			// #ifndef MP
 			const goodCode = query.goodCode ||query.id
 			this.goodCode = goodCode;
 			this.source=query.source
 			this.AD_id = query.AD_id || null;
+			this.referer = query.referer;
 			this.getGoodData(()=>{
-				// 购买记录
-				this.getBuyRecord()
-				// 查询可领取优惠券
-				setTimeout(()=>{
-					this.queryCoupon()
-				},200)
-				setTimeout(()=>{
-					// 商品精彩时刻
-					this.reqSeriesCards()
-				},500)
+				this.getOrtherData()
 			});
 			// #endif
 		}
 		onShow() {
-			if (this.goodsData != '') {
+			if (!this.detilIsEmpty) {
 				this.getGoodData();
+				// this.onClickteamRandomCancel()
 			}
+		}
+		onPageScroll(data: any) {
+			//@ts-ignore
+			this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll(data)
 		}
 		//   下拉刷新
 		onPullDownRefresh() {
 			this.getGoodData(() => {
-				this.getBuyRecord()
+				this.getOrtherData()
 				uni.stopPullDownRefresh();
 			})
 		}
+		// 进度条颜色
+		public get progressStyle() :any {
+			const { progressLeft, progressRight } = gameplayType[this.goodsData.pintuan_type] || {}
+			return {
+				'background': `linear-gradient(to right,${progressLeft},${progressRight})`
+			}
+		}
+		public get detilIsEmpty () : boolean {
+			return uni.$u.test.isEmpty(this.goodsData)
+		}
+		// 自选随机类型
+		public get isRandomType() : boolean{
+			return [10,11,12].includes(this.goodsData.pintuan_type)
+		}
+		public get getPriceStart() : boolean {
+			const { goodsData } = this
+			return goodsData.isSelect || goodsData.pintuan_type == 11 || goodsData.pintuan_type == 12
+		}
+		// 商品剩余数量
+		public get goodSurplusNum() : number {
+			const { goodsData } = this;
+			return goodsData.totalNum - (goodsData.currentNum + goodsData.lockNum)
+		}
+		// 已售数量
+		public get goodSaled() : number {
+			const { currentNum, lockNum } = this.goodsData;
+			return (currentNum + lockNum)
+		}
+		// 拼团类型信息
+		public get goodsInfo() : any {
+			if(this.detilIsEmpty) return {};
+			const { spec, pintuan_type } = this.goodsData
+			return {
+				num:spec.name || "",
+				pt_type:this.goodsManaager.gameplayType[pintuan_type] || ""
+			}
+		}
+		public get specPlayData() : any {
+			if(this.detilIsEmpty) return {};
+			const { spec, pintuan_type, totalNum } = this.goodsData
+			return {
+				spec:`${spec.name}·${spec.num>0?spec.num+'张':'暂无'}` || "",
+				pintuan_type:this.goodsManaager.gameplayType[pintuan_type] || "",
+				progress:`余${this.goodSurplusNum}/${totalNum}`
+			} 
+		}
+		onChangeCountDown(e:any){
+			this.countDownData = e
+		}
+		countDownStr(name){
+			const time = this.countDownData[name]
+			return time>=10?time:'0'+time
+		}
 		// 数据详情赋值
 		getGoodData(cb?:Function) {
-			const { countData } = this;
 			const goodCode = this.goodCode;
-			clearInterval(countData.countInterval);
-			const ts = Math.floor(new Date().getTime()/1000);
-			const params = {
-				ts:ts,
-				s:Md5.hashStr(`kww_good_sign_${goodCode}_${ts}_2022`)
-			}
-			app.http.Get(`dataApi/good/${goodCode}/detail`, params, (data: any) => {
-				if (!data.good) {
-					uni.showToast({ title: '无此商品', icon: 'none' })
-					uni.switchTab({ url: '/pages/index/index' })
-					return;
-				}
+			app.http.GetWithCrypto(`dataApi/good/${goodCode}/1/detail`, {referer:this.detilIsEmpty?this.referer:"PageRefresh"}, (data: any) => {
 				this.favorType = data.favorite>0;
 				this.goodsData = data.good;
 				this.payChannel = data.payChannel || [];
 				this.planData = Manager.detailsPlan(this.goodsData);
-				this.goodsDesc = Manager.setGoodsDesc(this.goodsData)
-				if (data.joined) {
-					this.tipBtn = [
-						{ id: 1, name: '客服', url: '../../static/goods/v2/icon_kefu.png', class: 'kf' }, 
-						{ id: 2, name: '我的卡密', url: '../../static/goods/v2/icon_order.png', class: 'order' }
-					]
-				}
-				if((data.good.bit & 128) == 128){
+				this.myJoined = data.joined;
+				const { bit, state, leftsec, overAt, startAt } = data.good;
+				if((bit & 128) == 128){
 					app.http.Get(`dataApi/good/${goodCode}/chedui`,{},(res:any)=>{
 						this.cheduiData = res
 					})
 				}
 				// 倒计时
-				countData.countDown = data.good.state == 0? ( data.good.leftsec - (data.good.overAt - data.good.startAt)): data.good.leftsec;
+				this.countDown = state == 0 ? (leftsec-(overAt-startAt)) : leftsec;
 				this.getGoodsImage();
-				this.getCountDown();
-				this.getGoodsSpe();
 				cb && cb()
 			})
 		}
-		getBuyRecord(){
+		async getOrtherData(){
+			// 拼团商品卡密奖励轮播图
+			this.$refs.rNoAward.getLamp(this.goodCode)
 			// 购买记录
 			if (this.goodsData.state == 1) {
-				app.http.Get(`dataApi/good/${this.goodCode}/buyRecord`, {}, (res: any) => {
-					if (res.list) this.buyRecordList = res.list.filter((x:any,index:number)=>{
-						return index<5
-					})
+				Manager.getBuyRecord(this.goodCode,(list:any)=>{
+					this.buyRecordList = list;
 				})
-			}
-		}
-		queryCoupon(){
-			const data = this.goodsData;
-			// 商品非在售 或 禁用优惠券
-			if((data.state!=1&&data.state!=0) || (data.bit & 1) == 1) return;
-			app.http.Get(`dataApi/coupon/merchant/online/good/${data.goodCode}/brief`,{},(res:any)=>{
-				this.getCouponList = res.list||[]
-			})
-		}
-		getProgress() {
-			app.http.Get(`dataApi/good/${this.goodCode}/progress`, {}, (res: any) => {
-				const { data } = res;
-				this.goodsData.currentNum = data.currentNum;
-				this.goodsData.totalNum = data.totalNum;
-				this.goodsData.lockNum = data.lockNum;
-			})
-		}
-		reqSeriesCards() {
-			app.http.Get(`dataApi/cardCheck/good/rarityCard/list/${this.goodCode}`, {}, (res: any) => {
-				this.cardList = res.list || []
-				this.seriesCardEnd = !( res.list && res.list.length>0)
-			})
+			};
+			// 查询可领取优惠券
+			setTimeout(()=>{
+				Manager.queryCoupon(this.goodsData,(list:any)=>{
+					this.getCouponList = list
+				})
+			},200)
 		}
 		/**
 		 * 设置商品图片
 		 */
 		getGoodsImage() {
-			const { picData, goodsData, swiperData } = this;
+			const { picData, goodsData } = this;
 			const goodsPic = goodsData.pic;
 			const carousel = picFormat(goodsPic.carousel);
-			swiperData.carouselLength = carousel.length;
-			picData.detailImg = [...picFormat(goodsPic.yuanfeng)];
-			picData.carousel = [...carousel,...picData.detailImg];
-
-			function picFormat(pic:string){
-				return pic ? decodeURIComponent(pic).split(',').map(x => parsePic(x)) : [];
+			picData.carousel = [...carousel,...picFormat(goodsPic.yuanfeng)];
+			if(goodsPic.thumb){
+				goodsPic.thumb = picFormat(goodsPic.thumb);
+			}
+			function picFormat(pic:any[]){
+				return pic ? pic.map(x => parsePic(x)) : [];
 			}
 		}
 		/**
-		 * 倒计时定时器
+		 * 倒计时结束
 		 */
-		getCountDown() {
-			const { countData,goodsData } = this;
-			setCountDownStr()
-			countData.countInterval = this.scheduler(() => {
-				if (countData.countDown > 0) {
-					countData.countDown--;
-					setCountDownStr()
-				} else {
-					if(goodsData.state == 0){
-						this.getGoodData();
-					} else if (goodsData.state == 1) {
-						goodsData.state = -99
-					}
-					clearInterval(countData.countInterval)
-				}
-			}, 1);
-
-			function setCountDownStr() {
-				const { day, hour, minute, second } = secondsFormat(countData.countDown);
-				countData.countDay = day;
-				countData.countHour = hour;
-				countData.countMinute = minute;
-				countData.countSecond = second
-			}
-		}
-		/**
-		 * 商品规格、配置、形式
-		 */
-		getGoodsSpe() {
-			const { goodsData, goodsSpe } = this;
-			const { spec, num, pintuan_type, random_type } = goodsSpe;
-			const specName = goodsData.spec.name;
-			const numValue = goodsData.spec.num === -1 ? '暂无' : goodsData.spec.num + '张';
-
-			if (goodsData.isSelect) {
-				this.goodsSpe = {
-					spec: { id: 3, name: specName, desc: '拼团规格' },
-					num: { id: 4, name: numValue, desc: '卡片数量' },
-					pintuan_type: { id: 1, name: '自选球队', desc: '拼团形式' }
-				};
+		onFinishCountDown(){
+			const { state } = this.goodsData
+			if(state == 0){
+				this.getGoodData();
 			} else {
-				spec.name = specName;
-				num.name = numValue;
-				pintuan_type.name = getGoodsPintuanDetail(goodsData.pintuan_type);
-				random_type.name = getGoodsRandom(goodsData.random_type);
+				this.goodsData.state = -99
 			}
 		}
-		onClickTipBtn(item: any) {
-			if (item.id == 1) {
-				app.platform.hasLoginToken(()=>{
-					let params = {
-						agentExten:this.goodsData.kefu||'',
-						businessParam:'goodCode:'+this.goodCode
-					}
-					app.platform.heliService(params)
-				})
-			}
-			if (item.id == 2) {
-				uni.navigateTo({ url: '/pages/userinfo/order_myCard?code=&goodCode=' + this.goodCode })
-			}
-		}
-		onClickShops() {
-			app.platform.hasLoginToken(()=>{
-				const publisher = this.goodsData.publisher
-				this.goMerchantPage(publisher.alias)
+		onClickMyCard(){
+			const { pintuan_type, state, pic } = this.goodsData;
+			uni.navigateTo({ 
+				url:`/pages/userinfo/order_myCard?goodCode=${this.goodCode}&pintuanType=${pintuan_type}&type=0&goodJump=true&state=${state}&pic=${encodeURIComponent(pic.carousel[0])}` 
 			})
 		}
 		onClickAllCard(data ? : any) {
-			const gooData = this.goodsData
-			let url = `/pages/goods/all_good_card?code=${gooData.goodCode}&type=${gooData.pintuan_type}`;
-			uni.navigateTo({ url: data ? `${url}&teamId=${data.id}` : url })
+			const { goodCode, pintuan_type, zuheche=0} = this.goodsData;
+			const url = `/pages/goods/all_good_card?code=${goodCode}&type=${pintuan_type}${data?`&teamId=${data.id}`:''}&zuhecheTp=${zuheche}`;
+			uni.navigateTo({ url })
 		}
-		onClickNiceTime(){
-			app.platform.hasLoginToken(()=>{
-				uni.navigateTo({ url: `/pages/merchant/niceTime?alias=${this.goodsData.publisher.alias}` })
-			})
+		// 客服
+		onClickKefu(){
+			app.platform.UIClickFeedBack(); 
+			this.customerServiceShow=true
 		}
 		// 分享
 		onClickShare() {
+			app.platform.UIClickFeedBack(); 
 			const { shareObj } = this;
-			const { goodsData } = this;
+			const { goodCode, title, pic} = this.goodsData;
 			if (!shareObj.shareShow) {
 				if (shareObj.shareData.shareUrl == '') {
 					shareObj.shareData = {
-						shareUrl: `share/h5/#/pages/goods/goods_details?id=${goodsData.goodCode}`,
-						title: goodsData.title,
-						summary: goodsData.title,
-						thumb: goodsData.pic.thumb||this.picData.carousel[0]
+						shareUrl: `share/h5/#/pages/goods/goods_details?id=${goodCode}`,
+						title,
+						summary: title,
+						thumb: (pic.thumb&&pic.thumb[0])||this.picData.carousel[0]+`?x-oss-process=image/resize,h_100,w_100`
 					}
 				}
 				shareObj.shareShow = true
 			}
-		}
-		onClickFavor() {
-			let url = !this.favorType ? "good/favor/" : "good/unfavor/"
-			app.http.Post(url + this.goodCode, {}, (data: any) => {
-				this.favorType = !this.favorType
-			})
-		}
-		// 观看大图
-		onClickPreviewImage(index: number) {
-			uni.previewImage({
-				urls: this.picData.carousel,
-				current: index,
-				indicator: "number"
-			});
-		}
-		onClickPreviewDetailImage(index: number) {
-			uni.previewImage({
-				urls: this.picData.detailImg,
-				current: index,
-				indicator: "number"
-			});
 		}
 		onClickBuy() { 
 			app.platform.hasLoginToken(() => {
@@ -596,7 +399,7 @@
 		onClickResult(chooseID: number) {
 			let random = this.goodsData.pintuan_type == 10 ? true : false
 			uni.navigateTo({
-				url: `goods_result_list?chooseIds=${chooseID}&code=${this.goodCode}&random=${random}`
+				url: `goods_result_list_new?chooseIds=${chooseID}&code=${this.goodCode}&random=${random}`
 			})
 		}
 		onClickLive() { 
@@ -621,13 +424,6 @@
 					goodCode: this.goodsData.goodCode 
 				}) 
 			} 
-		}
-		onClickCardPlay(item: any) {
-			const { operaData } = this;
-			if (item.id <= 2) {
-				operaData.operaShow = true;
-				operaData.operaType = item.id
-			}
 		}
 		// 自选球队 我要选队
 		getGoodSelect(cb ? : Function) {
@@ -721,49 +517,35 @@
 		}
 		// 加入购物车
 		joinCart() {
-			const { choiceTeamData } = this;
-			if (choiceTeamData.branchData[choiceTeamData.branchCheckIndex].soldOut) {
-				uni.showToast({
-					title: '该商品已售罄',
-					icon: 'none'
-				})
-				return;
-			}
-			if (choiceTeamData.branchData[choiceTeamData.branchCheckIndex].lock) {
-				uni.showToast({
-					title: '该商品暂时不能支付',
-					icon: 'none'
-				})
+			const item = this.choiceTeamData.branchData[this.choiceTeamData.branchCheckIndex];
+			if (item.soldOut || item.lock) {
+				uni.showToast({ title: item.soldOut?'该商品已售罄':'该商品暂时不能支付', icon: 'none' })
 				return;
 			}
 			app.http.Post(`good/select/cart/${this.goodCode}/add`, {
-				id: [choiceTeamData.branchData[choiceTeamData.branchCheckIndex].id]
+				id: [item.id]
 			}, (res: any) => {
 				this.getGoodSelectCart()
 			})
 		}
 		onClickSettlement() {
-			const { choiceTeamData } = this;
-			if (choiceTeamData.cartData.available == 0) return;
-			const params = `&cart=${encodeURIComponent(JSON.stringify(choiceTeamData.cartData))}`;
+			const { cartData } = this.choiceTeamData;
+			if (cartData.available == 0) return;
+			const params = `&cart=${encodeURIComponent(JSON.stringify(cartData))}`;
 			this.navigateToConfirmOrder(params)
 			this.onClickTeamCheckCancel()
 		}
 		// 包队
 		onClickBaodui() {
-			const { choiceTeamData } = this;
-			let price = this.getBranchPrice(choiceTeamData.branchData)
-			const teamCheckData = choiceTeamData.teamData[choiceTeamData.teamCheckIndex];
+			const { branchData, teamData, teamCheckIndex} = this.choiceTeamData;
+			let price = this.getBranchPrice(branchData)
+			const teamCheckData = teamData[teamCheckIndex];
 			const params = `&baodui=${teamCheckData.id}&price=${price}&baoduiName=${teamCheckData.name}`;
 			this.navigateToConfirmOrder(params)
 			this.onClickTeamCheckCancel()
 		}
 		getBranchPrice(list: any) {
-			let price = 0;
-			for (let i in list) {
-				price += list[i].price
-			}
-			return price;
+			return list.reduce((total:number, item:any) => total + item.price, 0);
 		}
 		// 购买剩余随机
 		onClickBuyRandomGood() {
@@ -796,60 +578,25 @@
 				uni.showToast({ title:'暂未开售', icon:'none' })
 				return;
 			}
-			this.navigateToConfirmOrder(params)
-			this.onClickteamRandomCancel()
+			this.navigateToConfirmOrder(params);
+			this.choiceTRData.show = false;
 		}
 		navigateToConfirmOrder(params=''){
 			const AD_id = this.AD_id?`&AD_id=${this.AD_id}`:''
 			uni.navigateTo({
-				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}${params}${AD_id}`
+				url: `pay/payGoods?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}${params}${AD_id}`
 			})
 		}
 		onClickteamRandomCancel() {
 			this.isPullDown(true)
 			this.choiceTRData.show = false;
 		}
-		// 复制邀请口令
-		onClickCopyInviteKey() {
-			app.http.Post('activity/invite/getKey', {
-				code: this.goodCode
-			}, (res: any) => {
-				uni.setClipboardData({
-					data: res.content,
-					showToast: false,
-					success: () => {
-						this.showInvitePopup = true;
-					}
-				});
-			})
-		}
-		onClickInviteCopy(type: any) {
-			plus.runtime.openURL("weixin://");
-			this.showInvitePopup = false;
-		}
-		onChangeSwiperCurrent(event: any) {
-			const { swiperData } = this
-			swiperData.swiperCurrent = event.detail.current;
-			swiperData.swiperTabCurrent = event.detail.current < swiperData.carouselLength ? 0 : 1
-		}
-		onClickSwiperTab(index: number) {
-			const { swiperData } = this
-			if (index != swiperData.swiperTabCurrent) {
-				swiperData.swiperTabCurrent = index;
-				swiperData.swiperCurrent = index == 0 ? 0 : swiperData.carouselLength;
+		onClickSearch(){
+			if(this.navSearchText){
+				uni.navigateTo({
+					url: `/pages/goods/goods_find_list?q=${encodeURIComponent(this.navSearchText)}`
+				})
 			}
-		}
-		public get getSelectType() : boolean{
-			return [10,11,12].includes(this.goodsData.pintuan_type)
-		}
-		public get getPriceStart() : boolean {
-			const { goodsData } = this
-			return goodsData.isSelect || goodsData.pintuan_type == 11 || goodsData.pintuan_type == 12
-		}
-		// 商品剩余数量
-		public get goodSurplusNum() : number {
-			const { goodsData } = this;
-			return goodsData.totalNum - (goodsData.currentNum + goodsData.lockNum)
 		}
 	}
 </script>
@@ -863,155 +610,29 @@
 	$font-34:34rpx;
 	$font-40:40rpx;
 	$font-60:60rpx;
-
-	.content {
+	.detail-container {
 		width: 750rpx;
 		box-sizing: border-box;
-
+		padding-top: 88rpx;
 		// background:$content-bg
 	}
-
-	.header-banner {
-		width: 100%;
-		background: #fff;
-		position: fixed;
-		left: 0;
-		top: 0;
-		box-sizing: border-box;
-		z-index: 10;
-		border-bottom: 1px solid #F4F3F2;
-
-		.tab-header {
-			width: 100%;
-			height: 88rpx;
-			display: flex;
-			box-sizing: border-box;
-			padding: 0 30rpx;
-			position: relative;
-			z-index: 10;
-			align-items: center;
-			justify-content: center;
-		}
-
-		.icon-back {
-			width: 80rpx;
-			height: 88rpx;
-			position: absolute;
-			left: 0;
-			top: 0;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-
-		.header-title {
-			height: 88rpx;
-			line-height: 88rpx;
-			font-size: $font-34;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
-			color: #000000;
-		}
-
-		.header-icon {
-			height: 88rpx;
-			display: flex;
-			align-items: center;
-			position: absolute;
-			right: 40rpx;
-			top: 0;
-		}
-
-		.icon-collect {
-			width: 44rpx;
-			height: 41rpx;
-			background: url(../../static/goods/v2/icon_collect.png) no-repeat center;
-			background-size: 100% 100%;
-			margin-right: 40rpx;
-		}
-
-		.icon-favored {
-			background: url(../../static/goods/v2/icon_collect_.png) no-repeat center;
-			background-size: 100% 100%;
-		}
-
-		.icon-share {
-			width: 38rpx;
-			height: 37rpx;
-			background: url(../../static/goods/v2/icon_share.png) no-repeat center;
-			background-size: 100% 100%;
-		}
+	.icon-collect {
+		width: 44rpx;
+		height: 41rpx;
+		background: url(../../static/goods/v2/icon_collect.png) no-repeat center;
+		background-size: 100% 100%;
+		margin-right: 40rpx;
 	}
-
-	.pic-content {
-		width: 750rpx;
-		height: 578rpx;
-		box-sizing: border-box;
-		position: relative;
+	.icon-favored {
+		background: url(../../static/goods/v2/icon_collect_.png) no-repeat center;
+		background-size: 100% 100%;
 	}
-
-	.swiper-popup {
-		height: 50rpx;
-		display: inline-flex;
-		align-items: center;
-		position: absolute;
-		right: 14rpx;
-		bottom: 44rpx;
-		border-radius: 40rpx;
-		background: rgba(49,49,49,0.3);
-		box-sizing: border-box;
-		padding: 0 18rpx
+	.icon-share {
+		width: 38rpx;
+		height: 37rpx;
+		background: url(../../static/goods/v2/icon_share.png) no-repeat center;
+		background-size: 100% 100%;
 	}
-
-	.swiper-dots {
-		height: 42rpx;
-		line-height: 42rpx;
-		font-size: 20rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
-		color: #F4F4F4;
-	}
-
-	.swiper-btn {
-		height: 42rpx;
-		font-size: 21rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
-		color: #F4F4F4;
-		margin-left: 10rpx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.swiper-btn-current {
-		font-size: 23rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
-		color: #333333;
-	}
-
-	.swiper {
-		width: 750rpx;
-		height: 578rpx;
-		background: #F5F5F9;
-	}
-
-	.goods-img-content {
-		width: 750rpx;
-		height: 578rpx;
-		background: #F5F5F9;
-		box-sizing: border-box;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.goods-img {
-		width: 750rpx;
-		height: 578rpx;
-	}
-
 	.detail-index-bg {
 		width: 750rpx;
 		background: $content-bg;
@@ -1021,310 +642,26 @@
 		box-sizing: border-box;
 		position: relative;
 	}
-
 	.detail-bg {
-		width: 710rpx;
-		border-radius: 3rpx;
+		width: 718rpx;
 		background: #fff;
 		margin-bottom: 14rpx;
+		border-radius: 4rpx;
 	}
-
-	.header-content {
-		width: 710rpx;
-		height: 100rpx;
-		background: url(../../static/goods/v2/price_bg.png) no-repeat center;
-		background-size: 100% 100%;
-		box-sizing: border-box;
-		padding-left: 29rpx;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-top: -23rpx;
-	}
-
-	.random-bg {
-		background: url(../../static/goods/v2/price_bg_.png) no-repeat center;
-		background-size: 100% 100%;
-	}
-
 	.header-desc-title {
 		width: 100%;
 		font-size: $font-28;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 		margin-bottom: 20rpx;
 		padding-top: 27rpx;
 	}
-
-	.header-price {
-		font-size: 38rpx;
-		font-family: Impact;
-		font-weight: 600;
-		color: #FFFFFF;
-		box-sizing: border-box;
-		padding-top: 10rpx;
-	}
-	.header-price text {
-		font-size: 50rpx;
-		font-family: Impact;
-		font-weight: 400;
-		color: #FFFFFF;
-		margin-left: 10rpx;
-	}
-
-	.header-content-end {
-		background: #fff;
-		box-sizing: border-box;
-		padding-left: 36rpx;
-		margin-top: -23rpx;
-		border-top-left-radius: 5rpx;
-		border-top-right-radius: 5rpx;
-		height: 82rpx;
-		display: flex;
-		align-items: center;
-	}
-
-	.header-content-end .header-price,
-	.header-content-end {
-		padding-top: 19rpx;
-	}
-
-	.header-content-end .header-price,
-	.header-content-end .header-price text {
-		color: #333333
-	}
-
-	.header-price .price-qi {
-		font-size: 20rpx;
-		color: #ffffff;
-		font-weight: 200;
-	}
-
-	.price-black .price-qi {
-		font-size: 20rpx;
-		color: #ACAEB7;
-		font-weight: 200;
-	}
-
-	.header-right {
-		// width: 240rpx;
-		height: 107rpx;
-		box-sizing: border-box;
-		padding: 15rpx 30rpx 12rpx 0;
-	}
-
-	.header-right-end {
-		width: 240rpx;
-		height: 107rpx;
-		box-sizing: border-box;
-		padding: 15rpx 20rpx 12rpx 0;
-		display: flex;
-		align-items: center;
-		justify-content: flex-end;
-		font-size: 26rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
-		color: #14151B;
-	}
-
-	.icon-end {
-		width: 100%;
-		text-align: right;
-		font-size: 21rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 500;
-		color: #FFFFFF;
-		margin-bottom: 10rpx;
-		margin-top: 5rpx;
-	}
-
-	.countdown-content {
-		width: 100%;
-		height: 27rpx;
-		display: flex;
-		align-items: center;
-		justify-content: flex-end;
-	}
-
-	.countdown-index {
-		height: 36rpx;
-		text-align: center;
-		line-height: 36rpx;
-		font-size: 24rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 600;
-		color: #FFFFFF;
-		border-radius: 3rpx;
-		margin-right: 4rpx;
-	}
-	.countdown-day {
-		margin-right: 10rpx !important;
-	}
-	.countdown-day text{
-		font-size: 24rpx;
-		font-family: PingFangSC-Regular;
-		color: #FFFFFF;
-		font-weight: 400;
-	}
-	.countdown-icon {
-		font-size: 22rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 400;
-		color: $color-F;
-		margin: 0 1rpx;
-	}
 	.header {
 		width: 100%;
 		box-sizing: border-box;
-		padding: 0 30rpx ;
-		padding-bottom: 13rpx;
+		padding: 0 24rpx 30rpx 24rpx;
 	}
-	.header-top-id {
-		width: 100%;
-		font-size: 24rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
-		color: #ACAEB7;
-		margin-bottom: 40rpx;
-		margin-top: 10rpx;
-	}
-
-	.header-top {
-		width: 100%;
-		box-sizing: border-box;
-		padding-top: 27rpx;
-
-		&-title {
-			width: 100%;
-			font-size: 29rpx;
-			font-family: PingFangSC-Medium ;
-			font-weight: 400;
-			color: #333333;
-			line-height: 48rpx;
-			word-break:break-all;
-		}
-
-		&-right {
-			width: 50rpx;
-			box-sizing: border-box;
-			display: flex;
-			justify-content: center;
-			flex-wrap: wrap;
-
-			&-desc {
-				font-size: $font-20;
-				font-family: PingFangSC-Regular, PingFang SC;
-				font-weight: 400;
-				color: #000000;
-			}
-		}
-		&-plan {
-			width: 100%;
-			margin-top: 16rpx;
-			margin-bottom: 23rpx;
-			.plan-top-line{
-				width:100%;
-				display: flex;
-				justify-content: space-between;
-				margin-bottom: 10rpx;
-				align-items: flex-end;
-				.plan-top-rank{
-					height:30rpx;
-					line-height: 30rpx;
-					display: flex;
-					align-items: center;
-					font-size: 23rpx;
-					font-family: PingFangSC-Regular;
-					font-weight: 400;
-					color: #C0C0C0;
-				}
-			}
-			.goodslist-progress {
-				background: linear-gradient(90deg, #FFB6C5 0%, #FA1545 100%);
-				width: 100%;
-				height: 8rpx;
-				position: relative;
-				display: flex;
-				justify-content: flex-end;
-
-				.progress-mask {
-					height: inherit;
-					background-color: #F6F7FB;
-					width: 0%;
-				}
-			}
-
-			.goodslist-progress-select {
-				background: linear-gradient(90deg, #CFC1F3 0%, #7048DD 100%);
-			}
-
-			.header-top-plan-num {
-				height: 30rpx;
-				font-size: 24rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
-				color: #C0C0C0;
-				line-height: 30rpx;
-				text-align: right;
-				margin-bottom: 6rpx;
-				display: flex;
-				align-items: center;
-			}
-			.header-top-plan-num-state{
-				height: 30rpx;
-				font-size: 24rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
-				color: #C0C0C0;
-				text-align: right;
-				margin-bottom: 0rpx;
-				display: flex;
-				align-items: baseline;
-			}
-			.header-top-plan-num-str{
-				height:30rpx;
-				line-height: 30rpx;
-				font-size: 24rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
-				color: #C0C0C0;
-				display: flex;
-				align-items: baseline;
-			}
-			.header-shengyu{
-				height:30rpx;
-				line-height: 30rpx;
-				font-size: 24rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
-				color: #C0C0C0;
-				display: flex;
-				align-items: baseline;
-				margin-right: 6rpx;
-			}
-			.header-top-plan-box{
-				display: inline-block;
-				height: 30rpx;
-				font-size: 24rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 600;
-				color: #959695;
-				line-height: 30rpx;
-				text-align: right;
-			}
-			.header-top-plan-numbottom {
-				height: 30rpx;
-				font-size: 24rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
-				color: #C0C0C0;
-				text-align: right;
-			}
-		}
-
-	}
-
 	.header-center {
 		width: 100%;
 		box-sizing: border-box;
@@ -1335,8 +672,8 @@
 			width: 100%;
 			text-align: end;
 			font-size: $font-20;
-			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: 500;
+			
+			font-weight: 600;
 			color: #A9ABB4;
 		}
 
@@ -1370,123 +707,12 @@
 			}
 		}
 	}
-
-	.header-bottom {
-		width: 100%;
-		height: 88rpx;
-		box-sizing: border-box;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-
-		&-index {
-			height: 88rpx;
-			box-sizing: border-box;
-			text-align: center;
-			&-name {
-				text-align: center;
-				font-size: 24rpx;
-				font-family: PingFangSC-Medium;
-				font-weight: 400;
-				color: #333333;
-				margin-bottom: 3rpx;
-			}
-			&-desc {
-				font-size: 24rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
-				color: #C0C0C0;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-		}
-	}
-
-	.goods-seller {
-		width: 100%;
-		box-sizing: border-box;
-		border-radius: 5rpx;
-		padding:34rpx 30rpx;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		position: relative;
-
-		&-left {
-			width: 100%;
-			height: 91rpx;
-			display: flex;
-			align-items: center;
-			box-sizing: border-box;
-			position: relative;
-			&-avatar {
-				width: 91rpx;
-				height: 91rpx;
-				border-radius: 3rpx;
-			}
-
-			&-desc {
-				width: 520rpx;
-				height: 91rpx;
-				box-sizing: border-box;
-				padding: 0 0 4rpx 35rpx;
-				display: flex;
-				flex-wrap: wrap;
-				&-name {
-					width: 100%;
-					font-size: 30rpx;
-					font-family: PingFangSC-Medium;
-					font-weight: 400;
-					color: #333333;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
-					display: flex;
-					align-items: center;
-				}
-				
-				&-tips {
-					width: 100%;
-					font-size: 24rpx;
-					font-family: PingFangSC-Regular;
-					font-weight: 400;
-					color: #C0C0C0;
-				}
-			}
-		}
-		.goods-seller-desc-js {
-			height: 28rpx;
-			background: #FBF2F3;
-			font-size: 23rpx;
-			font-family: PingFangSC-Regular;
-			font-weight: 400;
-			color: #F63D47;
-			line-height: 28rpx;
-			display: inline-flex;
-			align-items: center;
-			box-sizing: border-box;
-			padding: 0 16rpx;
-			position: absolute;
-			right: 0;
-			top: 0;
-		}
-		&-right {
-			width: 11rpx;
-			height:17rpx;
-			background:url(@/static/goods/v2/icon_right_new.png) no-repeat center;
-			background-size: 100% 100%;
-			position: absolute;
-			right:0;
-			top:50%;
-			margin-top:-8.5rpx
-		}
-	}
+	
 
 	.goods-desc {
 		width: 100%;
 		box-sizing: border-box;
-		padding: 28rpx 30rpx 30rpx 30rpx;
+		padding: 28rpx 24rpx 30rpx 24rpx;
 
 		&-title {
 			width: 100%;
@@ -1497,24 +723,24 @@
 
 			.goods-desc-title-left {
 				font-size: 31rpx;
-				font-family: PingFangSC-Semibold;
+				
 				font-weight: 600;
 				color: #333333;
 			}
 
 			.goods-desc-title-right {
 				font-size: 24rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
+				
+				
 				color: #c0c0c0;
 				display: flex;
 				align-items: center;
 			}
 
 			.goods-desc-title-help {
-				width: 11rpx;
-				height:17rpx;
-				margin-left: 21rpx;
+				width: 28rpx;
+				height:28rpx;
+				margin-left: 8rpx;
 			}
 		}
 
@@ -1522,9 +748,9 @@
 			width: 100%;
 			box-sizing: border-box;
 			font-size: 27rpx;
-			// font-family: PingFangSC-Regular, PingFang SC;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
+			// 
+			
+			
 			color: #818080;
 
 			&-text {
@@ -1545,7 +771,7 @@
 			.explain-desc {
 				width: 100%;
 				box-sizing: border-box;
-				font-family: PingFangSC-Regular, PingFang SC;
+				
 				line-height: 45rpx;
 				word-break: break-all;
 				margin-bottom: 10rpx;
@@ -1554,69 +780,72 @@
 		}
 	}
 
-	.btn-content {
+	.bottom-container {
 		width: 100%;
-		height: calc(120rpx);
-		height: calc(120rpx + constant(safe-area-inset-bottom));
-		height: calc(120rpx + env(safe-area-inset-bottom));
+		height: calc(110rpx);
+		height: calc(110rpx + constant(safe-area-inset-bottom));
+		height: calc(110rpx + env(safe-area-inset-bottom));
 		position: fixed;
 		bottom: 0;
 		left: 0;
-		background: $color-F;
+		background: rgba(255,255,255,0.99);
 		z-index: 8;
 		box-sizing: border-box;
-		padding: 19rpx 50rpx 0 0;
-		border-top: 1px solid #F5F5F8;
+		padding: 17rpx 30rpx 0 30rpx;
 		display: flex;
-		justify-content: center;
-
+		justify-content: space-between;
+		border-top: 1px solid #F6F7FB;
 		&-left {
-			max-width: 240rpx;
-			height: 82rpx;
+			width: 280rpx;
+			height: 72rpx;
 			box-sizing: border-box;
-			padding: 0 25rpx 0 25rpx;
 			display: flex;
 			align-items: center;
-			justify-content: space-between;
-
+			padding-top: 4rpx;
+			padding-left: 6rpx;
 			&-index {
-				width: 100rpx;
-				height: 82rpx;
+				height: 72rpx;
 				box-sizing: border-box;
 				text-align: center;
-				padding-top: 4rpx;
-
+				margin-right: 40rpx;
+				position: relative;
 				&-name {
-					margin-top: -4rpx;
-					font-size: 23rpx;
-					font-family: PingFangSC-Regular;
-					font-weight: 400;
-					color: #949494
+					font-size: 18rpx;
+					color: #333333;
+					text-align: center;
+				}
+				.icon-zuheche{
+					width: 80rpx;
+					height:24rpx;
+					font-size: 18rpx;
+					color: #FFFFFF;
+					text-align: center;
+					position: absolute;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					top:-10rpx;
+					left:30rpx;
+					z-index: 2;
+					background:linear-gradient(90deg, #F7B500 0%, #F7B500 50%, rgba(247, 181, 0, 0) 100%)
 				}
 			}
-
-			.icon-kf {
-				width: 38rpx;
-				height: 36rpx;
-				margin-bottom: 3rpx;
+			.bottom-icon{
+				width: 36rpx;
+				height:36rpx;
+				margin:0 auto;
+				margin-bottom: 6rpx;
 			}
-
-			.icon-order {
-				width: 38rpx;
-				height: 36rpx;
-				margin-bottom: 3rpx;
-			}
+			
 		}
 		.btn-cardlist{
-			width: 150rpx;
+			width: 152rpx;
 			height: 82rpx;
-			border: 1rpx solid #949494;
-			border-radius: 3rpx;
+			border: 1rpx solid #DDDDDD;
+			border-radius: 4rpx;
 			display: flex;
 			align-items: center;
-			font-size: 29rpx;
-			font-family: PingFangSC-Semibold;
-			font-weight:400;
+			font-size: 32rpx;
 			color: #333333;
 			justify-content: center;
 			box-sizing: border-box;
@@ -1625,81 +854,50 @@
 		.cardlist-icon{
 			width: 32rpx;
 			height:34rpx;
-			margin-right: 13rpx;
+			margin-right: 6rpx;
 		}
 		.btn-confirm {
-			width: 395rpx;
-			background: $btn-red;
+			width: 280rpx;
+			background: #FA1545;
 			text-align: center;
-			font-family: PingFangSC-Semibold;
 			color: #FFFFFF;
-			height: $btn-height;
-			line-height: $btn-height;
-			font-size: $btn-fontSize;
-			border-radius: $btn-radius;
+			height: 70rpx;
+			line-height:70rpx;
 			font-weight: 600;
+			font-size: 26rpx;
+			color: #FFFFFF;
+			border-radius: 4rpx;
 		}
 
 		.random-confirm {
 			background: #7048DD;
 		}
-
-	}
-
-	.btn-contented {
-		width: 100%;
-		height: calc(120rpx + env(safe-area-inset-bottom));
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		background: $color-F;
-		z-index: 8;
-		box-sizing: border-box;
-		padding: 19rpx 50rpx 0 0;
-		border-top: 1px solid #F5F5F8;
-		display: flex;
-		justify-content: space-between;
-		padding-bottom: constant(safe-area-inset-bottom);
-		padding-bottom: env(safe-area-inset-bottom);
-
-		.btn-pt {
-			width: 352rpx;
-			box-sizing: border-box;
-			border: 2rpx solid #DADADA;
-			text-align: center;
-			font-family: PingFangSC-Medium, PingFang SC;
-			color: #333333;
-			height: $btn-height;
-			line-height: $btn-height;
-			font-size: $btn-fontSize;
-			border-radius: $btn-radius;
-			font-weight: $btn-weight;
+		.btn-container{
+			width: 400rpx;
+			height:70rpx;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			.btn-small{
+				width: 192rpx;
+				height:70rpx;
+				background:#FA1545;
+				border:1rpx solid #FA1545;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-weight: 600;
+				font-size: 26rpx;
+				color: #FFFFFF;
+			}
+			.btn-pt{
+				background: #fff;
+				color:#333333;
+				border:1rpx solid #979797
+			}
 		}
 
-		.btn-ck {
-			width: 352rpx;
-			box-sizing: border-box;
-			background: $btn-red;
-			border: 2rpx solid $btn-red;
-			text-align: center;
-			font-family: PingFangSC-Medium, PingFang SC;
-			color: $color-F;
-			height: $btn-height;
-			line-height: $btn-height;
-			font-size: $btn-fontSize;
-			border-radius: $btn-radius;
-			font-weight: $btn-weight;
-		}
 	}
-
-	.joined .btn-pt {
-		margin-right: 10rpx !important;
-	}
-
-	.joined .btn-ck {
-		margin-left: 10rpx !important;
-	}
-
 	.movable-area {
 		position: fixed;
 		left: 0;
@@ -1731,8 +929,6 @@
 	.special-explain {
 		width: 100%;
 		font-size: 27rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
 		color: #333333;
 		line-height: 43rpx;
 		margin-bottom: 30rpx;
@@ -1748,7 +944,7 @@
 
 	.detail-title {
 		width: 100%;
-		font-family: PingFangSC-Medium;
+		
 		font-weight: bold;
 		font-size: 31rpx;
 		color: #333333;
@@ -1756,9 +952,9 @@
 	}
 
 	.detail-title text {
-		font-family: PingFangSC-Regular;
+		
 		font-size: 23rpx;
-		font-weight: 500;
+		font-weight: 600;
 		color: #818080;
 	}
 
@@ -1777,18 +973,14 @@
 	}
 
 	.detail-bottom-explain {
-		font-family: PingFangSC-Regular;
 		font-size: 26rpx;
-		font-weight: 500;
 		color: #818080;
 		line-height: 40rpx;
 		margin-bottom: 30rpx;
 	}
 
 	.detail-bottom-explain-title {
-		font-family: PingFangSC-Medium;
 		font-size: 27rpx;
-		font-weight: 500;
 		color: #333;
 		line-height: 40rpx;
 		margin-bottom: 10rpx;
@@ -1826,8 +1018,8 @@
 				width: 100%;
 				text-align: center;
 				font-size: 20rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
+				
+				
 				color: #333333;
 			}
 		}
@@ -1842,21 +1034,6 @@
 			right: -56rpx;
 			top: 37rpx;
 		}
-	}
-
-	.drawer-box {
-		width: 100%;
-		box-sizing: border-box;
-	}
-
-	.drawer-help {
-		width: 100%;
-		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
-		color: #7D8288;
-		line-height: 38rpx;
-		margin-bottom: 50rpx;
 	}
 
 	// 免单
@@ -1887,8 +1064,8 @@
 		box-sizing: border-box;
 		padding-left: 12rpx;
 		font-size: 20rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		
+		
 		color: #FFFFFF;
 	}
 	.record-item-avatar{
@@ -1897,34 +1074,39 @@
 		margin-right: 18rpx;
 		border-radius: 50%;
 	}
+	.record-item-name-box{
+		width: 120rpx;
+		display: flex;
+        align-items: center;
+		margin-right: 10rpx;
+	}
 	.record-item-name{
-		width: 85rpx;
+		max-width: 80rpx;
 		font-size: 21rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #333333;
-		margin-right: 20rpx;
 	}
 	.record-item-title{
 		width: 252rpx;
 		font-size: 21rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #333333;
 		margin-right: 55rpx;
 	}
 	.record-item-num{
 		width: 80rpx;
 		font-size: 21rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #333333;
 	}
 	.record-item-time{
 		width: 150rpx;
 		font-size: 21rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #C0C0C0;
 		text-align: right;
 	}
@@ -1932,62 +1114,174 @@
 		display: flex;
 		justify-content: space-between;
 	}
-	.goods-desc-explain-box{
-		width: 650rpx;
-		display: flex;
-		justify-content: space-between;
-		margin:0 auto;
-		.explain-name{
-			width: 160rpx;
-			min-height:80rpx;
-			background:#F3F4F7;
-			font-size: 24rpx;
-			font-family:PingFangSC-Light;
-			font-weight: 400;
-			color: #333333;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			margin-bottom:4rpx;
+	
+	
+	@mixin font($size) {
+		font-size: $size;
+		
+		
+		color: #FFFFFF;
+	}
+	.detail-header{
+		width: 718rpx;
+		background: #fff;
+		box-sizing: border-box;
+		padding: 0 26rpx 26rpx 26rpx;
+		margin-top: 12rpx;
+		position:relative;
+		border-radius: 4rpx 4rpx 0rpx 0rpx;
+		.detail-header-bg{
+			width: 346rpx;
+			height:62rpx;
+			background: url(@/static/goods/detail/header_bg.png) no-repeat center / 100% 100%;
+			position: absolute;
+			right:0;
+			top:-7rpx;
 		}
-		.explain-desc{
-			width: 487rpx;
-			min-height:80rpx;
-			background:#F3F4F7;
-			font-size: 24rpx;
-			font-family:PingFangSC-Light;
-			font-weight: 400;
-			color: #333333;
+		.header-base{
+			width: 100%;
+			height:97rpx;
+			display: flex;
+			align-items: flex-end;
+			justify-content: space-between;
+			.base-left{
+				display: flex;
+				height:70rpx;
+				align-items: flex-end;
+				margin-bottom: 10rpx;
+			}
+			.header-price {
+				@include font(20rpx);
+				font-weight: 600;
+				box-sizing: border-box;
+				color:#333333;
+
+			}
+			.header-price text {
+				@include font(54rpx);
+				font-family: Impact;
+				margin-left: 10rpx;
+				color:#333333;
+				letter-spacing:3rpx;
+			}
+		}
+		.time-container{
+			height:36rpx;
 			display: flex;
 			align-items: center;
-			box-sizing: border-box;
-			padding:5rpx 38rpx;
-			margin-bottom:4rpx;
-			line-height:35rpx;
+			font-size: 20rpx;
+			color: #6F7277;
+			margin-bottom: 14rpx;
+			.countdown-box{
+				display: flex;
+				align-items: center;
+				.countdown-custom{
+					width: 36rpx;
+					height:36rpx;
+					font-size: 24rpx;
+					color:#333333;
+					font-weight: 600;
+					display: inline-flex;
+					align-items: center;
+					justify-content: center;
+				}
+				.countdown-doc{
+					height:inherit;
+					font-size: 20rpx;
+					color: #AEAEB2;
+					display: inline-flex;
+					align-items: center;
+					justify-content: center;
+					margin:0 4rpx;
+				}
+			}
+		}
+		.goods-title {
+			width: 100%;
+			font-weight: 400;
+			font-size: 28rpx;
+			color: #333333;
+			line-height: 35rpx;
+			word-break:break-all;
 		}
 	}
-	.book-box{
+	// 进度条
+	.goods-progress {
+		background: linear-gradient(to right,#FFBAC9,#FA1545);
+		width: 718rpx;
+		height: 8rpx;
+		display: flex;
+		justify-content: flex-end;
+	}
+	.progress-mask {
+		height: 8rpx;
+		background-color: #F6F7F9;
+	}
+	// 优惠
+	.header-discount{
 		width: 100%;
-		box-sizing: border-box;
-		padding: 28rpx 30rpx 30rpx 30rpx;
-		font-family: PingFang SC;
-		font-size: 21rpx;
-		font-weight: 400;
-		color: #949494;
-		line-height: 36rpx;
-		.book-tips{
-			width: 60rpx;
-			height: 30rpx;
-			background: #5BC64E;
-			border-radius: 3rpx;
+		margin-bottom: 16rpx;
+		overflow: auto;
+		display: flex;
+		align-items: center;
+		white-space: nowrap;
+		.discount-item{
+			height:38rpx;
+			border: 1px dashed #E5E5EA;
 			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 23rpx;
-			font-family: PingFang SC;
-			font-weight: 600;
-			color: #FFFFFF;
-			margin-right: 10rpx;
+			box-sizing: border-box;
+			padding:0 16rpx;
+			margin-right:28rpx;
+			overflow:hidden;
+			.discount-text{
+				height:36rpx;
+				@include font(18rpx);
+				color: #6F7277;
+				line-height: 36rpx;
+				overflow:hidden;
+				font-weight: 400;
+			}
+		}
+	}
+	.detail-padding{
+		box-sizing: border-box;
+		padding:24rpx 20rpx 0 20rpx;
+	}
+	.custom-nav-center{
+		width: 440rpx;
+		height:60rpx;
+		background:#F6F7FB;
+		border-radius: 5rpx;
+
+		.nav-input{
+			width: 420rpx;
+			height:60rpx;
+			font-size: 26rpx;
+			padding-left: 20rpx;
+			color: #333;
+		}	
+	}
+	.custom-nav-right{
+		width: 180rpx;
+		height:60rpx;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		.icon-weixin{
+			width: 44rpx;
+			height:35rpx;
+			background: url(@/static/login/weixin.png) no-repeat center / 100% 100%;
+			margin-right: 36rpx;
+		}
+		.icon-ttf{
+			width: 50rpx;
+			height: 50rpx;
+			background-color: rgba(255, 255, 255,0);
+			font-family: uniicons;
+			font-size: 46rpx;
+			font-weight: normal;
+			font-style: normal;
+			color: #000;
 		}
 	}
 </style>

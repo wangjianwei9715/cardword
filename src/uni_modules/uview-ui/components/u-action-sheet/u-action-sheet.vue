@@ -66,9 +66,12 @@
 							>
 								<template v-if="!item.loading">
 									<text
-									    class="u-action-sheet__item-wrap__item__name"
-									    :style="[itemStyle(index)]"
-									>{{ item.name }}</text>
+										class="u-action-sheet__item-wrap__item__name"
+										:style="[itemStyle(index)]"
+									>
+									<image v-if="item.icon" style="width:30rpx;height:30rpx;margin-right:10rpx;margin-bottom:-4rpx" :src="item.icon"/>
+									{{ item.name }}
+									</text>
 									<text
 									    v-if="item.subname"
 									    class="u-action-sheet__item-wrap__item__subname"
@@ -159,6 +162,7 @@
 					let style = {};
 					if (this.actions[index].color) style.color = this.actions[index].color
 					if (this.actions[index].fontSize) style.fontSize = uni.$u.addUnit(this.actions[index].fontSize)
+					if (this.actions[index].fontWeight) style.fontWeight = this.actions[index].fontWeight
 					// 选项被禁用的样式
 					if (this.actions[index].disabled) style.color = '#c0c4cc'
 					return style;
@@ -204,7 +208,7 @@
 	$u-action-sheet-item-wrap-name-font-size:16px !default;
 	$u-action-sheet-item-wrap-subname-font-size:13px !default;
 	$u-action-sheet-item-wrap-subname-color: #c0c4cc !default;
-	$u-action-sheet-item-wrap-subname-margin-top:10px !default;
+	$u-action-sheet-item-wrap-subname-margin-top:4px !default;
 	$u-action-sheet-cancel-text-font-size:16px !default;
 	$u-action-sheet-cancel-text-color:$u-content-color !default;
 	$u-action-sheet-cancel-text-font-size:15px !default;
@@ -243,12 +247,11 @@
 		&__item-wrap {
 
 			&__item {
-				padding: $u-action-sheet-item-wrap-item-padding;
 				@include flex;
 				align-items: center;
 				justify-content: center;
 				flex-direction: column;
-
+				height:60px;
 				&__name {
 					font-size: $u-action-sheet-item-wrap-name-font-size;
 					color: $u-main-color;

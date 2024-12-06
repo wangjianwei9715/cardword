@@ -567,8 +567,8 @@ export default {
           align-items: center;
           justify-content: center;
           font-size: 21rpx;
-          font-family: PingFang SC;
-          font-weight: 400;
+          
+          
           color: #FFFFFF;
           position: absolute;
           top: 0rpx;

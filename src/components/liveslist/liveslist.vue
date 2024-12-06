@@ -118,8 +118,8 @@
 					display: flex;
 					align-items: center;
 					font-size: 21rpx;
-					font-family: PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #FFFFFF;
 				}
 				&-state{
@@ -129,7 +129,7 @@
 					border-top-left-radius: 2rpx;
 					border-bottom-left-radius: 2rpx;
 					font-size: 17rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 600;
 					color: #F6F7FB;
 					display: flex;
@@ -155,8 +155,8 @@
 				&-title{
 					max-width: 180rpx;
 					font-size: 22rpx;
-					font-family: PingFangSC-Regular, PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #FFFFFF;
 					height: 80rpx;
 					line-height: 80rpx;
@@ -166,8 +166,8 @@
 				}
 				&-text{
 					font-size: 22rpx;
-					font-family: PingFangSC-Regular, PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #FFFFFF;
 					height: 80rpx;
 					line-height: 80rpx;
@@ -179,8 +179,8 @@
 				left:0;
 				top:18rpx;
 				font-size: 16rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
+				
+				
 				color: #FFFFFF;
 				display: flex;
 				align-items: center;
@@ -235,7 +235,7 @@
 				box-sizing: border-box;
 				padding-top: 10rpx;
 				font-size: 25rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #333333;
 				line-height: 38rpx;
@@ -251,22 +251,22 @@
 					display: flex;
 					align-items: center;
 					font-size: 23rpx;
-					font-family: PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #333333;
 				}
 				&-name{
 					font-size: 23rpx;
-					font-family: PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #333333;
 				}
 				&-right{
 					height:77rpx;
 					line-height: 77rpx;
 					font-size: 23rpx;
-					font-family: PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #C0C0C0;
 				}
 				&-avatar{

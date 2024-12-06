@@ -1,3 +1,12 @@
+<!--
+ * @FilePath: \jichao_app_2\src\uni_modules\uview-ui\components\u-tabs\u-tabs.vue
+ * @Author: wjw
+ * @Date: 2024-01-30 09:24:51
+ * @LastEditors: 
+ * @LastEditTime: 2024-07-12 11:37:19
+ * Copyright: 2024 .
+ * @Descripttion: 
+-->
 <template>
 	<view class="u-tabs">
 		<view class="u-tabs__wrapper">
@@ -6,16 +15,46 @@
 				<scroll-view :scroll-x="scrollable" :scroll-left="scrollLeft" scroll-with-animation
 					class="u-tabs__wrapper__scroll-view" :show-scrollbar="false" ref="u-tabs__wrapper__scroll-view">
 					<view class="u-tabs__wrapper__nav" ref="u-tabs__wrapper__nav">
-						<template v-if="customType == ''">
+						<template v-if="customType == 'goods_animeTv'">
 							<view class="u-tabs__wrapper__nav__item" v-for="(item, index) in list" :key="index"
 								@tap="clickHandler(item, index)" :ref="`u-tabs__wrapper__nav__item-${index}`"
-								:style="[$u.addStyle(itemStyle), { flex: scrollable ? '' : 1 }]"
+								:class="[`u-tabs__wrapper__nav__item-${index}`, item.disabled && 'u-tabs__wrapper__nav__item--disabled']"
+								:style="{
+									width: '186rpx',
+									height: '100rpx',
+									display: 'flex',
+									position: 'relative',
+									justifyContent: 'center', alignItems: 'center',
+									padding: '0 8rpx',
+									borderRadius: '3rpx',
+									overflow: 'hidden'
+								}">
+								<view v-if="innerCurrent != index"
+									style="position: absolute;top:0;left: 0;bottom: 0;right: 0;margin: auto;width: inherit;height: inherit;background-color: rgba(0,0,0,.61);z-index: 2;">
+								</view>
+								<image :src="item.pic_url" mode="aspectFill"
+									style="position: absolute;top:0;left: 0;bottom: 0;right: 0;margin: auto;width: 186rpx;height: 100rpx;z-index: 1;border-radius: 3rpx;">
+								</image>
+								<text v-if="innerCurrent != index" style="font-size: 30rpx;font-weight: bold;color: #FFFFFF;z-index: 3;
+								">{{ item[keyName] }}</text>
+							</view>
+						</template>
+						<template v-else-if="customType == 'showKa'">
+							<view class="u-tabs__wrapper__nav__item" v-for="(item, index) in list" :key="index"
+								@tap="clickHandler(item, index)" :ref="`u-tabs__wrapper__nav__item-${index}`"
+								:style="[$u.addStyle(itemStyle), { flex: scrollable ? '' : 1 },index==0?{width:`110rpx`}:{}]"
 								:class="[`u-tabs__wrapper__nav__item-${index}`, item.disabled && 'u-tabs__wrapper__nav__item--disabled']">
-								<text :class="[item.disabled && 'u-tabs__wrapper__nav__item__text--disabled']"
+								<text v-if="index != 2"
+									:class="[item.disabled && 'u-tabs__wrapper__nav__item__text--disabled']"
 									class="u-tabs__wrapper__nav__item__text" :style="[textStyle(index)]">{{ item[keyName]
 									}}</text>
-								<u-badge :show="!!(item.badge && (item.badge.show || item.badge.isDot || item.badge.value))"
-									:isDot="item.badge && item.badge.isDot || propsBadge.isDot"
+
+								<view class="showKa" v-if="index == 2">
+									<slot name="showKa"></slot>
+								</view>
+								<!-- :show="" -->
+								<u-badge style="position: absolute;right: 8rpx;" :show="!!(item.badge && (item.badge.show || item.badge.isDot || item.badge.value))"
+									:isDot="true"
 									:value="item.badge && item.badge.value || propsBadge.value"
 									:max="item.badge && item.badge.max || propsBadge.max"
 									:type="item.badge && item.badge.type || propsBadge.type"
@@ -25,56 +64,79 @@
 									:shape="item.badge && item.badge.shape || propsBadge.shape"
 									:numberType="item.badge && item.badge.numberType || propsBadge.numberType"
 									:inverted="item.badge && item.badge.inverted || propsBadge.inverted"
-									customStyle="margin-left: 4px;"></u-badge>
+									></u-badge>
 							</view>
 						</template>
-						<template v-if="customType == 'goods_animeTv'">
+						<template v-else>
 							<view class="u-tabs__wrapper__nav__item" v-for="(item, index) in list" :key="index"
 								@tap="clickHandler(item, index)" :ref="`u-tabs__wrapper__nav__item-${index}`"
-								:class="[`u-tabs__wrapper__nav__item-${index}`, item.disabled && 'u-tabs__wrapper__nav__item--disabled']"
-								:style="{
-									width: '186rpx',
-									height: '100rpx',
-									display: 'flex',
-									position:'relative',
-									justifyContent: 'center', alignItems: 'center',
-									padding:'0 8rpx',
-									borderRadius: '3rpx',
-									// paddingLeft:index==0?'20rpx':'5rpx',
-									// paddingRight:index==list.length-1?'20rpx':'5rpx',
-									overflow:'hidden'
-								}">
-								<!-- backgroundSize: '100% 100%',
-									backgroundImage: `url(${item.pic_url})` -->
-									<view v-if="innerCurrent!=index" style="position: absolute;top:0;left: 0;bottom: 0;right: 0;margin: auto;width: inherit;height: inherit;background-color: rgba(0,0,0,.61);z-index: 2;"></view>
-								<image :src="item.pic_url" mode="aspectFill"
-								 style="position: absolute;top:0;left: 0;bottom: 0;right: 0;margin: auto;width: 186rpx;height: 100rpx;z-index: 1;border-radius: 3rpx;"></image>
-								<text v-if="innerCurrent!=index" 
-								style="font-size: 30rpx;font-family: PingFang SC;font-weight: bold;color: #FFFFFF;z-index: 3;
-								">{{ item[keyName]}}</text>
+								:style="[$u.addStyle(itemStyle), { flex: scrollable ? '' : 1,position:'relative' }]"
+								:class="[`u-tabs__wrapper__nav__item-${index}`, item.disabled && 'u-tabs__wrapper__nav__item--disabled']">
+								<text :class="[item.disabled && 'u-tabs__wrapper__nav__item__text--disabled']"
+									class="u-tabs__wrapper__nav__item__text" :style="[textStyle(index)]">{{ picNameIndex>=0&&picNameIndex==index?'':item[keyName]
+									}}</text>
+								<view class="u-tabs_sort" v-if="item.sort" @click="onClickSort(item.sort,index)">
+									<slot name="sort"></slot>
+								</view>
+								<view v-if="picNameIndex>=0&&picNameIndex==index">
+									<slot name="picName"></slot>
+								</view>
+								<u-badge :show="!!(item.badge && (item.badge.show || item.badge.isDot || item.badge.value))"
+									:isDot="item.badge && item.badge.isDot || propsBadge.isDot"
+									:value="item.badge && item.badge.value || propsBadge.value"
+									:max="item.badge && item.badge.max || propsBadge.max"
+									:type="item.badge && item.badge.type || propsBadge.type"
+									:showZero="item.badge && item.badge.showZero || propsBadge.showZero"
+									bgColor="#FA1545"
+									:color="item.badge && item.badge.color || propsBadge.color"
+									:shape="item.badge && item.badge.shape || propsBadge.shape"
+									:numberType="item.badge && item.badge.numberType || propsBadge.numberType"
+									:inverted="item.badge && item.badge.inverted || propsBadge.inverted"
+									customStyle="position:absolute;right:8rpx;top:24rpx"></u-badge>
 							</view>
 						</template>
-
 						<!-- #ifdef APP-NVUE -->
-						<view class="u-tabs__wrapper__nav__line" ref="u-tabs__wrapper__nav__line" :style="[{
-							width: $u.addUnit(lineWidth),
-							height: $u.addUnit(lineHeight),
-							background: lineColor,
-							backgroundSize: lineBgSize,
-						}]">
-							<!-- #endif -->
-							<!-- #ifndef APP-NVUE -->
+						<template v-if="customType == ''">
 							<view class="u-tabs__wrapper__nav__line" ref="u-tabs__wrapper__nav__line" :style="[{
+								width: $u.addUnit(lineWidth),
+								height: $u.addUnit(lineHeight),
+								background: lineColor,
+								backgroundSize: lineBgSize,
+							}]">
+							</view>
+						</template>
+						<template v-if="customType == 'showKa' || customType == 'cardForum'">
+							<image class="u-tabs__wrapper__nav__line" ref="u-tabs__wrapper__nav__line" style="border-radius: 0;background-color: #ff003d;"
+								 :style="[{
+									width: $u.addUnit(lineWidth),
+									height: $u.addUnit(lineHeight),
+								}]"></image>
+						</template>
+						<!-- #endif -->
+						<!-- #ifndef APP-NVUE -->
+						<view class="u-tabs__wrapper__nav__line" ref="u-tabs__wrapper__nav__line" v-if="customType == ''"
+							:style="[{
 								width: $u.addUnit(lineWidth),
 								transform: `translate(${lineOffsetLeft}px)`,
 								transitionDuration: `${firstTime ? 0 : duration}ms`,
 								height: $u.addUnit(lineHeight),
 								background: lineColor,
 								backgroundSize: lineBgSize,
+								bottom:lineBottom+' !important'
 							}]">
-								<!-- #endif -->
-							</view>
 						</view>
+						<template v-if="customType == 'showKa' || customType == 'cardForum'">
+							<view class="u-tabs__wrapper__nav__line" style="border-radius: 0;background-color: #ff003d;" ref="u-tabs__wrapper__nav__line" 
+								 :style="[{
+									width: `50rpx`,
+									transform: `translate(${lineOffsetLeft-(customType == 'showKa'?0:gap)}px)`,
+									transitionDuration: `${firstTime ? 0 : duration}ms`,
+									height: $u.addUnit(lineHeight),
+								}]"></view>
+						</template>
+						<!-- #endif -->
+
+					</view>
 				</scroll-view>
 			</view>
 			<slot name="right" />
@@ -104,6 +166,7 @@ export default {
 	mixins: [uni.$u.mpMixin, uni.$u.mixin, props],
 	data() {
 		return {
+			gap:uni.upx2px(4),
 			firstTime: true,
 			scrollLeft: 0,
 			scrollViewWidth: 0,
@@ -169,7 +232,8 @@ export default {
 				.reduce((total, curr) => total + curr.rect.width, 0);
 			// 获取下划线的数值px表示法
 			const lineWidth = uni.$u.getPx(this.lineWidth);
-			this.lineOffsetLeft = lineOffsetLeft + (tabItem.rect.width - lineWidth) / 2
+			const skew = tabItem.rect.width==0 ? 0 : ((tabItem.rect.width - lineWidth) / 2);
+			this.lineOffsetLeft = lineOffsetLeft + skew;
 			// #ifdef APP-NVUE
 			// 第一次移动滑块，无需过渡时间
 			this.animation(this.lineOffsetLeft, this.firstTime ? 0 : parseInt(this.duration))
@@ -237,7 +301,7 @@ export default {
 		// 获取所有标签的尺寸
 		resize() {
 			// 如果不存在list，则不处理
-			if (this.list.length === 0 || this.innerCurrent<0) {
+			if (this.list.length === 0 || this.innerCurrent < 0) {
 				return
 			}
 			Promise.all([this.getTabsRect(), this.getAllItemRect()]).then(([tabsRect, itemRect = []]) => {
@@ -290,6 +354,11 @@ export default {
 			})
 			// #endif
 		},
+		onClickSort(sort,index){
+			if(this.innerCurrent!=index) return;
+			const newSort = sort =="up" ? "down" : "up";
+			this.$emit('sort',newSort)
+		}
 	},
 }
 </script>
@@ -353,5 +422,10 @@ export default {
 			}
 		}
 	}
+	
 }
+.u-tabs_sort{
+	width: 17rpx;
+	margin-left: 4rpx;
+}	
 </style>

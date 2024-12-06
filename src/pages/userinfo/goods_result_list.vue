@@ -32,7 +32,11 @@
 
 			<view class="card-index" v-for="(item,index) in teamDataList" :key="index">
 				<view class="left" style="width:100%">
-					<view class="title"><muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit" :borderRadius="'50%'"></muqian-lazyLoad> {{item.userName}}</view>
+					<view class="title">
+						<muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit" :borderRadius="'50%'" @click="goPersonHome(item.userId,item.anonymous)"></muqian-lazyLoad>
+						<text @click="goPersonHome(item.userId,item.anonymous)">{{item.userName}}</text>
+						<medalIcon v-if="!item.anonymous && item.medal" :src="item.medal.pic" :userId="item.userId"/>
+					</view>
 					<view class="desc">{{item.no}}</view>
 					<view class="time">{{dateFormat(item.time)}}</view>
 				</view>
@@ -48,7 +52,11 @@
 				<view class="card-title" v-else-if="(index==0&&!item.isMy)||(!item.isMy&&teamDataList2[index-1].isMy)">其它中卡</view>
 				<view class="card-index" >
 					<view class="left">
-						<view class="title"><muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit" :borderRadius="'50%'"></muqian-lazyLoad> {{item.userName}}</view>
+						<view class="title">
+							<muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit" :borderRadius="'50%'" @click="goPersonHome(item.userId,item.anonymous)"></muqian-lazyLoad>
+							<text @click="goPersonHome(item.userId,item.anonymous)">{{item.userName}}</text>
+							<medalIcon v-if="!item.anonymous && item.medal" :src="item.medal.pic" :userId="item.userId"/>
+						</view>
 						<view class="desc">{{item.no}}</view>
 						<view class="time">{{dateFormat(item.time)}}</view>
 					</view>
@@ -71,20 +79,26 @@
 	import {
 		dateFormat,getGoodsImg, parsePic
 	} from "../../tools/util";
+	class CardParams {
+		fromId = 0;
+		fetchSize = 10;
+	}
 	@Component({})
 	export default class ClassName extends BaseNode {
 		defaultAvatar = app.defaultAvatar;
+		goPersonHome = app.navigateTo.goPersonHome;
 		chooseId = 0; //0代表选中拼团结果，展示下划线； 1代表选中拆卡报告，展示下划线 ；
 		goodCode = '';
 		orderCode = '';
-		teamDataList = [];
-		teamDataList2 = [];
+		teamDataList:any = [];
+		teamDataList2:any = [];
 		getGoodsImg = getGoodsImg;
 		dateFormat = dateFormat;
 		parsePic = parsePic;
 		currentPage = 1;
 		noMore = false;
 		searchTetxt = "";
+		cardNoParams = new CardParams();
 		onLoad(query: any) {
 			if (query.chooseIds) {
 				this.chooseId = query.chooseIds;
@@ -107,17 +121,28 @@
 			}
 		}
 		getTpCardNo(){
-			if(this.noMore){
-				return;
-			}
+			if(this.noMore) return;
+			app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/cardNo`,{...this.cardNoParams,q:this.searchTetxt},(res:any)=>{
+				if(res.list){
+					const list = this.listAnonymous(res.list);
+					this.teamDataList = this.teamDataList.concat(list)
+				}
+				this.noMore = res.isFetchEnd;
+				this.cardNoParams.fromId = this.teamDataList[this.teamDataList.length-1].id;
+			})
+		}
+		getTpCardNoResult(){
+			if(this.noMore) return;
+
 			let params = {
 				q:this.searchTetxt,
 				pageIndex:this.currentPage,
 				pageSize:15
 			}
-			app.http.Get('good/'+this.goodCode+'/cardNo',params,(res:any)=>{
+			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/report',params,(res:any)=>{
 				if(res.list){
-					this.teamDataList = this.teamDataList.concat(res.list)
+					const list = this.listAnonymous(res.list);
+					this.teamDataList2 = this.teamDataList2.concat(list)
 				}else{
 					this.noMore = true
 				}
@@ -127,25 +152,9 @@
 				this.currentPage++;
 			})
 		}
-		getTpCardNoResult(){
-			if(this.noMore){
-				return;
-			}
-			let params = {
-				q:this.searchTetxt,
-				pageIndex:this.currentPage,
-				pageSize:15
-			}
-			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/report',params,(res:any)=>{
-				if(res.list){
-					this.teamDataList2 = this.teamDataList2.concat(res.list)
-				}else{
-					this.noMore = true
-				}
-				if(res.list.length<15){
-					this.noMore = true
-				}
-				this.currentPage++;
+		listAnonymous(list:any[]){
+			return list.map(({anonymous,userName,...rest}:any)=>{
+				return {...rest,userName:anonymous?"匿名用户":userName,anonymous}
 			})
 		}
 		onClickBack() {
@@ -169,7 +178,8 @@
 			this.currentPage = 1;
 			this.noMore = false;
 			this.teamDataList = [];
-			this.teamDataList2 = []
+			this.teamDataList2 = [];
+			this.cardNoParams = new CardParams();
 		}
 		onClickSearch(text:string){
 			if(this.chooseId==0){
@@ -236,7 +246,7 @@
 
 		.header-title {
 			font-size: $font-32;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 600;
 			color: #14151A;
 			line-height: 88rpx;
@@ -255,8 +265,8 @@
 
 		.header-title2 {
 			font-size: $font-32;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #A9ABB4;
 			line-height: 88rpx;
 
@@ -289,8 +299,8 @@
 
 	.title-middle {
 		font-size: $font-22;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 500;
+		
+		font-weight: 600;
 		color: #FFFFFF;
 		line-height: 32rpx;
 	}
@@ -304,7 +314,7 @@
 		justify-content: space-around;
 
 		font-size: $font-24;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 		line-height: 34rpx;
@@ -319,7 +329,7 @@
 		justify-content: space-around;
 
 		font-size: $font-24;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 		line-height: 34rpx;
@@ -373,7 +383,7 @@
 		justify-content: space-around;
 
 		font-size: $font-24;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 		line-height: 34rpx;
@@ -390,7 +400,7 @@
 		justify-content: space-around;
 
 		font-size: $font-24;
-		font-family: PingFangSC-Medium, PingFang SC;
+		
 		font-weight: 600;
 		color: #14151A;
 		line-height: 34rpx;
@@ -433,8 +443,8 @@
 		background: #F5F5F8;
 		border-radius: 4rpx;
 		font-size: 24rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 500;
+		
+		font-weight: 600;
 		color: #14151A;
 		border-radius: 29rpx;
 		
@@ -471,8 +481,8 @@
 			padding:20rpx 22rpx 20rpx 32rpx;
 			.title{
 				font-size: 24rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
-				font-weight: 400;
+				
+				
 				color: #7F7F8E;
 				margin-bottom: 8rpx;
 				display: flex;
@@ -486,7 +496,7 @@
 			}
 			.desc{
 				font-size: 24rpx;
-				font-family: PingFangSC-Medium, PingFang SC;
+				
 				font-weight: 600;
 				color: #14151A;
 				line-height: 34rpx;
@@ -500,8 +510,8 @@
 			}
 			.time{
 				font-size: 24rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
-				font-weight: 400;
+				
+				
 				color: #AAAABB;
 			}
 		}
@@ -514,7 +524,7 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 24rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 600;
 			color: #828292;
 			.right-img{

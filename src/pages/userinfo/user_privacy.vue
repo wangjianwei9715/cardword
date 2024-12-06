@@ -37,8 +37,10 @@ export default class ClassName extends BaseNode {
 （2）我们在您使用服务的过程中获取的信息。我们会收集关于您使用的服务以及使用方式的信息，例如您何时访问了应用中心提供的服务，或者何时查看了我们的内容并与之互动。以及会根据您授予的权限，接收并记录您所使用的设备相关信息，包括：设备属性信息（设备型号、操作系统版本、设备设置、唯一设备标识符软硬件特征信息）、设备位置信息（通过GPS或WIFI信号获得的位置信息）、设备连接信息（IP地址）（包括IMEI、MEID、Aadroid ID、IMSI、GUID、MAC地址）。
 <br><br>
 除此之外，我们在您使用服务的过程中引用了一些第三方服务，以便于为您提供更流畅的体验，包含：
-https://uniapp.dcloud.io/api/plugins/push
-uniPush推送 
+<br><br>
+个推sdk名称：uniPush(消息推送) https://uniapp.dcloud.io/api/plugins/push
+<br><br>
+用途和目的：向用户推送商品、物流等状态信息
 <br><br>
 除上述信息外，我们还可能为了提供服务及改进服务质量的合理需要而收集您的其他信息，包括您与我们的客户服务团队联系时您提供的相关信息，您参与问卷调查时向我们发送的问卷答复信息，以及您与“卡世界”的关联方、“卡世界”合作伙伴之间互动时我们收集的相关信息。与此同时，为提高您使用“卡世界”提供的服务的安全性，更准确地预防钓鱼网站欺诈和木马病毒，我们可能会通过了解一些您的网络使用习惯、您常用的软件信息等手段来判断您账户的风险，并可能会记录一些我们认为有风险的URL。
 <br><br>
@@ -49,10 +51,18 @@ uniPush推送
 为了给您提供更好、更优、更加个性化的服务，或共同为您提供服务，或为了预防互联网欺诈的目的，“卡世界”可能会包含第三方SDK或其他类似的应用程序，其将直接收集和处理您的信息（如以嵌入代码、插件等形式）。前述服务商收集和处理信息等行为遵守其自身的隐私条款，而不适用于本政策。但我们也会努力审查该第三方的业务准入资质并努力要求该等服务商的合法合规性与安全性。为了最大程度保障您的信息安全，我们强烈建议您先行查看其隐私条款。
 <br><br>
 我们的产品基于DCloud uni-app(5+ App/Wap2App)开发，应用运行期间需要收集您的设备唯一识别码（IMEI/android ID/DEVICE_ID/IDFA、SIM 卡 IMSI 信息、OAID）以提供统计分析服务，并通过应用启动数据及异常错误日志分析改进性能和用户体验，为用户提供更好的服务。详情内容请访问《DCloud用户服务条款》。
-https://ask.dcloud.net.cn/protocol.html
+<a href="https://ask.dcloud.net.cn/protocol.html">https://ask.dcloud.net.cn/protocol.html</a>
 <br><br>
 消息推送服务供应商：由每日互动股份有限公司提供推送技术服务，我们可能会将您的设备平台、设备厂商、设备品牌、设备识别码等设备信息，应用列表信息、网络信息以及位置相关信息提供给每日互动股份有限公司，用于为您提供消息推送技术服务。我们在向您推送消息时，我们可能会授权每日互动股份有限公司进行链路调节，相互促活被关闭的SDK推送进程，保障您可以及时接收到我们向您推送的消息。
-http://docs.getui.com/privacy
+<a href="http://docs.getui.com/privacy">http://docs.getui.com/privacy</a>
+<br><br>
+友盟统计:
+我们的产品集成友盟+SDK，友盟+SDK需要收集您的设备Mac地址、唯一设备识别码（IMEI/android ID/IDFA/OPENUDID/GUID、SIM 卡 IMSI 信息）以提供统计分析服务，并通过地理位置校准报表数据准确性，提供基础反作弊能力。
+<a href="https://docs.getui.com/privacy/">https://docs.getui.com/privacy/</a>
+<br><br>
+支付宝开放平台:
+我们的产品集成支付宝支付com.alipay，提供用户支付服务。
+<a href="https://render.alipay.com/p/yuyan/180020010001196791/preview.html?agreementId=AG00000132">https://render.alipay.com/p/yuyan/180020010001196791/preview.html?agreementId=AG00000132</a>
 <br><br>
 （5）以下信息不适用本隐私权政策：
 <br><br>
@@ -191,5 +201,6 @@ ETag（实体标签）是在互联网浏览器与互联网服务器之间背后�
   padding: 0 20rpx;
   margin-top: 20rpx;
   font-size: 30rpx;
+  word-break: break-all
 }
 </style>

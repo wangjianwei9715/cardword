@@ -130,8 +130,8 @@ export default {
 
 .liveSetText {
     font-size: 29rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
+    
+    
     color: #ffffff;
     margin-top: 12rpx;
     text-align: center;
@@ -148,7 +148,7 @@ export default {
     border-radius: 5rpx;
     text-align: center;
     font-size: 33rpx;
-    font-family: PingFang SC;
+    
     font-weight: 600;
     color: #ffffff;
     line-height: 77rpx;

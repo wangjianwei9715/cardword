@@ -1,0 +1,700 @@
+<template>
+    <div class="content searchContainer">
+        <div class="fakerView" :style="{ height: fixedTopHeight + 'px' }"></div>
+
+        <div class="fixedTop" id="fixedTop">
+            <div class="navBar" id="navBar" ref="navBar">
+                <div :style="{ height: app.statusBarHeight + 'px' }"></div>
+                <div class="nav">
+                    <div class="navBackOpacity" @click="app.platform.pageBack()">
+                        <image class="navBack" src="@/static/index/v3/icon_back.png"></image>
+                    </div>
+                    <div class="navSearchWrap">
+                        <image class="searchFdj" src="@/static/cardForum/sousuo@2x.png"></image>
+                        <input class="navInput" ref="input" confirm-type="search" @confirm="onClickSearch"
+                            @focus="onSearch = true" type="text" v-model="searchText" placeholder="搜你想搜..." />
+                        <image v-if="searchText" @click="searchText = '', onSearch = true" class="search-remove"
+                            src="@/static/cardForum/searchClose.png" />
+                    </div>
+                    <text class="searchText" @click="onClickSearch">搜索</text>
+                </div>
+            </div>
+        </div>
+        <div v-if="!onSearch" style="height:94rpx">
+            <u-tabs customType="cardForum" style="width:750rpx"
+                :itemStyle="{ width: `150rpx`, height: `90rpx`, marginTop: `-10rpx` }"
+                :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
+                :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs" id="tabs"
+                :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
+        </div>
+        <view v-if="onSearch" style="background-color: #ffffff;">
+            <view class="bigText">
+                <text class="bigText_text">搜索记录</text>
+                <image src="@/static/cardForum/del.png" class="bigText_img" @click="clearLog"></image>
+            </view>
+            <view class="keywordsWrap">
+                <view class="keywords" v-for="(item) in cardSearchLog" @click="onClickKey(item)">
+                    <text class="keywords_text">{{ item.s }}</text>
+                </view>
+            </view>
+            <view class="bigText" style="margin-top: 40rpx;">
+                <text class="bigText_text">热门搜索</text>
+            </view>
+            <view class="keywordsWrap">
+                <view class="keywords" v-for="(item) in hotList" @click="onClickKey(item)">
+                    <text class="keywords_text">{{ item.s }}</text>
+                </view>
+            </view>
+
+        </view>
+        <view class="whiteBlock" v-if="onSearch && (os == 'ios')" style="background-color: #fff;height:600px"></view>
+        <swiper class="swiperContainer" v-if="!onSearch" :style="{ height: scrollViewHeight + 'px' }" :current="tabs.index"
+            @change="swiperChange">
+            <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
+                <!-- #ifndef APP-NVUE -->
+                <scroll-view :scroll-y="true" :style="{ height: scrollViewHeight + 'px' }"
+                    @scrolltolower="loadmoreData(tabIndex)">
+                    <empty v-if="tab.firstReqEnd && !tab.list.length"></empty>
+                    <waterfalls style="width:750rpx;padding-top: 10rpx;"
+                        v-if="tab.list.length && (tab.type != 'user' && tab.type != 'topics')" v-model="tab.list"
+                        :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40">
+                    </waterfalls>
+                    <template v-if="tab.type == 'topics'">
+                        <topicList :value="tab.list" style="margin-top: 20rpx;"></topicList>
+                    </template>
+                    <template v-if="tab.type == 'user'">
+                        <userList :value="tab.list"></userList>
+                    </template>
+                </scroll-view>
+                <!-- #endif -->
+                <!-- #ifdef APP-NVUE -->
+                <empty v-if="tab.firstReqEnd && !tab.list.length"></empty>
+                <waterfalls :bottomSafe="true" column-count="2"
+                    v-if="tab.list.length && (tab.type != 'user' && tab.type != 'topics')" :ref="`waterfalls${tabIndex}`"
+                    left-gap="5" :height="scrollViewHeight + 'px'" :value="tab.list" right-gap="5" column-gap="5"
+                    :always-scrollable-vertical="true" @loadmore="loadmoreData(tabIndex)" @refresh="onRefresh(tabIndex)"
+                    style="padding-top: 10rpx;">
+                </waterfalls>
+                <template v-if="tab.type == 'topics'">
+                    <topicList :value="tab.list" style="margin-top: 10rpx;"></topicList>
+                </template>
+                <scroll-view v-if="tab.type == 'topics' || tab.type == 'user'" :scroll-y="true"
+                    :style="{ height: scrollViewHeight + 'px' }" @scrolltolower="loadmoreData(tabIndex)">
+
+                    <template v-if="tab.type == 'user'">
+                        <userList :value="tab.list"></userList>
+                    </template>
+                </scroll-view>
+                <!-- #endif -->
+
+            </swiper-item>
+        </swiper>
+    </div>
+</template>
+<script>
+import waterfalls from "./components/waterfalls.vue"
+import cardSkeleton from "./components/cardSkeleton.vue"
+import topicList from "./components/topicList.vue"
+import userList from "./components/userList.vue"
+import { Md5 } from "ts-md5";
+import { testCode } from "./func/index.js"
+import empty from "@/components/empty/empty.vue"
+const tabsList = [
+    {
+        name: '综合',
+        od: "def"
+    }, {
+        name: '热门',
+        od: "hot"
+    }, {
+        name: '最新',
+        od: "fresh"
+    }, {
+        name: '话题',
+        type: "topics",
+        url: "cardCircle/topic/list"
+    }, {
+        name: '用户',
+        type: "user",
+        url: "cardCircle/search/user"
+
+    }
+]
+const app = getApp().globalData.app;
+const defaultTagObj = {
+    queryParams: {
+        fetchFrom: 1,
+        fetchSize: 15,
+        q: "",
+        od: "",
+        timeStamp: 0
+    },
+    isFetchEnd: true,
+    scrollId: "",
+    timeStamp: 0,
+    list: []
+}
+export default {
+    components: {
+        waterfalls,
+        cardSkeleton,
+        topicList,
+        userList,
+        empty
+    },
+    data() {
+        return {
+            app,
+            parsePic: getApp().globalData.parsePic,
+            cardSearchLog: [],
+            cardSearchLogCopy: [],
+            actionSheet: false,
+            firstReqEnd: false,
+            initFinish: false,
+            onSearch: true,
+            searchText: "",
+            navHeight: 0,
+            tabsHeight: 0,
+            scrollViewHeight: 0,
+            fixedTopHeight: 0,
+            tabs: {
+                index: 0,
+                list: []
+            },
+            hotList: [],
+            hotSearchCopy: [],
+            trTimmer: null,
+            os: app.platform.systemInfo.platform
+        }
+    },
+    async onLoad() {
+        this.$nextTick(async () => {
+            await this.setHeight()
+        })
+        await this.initTab()
+        this.getLog()
+        this.getHot()
+    },
+    computed: {
+        nowTabText() {
+            return this.tabs.list[this.tabs.index].queryParams.q
+        },
+        current() {
+            return this.tabs.list[this.tabs.index]
+        }
+    },
+    watch: {
+        'tabs.index': function (val) {
+            if (this.tabs.list[val].list.length == 0) {
+                this.tabs.list[val].queryParams.pageIndex = 1
+                //请求数据
+                this.reqNewData()
+            }
+            if (val == 2) {
+                uni.setTabBarStyle({
+                    backgroundColor: "#0c0014"
+                })
+                this.getTopicsList()
+            } else {
+                uni.setTabBarStyle({
+                    backgroundColor: "#ffffff"
+                })
+            }
+        },
+        "onSearch": {
+            handler(newVal, oldName) {
+                // #ifdef APP-NVUE
+                if (newVal) {
+                    setTimeout(() => {
+                        this.$refs.input.focus()
+                    }, 200)
+                } else {
+
+                    setTimeout(() => {
+                        this.$refs.input.blur()
+                    }, 200)
+                }
+                this.$nextTick(() => {
+                    this.setHeight()
+                })
+                // #endif
+                // #ifndef APP-NVUE
+                this.fixedTopHeight = 99
+                // #endif 
+            },
+            immediate: true
+        }
+    },
+    methods: {
+        async initTab() {
+            tabsList.forEach((item, index) => {
+                const deepData = JSON.parse(JSON.stringify(defaultTagObj))
+                this.$set(this.tabs.list, index, { ...deepData, ...item })
+            })
+            this.initFinish = true
+            return
+        },
+        async setHeight() {
+            this.fixedTopHeight = await this.getDomHeight("#fixedTop")
+            // #ifdef APP-NVUE
+            this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight - uni.upx2px(94)
+            // #endif
+            // #ifdef H5
+            this.scrollViewHeight = 666
+            // #endif
+        },
+        getTopicsList() {
+        },
+        async onClickSearch() {
+            if (this.searchText) {
+                if (testCode(this.searchText)) {
+                    uni.navigateTo({
+                        url: `/pages/cardForum/detail?code=${this.searchText}`
+                    })
+                    return
+                }
+                const stamp = Math.round(+new Date() / 1000)
+                const item = this.cardSearchLog.find((item) => {
+                    return item.s == this.searchText
+                })
+                if (item) item.stamp = stamp
+                if (!item) this.cardSearchLog.push({ s: this.searchText, stamp })
+                uni.setStorageSync("cardForumSearchLog", this.cardSearchLog || [])
+                this.onSearch = false
+                await this.initTab()
+                this.refreshData(this.tabs.index)
+            } else {
+                uni.showToast({
+                    title: "输入你想搜索的内容",
+                    icon: "none"
+                })
+            }
+
+            //获取新数据
+        },
+        onRefresh() {
+            setTimeout(() => {
+                this.current.queryParams.fetchFrom = 1
+                this.refreshData(this.tabs.index)
+            }, 500)
+        },
+        clearLog() {
+            this.cardSearchLog = []
+            uni.setStorageSync("cardForumSearchLog", this.cardSearchLog)
+        },
+        getLog() {
+            const log = uni.getStorageSync("cardForumSearchLog")
+            if (log && log.length) {
+                this.cardSearchLog = log.sort((x, y) => {
+                    return y.stamp - x.stamp
+                })
+            }
+        },
+        getHot() {
+            app.http.Get("dataApi/cardCircle/hot/search/list", {}, (res) => {
+                this.hotList = res.list.map((item) => {
+                    return {
+                        s: item.content || ""
+                    }
+                })
+            })
+        },
+        pageJump(url) {
+            uni.navigateTo({
+                url,
+            })
+        },
+        getDomHeight(dom) {
+            return new Promise((re, rj) => {
+                uni.createSelectorQuery()
+                    .select(dom)
+                    .boundingClientRect((rect) => {
+                        if (rect) {
+                            re && re(rect.height)
+                        }
+                    })
+                    .exec();
+            })
+        },
+        getDom(dom) {
+            return new Promise((re, rj) => {
+                uni.createSelectorQuery()
+                    .select(dom)
+                    .boundingClientRect((rect) => {
+                        if (rect) {
+                            re && re(rect)
+                        }
+                    })
+                    .exec();
+            })
+        },
+        goToDetail(item) {
+            uni.navigateTo({
+                url: "/pages/cardForum/detail?code=" + item.code
+            })
+        },
+        clearSeach() {
+            this.current.queryParams.q = ""
+        },
+        onClickKey(item) {
+            this.searchText = item.s
+            this.onClickSearch()
+        },
+        swiperChange(event) {
+            this.tabs.index = event.detail.current
+        },
+        tabClick(event) {
+            if (event.index == this.tabs.index) return
+            this.tabs.index = event.index
+        },
+        onSelectAction(item) {
+            if (item.url) {
+                uni.navigateTo({
+                    url: item.url
+                })
+            }
+        },
+        refreshData(index) {
+            this.current.queryParams.fetchFrom = 1
+            this.reqNewData(true, () => {
+                const key = "waterfalls" + index
+                setTimeout(() => {
+                    this.$refs[key]?.[0]?.hideRefresh?.()
+                }, 300)
+            })
+        },
+        loadmoreData(index) {
+            const nowTab = this.tabs.list[index]
+            if (nowTab.queryParams.pageIndex < nowTab.totalPage) {
+                nowTab.queryParams.pageIndex += 1
+                this.reqNewData()
+            }
+        },
+        reqNewData(isRefresh = false, cb) {
+            const defaultUrl = "cardCircle/search/dt"
+            if (this.searchText) this.current.queryParams.q = this.searchText
+            if (this.current.od) this.current.queryParams.od = this.current.od
+            if (this.current.scrollId) this.current.queryParams.scrollId = this.current.scrollId
+            if (this.current.stamp) this.current.queryParams.st = this.current.stamp
+            if (!this.current.type && this.current.queryParams.scrollId) {
+                this.current.queryParams.sn = Md5.hashStr(`${this.current.stamp}+${this.current.scrollId}+scrollSearchTujian`)
+            }
+            if (this.current.type == "topics") {
+                this.current.queryParams.od = "issue_72:asc"
+            }
+            this.current.queryParams.timeStamp = Math.round(+new Date() / 1000)
+            if (isRefresh) {
+                this.current.queryParams.scrollId = ""
+                this.current.queryParams.sn = ""
+            }
+            app.http.Get(`dataApi/${this.current.url || defaultUrl}`, this.current.queryParams, (res) => {
+                this.current.firstReqEnd = true
+                this.current.isFetchEnd = res.isFetchEnd ?? res.end
+                this.current.scrollId = res.scrollId || ""
+                this.current.timeStamp = res.timeStamp || 0
+                const list = (res.list || []).map(item => {
+                    //#ifdef APP-NVUE
+                    if (item.cover) item.cover = this.parsePic(decodeURIComponent(item.cover))
+                    //#endif
+                    return item
+                })
+                if (isRefresh) {
+                    this.current.list = []
+                }
+                this.current.queryParams.fetchFrom == 1 ? this.current.list = list : this.current.list.push(...list || [])
+                cb && cb()
+            }, (err) => {
+                this.current.firstReqEnd = true
+            })
+        }
+    }
+}
+</script>
+<style scoped lang="scss">
+$show-lines: 1;
+
+.hideGetReactWrap {
+    position: fixed;
+    top: 0;
+    opacity: 0;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.hideText {
+    font-size: 25rpx;
+    
+    
+    color: #757575;
+}
+
+.content {
+    flex-direction: column;
+}
+
+.searchContainer {
+    display: flex;
+    width: 750rpx;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+}
+
+.fakerView {
+    // background-color: red;
+    width: 750rpx;
+    opacity: 0;
+}
+
+
+.swiperContainer {
+    width: 750rpx;
+    background-color: #f5f7fb;
+    // flex: 1;
+}
+
+.swiperItem {
+    // height: 600rpx;
+    align-items: center;
+
+    // width: 100%;
+}
+
+.fixedTop {
+    position: fixed;
+    top: 0;
+    background-color: #fff;
+    padding-bottom: 8rpx;
+}
+
+.navBar {
+    width: 750rpx;
+    // position: fixed;
+    // top: 0;
+    // z-index: 999;
+    background-color: #fff;
+
+}
+
+.scroller {
+    width: 750rpx;
+    background-color: red;
+}
+
+.nav {
+    // box-sizing: border-box;
+    // padding: 20rpx 35rpx;
+    padding: 27rpx 25rpx 0 32rpx;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    // height: 88rpx;
+    justify-content: space-between;
+}
+
+.nav_search {
+    width: 98rpx;
+    height: 49rpx;
+    background: #FA1545;
+    border-radius: 5rpx;
+}
+
+.nav_search_text {
+    font-size: 25rpx;
+    
+    font-weight: bold;
+    line-height: 49rpx;
+    color: #FFFFFF;
+}
+
+.search-remove {
+    width: 32rpx;
+    height: 32rpx;
+    margin-right: 23rpx;
+}
+
+.camera {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 73rpx;
+}
+
+.camera_img {
+    width: 56rpx;
+    height: 43rpx;
+
+}
+
+.camera_txt {
+    font-size: 19rpx;
+    
+    font-weight: 600;
+    color: #333333;
+    position: relative;
+    top: 8rpx;
+}
+
+.navBackOpacity {
+    width: 40rpx;
+    height: 73rpx;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    // background-color: red;
+}
+
+.navBack {
+    width: 21rpx;
+    height: 38rpx;
+}
+
+.navSearchWrap {
+    width: 566rpx;
+    height: 73rpx;
+    // border: 3rpx solid #333333;
+    border-radius: 3rpx;
+    background-color: #F5F5F5;
+    // box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    // padding: 0 10rpx;
+    // margin-left: 18rpx;
+    align-items: center;
+    flex-direction: row;
+}
+
+.searchText {
+    font-size: 27rpx;
+    
+    font-weight: bold;
+    color: #333333;
+}
+
+.searchFdj {
+    width: 26rpx;
+    height: 26rpx;
+    margin-left: 32rpx;
+    margin-right: 14rpx;
+}
+
+.navInput {
+    color: #000;
+    flex: 1;
+    font-size: 25rpx;
+    
+    
+}
+
+.flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hotTopicWrap {
+    width: 750rpx;
+    padding: 0 20rpx;
+    border: 1rpx solid #f2f2f2;
+    // background-color: #fff;
+    // position: fixed;
+    height: 200rpx;
+    // position: absolute;
+    // top: 0;
+}
+
+.hotTopicRow {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hotTopicScroll {
+    width: 700rpx;
+    flex-direction: row;
+    display: flex;
+    // flex-wrap: nowrap;
+
+}
+
+.scrollTopicWarp {
+    flex-direction: row;
+    display: flex;
+    /* #ifdef H5 */
+    white-space: nowrap;
+    /* #endif */
+}
+
+.topicItem {
+    width: 150rpx;
+    height: 50rpx;
+    background-color: red;
+    margin-right: 20rpx;
+}
+
+.testImg {
+    width: 100rpx;
+    height: 100rpx;
+    // background-color: #000;
+    background-image: url("../../static/cardForum/camera.png");
+}
+
+.bigText {
+
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 750rpx;
+    // box-sizing: border-box;
+    // letter-spacing: 4rpx;
+    margin-bottom: 23rpx;
+    margin-top: 35rpx;
+    padding: 0 34rpx;
+}
+
+.bigText_text {
+    font-size: 31rpx;
+    
+    font-weight: bold;
+    color: #333333;
+
+}
+
+.bigText_img {
+    width: 32rpx;
+    height: 32rpx;
+}
+
+.keywordsWrap {
+    width: 750rpx;
+    // box-sizing: border-box;
+    padding: 0 33rpx;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+}
+
+.keywords {
+    padding: 4rpx 16rpx;
+    background-color: #F5F5F5;
+    border-radius: 3rpx 0rpx 0rpx 0rpx;
+    margin-right: 16rpx;
+    margin-bottom: 16rpx;
+}
+
+.keywords_text {
+    color: #757575;
+    line-height: 48rpx;
+    font-size: 25rpx;
+    
+    
+    text-align: center;
+    // #ifdef APP-NVUE
+    lines: 1;
+    text-overflow: ellipsis;
+    // #endif
+}
+</style>

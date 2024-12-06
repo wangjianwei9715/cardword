@@ -167,14 +167,14 @@
 
     .tagItem {
         font-size: 28rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
+        
+        
         color: #959699;
     }
 
     .selectTag {
         font-size: 31rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #333333;
     }
@@ -201,8 +201,8 @@
 
     .msg-name {
         font-size: 25rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
+        
+        
         color: #333333;
         flex: 1;
         // text-overflow: -o-ellipsis-lastline;
@@ -224,7 +224,7 @@
 
     .msg-cumulative {
         font-size: 23rpx;
-        font-family: PingFang SC;
+        
         font-weight: bold;
         color: #88878C;
         flex: 1;
@@ -242,16 +242,16 @@
         border: 1rpx solid #7A7A7A;
         border-radius: 3rpx;
         font-size: 25rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
+        
+        
         margin-left: 21rpx;
         color: #333333;
     }
 
     .redButton {
         font-size: 25rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
+        
+        
         color: #F6F7FB;
         border: 1rpx solid #E6374C;
         background: #E6374C;

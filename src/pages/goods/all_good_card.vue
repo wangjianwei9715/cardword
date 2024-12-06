@@ -1,15 +1,18 @@
 <template>
 	<view class="content">
-		<view class="tab-header" v-if="goodType<4||goodType>10">
-			<view class="search-icon"></view>
-			<input class="search-input" type="text"  v-model="searchText" placeholder="搜索球员、球队"  confirm-type="search"  @confirm="onClickSearch" />
-			
-			<image v-if="translate" src="../../static/goods/icon_fanyi.png" style="width: 42rpx; height: 40rpx; margin: 0 28rpx;"
-				@click="onClickTranslate()">
-			</image>
+		<transitionNav ref='transitionNav' :whiteTitle="true" :needIconShadow="false" title="卡密列表"/>
+		<view class="bg-image">
+			<view class="tab-header-box" v-if="goodType<4||goodType>10">
+				<view class="tab-header" >
+					<view class="search-icon"></view>
+					<input class="search-input" type="text"  v-model="searchText" placeholder="搜索球员、球队"  confirm-type="search"  @confirm="onClickSearch" />
+					<view class="search-close" @click="searchText='',onClickSearch()"></view>
+				</view>
+				<view class="tab-translate" :class="{'translate-e':english}" @click="onClickTranslate"></view>
+			</view>
 		</view>
-
-		<view class="item-goodtitle">{{goodTitle}}</view>
+		<!-- 卡密奖励 -->
+		<noAward ref="rNoAward" width="750rpx"/>
 		<table class="rules-table">
 			<thead>
 				<tr class="item-content">
@@ -18,9 +21,9 @@
 			</thead>
 			<tbody>
 				<tr v-for="(item,index) in teamDataList" :key="index" :class="index%2==0?'title-middle2':'title-middle3'" >
-					<td  v-for="(items,indexs) in itemListName" :key="indexs" >
-						<text v-show="!english">{{item['column'+(indexs+1)]}}</text>
-						<text v-show="english">{{item['column'+(indexs+1)+'_English']?item['column'+(indexs+1)+'_English']:item['column'+(indexs+1)]}}</text>
+					<td class="card-td"  v-for="(items,indexs) in itemListName" :key="indexs" >
+						<text>{{itemText(item,indexs)}}</text>
+						<view v-if="indexs==itemListName.length-1&&item.zuhecheTp" class="card-tips" :style="{background:itemsTips(item).background}">{{itemsTips(item).text}}</view>
 					</td>
 				</tr>
 			</tbody>
@@ -33,10 +36,14 @@
 	import {
 		Component
 	} from "vue-property-decorator";
-	import {Md5} from 'ts-md5';
 	import BaseNode from '../../base/BaseNode.vue';
-	@Component({})
+	import noAward from "./component/noAward.vue"
+	//@ts-ignore
+	import { KwwConfusion } from "@/net/kwwConfusion.js"
+	import { _Maps } from "@/tools/map"
+	@Component({ components:{noAward} })
 	export default class ClassName extends BaseNode {
+		tipsData = _Maps._GoodsTips;
 		goodCode = '';
 		goodType = 0;
 		searchText = '';
@@ -52,14 +59,23 @@
 		goodTitle = '';
 		tabWidth:any = '';
 		teamId = 0;
-		debug = app.updateDebug == 'on'
+		debug = app.updateDebug == 'on';
+		zuhecheTp = 0;
+		zuhecheName = ""
 		onLoad(query: any) {
 			if(query.code){
 				this.goodCode = query.code;
-				this.goodType = query.type;
+				this.goodType = Number(query.type);
 				if(query.teamId){
 					this.teamId = Number(query.teamId)
 				}
+				if(query.zuhecheTp>0){
+					this.zuhecheTp = query.zuhecheTp
+				}
+				this.$nextTick(()=>{
+					// 拼团商品卡密奖励轮播图
+					this.$refs.rNoAward.getLamp(this.goodCode)
+				})
 				this.reqNewData()
 			}
 		}
@@ -71,19 +87,35 @@
 				this.reqNewData() 
 			}
 		}
+		onPageScroll(data: any) {
+			//@ts-ignore
+			this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll(data)
+		}
+		
+		public get oldUrl() : boolean {
+			return [4,5,10].includes(this.goodType)
+		}
+		itemText(item,indexs){
+			const name = 'column'+(indexs+1);
+			const englishName = name+'_English';
+			const zuhecheName = indexs==0&&item.zuhecheTp==1?`${this.zuhecheName}车位-`:""
+			return zuhecheName + ((this.english&&item[englishName]?item[englishName]:item[name])||'-');
+		}
 		reqNewData(cb?:Function) {
 			// 获取更多商品
 			if (this.noMoreData) {
 				return;
 			}
-			
+			const url = `dataApi/good/${this.goodCode}/${this.oldUrl?'noList':'no/list'}`;
 			let params:{[x:string]:any} = {
 				pageIndex: this.currentPage,
 				pageSize:this.pageSize,
 			}
 			if(this.teamId>0) params.teamId = this.teamId;
-			
-			app.http.Get("dataApi/good/"+this.goodCode+'/noList', params, (data: any) => {
+			if(this.zuhecheTp>0) params.zuhecheTp = this.zuhecheTp
+			if(this.searchText!='') params.q = encodeURIComponent(this.searchText)
+
+			app.http.GetWithCrypto(url, params, (data: any) => {
 				this.goodTitle = data.goodTitle;
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
@@ -93,8 +125,15 @@
 				this.translate = data.translate
 				if(data.list){
 					if(this.currentPage==1) this.teamDataList =  []
-					this.teamDataList = this.teamDataList.concat(data.list);
+					let list = data.list;
+					if(data.noTypes&&data.noTypes.length){
+						list.forEach((x,index) => {
+							x['zuhecheTp'] = data.noTypes[index];
+						});
+					}
+					this.teamDataList = this.teamDataList.concat(list);
 				}
+				this.zuhecheName = data.zuhecheName || ""
 				this.debug && app.platform.refrain(this.teamDataList);
 				this.currentPage++;
 				if(cb) cb()
@@ -114,7 +153,7 @@
 			if(this.scrollId!=''){
 				params.scrollId = this.scrollId;
 				params.st = this.scrollIdSt;
-				params.sn = Md5.hashStr(this.scrollIdSt+this.scrollId+'scrollSearchGood')
+				params.sn = KwwConfusion.goodCard(this.scrollIdSt,this.scrollId);
 			}
 			
 			app.http.Get("dataApi/good/"+this.goodCode+'/cards/search', params, (data: any) => {
@@ -138,7 +177,7 @@
 			this.noMoreData = false;
 			this.teamDataList = [];
 			this.scrollId = ''
-			if(this.searchText == ''){
+			if(this.searchText == '' || !this.oldUrl){
 				this.reqNewData() 
 			}else{
 				this.searchData()
@@ -148,83 +187,112 @@
 		onClickTranslate() {
 			this.english = !this.english
 		}
+		itemsTips(item){
+			const type = item.zuhecheTp>0?item.zuhecheTp+1:0;
+			return {
+				background:this.tipsData[type].background,
+				text:this.tipsData[type].text
+			}
+		}
 	}
 </script>
 
 <style lang="scss">
 	$font-22:22rpx;
 	$font-24:24rpx;
-
+	.bg-image{
+		width: 750rpx;
+		height:282rpx;
+		background: url(@/static/goods/detail/card_bg.png) no-repeat top /100% 360rpx;
+		box-sizing: border-box;
+		padding-top: 186rpx;
+	}
+	.tab-header-box{
+		width: 678rpx;
+		height: 68rpx;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin:0 auto
+	}
 	.tab-header {
-		width: 100%;
-		height: 104rpx;
+		width: 618rpx;
+		height: 68rpx;
 		position: relative;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		box-sizing: border-box;
-		padding: 0 20rpx;
 		z-index: 10;
+		background: rgba(255,255,255,0.3);
+		border-radius: 5rpx;
 	}
 	.search-icon{
 		width: 28rpx;
-		height:28rpx;
-		background:url(../../static/index/sousuo@2x.png) no-repeat center;
+		height:30rpx;
+		background:url(@/static/goods/detail/search.png) no-repeat center;
 		background-size:100% 100%;
 		position: absolute;
-		left:48rpx;
+		left:20rpx;
 		top:50%;
-		margin-top: -14rpx;
+		margin-top: -16rpx;
+	}
+	.search-close{
+		width: 32rpx;
+		height:32rpx;
+		background:url(@/static/goods/detail/search-close.png) no-repeat center;
+		background-size:100% 100%;
+		position: absolute;
+		right:20rpx;
+		top:50%;
+		margin-top: -16rpx;
 	}
 	.search-input{
 		width: 100%;
-		height:64rpx;
-		background: #F5F5F8;
+		height:68rpx;
+		line-height: 68rpx;
 		border-radius: 4rpx;
 		font-size: 24rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 500;
-		color: #14151A;
-		padding-left:76rpx ;
+		font-weight: 600;
+		color: rgba(255,255,255,0.4);
+		padding-left:68rpx ;
 	}
 	.item-goodtitle{
 		width: 100%;
 		text-align: center;
 		line-height: 40rpx;
 		font-size: 30rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
 		color: #333333;
 		background:#F6F7FB;
 		box-sizing: border-box;
 		padding:20rpx ;
 	}
 	.item-content{
-		background: #F6F7FB;
+		background: #FFFFFF;
+		height:60rpx
 	}
-
+	
 	.title-middle {
-		font-size: 26rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		font-size: 24rpx;
 		color: #333333;
 		line-height: 32rpx;
 		display: flex;
 	}
 
 	.title-middle2 {
-		background: #F0F0F2;
+		background: #F6F7FB;
 	}
 	.title-middle3 {
-		background: #FCFCFC;
+		background: #FFFFFF;
 	}
 	.text-name {
 		width: 100%;
+		height:60rpx;
 		box-sizing: border-box;
 		text-align: center;
-		font-size: 27rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		font-size: 24rpx;
+		font-weight: 600;
 		color: #333333;
 	}
 	.rules-table{
@@ -234,12 +302,34 @@
 	.rules-table tr td{
 		height:76rpx;
 		line-height: 40rpx;
-		font-size: 23rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
-		color: #34363A;
+		font-size: 20rpx;
+		color: #333333;
 		text-align: center;
-		border:1px solid #E5E5E5;
-		padding:10rpx ;
+		padding:20rpx ;
+	}
+	.item-content td{
+		height:60rpx !important;
+	}
+	.tab-translate{
+		width: 36rpx;
+		height:36rpx;
+		background: url(@/static/goods/detail/translate_c.png) no-repeat center / 100% 100%;
+	}
+	.translate-e{
+		background: url(@/static/goods/detail/translate_e.png) no-repeat center / 100% 100% !important; 
+	}
+	.card-td{
+		position: relative;
+	}
+	.card-tips{
+		width: 100rpx;
+		height:28rpx;
+		position: absolute;
+		right:0;
+		top:0;
+		text-align: center;
+		line-height: 28rpx;
+		font-size: 18rpx;
+		color: #FFFFFF;
 	}
 </style>

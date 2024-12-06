@@ -1,22 +1,13 @@
-/*
- * @FilePath: \jichao_app_2\src\net\HttpRequest.ts
- * @Author: wjw
- * @Date: 2022-12-09 11:24:22
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-18 17:23:55
- * Copyright: 2023 .
- * @Descripttion: 
- */
 import { app } from '@/app';
 import axios, { AxiosInstance } from 'axios';
-import { data } from 'browserslist';
-import { Md5 } from 'ts-md5';
 import {
 	objKeySort,
 	getUrlData
 } from "../tools/util";
-import { headersData, opSignData, opSignOtherData } from "@/net/DataHttp"
-const debounceData = ['dataApi/point/exchange/goodlist', 'dataApi/selectRank/award/list']
+//@ts-ignore
+import httpOpsign from "@/net/httpOpsign.js"
+//@ts-ignore
+import {GetCrypto} from "@/net/Crypto.js"
 const reLoginAction = () => {
 	uni.showModal({
 		title: "信息无效",
@@ -75,44 +66,26 @@ const errorCodeMap: any = {
 
 }
 const excludeUrls = ["user/login/phone", "user/code", "user/forget"];
-const opSignMap:any = { 
-	'短信验证码': (config:any) => `opk_smscode_${config.data.phone}_${config.data.type}`,
-	'确认收货': (config:any) => `opk_${app.opKey}_receive_good_${config.data.code}`, 
-	'绑定Push': (config:any) => `opk_${app.opKey}_${plus.push.getClientInfo().clientid}`, 
-	'客服发送消息': (config:any) => `opk_${app.opKey}_${config.data.bucketId}_${config.data.picUrl || ''}_${config.data.content || ''} `
-};
+
 export default class HttpRequest {
 	private static instance: HttpRequest;
 	private axiosInstance: AxiosInstance;
 	debounceUrl = '';
-	headersData = headersData;
-	opSignData = opSignData;
-	opSignOtherData = opSignOtherData
+	httpOpsign = new httpOpsign();
 	static getIns(): HttpRequest {
 		if (!HttpRequest.instance) {
 			HttpRequest.instance = new HttpRequest();
 		}
 		return HttpRequest.instance;
 	}
-
-
 	private constructor() {
 		var domain = ''
 		domain = app.bussinessApiDomain
-		let systemInfo = app.platform.getAppInfo();
-
+		const { headers } = this.httpOpsign;
 		this.axiosInstance = axios.create({
 			baseURL: domain,
 			timeout: 6000,
-			headers: {
-				appdevice: 'android',
-				appversion: '20210406',
-				versionname: systemInfo.versionname || '1.0.0',
-				'device-density': systemInfo['device-density'] || '1.5',
-				model: systemInfo.model || 'windows',
-				'os-version': systemInfo.os_version || '10',
-				plat: systemInfo.plat || 'official'
-			},
+			headers,
 			adapter: (config: any) => {
 				return new Promise((resolve, reject) => {
 					let settle = require('axios/lib/core/settle');
@@ -141,15 +114,11 @@ export default class HttpRequest {
 		});
 		// 添加请求拦截器
 		this.axiosInstance.interceptors.request.use((config) => {
-			
 			// 在发送请求之前做些什么
-			const { opKey, bussinessApiDomain, dataApiDomain, funcApiDomain, version, update_url, localTest } = app; 
+			const { opKey, bussinessApiDomain, dataApiDomain, funcApiDomain, update_url, localTest } = app; 
 			const ksjUserId = uni.getStorageSync('ksjUserId');
 			if (!uni.$u.test.isEmpty(ksjUserId)) {
 				config.headers['ksjUserId'] = ksjUserId;
-			}
-			if (version != '' && version != '1.0.0') {
-				config.headers['version'] = version;
 			}
 			app.opKey = opKey || uni.getStorageSync('app_opk'); 
 			let url = config.url + '';
@@ -160,24 +129,27 @@ export default class HttpRequest {
 					config.headers['token'] = app.token.accessToken; 
 				} 
 			}
-			for (const data of this.headersData) { 
+			if(app.viewerId){
+				config.headers['viewerId'] = app.viewerId; 
+			}
+			for (const data of this.httpOpsign.headersData) { 
 				if (url.indexOf(data.url) !== -1) { 
 					config.headers[data.name] = data.msg; 
 				} 
 			}
 			// config.data数据+sign统一处理opSign
-			for (const data of this.opSignData) { 
+			for (const data of this.httpOpsign.opSignData) { 
 				if (url.indexOf(data.url) !== -1) { 
-					this.setOpSign(config, data.sign, data.needOpKey); 
+					const op = this.httpOpsign.getOpSign(config, data.sign, data.needOpKey);
+					op.rawStr && (config.data.rawStr = op.rawStr); 
+					config.headers['opSign'] = op.opSign;
 				} 
 			}
 			// 需要单独处理额外数据的opSign
-			for (const data of this.opSignOtherData) { 
+			for (const data of this.httpOpsign.opSignOtherData) { 
 				if (url.indexOf(data.url) !== -1) { 
-					const opSignFn = opSignMap[data.name]; 
-					if (opSignFn) { 
-						config.headers['opSign'] = Md5.hashStr(opSignFn(config)); 
-					} 
+					const opSignFn = this.httpOpsign.opSignMap[data.name]; 
+					opSignFn && (config.headers['opSign'] = opSignFn(config));
 				} 
 			}
 			switch (true) { 
@@ -246,14 +218,27 @@ export default class HttpRequest {
 	Login() {
 
 	}
-	Post(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function) {
+	PostWithCrypto(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function){
+		const SIG=GetCrypto(reqUrl)
+		this.Post(reqUrl,params,cb,errorCb,{"Authorization":SIG})
+	}
+	GetWithCrypto(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function){
+		const SIG=GetCrypto(reqUrl)
+		this.Get(reqUrl,params,cb,errorCb,{"Authorization":SIG})
+	}
+	Pay(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function){
+		app.payment.alipayRiskContorl((business_params:{ [x: string]: any })=>{
+			this.Post(reqUrl,{...params,business_params},cb,errorCb)
+		})
+	}
+	Post(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function,headers?:{[x: string]: any}) {
 		let newParams = objKeySort(params)
-		this.axiosInstance.post(reqUrl, newParams).then((response: any) => {
+		this.axiosInstance.post(reqUrl, newParams,{headers:headers||{}}).then((response: any) => {
 			if (response.data) {
 				if (response.data.code == 0) {
 					if (cb) cb(response.data);
 				} else if (response.data.code == 1000) {
-					if (errorCb) errorCb()
+					if (errorCb) errorCb(response.data)
 				} else if (response.data.code == 16) {
 					uni.navigateTo({
 						url: '/pages/userinfo/setting_addresses'
@@ -292,9 +277,9 @@ export default class HttpRequest {
 
 		});
 	}
-	Get(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function) {
+	Get(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function,headers?:{[x: string]: any}) {
 		// 防止列表请求还未响应时重复请求 响应拦截器内删除
-		if (this.debounceUrl == reqUrl && debounceData.indexOf(reqUrl) == -1) return;
+		if (this.debounceUrl == reqUrl && this.httpOpsign.debounceData.indexOf(reqUrl) == -1) return;
 		this.debounceUrl = reqUrl;
 		let newParams = objKeySort(params)
 		var p = [];
@@ -302,17 +287,21 @@ export default class HttpRequest {
 			p.push(`${key}=${newParams[key]}`);
 		}
 		var strParams = p.join('&');
-		this.axiosInstance.get(reqUrl + '?' + strParams).then((response) => {
+		this.axiosInstance.get(reqUrl + '?' + strParams,{headers:headers||{}}).then((response) => {
 			if (response.data && response.data.code == 0) {
 				if (cb) cb(response.data);
+			} else if (response.data.code == 1000) {
+				if (errorCb) errorCb(response.data)
 			} else {
 				uni.showToast({
 					title: response.data.msg,
 					icon: 'none',
 					duration: 2000
 				});
+				errorCb&&errorCb(response.data.msg)
 			}
 		}).catch((error: any) => {
+			if (errorCb) errorCb()
 			if (reqUrl == 'dataApi/home') {
 				uni.showToast({
 					title: '网络异常',
@@ -338,23 +327,4 @@ export default class HttpRequest {
 			}
 		});
 	}
-	setOpSign(config: any, sign: string, needOpKey:boolean) { 
-		let str = ''; 
-		if (config.data) {
-			for (let i in config.data) {
-				if (config.data[i] !== undefined && typeof(config.data[i]) !== 'object') { 
-					str += `${i}=${config.data[i]}&`; 
-				} 
-			} 
-			str = str.slice(0, -1); 
-			config.data.rawStr = `${app.opKey}_${str}_${sign}`; 
-		} else {
-			str = config.url.split('?')[1]; 
-			// config.url += `&rawStr=${str}_${sign}`; 
-		} 
-		const opSign = needOpKey ? `${app.opKey}_${str}_${sign}` : `${decodeURIComponent(str)}_${sign}`; 
-		config.headers['opSign'] = Md5.hashStr(opSign); 
-		return; 
-	}
-	
 }

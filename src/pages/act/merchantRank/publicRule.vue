@@ -1,0 +1,351 @@
+<template>
+    <view class="content">
+        <navigationbar title="规则说明" rightText="奖励预览" rightFont="12" @onClickRightText="onClickAward" />
+        <view class="descriptionContainer" v-html="ruleHtmlMap[activityTp] || ''">
+        </view>
+    </view>
+</template>
+
+<script lang="ts">
+import { app } from "@/app";
+import { Component } from "vue-property-decorator";
+import BaseNode from '@/base/BaseNode.vue';
+import { parsePic, dateFormatMSHMS } from '@/tools/util'
+@Component({})
+export default class ClassName extends BaseNode {
+    pointConfig: any = {}
+    awardList: any = []
+    app = app
+    luckList: any = [
+    ]
+    activityTp: number = 0
+    ruleHtmlMap: any = {
+        7: `<view class="des_title">
+                积分榜单：
+            </view>
+            <br/>
+            <view class="des_content">
+                活动期间，参与【舒克球星卡社】拼团的用户，将根据拼团的单价获得相应的积分奖励【拼团期间活动积分为冻结状态，拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结积分中扣除】
+                <br />
+                <br />
+                活动截至入<text style="color:red">榜前15</text>的用户将获得对应的名次奖励
+                <br />
+                <br />
+                <text style="color:red">*</text>进入积分解冻环节后，拼团将不再获得积分，冻结的积分会根据之前的拼团是否成功录入或从冻结状态中扣除<br>
+                <br />
+                <text style="color:red">*</text>榜单每30分钟更新一次<br>
+                <br />
+                <text style="color:red">*</text>积分倍数：积分单价比为1:1
+                <br />
+            </view>
+            <br />
+            <br />
+            <view class="des_title">
+                积分兑好礼：
+            </view>
+            <br/>
+            <view class="des_content">
+                活动期间内满3000积分即可兑换剃须刀1台
+                <image style="width:100%" src="../../static/act/merchantRank/shuke/txd.png"></image>
+                <br />
+                共计30台（先到先得每人限1次）
+                <br />
+                <br />
+                领取方式：查看商家主页联系商家客服领取
+            </view>
+            <br />
+            <view class="des_content">
+                发货说明：实物奖品商家将在活动结束后1-7天内发货，收货地址为用户的默认收货地址，未填写地址的用户在中奖后联系商家安排发货
+            </view>`,
+        8: `<view class="des_title">
+                积分榜单：
+            </view>
+            <br/>
+            <view class="des_content">
+                活动期间，参与【北京星卡社】拼团的用户，将根据拼团的单价获得相应的积分奖励【拼团期间活动积分为冻结状态，拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结积分中扣除】
+                <br />
+                <br />
+                活动截至入<text style="color:red">榜前10</text>的用户将获得对应的名次奖励
+                <br />
+                <br />
+                <text style="color:red">*</text>进入积分解冻环节后，拼团将不再获得积分，冻结的积分会根据之前的拼团是否成功录入或从冻结状态中扣除<br>
+                <br />
+                <text style="color:red">*</text>榜单每30分钟更新一次<br>
+                <br />
+                <text style="color:red">*</text>积分倍数：积分单价比为1:1
+                <br />
+            </view>
+            <br />
+            <view class="des_content">
+                发货说明：实物奖品商家将在活动结束后1-7天内发货，收货地址为用户的默认收货地址，未填写地址的用户在中奖后联系商家安排发货
+            </view>`,
+        9: `<view class="des_title">
+                积分榜单：
+            </view>
+            <br/>
+            <view class="des_content">
+                活动期间，参与【赛博球星卡社】拼团的用户，将根据拼团的单价获得相应的积分奖励【拼团期间活动积分为冻结状态，拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结积分中扣除】
+                <br />
+                <br />
+                活动截至入<text style="color:red">榜前10</text>的用户将获得对应的名次奖励
+                <br />
+                <br />
+                <text style="color:red">*</text>进入积分解冻环节后，拼团将不再获得积分，冻结的积分会根据之前的拼团是否成功录入或从冻结状态中扣除<br>
+                <br />
+                <text style="color:red">*</text>榜单每30分钟更新一次<br>
+                <br />
+                <text style="color:red">*</text>积分倍数：积分单价比为1:1
+                <br />
+            </view>
+            <br />
+            <view class="des_content">
+                发货说明：实物奖品商家将在活动结束后1-7天内发货，收货地址为用户的默认收货地址，未填写地址的用户在中奖后联系商家安排发货
+            </view>`,
+        10: `<view class="des_title">
+                积分榜单：
+            </view>
+            <br/>
+            <view class="des_content">
+                活动期间，参与【yellow Hammer球星卡社】拼团的用户，将根据拼团的单价获得相应的积分奖励【拼团期间活动积分为冻结状态，拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结积分中扣除】
+                <br />
+                <br />
+                活动截至入<text style="color:red">榜前10</text>的用户将获得对应的名次奖励
+                <br />
+                <br />
+                <text style="color:red">*榜内奖励升级机制</text>：活动期间，榜单设置4档销售额，累计突破销售额档位将解锁奖励，解锁的奖励将会顺延至第一名，原奖励向下依次顺延至第10名（例：原第9名奖励顺延至第10名，原第10名奖励将取消并不会顺延）<br>
+                <br />
+                <br />
+                <text style="color:red">*</text>进入积分解冻环节后，拼团将不再获得积分，冻结的积分会根据之前的拼团是否成功录入或从冻结状态中扣除<br>
+                <br />
+                <text style="color:red">*</text>榜单每<text style="color:red">30分钟</text>更新一次<br>
+                <br />
+                <text style="color:red">*</text>积分倍数：积分单价比为1:1
+                <br />
+            </view>
+            <br />
+            <view class="des_content">
+                发货说明：实物奖品商家将在活动结束后1-7天内发货，收货地址为用户的默认收货地址，未填写地址的用户在中奖后联系商家安排发货
+            </view>
+            `
+    }
+    onLoad(query: any) {
+        if (query.activityTp) this.activityTp = +query.activityTp
+    }
+    onReachBottom() {
+
+    }
+    onPulldDownRefresh() {
+
+    }
+    prviewImages(picString: string) {
+        if (!picString) return
+        const picArr: any = picString.split(',').map(item => parsePic(decodeURIComponent(item)))
+        uni.previewImage({
+            current: 0,
+            urls: picArr
+        })
+    }
+    getElementScollTop() {
+        const query: any = uni.createSelectorQuery()
+        query
+            .select('.spRewardsContainer')
+            .boundingClientRect((data: any) => {
+                let pageScrollTop: any = Math.round(data.top)
+                uni.pageScrollTo({
+                    scrollTop: pageScrollTop, //滚动的距离
+                    duration: 300, //过渡时间
+                })
+            })
+            .exec()
+    }
+    openRanDom() {
+        plus.runtime.openURL('https://www.random.org')
+    }
+    onClickAward() {
+        uni.navigateTo({
+            url: "/pages/act/merchantRank/publicAward?activityTp=" + this.activityTp
+        })
+    }
+}
+</script>
+
+<style lang="scss">
+page {
+    background: $content-bg;
+    width: 750rpx;
+    overflow-x: hidden;
+}
+
+.canLucky {
+    width: 207rpx;
+    height: 207rpx;
+}
+
+.content ::v-deep .descriptionContainer {
+    width: 710rpx;
+    box-sizing: border-box;
+    padding: 38rpx 30rpx 34rpx 30rpx;
+    background: #FFFFFF;
+    border-radius: 3rpx;
+    margin-top: 20rpx;
+
+    .des_title {
+        font-size: 30rpx;
+        
+        font-weight: bold;
+        color: #333333;
+        margin-bottom: 10rpx;
+    }
+
+    .des_content {
+        font-size: 23rpx;
+        
+        
+        color: #333333;
+        line-height: 36rpx;
+        letter-spacing: 2rpx;
+
+        view {
+            font-size: inherit;
+        }
+
+
+    }
+
+    .sTitle {
+        color: #333333;
+        font-weight: bold;
+        
+        font-size: 23rpx;
+        letter-spacing: 2rpx;
+        margin-top: 20rpx;
+    }
+
+    .des_gray {
+        font-size: 19rpx;
+        
+        
+        color: #949494;
+        margin-top: 25rpx;
+    }
+
+    .red {
+        color: #FA1545;
+    }
+}
+
+.desLine {
+    width: 650rpx;
+    height: 1rpx;
+    background: #C0C0C0;
+    margin-top: 105rpx;
+    margin-bottom: 33rpx;
+}
+
+.spRewardsContainer {
+    width: 710rpx;
+    background: #FFFFFF;
+    border-radius: 3rpx;
+    box-sizing: border-box;
+    padding: 34rpx 30rpx 35rpx 30rpx;
+    margin-top: 20rpx;
+    margin-bottom: 40rpx;
+
+    .title {
+        font-size: 29rpx;
+        
+        font-weight: bold;
+        margin-bottom: 20rpx;
+        color: #333333;
+    }
+
+    .tips {
+        font-size: 25rpx;
+        
+        
+        color: #333333;
+    }
+
+    .rewardsContainer {
+        display: flex;
+        // justify-content: space-between;
+        flex-wrap: wrap;
+
+        .rewardItem {
+            margin-bottom: 22rpx;
+            width: 207rpx;
+
+            .rewardImage {
+                width: inherit;
+                height: 207rpx;
+                // background: #DFDFDF;
+                border-radius: 3rpx;
+                margin-bottom: 15rpx;
+            }
+
+            .rewardRank {
+                text-align: center;
+                font-size: 23rpx;
+                
+                
+                color: #333333;
+            }
+
+            .rewardName {
+                
+                text-align: center;
+                margin-top: 10rpx;
+                font-size: 24rpx;
+                
+                color: #333333;
+            }
+        }
+    }
+}
+
+.topTagContainer {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 40rpx;
+
+    .tagItem {
+        width: 68rpx;
+        height: 68rpx;
+        position: relative;
+
+        image {
+            width: inherit;
+            height: inherit;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    }
+
+    .tagTitle {
+        white-space: nowrap;
+        text-align: center;
+        font-size: 25rpx;
+        
+        
+        color: #333333;
+        top: 74rpx;
+    }
+
+    .tagDes {
+        white-space: nowrap;
+        text-align: center;
+        font-size: 25rpx;
+        
+        
+        color: #333333;
+        top: 108rpx;
+    }
+
+    .positionCenter {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 0);
+    }
+}
+</style>

@@ -1,12 +1,3 @@
-<!--
- * @FilePath: \jichao_app_2\src\pages\drawCard\drawCard.vue
- * @Author: wjw
- * @Date: 2022-11-16 11:38:59
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-15 13:37:37
- * Copyright: 2022 .
- * @Descripttion: 
--->
 <template>
   <view>
     <!-- 启动动画 -->
@@ -23,13 +14,13 @@
     
     <view class="draw-box"> 
       <!-- 顶部导航 -->
-      <view class="draw-navigation">
+      <view class="draw-navigation" :class="isPokemom?'pokemom':'normal'">
         <view class="draw-back" @click="onClickBack()"><view class="icon-back"></view></view>
         <view class="draw-navigation-right">
           <view class="draw-navigation-tab" v-for="item in navigationTab" :key="item.type" @click="onClickNavigation(item)">
             <view v-if="item.type=='ani'&&!animationSwitch" class="icon-anin"></view>
             <view v-else :class="`icon-${item.type}`" ></view>
-            <view class="draw-navigation-msg u-line-1">{{item.type=='music'?musicData.name:item.name}}</view>
+            <view class="draw-navigation-msg">{{item.type=='music'?musicData.name:item.name}}</view>
           </view>
         </view>
       </view>
@@ -41,7 +32,7 @@
 			<movable-area class="movable-area">
 				<movable-view
 					class="movable-content"
-          :disabled=" item.index != cardData.step || DrawCardOver || animationStart"
+          :disabled=" item.index != cardData.step || DrawCardOver || disabledMove"
           v-for="item in showList"
 					:key="item.index"
 					direction="all"
@@ -54,28 +45,35 @@
           @touchend.prevent="picTouchEnd"
 				>
           <view v-if="item.index == 0" class="movable-box dangban" ></view>
-          <view v-else-if="item.index==cardData.step+1&&animationStart"></view>
-          <animationCard v-else-if="item.color=='gold'&&animationSwitch" :start="item.index==cardData.step&&animationStart" :cardMove="item.index==cardData.step+1&&cardMove" :data="{team:(item.extra&&item.extra.team)?item.extra.team:'',position:(item.extra&&item.extra.position)?item.extra.position:'',rc:item.rc}" @over="animationStart=false">
-            <view class="movable-box movable-box-gold">
-              <view class="movable-pic-bg"></view>
-              <view v-if="item.rc" class="movable-rc" :class="`icon-rc-${item.color}`" />
-              <image class="movable-pic" :src="item.newPic||defultPic" @error="parseImage()"/>
-              <view class="movable-name" :class="{'long-name':ifNameTooLong(item.player)}">{{item.player}}</view>
-            </view>
+          <!-- 大小车球队挡板 -->
+          <view v-else-if="!item.known&&item.zuhecheTeam" class="movable-box dangban-team"></view>
+          <view v-else-if="item.index==nextStep(1)&&animationStart"></view>
+          <animationCard v-else-if="item.color=='gold'&&animationSwitch" :start="item.index==cardData.step&&animationStart" :cardMove="item.index==nextStep(1)&&cardMove" :data="{team:(item.extra&&item.extra.team)?item.extra.team:'',position:(item.extra&&item.extra.position)?item.extra.position:'',rc:item.rc}" @over="onAnimationOver">
+            <cardBox :item="item" :bit="cardBit" :defultPic="defultPic" @errorPic="parseImage()"/>
           </animationCard>
-					<view 
-            v-else 
-            class="movable-box"
-            :class="[(item.index == cardData.step + 1)&&item.color=='gold'?'container':'',item.color==''?'movable-box-silver':'movable-box-' + item.color]"
-          >
-            <view ></view>
-            <view class="movable-pic-bg"></view>
-            <view v-if="item.rc" class="movable-rc" :class="`icon-rc-${item.color}`" />
-            <image class="movable-pic" :src="item.newPic||defultPic" @error="parseImage()"/>
-            <view class="movable-name" :class="{'long-name':ifNameTooLong(item.player)}">{{item.player}}</view>
-          </view>
+          <cardBox v-else :item="item" :bit="cardBit" :defultPic="defultPic" :animation="(item.index==nextStep(1))&&item.color=='gold'" @errorPic="parseImage()"/>
+          
 				</movable-view>
 			</movable-area>
+      
+      <!-- 大小车内容 -->
+      <!-- 大小车动效2s -->
+      <!-- <image v-if="animationTeamStart" mode="aspectFit" src="@/static/drawCard/team/dynamic.gif" class="image-dynamic"></image>
+      <video id="myVideo" class="drawcard-video" v-if="showVideo" :controls="false" :show-fullscreen-btn="false" :show-play-btn="false" :enable-play-gesture="false" :vslide-gesture-in-fullscreen="false" :show-center-play-btn="false" :direction="0" :autoplay="true"
+      :show-loading="false" :enable-progress-gesture="false" src="@/static/drawCard/video/huangfeng.mp4" @ended="onVideoEnd" >
+        <cover-view class="video-skip">
+          <cover-view class="video-skip-text" @click="onVideoEnd">跳过动画</cover-view>
+          <cover-view class="video-skip-line"></cover-view>
+        </cover-view>
+      </video>
+      <view v-if="showVideoImage" class="zuheche-container">
+        <view class="zuheche-team-title">恭喜获得{{zuhecheName}}车位！</view>
+        <image class="zuheche-team-image" src="@/static/drawCard/video/hf.png"/>
+        <view class="zuheche-team-btn" @click="onTeamEnd">返回搓卡</view>
+      </view> -->
+
+      <!-- 指定卡密奖励 -->
+      <noAward :popupShow.sync="showNoAward" :award="noAwardData" @noShow="once=0"/>
       
       <view class="bottom-box" :style="{'top':`${fitPosition.boxTop}rpx`}">
         <view class="cardname"><text class="cardname-clamp">{{this.cardname}}</text></view>
@@ -117,16 +115,19 @@
   import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
   import { DarwCard } from './utils/interface'
-  import { parsePic } from "@/tools/util";
+  import { parsePic ,isDuringDate } from "@/tools/util";
 	import BaseNode from '../../base/BaseNode.vue';
   import music from './components/music/music.vue'
   import scene from './components/scene/scene.vue'
   import animationCard from './components/animationCard/animationCard.vue'
+  import cardBox from './components/cardBox/cardBox.vue'
+  import noAward from './components/popup/noAward.vue'
   @Component({
-    components:{music,scene,animationCard}
+    components:{music,scene,animationCard,cardBox,noAward}
   })
 	export default class ClassName extends BaseNode {
     parsePic = parsePic;
+    isDuringDate = isDuringDate;
     navigationTab:Array<{
         type:string;
         name:string;
@@ -169,17 +170,25 @@
       height:880,
       boxTop:1170
     }
+    showNoAward=false;
+    noAwardData:any={};
+    once=0;
+    cardBit=0;
+    animationTeamStart=false
+    showVideo=false;
+    showVideoImage=false;
+    zuhecheName=""
     /**是否最后一张卡片 */
     public get DrawCardOver():boolean {
       return this.cardData.step  >= this.cardData.total;
     }
     public get cardname() : string {
       if(this.cardData.step===0) return '拖动卡片解锁卡密';
-      return this.animationStart?'':this.codeList[this.cardData.step].name
+      return this.disabledMove?'':this.codeList[this.cardData.step].name
     }
     public get showList(): Array<any|DarwCard.Code>{
       const endNum = this.codeList.length;
-      const list = this.codeList.slice(this.cardData.step,Math.min(this.cardData.step+2,endNum));
+      const list = this.codeList.slice(this.cardData.step,Math.min(this.nextStep(2),endNum));
       return list
     }
     public get bgImage() : string {
@@ -189,7 +198,15 @@
         return `/static/drawCard/${this.sceneData.bg}.${this.animationSwitch?'gif':'jpg'}`
       }
       return _default
-    } 
+    }
+    public get isPokemom() : boolean {
+      return this.sceneData.bg=="bj_004"
+    }
+    
+    public get disabledMove() : boolean {
+      return  this.animationStart || this.animationTeamStart
+    }
+    
     onLoad(query:any){
       this.fitCardPosition();
       this.initEvent(query)
@@ -203,6 +220,9 @@
     }
     onClickBack(){
       uni.navigateBack({delta:1})
+    }
+    nextStep(num:number){
+      return this.cardData.step + num;
     }
     fitCardPosition(){
       const { model, windowHeight, windowWidth } = app.platform.systemInfo;
@@ -220,7 +240,14 @@
       });
     }
     initEvent(query: any): void { 
-      this.sceneData.picType = query.picType || 0;
+      this.cardBit = query.bit || 0;
+      if((this.cardBit&1)==1){
+        this.sceneData.picType = 3; //宝可梦
+      }else{
+        this.sceneData.picType = Number(query.picType) || 0;
+      }
+      this.once = query.once;
+      this.zuhecheName = query.zuhecheName
       if(query.picType == 1){
         this.defultPic = '../../static/goods/drawcard/default_.png';
       } 
@@ -234,6 +261,7 @@
       initList.forEach((x:DarwCard.Code,index:number)=>{
         x['newPic'] = parsePic(decodeURIComponent(x.pic))
         x['index'] = index+1
+        x['known'] = false
       });
       this.codeList = [{index:0},...initList]
       this.cardData.total = query.num;
@@ -265,6 +293,7 @@
       }, 10); 
     }
     onClickNavigation(item:{ type:string; name:string; }){
+      if(this.disabledMove) return;
       if(item.type=='scene') this.sceneData.show=true ;
       if(item.type=='music') this.musicData.show=true ;
       if(item.type=='ani'){
@@ -295,7 +324,7 @@
         },3000)
       }
       
-      !this.animationStart && (this.cardMove=true)
+      !this.disabledMove && (this.cardMove=true)
     }
     /**移动中 */
     onChangeMovable(event:any) {
@@ -305,7 +334,7 @@
     }
     /**移动结束 计算位置 */
     picTouchEnd() {
-      if(this.DrawCardOver || this.animationStart) return;
+      if(this.DrawCardOver || this.disabledMove) return;
       const { x_init: iX, y_init: iY } = this.moveData; 
       const { x: mX, y: mY } = this.changeMove; 
       this.moveData.x = mX;
@@ -321,15 +350,46 @@
           if(!this.DrawCardOver && ['gold','SP'].includes(this.codeList[step+1].color)){
             uni.vibrateLong({})
           }
-          // 特效卡并且动画开启
-          if(item.color=='gold'&&this.animationSwitch){
+          if(item.zuhecheTeam){
+            // 大小车
+            this.animationTeamStart = true
+            setTimeout(()=>{
+              this.showVideo = true;
+              this.showVideoImage = true;
+              this.animationTeamStart = false;
+              this.$set(item, 'known', true);
+            },2000)
+          }else if(item.color=='gold'&&this.animationSwitch){
+            // 特效卡并且动画开启
             this.animationStart = true;
+          }else{
+            this.setShowLuckyBox()
           }
         }
         this.moveData.x = iX;
         this.moveData.y = iY;
         this.cardMove = false;
+        this.getMore();
       }, 50);
+    }
+    onVideoEnd(){
+      this.showVideo = false;
+    }
+    onTeamEnd(){
+      this.showVideoImage=false;
+    }
+    onAnimationOver(){
+      this.animationStart=false;
+      this.setShowLuckyBox()
+    }
+    setShowLuckyBox() {
+      if(this.once==0) return;
+      const currentItem = this.codeList[this.cardData.step];
+      // 指定卡密奖励
+      if(!uni.$u.test.isEmpty(currentItem.award)){
+        this.noAwardData = currentItem.award;
+        this.showNoAward = true
+      }
     }
     // 解锁卡密排序切换
     onClickDrawerType(index: number){
@@ -339,7 +399,7 @@
       }
     }
     drawerDataSort(){
-      const data:any = this.codeList.slice(1,this.cardData.step+1);
+      const data:any = this.codeList.slice(1,this.nextStep(1));
       if(this.drawerData.check == 2){
         data.sort((a:DarwCard.Code, b:DarwCard.Code) => {
           if(b.number === 0 || a.number === 0){
@@ -351,11 +411,18 @@
       }
       this.drawerData.code = data
     }
+    getMore(){
+      if(this.cardData.step==this.codeList.length-6){
+        uni.$u.throttle(()=>{
+          this.reqNewData();
+        },1000)
+      }
+    }
     reqNewData(){
       const { pageIndex, pageSize, noMoreData, goodOrder } = this.initData;
       // 获取更多商品
       if (noMoreData) return;
-
+      
       app.http.Get(`me/orderInfo/buyer/${goodOrder}/noShowList`, { pageIndex, pageSize }, (data: any) => {
         if (data.list) {
           const index = this.codeList.length;
@@ -364,22 +431,16 @@
               ...rest,
               pic,
               newPic: parsePic(decodeURIComponent(pic)),
-              index: index + i
+              index: index + i,
+              known: false
             }))
           );
         }
         if(data.totalPage<=pageIndex){
           this.initData.noMoreData = true;
-        }else{
-          this.initData.pageIndex++;
-          setTimeout(()=>{
-            this.reqNewData();
-          },100)
         }
+        this.initData.pageIndex++;
       });
-    }
-    ifNameTooLong(name:string):boolean{
-      return name.length>8?true:false
     }
     
   }
@@ -411,8 +472,8 @@
       width: 100%;
       margin-top: 30rpx;
       font-size: 24rpx;
-      font-family: PingFangSC-Regular;
-      font-weight: 400;
+      
+      
       color: #a3a3a3;
       text-align: center;
     }
@@ -446,68 +507,24 @@
     justify-content: space-between;
     box-sizing: border-box;
     padding:0 35rpx;
-    .draw-back{
-      width: 49rpx;
-      height: 49rpx;
-      background: linear-gradient(0deg, #FFFFFF, rgba(255,255,255,0.01), #FFFFFF);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    position: relative;
+    .sp-navigator{
+      position: absolute;
+      right:23rpx;
+      bottom:-110rpx;
     }
-    .icon-back{
-      width: 17rpx;
-      height:30rpx;
-      background: url(@/static/drawCard/icon_back.png) no-repeat center / 100% 100%;
-      margin-left: -2rpx;
+    .sp-icon{
+      width: 94rpx;
+      height:93rpx;
     }
+    
     .draw-navigation-right{
       height:100rpx;
       display: flex;
       justify-content: flex-end;
       align-items: center;
     }
-    .draw-navigation-tab{
-      display: flex;
-      align-items: center;
-      padding:0 18rpx 0 16rpx;
-      height:49rpx;
-      line-height: 49rpx;
-      box-sizing: border-box;
-      background: linear-gradient(0deg, #FFFFFF, rgba(255,255,255,0.01), #FFFFFF);
-      border-radius: 24rpx;
-      font-size: 25rpx;
-      font-family: PingFang SC;
-      font-weight: 500;
-      color: #FFFFFF;
-      margin-left: 29rpx;
-    }
-    .draw-navigation-msg{
-      max-width: 160rpx;
-      height:49rpx;
-      line-height: 49rpx;
-      margin-left: 8rpx;
-    }
-    .icon-scene{
-      width: 28rpx;
-      height:26rpx;
-      background: url(@/static/drawCard/icon_scene.png) no-repeat center / 100% 100%;
-    }
-    .icon-ani{
-      width: 31rpx;
-      height:30rpx;
-      background: url(@/static/drawCard/icon_ani.png) no-repeat center / 100% 100%;
-    }
-    .icon-anin{
-      width: 31rpx;
-      height:30rpx;
-      background: url(@/static/drawCard/icon_ani_.png) no-repeat center / 100% 100%;
-    }
-    .icon-music{
-      width: 26rpx;
-      height:25rpx;
-      background: url(@/static/drawCard/icon_music.png) no-repeat center / 100% 100%;
-    }
+    
   }
   .movable-area {
     position: fixed;
@@ -518,132 +535,109 @@
     pointer-events: none;
     z-index:3;
   }
+  @mixin drawBack($size) {
+    width: $size;
+    height: $size;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .normal .draw-back{
+    @include drawBack(49rpx);
+    background: linear-gradient(0deg, #FFFFFF, rgba(255,255,255,0.01), #FFFFFF);
+  }
+  .pokemom .draw-back{
+    @include drawBack(50rpx);
+    background: url(@/static/drawCard/icon_back2.png) no-repeat center / 100% 100%;
+  }
+  .normal .icon-back{
+    width: 17rpx;
+    height:30rpx;
+    background: url(@/static/drawCard/icon_back.png) no-repeat center / 100% 100%;
+    margin-left: -2rpx;
+  }
+  @mixin drawNaviTab($pLeft,$height,$color) {
+    display: flex;
+    height:$height;
+    line-height: $height;
+    align-items: center;
+    font-size: 25rpx;
+    
+    font-weight: 600;
+    color: $color;
+    margin-left: 29rpx;
+    box-sizing: border-box;
+    padding:0 $pLeft 0 16rpx;
+  }
+  .normal .draw-navigation-tab{
+    @include drawNaviTab(18rpx,49rpx,#ffffff);
+    background: linear-gradient(0deg, #FFFFFF, rgba(255,255,255,0.01), #FFFFFF);
+    border-radius: 24rpx;
+  }
+  .pokemom .draw-navigation-tab{
+    @include drawNaviTab(0,48rpx,#333333);
+    width: 120rpx;
+    background: url(@/static/drawCard/icon_bgy.png) no-repeat center / 100% 100%;
+  }
+  .draw-navigation-msg{
+    max-width: 160rpx;
+    height:49rpx;
+    line-height: 49rpx;
+    margin-left: 8rpx;
+  }
+  .normal .icon-scene{
+    width: 26rpx;
+    height:26rpx;
+    background: url(@/static/drawCard/icon_scene.png) no-repeat center / 100% 100%;
+  }
+  .normal .icon-ani{
+    width: 29rpx;
+    height:30rpx;
+    background: url(@/static/drawCard/icon_ani.png) no-repeat center / 100% 100%;
+  }
+  .normal .icon-anin{
+    width: 29rpx;
+    height:30rpx;
+    background: url(@/static/drawCard/icon_ani_.png) no-repeat center / 100% 100%;
+  }
+  .pokemom .icon-scene{
+    width: 26rpx;
+    height:26rpx;
+    background: url(@/static/drawCard/bkm_scene.png) no-repeat center / 100% 100%;
+  }
+  .pokemom .icon-ani{
+    width: 29rpx;
+    height:30rpx;
+    background: url(@/static/drawCard/bkm_ani.png) no-repeat center / 100% 100%;
+  }
+  .pokemom .icon-anin{
+    width: 29rpx;
+    height:30rpx;
+    background: url(@/static/drawCard/bkm_ani_.png) no-repeat center / 100% 100%;
+  }
+  .icon-music{
+    width: 26rpx;
+    height:25rpx;
+    background: url(@/static/drawCard/icon_music.png) no-repeat center / 100% 100%;
+  }
   .movable-content {
     pointer-events: auto;
     width: 528rpx;
     height: 795rpx;
   }
   .movable-box {
-    width: 528rpx;
-    height: 795rpx;
-    position: relative;
-  }
-  .movable-rc{
-    width: 80rpx;
-    height:80rpx;
-    position: absolute;
-    top:29rpx;
-    right:27rpx;
-    z-index: 2;
-  }
-  .icon-rc-blue{
-    background:url(@/static/drawCard/rc_blue.png) no-repeat center / 100% 100%;
-  }
-  .icon-rc-gold{
-    background:url(@/static/drawCard/rc_gold.png) no-repeat center / 100% 100%;
-  }
-  .movable-pic-bg{
-    width:508rpx;
-    height: 722rpx;
-    position: absolute;
-    top:8rpx;
-    right:10rpx;
-    background: url(@/static/drawCard/pic_bg_silver.png) no-repeat center / 100% 100%;
-    z-index: 1;
-  }
-  .movable-pic {
-    width:496rpx;
-    height:662rpx;
-    margin: 10rpx 0 0 16rpx;
-    position: relative;
-    z-index: 2;
-  }
-  .movable-name{
-    width: 484rpx;
-    box-sizing: border-box;
-    height: 96rpx;
-    text-align: center;
-    line-height: 90rpx;
-    color:#fff;
-    font-size: 41rpx;
-    font-family: PingFang SC;
-    font-weight: 600;
-    position: absolute;
-    z-index: 4;
-    overflow: hidden;
-    text-overflow:ellipsis;
-    white-space: nowrap;
-    bottom:67rpx;
-    left:16rpx;
-    background: url(@/static/drawCard/card_b_silver.png) no-repeat center / 100% 100%;
-  }
-  .movable-box-red .movable-name{
-    background: url(@/static/drawCard/card_b_red.png) no-repeat center / 100% 100%;
-  }
-  .movable-box-blue .movable-name{
-    background: url(@/static/drawCard/card_b_blue.png) no-repeat center / 100% 100%;
-  }
-  .movable-box-gold .movable-name{
-    background: url(@/static/drawCard/card_b_gold.png) no-repeat center / 100% 100%;
-  }
-  .long-name{
-    font-size: 34rpx;
-  }
+		width: 528rpx;
+		height: 795rpx;
+		position: relative;
+	}
   .dangban {
-    background: url("../../static/drawCard/card_dangban.png") no-repeat 8rpx 8rpx;
-    background-size: 513rpx 722rpx;
-  }
-  .movable-box-silver {
-    background: url(../../static/drawCard/card_silver.png) no-repeat center -30rpx;
-    background-size: 100% 100%;
-  }
-  .movable-box-red {
-    background: url(../../static/drawCard/card_red.gif) no-repeat center -30rpx;
-    background-size: 100% 100%;
-  }
-  .movable-box-blue{
-    background: url(../../static/drawCard/card_blue.gif) no-repeat center -30rpx;
-    background-size: 100% 100%;
-  }
-  .movable-box-gold {
-    background: url(../../static/drawCard/card_gold.gif) no-repeat center -30rpx;
-    background-size: 100% 100%;
-  }
-  .movable-box-red .movable-pic-bg{
-    background: url(@/static/drawCard/pic_bg_red.png) no-repeat center / 100% 100%;
-  }
-  .movable-box-blue .movable-pic-bg{
-    background: url(@/static/drawCard/pic_bg_blue.png) no-repeat center / 100% 100%;
-  }
-  .movable-box-gold .movable-pic-bg{
-    background: url(@/static/drawCard/pic_bg_gold.png) no-repeat center / 100% 100%;
-  }
-  .container{
-    animation-name:container; 
-    animation-duration:1s; /*动画时间*/
-  }
-
-  @keyframes container{
-    0%,
-    100%,
-    20%,
-    50%,
-    80% {
-    transition-timing-function: cubic-bezier(0.215,.61,.355,1); /*贝塞尔曲线 ： X1 Y1 X2 Y2*/
-    transform: translate3d(0,0,0); /*设置只在Z轴上移动*/
-    }
-    40%,
-    43%{
-    transition-timing-function: cubic-bezier(0.755,0.50,0.855,0.060);
-    transform: translate3d(0,-30px,0);
-    }
-    70%{
-    transition-timing-function: cubic-bezier(0.755,0.050,0.855,0.060);
-    transform: translate3d(0,-15px,0);
-    }
-    90%{
-    transform: translate3d(0,-3px,0);
-    }
+		background: url(@/static/drawCard/card_dangban.png) no-repeat 8rpx 8rpx;
+		background-size: 513rpx 722rpx;
+	}
+  .dangban-team{
+    background: url(@/static/drawCard/team/bg.png) no-repeat 8rpx 8rpx;
+		background-size: 513rpx 722rpx;
   }
   .bottom-box{
     width: 524rpx;
@@ -666,8 +660,8 @@
   }
   .cardname-clamp{
     font-size: 26rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
+    
+    
     color: #FFFFFF;
     line-height: 38rpx;
     display: -webkit-box;
@@ -709,8 +703,8 @@
     text-align: center;
     margin-top: 18rpx;
     font-size: 19rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
+    
+    
     color: #FFFFFF;
   }
   // 抽屉内容
@@ -727,8 +721,8 @@
     height: 40rpx;
     line-height: 40rpx;
     font-size: 24rpx;
-    font-family: PingFangSC-Regular;
-    font-weight: 400;
+    
+    
     color: #9b9b9b;
     margin-right: 15rpx;
     position: relative;
@@ -748,7 +742,7 @@
   }
   .drawer-box-header-check {
     color: #333333;
-    font-family: PingFangSC-Regular;
+    
     font-size: 30rpx;
   }
   .drawer-box-item {
@@ -766,8 +760,8 @@
   .drawer-box-item-left {
     width: 580rpx;
     font-size: 20rpx;
-    font-family: PingFangSC-Regular;
-    font-weight: 400;
+    
+    
     color: #333333;
     line-height: 30rpx;
   }
@@ -777,7 +771,7 @@
     align-items: center;
     justify-content: center;
     font-size: 88rpx;
-    font-family: PingFangSC-Medium;
+    
     font-weight: bold;
     color: #333333;
   }
@@ -787,4 +781,113 @@
     top: -9999;
     display: none;
   }
+  .wobble-hor-bottom {
+    animation: wobble-hor-bottom 1s both;
+    animation-iteration-count: 1;
+  }
+  @keyframes wobble-hor-bottom {
+    0%,
+    100% {
+      -webkit-transform: translateX(0%);
+              transform: translateX(0%);
+      -webkit-transform-origin: 50% 50%;
+              transform-origin: 50% 50%;
+    }
+    15% {
+      -webkit-transform: translateX(-20px) rotate(-6deg);
+              transform: translateX(-20px) rotate(-6deg);
+    }
+    30% {
+      -webkit-transform: translateX(10px) rotate(6deg);
+              transform: translateX(10px) rotate(6deg);
+    }
+    45% {
+      -webkit-transform: translateX(-10px) rotate(-3.6deg);
+              transform: translateX(-10px) rotate(-3.6deg);
+    }
+    60% {
+      -webkit-transform: translateX(7px) rotate(2.4deg);
+              transform: translateX(7px) rotate(2.4deg);
+    }
+    75% {
+      -webkit-transform: translateX(-3px) rotate(-1.2deg);
+              transform: translateX(-3px) rotate(-1.2deg);
+    }
+  }
+  .drawcard-video{
+    position: fixed;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    bottom:0;
+    right: 0;
+    z-index: 888;
+  }
+  .video-skip{
+    position: fixed;
+    bottom: calc(100rpx);
+		bottom: calc(100rpx + constant(safe-area-inset-bottom));
+		bottom: calc(100rpx + env(safe-area-inset-bottom));
+    right: 40rpx;
+    z-index: 999;
+  }
+  .video-skip-text{
+    color:#fff;
+    font-size: 24rpx;
+  }
+  .video-skip-line{
+    width: 100%;
+    height:1px;
+    background:#fff;
+    margin-top: 1px;
+  }
+  .zuheche-container{
+    position: fixed;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    bottom:0;
+    right: 0;
+    z-index: 777;
+  }
+  .zuheche-team-title{
+    width: 100%;
+    color:#fff;
+    position: absolute;
+    left:0;
+    top:300rpx;
+    font-size: 38rpx;
+    text-align: center;
+    z-index: 1;
+  }
+  .zuheche-team-image{
+    width:100%;
+    height:100%;
+  }
+  .zuheche-team-btn{
+    width: 460rpx;
+    height:80rpx;
+		background: #FA1545;
+    color:#fff;
+    position: absolute;
+    left:50%;
+    margin-left: -230rpx;
+    bottom: calc(150rpx);
+		bottom: calc(150rpx + constant(safe-area-inset-bottom));
+		bottom: calc(150rpx + env(safe-area-inset-bottom));
+    font-size: 36rpx;
+    text-align: center;
+    line-height: 80rpx;
+    z-index: 1;
+  }
+  .image-dynamic{
+		width: 100%;
+		height:100%;
+		position: fixed;
+		z-index: 66;
+		left:0;
+		top:0
+	}
 </style>

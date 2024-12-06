@@ -615,7 +615,7 @@ export default {
     text-align: center;
     line-height: 73rpx;
     font-size: 24rpx;
-    font-family: PingFang SC;
+    
     font-weight: bold;
     color: #fffefe;
 }

@@ -4,7 +4,11 @@
       <statusbar />
       <view class="tab-header">
         <view class="header-search">
-          <searchinput :searchText="searchText" @clicksearch="onClickSearch" ></searchinput>
+          <view class="header-search-input" @click="onClickSearch">
+            <view class="sousuo-icon"></view>
+            {{searchText}}
+            <view class="search-icon">搜索</view>
+          </view>
         </view>
         <view class="header-right" @click="onClickBack">取消</view>
       </view>
@@ -179,8 +183,8 @@ page{
   height: 50rpx;
   line-height: 50rpx;
   font-size: 26rpx;
-  font-family: PingFangSC-Regular, PingFang SC;
-  font-weight: 400;
+  
+  
   color: #14151a;
 }
 
@@ -205,8 +209,8 @@ page{
     align-items: center;
     box-sizing: border-box;
     font-size: $font-24;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
+    
+    
     color: #14151a;
   }
   .header-sort-icon {
@@ -259,8 +263,8 @@ page{
       display: flex;
       align-items: center;
       font-size: $font-24;
-      font-family: PingFangSC-Medium, PingFang SC;
-      font-weight: 500;
+      
+      font-weight: 600;
       color: #14151a;
     }
     &-index:last-child {
@@ -273,5 +277,46 @@ page{
   .classify-opt {
     color: #f65d2d;
   }
+}
+.header-search-input{
+  width: 100%;
+  height: 65rpx;
+  background: #FFFFFF;
+  border: 2rpx solid $btn-red;
+  border-radius: 40rpx;
+  position: relative;
+  font-size: 28rpx;
+  
+  
+  color: #A3A3A3;
+  line-height: 65rpx;
+  box-sizing: border-box;
+  padding-left: 34rpx;
+  display: flex;
+  align-items: center;
+}
+.sousuo-icon{
+  width: 31rpx;
+  height:32rpx;
+  background:url(@/static/index/v2/sousuo.png) no-repeat center;
+  background-size:100% 100%;
+  margin-right: 30rpx;
+}
+.search-icon{
+  width: 113rpx;
+  height: 54rpx;
+  background: $btn-red;
+  border-radius: 30rpx;
+  position: absolute;
+  right:3rpx;
+  top:50%;
+  margin-top: -27rpx;
+  text-align: center;
+  line-height: 54rpx;
+  font-size: 28rpx;
+  
+  
+  color: #FFFFFF;
+  box-sizing: border-box;
 }
 </style>

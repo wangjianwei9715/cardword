@@ -7,25 +7,39 @@
 					<view class="seller-name">{{item.seller.name}}</view>
 				</view>
 				<view class="header-right">
-					<view :class="['header-right-index','state']">{{item.stateName}}</view>
-					<view v-if="item.state==0" class="header-right-count">{{intervalList[item.code]?intervalList[item.code].coun_down:''}}</view>
+					<view class="header-right-index state">
+						{{item.stateName}}
+						<u-count-down class="count-down" v-if="(item.state==1&&item.leftSec>0)" :time="item.leftSec*1000" format="mm:ss" fontSize="24rpx" @change="onChangeTime($event,item)" @finish="onFinish(item)"></u-count-down>
+						<u-count-down class="count-down" v-if="item.good.liveCountdownSecs>0" :time="item.good.liveCountdownSecs*1000" format="mm:ss" fontSize="24rpx"></u-count-down>
+					</view>
 				</view>
 			</view>
 			<view class="orderlist-index-center" @click="onClickJumpUrl(item.code)">
 				<muqian-lazyLoad class="goods-image" :src="getGoodsImg(decodeURIComponent(item.good.pic))"></muqian-lazyLoad>
 				<view class="goods-content">
-					<view class="title">{{item.good.title}}</view>
-					<view class="state" :class="{'no-bg':item.good.stateName=='未中卡'}">{{item.good.stateName=='未中卡'?'':item.good.stateName}}{{item.good.stateName=='拼团中'?' '+(item.good.currentNum+item.good.lockNum)+'/'+item.good.totalNum:''}}</view>
+					<view class="title u-line-2">{{item.good.title}}</view>
 					<view class="desc">
-						<view class="price">￥{{item.price}}<text class="total-num">共{{item.num}}件</text></view>
-						<view ></view>
+						<view class="num">数量x{{item.num}}</view>
+						<view class="price">实付
+							<view class="total-price">
+								¥<text class="price-text">{{ filterPrice(item.price).integer }}</text>
+								<text class="decimal" v-if="filterPrice(item.price).decimal">{{ filterPrice(item.price).decimal }}</text>
+							</view>
+						</view>
 					</view>
 				</view>
 			</view>
 			<view class="orderlist-index-bottom">
-				
+				<view>
+					<view v-if="item.icon">
+						<view v-for="(items,indexs) in item.icon" class="hitnum-bg">
+							<view class="hitnum-tips" :style="{background:itemsTips(items).background}">{{itemsTips(items).text}}x{{items.num}}</view>
+							<muqian-lazyLoad class="tips-pic" :src="getGoodsImg(decodeURIComponent(items.icon))" mode="aspectFit"></muqian-lazyLoad>
+						</view>
+					</view>
+				</view>
 				<view class="operate" v-if="item.operate" >
-					<view :class="['btn','btn-'+btnitem.cmd]" @click="onClickOperate(item,btnitem.cmd)" v-for="btnitem in item.operate" :key="btnitem.cmd">{{btnitem.name}}</view>
+					<view v-show="(btnitem.name!='删除订单'|| !item.icon || item.icon.length<=2)" :class="['btn','btn-'+btnitem.cmd]" @click="onClickOperate(item,btnitem.cmd)" v-for="btnitem in item.operate" :key="btnitem.cmd">{{btnitem.name}}</view>
 				</view>
 			</view>
 		</view>
@@ -35,34 +49,17 @@
 <script lang="ts">
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
-	import {getCountDownTime} from '@/tools/util';
-	import {
-		getGoodsImg
-	} from "../../tools/util";
+	import { getGoodsImg,filterPrice } from "@/tools/util";
+	import { _Maps } from "@/tools/map"
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
 		orderList:any;
 		
+		tipsData = _Maps._GoodsTips;
 		getGoodsImg = getGoodsImg;
-		getCountDownTime = getCountDownTime;
-		intervalList:{[x:string]:any} = {};
-		
-		@Watch('orderList')
-		onGoodsListChanged(val: any, oldVal: any){
-			this.orderList = val;
-			this.getOrderList()
-		}
-		created(){//在实例创建完成后被立即调用
-			
-		}
-		mounted(){//挂载到实例上去之后调用
-		}
-		destroyed(){
-			for(let i in this.intervalList){
-				clearInterval(this.intervalList[i].func)
-			}
-		}
+		filterPrice = filterPrice;
+		countDownData:any = {};
 		onClickJumpMerchant(item:any){
 			this.goMerchantPage(item.seller.alias)
 		}
@@ -70,53 +67,40 @@
 			this.$emit("send", id);
 		}
 		onClickOperate(item:any,cmd:any){
-			this.$emit("operate", item,cmd);
+			this.$emit("operate", item,cmd,this.countDownData[item.code]||0);
 		}
-		getOrderList(){
-			let data = JSON.parse(JSON.stringify(this.orderList))
-			if(!data){
-				return;
-			}
-			for(let i in this.orderList){
-				if(this.orderList[i].state==0&&this.orderList[i].coun_down>0){
-					this.intervalList[this.orderList[i].code] = {code:this.orderList[i].code,coun_down:this.getCountDownTime(this.orderList[i].coun_down),time:this.orderList[i].coun_down,func:function(){}};
-				}
-			}
-			this.countDownTime()
+		onFinish(item:any){
+			this.$emit("onFinish", item);
 		}
-		countDownTime(){
-			for(let i in this.intervalList){
-				this.intervalList[i].func = setInterval(()=>{
-					if(this.intervalList[i].time>0){
-						this.intervalList[i].time--;
-						this.intervalList[i].coun_down= this.getCountDownTime(this.intervalList[i].time);
-						this.$forceUpdate()
-					}else{
-						clearInterval(this.intervalList[i].func)
-					}
-				},1000)
-			}
-			
-			
+		onChangeTime({minutes,seconds}:any,item:any){
+			this.countDownData[item.code] = (minutes*60) + seconds;
 		}
-	
+		itemsTips(item){
+			const type = item.tp=='hit'?1:(item.tp=='award'?4:2);
+			return this.tipsData[type]
+		}
 	}
 </script>
 
 <style lang="scss">
+	.count-down{
+		margin-left: 10rpx;
+		font-size: 24rpx;
+		color: #A2A8B4;
+	}
 	.orderlist{
 		&-index{
 			width: 100%;
 			border-radius: 5rpx;
 			background:#fff;
 			box-sizing: border-box;
-			margin-bottom: 14rpx;
+			margin-bottom: 12rpx;
 			&-header{
 				width: 100%;
-				height:80rprx;
+				height:100rpx;
 				display: flex;
 				box-sizing: border-box;
-				padding:0 20rpx 0 28rpx;
+				padding:0 26rpx 0 26rpx;
 				align-items: center;
 				justify-content: space-between;
 				.header-left{
@@ -128,15 +112,15 @@
 						width: 40rpx;
 						height:40rpx;
 						border-radius: 50%;
-						margin-right: 16rpx;
+						margin-right: 8rpx;
 					}
 					.seller-name{
 						height:40rpx;
 						line-height: 40rpx;
-						font-size: 24rpx;
-						font-family: PingFangSC-Regular, PingFang SC;
-						font-weight: 400;
-						color: #14151A;
+						font-size: 28rpx;
+						
+						
+						color: #333333;
 					}
 				}
 				.header-right{
@@ -147,59 +131,43 @@
 						height:80rpx;
 						display: flex;
 						align-items: center;
-						font-size: 26rpx;
-						font-family: PingFangSC-Medium, PingFang SC;
-						font-weight: 600;
-					}
-					&-count{
-						font-size: 32rpx;
-						font-family: 'DIN';
-						font-weight: bold;
-						color: #FF4349;
-						margin-left: 14rpx;
-					}
-					.state{
-						color: #14151B;	
+						font-size: 24rpx;
+						color: #A2A8B4;
 					}
 				}
 			}
 			&-center{
 				width: 100%;
-				height:137rpx;
+				height:148rpx;
 				display: flex;
 				box-sizing: border-box;
-				padding:0 20rpx;
+				padding:0 26rpx;
 				align-items: center;
+				margin-top: -10rpx;
 				.goods-image{
 					width: 178rpx;
-					height:137rpx;
+					height:148rpx;
 					border-radius: 5rpx;
 					margin-right: 24rpx;
 				}
 				.goods-content{
 					width: 486rpx;
-					height:137rpx;
+					height:148rpx;
 					box-sizing: border-box;
 					padding:0;
+					position: relative;
 					.title{
 						width: 100%;
-						height:40rpx;
 						font-size: 28rpx;
-						font-family: PingFangSC-Regular, PingFang SC;
-						font-weight: 400;
-						color: #14151A;
+						color: rgba(0,0,0,0.9);
+						line-height: 40rpx;
 						margin-bottom: 0;
-						overflow: hidden;
-						text-overflow:ellipsis;
-						white-space: nowrap;
 						box-sizing: border-box;
 					}
 					.state{
 						height:35rpx;
 						margin-top: 5rpx;
 						font-size: 23rpx;
-						font-family: PingFangSC-Regular, PingFang SC;
-						font-weight: 400;
 						color: #F63D47;
 						box-sizing: border-box;
 						padding:0 18rpx;
@@ -212,36 +180,81 @@
 					}
 					.desc{
 						width: 100%;
-						margin-top: 20rpx;
 						height:40rpx;
 						display: flex;
 						box-sizing: border-box;
 						align-items: center;
 						justify-content: space-between;
+						position: absolute;
+						bottom:0;
+						left:0;
+						.num{
+							font-size: 20rpx;
+							color: #999999;
+						}
 						.price{
 							height:40rpx;
 							line-height: 40rpx;
-							font-size: 34rpx;
-							font-family: DINAlternate-Bold, DINAlternate;
-							font-weight: bold;
-							color: #14151A;
-						}
-						.total-num{
-							height:40rpx;
-							line-height: 40rpx;
 							font-size: 24rpx;
-							font-family: PingFangSC-Regular, PingFang SC;
-							font-weight: 400;
-							color: #AAAABB;
-							margin-left: 10rpx;
+							color: #333333;
+							display: inline-flex;
 						}
+						.total-price{
+							height:40rpx;
+							font-size: 28rpx;
+							font-weight: 600;
+							color: #000000;
+							line-height: 38rpx;
+							margin-left: 6rpx;
+							margin-top: 2rpx;
+						}
+						.total-price .price-text{
+							font-size: 28rpx;
+							font-weight: 600;
+							margin-left:2rpx;
+						}
+						.total-price .decimal{
+							font-size: 18rpx;
+							font-weight: 600;
+						}
+
 					}
 				}
 			}
 			&-bottom{
 				width: 100%;
 				box-sizing: border-box;
-				padding:15rpx 0 38rpx 20rpx;
+				padding:25rpx 0 30rpx 26rpx;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				.hitnum-bg{
+					width: 88rpx;
+					height:88rpx;
+					background:#EDEDF0;
+					position: relative;
+					border-radius: 4rpx;
+					display: inline-flex;
+					margin-right: 20rpx;
+				}
+				.tips-pic{
+					width: 88rpx;
+					height:88rpx;
+					border-radius: 4rpx;
+				}
+				.hitnum-tips{
+					height:24rpx;
+					position: absolute;
+					left:0;
+					top:0;
+					text-align: center;
+					line-height: 24rpx;
+					font-size: 18rpx;
+					color: #FFFFFF;
+					box-sizing: border-box;
+					padding:0 2rpx;
+					z-index: 2;
+				}
 				.price{
 					width: 100%;
 					height:40rpx;
@@ -249,8 +262,8 @@
 					align-items: center;
 					justify-content: flex-end;
 					font-size: 20rpx;
-					font-family: PingFangSC-Regular, PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #14151A;
 					padding-right: 20rpx;
 					box-sizing: border-box;
@@ -268,33 +281,31 @@
 					}
 				}
 				.operate{
-					width: 100%;
 					height:60rpx;
 					display: flex;
 					align-items: center;
 					justify-content: flex-end;
 					.btn{
-						width: 146rpx;
+						width: 140rpx;
 						height:60rpx;
 						display: flex;
 						align-items: center;
 						justify-content: center;
 						border-radius:5rpx;
 						font-size: 24rpx;
-						font-family: PingFangSC-Medium, PingFang SC;
-						font-weight: 400;
-						margin-right: 20rpx;
+						margin-right: 16rpx;
 						background:#fff;
-						border:1rpx solid #DADADA;
-						color:#88878c
+						border:2rpx solid #E5E5EA;
+						color:#333333;
+						font-weight: 500;
 					}
 					.btn-toPay{
-						background:#FB4E3E;
+						background: linear-gradient(to right, #FA1545 , #CF004F);
 						border:none;
 						color:#FFFFFF
 					}
 					.btn-resultCard{
-						background: #FB4E3E;
+						background: linear-gradient(to right, #FA1545,#CF004F);
 						border:none;
 						color:#FFFFFF
 					}

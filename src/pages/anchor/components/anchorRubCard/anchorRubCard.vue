@@ -51,7 +51,7 @@
 				>
 					<view v-if="index == 0" class="movable-box dangban" @touchstart.prevent="picTouchStart" @touchend.prevent="picTouchEnd"  ></view>
 					<view v-else-if="item.color=='SP' && index < stepIndex + 6" class="movable-box" @touchstart.prevent="picTouchStart" @touchend.prevent="picTouchEnd">
-						<image class="movable-box-sp" :class="movableAni" :src="index < stepIndex + 6 && item.pic!=''?item.pic:defultPic" mode="aspectFill"/>
+						<image class="movable-box-sp" :src="index < stepIndex + 6 && item.pic!=''?item.pic:defultPic" mode="aspectFill"/>
 					</view>
 					<view
 						v-else-if="index < stepIndex + 6"
@@ -150,7 +150,7 @@
 		detailData:any;
 
 		defaultAvatar = app.defaultAvatar;
-		defultPic = '../../../static/goods/drawcard/default.png';
+		defultPic = '/static/goods/drawcard/default.png';
 		showUlist = false;
 		userList:any = [];
 		userParams = {...userParams}
@@ -166,7 +166,6 @@
 			y_init:0,
 		}
 		changeMove:any = {};
-		movableAni:any = '';
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -212,12 +211,20 @@
 					this.stepIndex++;
 					let color = this.picData[this.stepIndex+1].color;
 					if(( color == 'gold' || color == 'SP')) uni.vibrateLong({});
+					this.getMore()
 				}else{
 					app.http.Post(`my/cuoka/release/${this.cardNoParams.orderCode}`,{})
 				}
 			}
 			this.moveData.x = this.moveData.x_init;
 			this.moveData.y = this.moveData.y_init
+		}
+		getMore(){
+			if(this.stepIndex==this.picData.length-6){
+				uni.$u.throttle(()=>{
+					this.reqNewData();
+				},1000)
+			}
 		}
 		getUserlist(cb?:Function){
 			const params = this.userParams;
@@ -238,10 +245,6 @@
 		}
 		reqNewData(cb?:Function) {
 			// 获取更多搓卡
-			uni.showLoading({
-				title: '卡密加载中',
-				mask:true
-			});
 			const params = this.cardNoParams
 			if (params.noMoreData) return;
 			app.http.Get(`my/cuoka/user/cardNo/${params.orderCode}`, params, (data: any) => {
@@ -253,15 +256,11 @@
 					this.picData = this.picData.concat(listData);
 				}
 				if(data.totalPage<=params.pageIndex){
-					this.movableAni = this.setSpAni(Number(data.sp));
-					this.totalNum = data.total;
 					params.noMoreData = true;
-					uni.hideLoading();
-					if(cb) cb()
-				}else{
-					params.pageIndex++;
-					setTimeout(()=>{ this.reqNewData(cb) },10)
 				}
+				params.pageIndex++;
+				this.totalNum = data.total;
+				if(cb) cb()
 			});
 		}
 		onClickBack(){
@@ -309,16 +308,6 @@
 			let item = this.detailData;
 			return Math.floor(((item.lockNum+item.currentNum)/item.totalNum) * 100)
 		}
-		setSpAni(sp:number):string{
-			switch(sp){
-				case 1:
-					return 'movable-box-xzj';
-				case 2:
-					return 'movable-box-noir';
-				default:
-					return '';
-			}
-		}
 	}
 </script>
 
@@ -360,8 +349,8 @@
 				text-align: center;
 				line-height: 38rpx;
 				font-size: 27rpx;
-				font-family: PingFang SC;
-				font-weight: 400;
+				
+				
 				color: #FFFFFF;
 				position: absolute;
 				right:-12rpx;
@@ -391,8 +380,8 @@
 				.cut-box-name{
 					max-width: 150rpx;
 					font-size: 33rpx;
-					font-family: PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #333333;
 				}
 				.user-choice{
@@ -419,7 +408,7 @@
 			padding-top: 10rpx;
 			.back-tips{
 				font-size: 28rpx;
-				font-family: Avenir;
+				
 				font-weight: normal;
 				color: #FFFFFF;
 				margin-right: 19rpx;
@@ -427,7 +416,7 @@
 			}
 			.back-text{
 				font-size: 36rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #FFFFFF;
 				margin-left: 19rpx;
@@ -503,7 +492,7 @@
 							align-items: center;
 							justify-content: center;
 							font-size: 23rpx;
-							font-family: PingFang SC;
+							
 							font-weight: 600;
 							color: #FFFFFF;		
 							box-sizing: border-box;				
@@ -771,7 +760,7 @@
 				width: 100%;
 				height:50rpx;
 				font-size: 40rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #FFFFFF;
 				text-align: center;
@@ -779,7 +768,7 @@
 			}
 			.CarMy-title text{
 				font-size: 36rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #FFFFFF;
 			}
@@ -792,8 +781,8 @@
 				width: 100%;
 				text-align: center;
 				font-size: 33rpx;
-				font-family: PingFang SC;
-				font-weight: 400;
+				
+				
 				color: #FFFFFF;
 				line-height: 42rpx;
 			}
@@ -828,7 +817,7 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 42rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #FFFFFF;
 			.ulist-close{
@@ -860,7 +849,7 @@
 					line-height: 218rpx;
 					font-size: 95rpx;
 					font-family: Impact;
-					font-weight: 400;
+					
 					color: #FFFFFF;
 					text-align: center;
 				}
@@ -896,7 +885,7 @@
 							height:43rpx;
 							line-height: 43rpx;
 							font-size: 27rpx;
-							font-family: PingFang SC;
+							
 							font-weight: 600;
 							color: #FFFFFF;
 							overflow: hidden;
@@ -909,8 +898,8 @@
 							height:43rpx;
 							line-height: 43rpx;
 							font-size: 27rpx;
-							font-family: PingFang SC;
-							font-weight: 400;
+							
+							
 							color: #FFFFFF;
 							box-sizing: border-box;
 							overflow: hidden;
@@ -921,8 +910,8 @@
 					}
 					.ulist-time{
 						font-size: 21rpx;
-						font-family: PingFang SC;
-						font-weight: 400;
+						
+						
 						color: #FFFFFF;
 					}
 				}
@@ -936,7 +925,7 @@
 						height:78rpx;
 						background: url(@/static/anchor/popup_btn.png) no-repeat center / 100% 100%;
 						font-size: 27rpx;
-						font-family: PingFang SC;
+						
 						font-weight: 600;
 						color: #FFFFFF;
 						text-shadow: 1px 2px 2px #313132;

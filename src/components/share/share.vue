@@ -2,10 +2,14 @@
 	<view >
 		<view class="operation-shadow" v-show="operationShow" @click="onClickOperaCancel"></view>
 		<view class="operation-content" :class="operationShow?'operation-show':''">
-			<view class="operation-index">
-				<view class="operation-btn" @click="operationStart(item.scene)" v-for="item in operationData" :key="item.id"> 
+			<view class="operation-index" :class="{'padding-small':goodCode||report}">
+				<view class="operation-btn" @click="operationStart(item)" v-for="item in operationData" :key="item.id"> 
 					<image class="operation-img" :src="item.img" mode=""></image>
 					<view class="operation-text">{{item.text}}</view>
+				</view>
+				<view class="operation-btn" v-if="goodCode"  @click="onClickFavor"> 
+					<view :class="['operation-img','icon-collect',{'icon-favored':favor}]"></view>
+					<view class="operation-text">收藏商品</view>
 				</view>
 			</view>
 			<view class="operation-cancel" @click="onClickOperaCancel">取消</view>
@@ -29,16 +33,33 @@
 
 		@Prop({ default: [] })
 		shareData!:wxShare.shareData;
-		
+		@Prop({ default: false })
+		report!:boolean;
+		@Prop({ default: ()=>{
+			return []
+		} })
+		extra!:Array<Object>;
+		@Prop({ default: "" })
+		goodCode?:string;
+		@PropSync("favorType",{
+			type:Boolean
+		}) favor?: Boolean;
+
 		operationData:any = [
-			{img:'/static/share/weixin@2x.png',text:'微信好友',scene:'WXSceneSession'},
-			{img:'/static/share/pyq@2x.png',text:'朋友圈',scene:'WXSenceTimeline'},
-			{img:'/static/share/lianjie@2x.png',text:'分享链接',scene:''},
+			{img:'/static/share/weixin.png',text:'微信好友',scene:'WXSceneSession'},
+			{img:'/static/share/pyq.png',text:'朋友圈',scene:'WXSenceTimeline'},
+			{img:'/static/share/link.png',text:'分享链接',scene:''},
 		];
 		created(){//在实例创建完成后被立即调用
 			
 		}
 		mounted(){//挂载到实例上去之后调用
+			if(this.report){
+				this.operationData.push({ img: '/static/share/report.png', text: '举报', scene: '', emit: 'report' })
+			}
+			if(this.extra&&this.extra.length){
+				this.operationData.push(...this.extra)
+			}
 			
 		}
 		destroyed(){
@@ -91,6 +112,7 @@
 				imageUrl: this.shareData.thumb,
 				success: (res)=> {
 					console.log("success:" + JSON.stringify(res));
+					this.$emit("shareSuccess",true)
 				},
 				fail: function (err) {
 					console.log("fail:" + JSON.stringify(err));
@@ -115,17 +137,28 @@
 		// 	if(list && list.length) bol=true
 		// 	return bol
 		// }
-		operationStart(scene:any){
-			if(scene==''){
+		operationStart(item:any){
+			if(item.emit){
+				this.$emit(item.emit)
+				this.onClickOperaCancel()
+				return
+			}
+			if(item.scene==''){
 				this.setClipboardData()
 			}else{
-				this.weChatShare(scene)
+				this.weChatShare(item.scene)
 			}
 			this.onClickOperaCancel()
 		}
 		onClickOperaCancel(){
 			this.$emit("operacancel");
 			this.showValue=false
+		}
+		onClickFavor() {
+			const url = `good/${!this.favor?'favor':'unfavor'}/${this.goodCode}`
+			app.http.Post(url, {}, (data: any) => {
+				this.favor = !this.favor
+			})
 		}
 	}
 </script>
@@ -143,7 +176,7 @@
 		box-sizing: border-box;
 		border-top: 1px solid #F4F3F2;
 		transition: all 0.2s linear;
-		z-index:99;
+		z-index:802;
 		background:#fff
 	}
 	.operation-shadow{
@@ -152,7 +185,7 @@
 		position: fixed;
 		top:0;
 		left:0;
-		z-index: 88;
+		z-index: 801;
 		background: rgba(0, 0, 0, 0.5);
 	}
 	.operation-show{
@@ -167,25 +200,27 @@
 		align-items: center;
 		justify-content: space-between;
 	}
+	.padding-small{
+		padding: 0 30rpx;
+	}
 	.operation-btn{
 		width: 120rpx;
-		height:170rpx;
+		height:140rpx;
 		display: flex;
 		justify-content: center;
 		flex-wrap: wrap;
 	}
 	.operation-img{
-		width: 120rpx;
-		height:120rpx;
+		width: 84rpx;
+		height:84rpx;
 		margin-bottom: 14rpx;
 	}
 	.operation-text{
 		width: 100%;
 		text-align: center;
 		font-size: 22rpx;
-		font-family: HYQiHei;
 		font-weight: normal;
-		color: #3B3B3B;
+		color: #333333;
 	}
 	.operation-cancel{
 		width: 100%;
@@ -193,9 +228,19 @@
 		line-height: 106rpx;
 		text-align: center;
 		font-size: 28rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 500;
+		
+		font-weight: 600;
 		color: #A9ABB4;
 		border-top: 1px solid #F4F3F2;
 	}
+	.icon-collect {
+		background: url(@/static/share/collect.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+
+	.icon-favored {
+		background: url(@/static/share/collect_.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+
 </style>

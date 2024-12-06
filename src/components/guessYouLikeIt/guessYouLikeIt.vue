@@ -1,19 +1,8 @@
 <template name="goodslist">
 	<view class="like-content">
-		<view class="like-header">
-			<view class="icon-lx"/>猜你喜欢<view class="icon-lx"/>
-		</view>
+		<view class="like-header">· 猜你喜欢 ·</view>
 		<view class="like-list">
-			<view class="item" v-for="(item,index) in goodsList" :key="index" @click="goGoodsDetails(item.goodCode)">
-				<view class="like-pic-box">
-					<muqian-lazyLoad class="like-pic" :src="getGoodsImg(decodeURIComponent(item.pic))" borderRadius="3rpx"></muqian-lazyLoad>
-				</view>
-				<view class="like-title">{{item.title}}</view>
-				<view class="like-bottom">
-					<view class="like-price">￥<text>{{item.price}}</text></view>
-					<view class="like-plan">{{getPlan(item)}}</view>
-				</view>
-			</view>
+			<goodslist :goodsList="goodsList" @send="goGoodsDetails" :presell="false"/>
 		</view>
 	</view>
 </template>
@@ -25,7 +14,9 @@
 	import {
 		getGoodsImg
 	} from "../../tools/util";
-	import { Md5 } from "ts-md5";
+	//@ts-ignore
+	import { KwwConfusion } from "@/net/kwwConfusion.js"
+
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:''})
@@ -36,11 +27,7 @@
 		goodsList = [];
 		created(){//在实例创建完成后被立即调用
 			setTimeout(()=>{
-				const ts = Math.floor(new Date().getTime()/1000);
-				const relativeParams = {
-					ts,
-					s:Md5.hashStr(`kww_goodrelative_sign_${this.goodCode}_${ts}_2022`)
-				}
+				const relativeParams = KwwConfusion.guessYouLike(this.goodCode);
 				this.getRelative(relativeParams)
 			},500)
 		}
@@ -63,7 +50,7 @@
 			return Math.floor((Number(item.lockNum)+Number(item.currentNum))/Number(item.totalNum)*100)+'%'
 		}
 		goGoodsDetails(goodCode:string){
-			app.navigateTo.goGoodsDetails(goodCode)
+			app.navigateTo.goGoodsDetails(goodCode,"&referer=GuessYouLike")
 		}
 	}
 </script>
@@ -82,20 +69,12 @@
 		height:100rpx;
 		display: flex;
 		align-items: center;
-		font-size: 23rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
-		color: #A5A5AA;
+		font-size: 22rpx;
+		color: #AAAFBD;
 		justify-content: center;
 	}
-	.icon-lx{
-		width:10rpx;
-		height:16rpx;
-		background:url(@/static/goods/v2/lx.png) no-repeat center / 100% 100%;
-		margin:0 16rpx;
-	}
 	.like-list{
-		width: 722rpx;
+		width: 750rpx;
 		box-sizing: border-box;
 		display: flex;
 		flex-wrap: wrap;
@@ -129,8 +108,8 @@
 			padding:14rpx 18rpx 0rpx 18rpx;
 			font-size: 27rpx;
 			line-height: 34rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #333333;
 			box-sizing: border-box;
 			text-overflow: -o-ellipsis-lastline;
@@ -153,8 +132,7 @@
 			justify-content: space-between;
 			.like-price{
 				font-size: 18rpx;
-				font-family: Alibaba PuHuiTi;
-				font-weight: 500;
+				font-weight: 600;
 				color: #333333;
 			}
 			.like-price text{
@@ -162,8 +140,8 @@
 			}
 			.like-plan{
 				font-size: 24rpx;
-				font-family: PingFang SC;
-				font-weight: 400;
+				
+				
 				color: #999999;
 			}
 		}

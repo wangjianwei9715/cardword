@@ -94,7 +94,14 @@
 			app.http.Get('my/cuoka/home',params,(res:any)=>{
 				for (const key in this.merchantData) {
 					if (Object.prototype.hasOwnProperty.call(res, key)) {
-						this.merchantData[key] = res[key];
+						if(key=='list'){
+							if(params.pageIndex==1){
+								this.merchantData.list = [];
+							}
+							this.merchantData.list = this.merchantData.list.concat(res.list);
+						}else{
+							this.merchantData[key] = res[key];
+						}
 					}
 				}
 				params.totalPage = res.totalPage
@@ -152,8 +159,8 @@
 			left:40rpx;
 			top:0;
 			font-size: 33rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #FFFFFF;
 			.avatar-bg{
 				width: 46rpx;
@@ -173,7 +180,7 @@
 		}
 		.navigation-title{
 			font-size: 46rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #FFFFFF;
 			line-height: 97rpx;
@@ -195,7 +202,7 @@
 			padding-top: 10rpx;
 			.back-tips{
 				font-size: 28rpx;
-				font-family: Avenir;
+				
 				font-weight: normal;
 				color: #FFFFFF;
 				margin-right: 19rpx;
@@ -203,7 +210,7 @@
 			}
 			.back-text{
 				font-size: 36rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #FFFFFF;
 				margin-left: 19rpx;
@@ -255,7 +262,7 @@
 				height:78rpx;
 				margin:0 auto;
 				font-size: 29rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #FFFFFF;
 				line-height: 40rpx;
@@ -317,7 +324,7 @@
 						align-items: center;
 						justify-content: center;
 						font-size: 23rpx;
-						font-family: PingFang SC;
+						
 						font-weight: 600;
 						color: #FFFFFF;		
 						box-sizing: border-box;				
@@ -344,8 +351,8 @@
 					justify-content: center;
 					padding:0 14rpx;
 					font-size: 27rpx;
-					font-family: PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #EAEAEA;
 				}
 				.info-num{
@@ -361,8 +368,8 @@
 					text-align: center;
 					line-height: 38rpx;
 					font-size: 27rpx;
-					font-family: PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #FFFFFF;
 					position: absolute;
 					right:0;

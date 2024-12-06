@@ -2,7 +2,7 @@
 	<!-- #ifndef APP-NVUE -->
 	<view
 	    class="u-grid-item"
-	    hover-class="u-grid-item--hover-class"
+	    hover-class="none"
 	    :hover-stay-time="200"
 	    @tap="clickHandler"
 	    :class="classes"
@@ -12,9 +12,9 @@
 	</view>
 	<!-- #endif -->
 	<!-- #ifdef APP-NVUE -->
+	<!-- :hover-stay-time="200" -->
 	<view
 	    class="u-grid-item"
-	    :hover-stay-time="200"
 	    @tap="clickHandler"
 	    :class="classes"
 	    :style="[itemStyle]"

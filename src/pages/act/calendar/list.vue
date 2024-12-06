@@ -19,7 +19,10 @@
 				
 			</view>
 			<view class="header-tab">
-				<tabNoline :tabc="orderTab" :tabsCheck="orderTabCheck" @tabsClick="onClickListTabs"></tabNoline>
+				<u-tabs class="goods-tabs" :list="orderTab" :current="orderTabCheck" lineHeight="0" @click="onClickListTabs" 
+					:inactiveStyle="{fontSize:'27rpx',color:'#959695',padding:'0 6rpx'}"
+					:activeStyle="{fontSize:'33rpx',color:'#333333',fontWeight:600,padding:'0 6rpx'}"
+				></u-tabs>
 			</view>
 		</view>
 
@@ -52,9 +55,10 @@
 
 <script lang="ts">
 	import { app } from "@/app";
-import { Md5 } from "ts-md5";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
+	//@ts-ignore
+	import { KwwConfusion } from "@/net/kwwConfusion.js"
 	@Component({})
 	export default class ClassName extends BaseNode {
 		windowWidth = 0;
@@ -68,14 +72,14 @@ import { Md5 } from "ts-md5";
 			{id:4,name:'橄榄球'},
 			{id:0,name:'其它'}
 		];
-		orderTabCheck = 100;
+		orderTabCheck = 0;
 		currentPage = 1;
 		pageSize = 20;
 		noMoreData = false;
 		calendaList:{[x:string]:any} = [];
 		swiperIndex = 3;
 		yearData = [
-			2019,2020,2021,2022,2023
+			2019,2020,2021,2022,2023,2024
 		]
 		monthIndex = 1;
 		scrollLeft = false;
@@ -85,11 +89,10 @@ import { Md5 } from "ts-md5";
 		onLoad(query:any) {
 			this.$nextTick(()=>{
 				let date = new Date();
-				this.yearData.map((x:number,index:number)=>{
-					(x==date.getFullYear()) && (this.swiperIndex = index)
-				})
+				const fullYear = date.getFullYear();
 				this.monthIndex = date.getMonth() +1;
 				this.scrollLeftPx = date.getMonth() * 50;
+				this.swiperIndex = this.yearData.findIndex((x:number) => x==fullYear);
 				this.initEvent()
 				this.againReqNewData()
 
@@ -124,32 +127,31 @@ import { Md5 } from "ts-md5";
 		}
 		reqNewData(cb?:Function) {
 		  // 获取更多商品
-		  if (this.noMoreData) {
-		    return;
-		  }
-		  let startDate = this.yearData[this.swiperIndex] + '-' +(this.monthIndex<10?'0'+this.monthIndex:this.monthIndex);
-		  let ts = Math.floor(new Date().getTime()/1000);
-		  let params:{[x:string]:any} = {
-			tp:this.orderTabCheck,
-			pageIndex: this.currentPage,
-			pageSize:this.pageSize,
-			date:startDate,
-			ts:ts,
-			s:Md5.hashStr('kww_calendar_'+this.orderTabCheck+'_'+startDate+'_'+this.currentPage+'_'+this.pageSize+'_'+ts+'_2022')
-		  }
-		  this.httpIng = true
-		  app.http.Get("dataApi/function/calendar/list", params, (data: any) => {
-			if(this.currentPage == 1) this.calendaList = []
-			if(data.list){
-				this.calendaList = this.calendaList.concat(data.list);
+			if (this.noMoreData) {
+				return;
 			}
-			if(!data.list || data.list.length<this.pageSize){
-				this.noMoreData = true;
+			const tp = this.orderTab[this.orderTabCheck].id
+			let startDate = this.yearData[this.swiperIndex] + '-' +(this.monthIndex<10?'0'+this.monthIndex:this.monthIndex);
+			let params:{[x:string]:any} = {
+				tp,
+				pageIndex: this.currentPage,
+				pageSize:this.pageSize,
+				date:startDate,
 			}
-		    this.currentPage++;
-			if(cb) cb()
-			this.httpIng = false;
-		  });
+			const hash = KwwConfusion.calendar({tp,startDate,currentPage:this.currentPage,pageSize:this.pageSize})
+			this.httpIng = true
+			app.http.Get("dataApi/function/calendar/list", {...params,...hash}, (data: any) => {
+				if(this.currentPage == 1) this.calendaList = []
+				if(data.list){
+					this.calendaList = this.calendaList.concat(data.list);
+				}
+				if(!data.list || data.list.length<this.pageSize){
+					this.noMoreData = true;
+				}
+				this.currentPage++;
+				if(cb) cb()
+				this.httpIng = false;
+			});
 		}
 		againReqNewData(){
 			this.currentPage = 1;
@@ -157,9 +159,7 @@ import { Md5 } from "ts-md5";
 			this.reqNewData() 
 		}
 		onClickBack(){
-			uni.navigateBack({
-			    delta: 1
-			});
+			app.navigateTo.navigateBack()
 		}
 		// 点赞
 		onClickLikeCalendar(index:number){
@@ -208,11 +208,11 @@ import { Md5 } from "ts-md5";
 			this.monthIndex = index;
 			this.againReqNewData()
 		}
-		onClickListTabs(id:number){
-			if(id==this.orderTabCheck){
+		onClickListTabs(item:any){
+			if(item.index==this.orderTabCheck){
 				return;
 			}
-			this.orderTabCheck = id;
+			this.orderTabCheck = item.index;
 			this.againReqNewData()
 		}
 		onClickGoDetail(item:any,index:number){
@@ -255,7 +255,7 @@ import { Md5 } from "ts-md5";
 	}
 	.header-center{
 		font-size: 36rpx;
-		font-weight: 500;
+		font-weight: 600;
 		color: #5D5D5D;
 		display: flex;
 		align-items: center;
@@ -320,8 +320,8 @@ import { Md5 } from "ts-md5";
 		width: 100%;
 		height:55rpx;
 		font-size: 28rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		
+		
 		color: #AAA8B3;
 		text-align: center;
 		line-height: 55rpx;
@@ -376,7 +376,7 @@ import { Md5 } from "ts-md5";
 		align-items: center;
 		justify-content: center;
 		font-size: 35rpx;
-		font-weight: 400;
+		
 		color: #41414D;
 		position:absolute;
 		left:-75rpx;
@@ -406,7 +406,7 @@ import { Md5 } from "ts-md5";
 		width: 100%;
 		height:80rpx;
 		font-size: 30rpx;
-		font-weight: 400;
+		
 		color: #000;
 		line-height: 40rpx;
 		word-break:break-all;
@@ -420,14 +420,14 @@ import { Md5 } from "ts-md5";
 		box-sizing: border-box;
 		padding-top: 18rpx;
 		font-size: 22rpx;
-		font-weight: 400;
+		
 		color: #666666;
 		display: flex;
 		align-items: center;
 	}
 	.gray-desc{
 		font-size: 22rpx;
-		font-weight: 400;
+		
 		color: #666666;
 		margin-right: 20rpx;
 		position: relative;
@@ -460,7 +460,7 @@ import { Md5 } from "ts-md5";
 		width: 100%;
 		text-align: right;
 		font-size: 22rpx;
-		font-weight: 400;
+		
 		color: #666666;
 		margin-top: -10rpx;
 	}

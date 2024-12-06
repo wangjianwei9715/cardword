@@ -120,7 +120,7 @@
 	.index-texta{
 		width: 100%;
 		font-size: 26rpx;
-		font-family: HYQiHei;
+		
 		font-weight: normal;
 		color: #7B7B7B;
 		line-height: 40rpx;
@@ -135,7 +135,7 @@
 		left:80rpx;
 		bottom:30rpx;
 		font-size: 30rpx;
-		font-family: HYQiHei;
+		
 		font-weight: bold;
 		color: #FFFFFF;
 		border-radius: 40rpx;

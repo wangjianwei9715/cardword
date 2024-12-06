@@ -1,10 +1,7 @@
 <template>
     <view class='content' @click="clickTagIndex=-1">
-        <navigationShare :navigatetoTitle="goodCode?'指定商品券':'店铺通用券'" rightText='新建'
+        <navigationbar :title="goodCode?'指定商品券':'店铺通用券'" rightText='新建'
             @onClickRightText="onClickRightText" />
-        <view style="padding-top:88rpx">
-            <statusbar />
-        </view>
         <view class="goodsContainer" v-if="goodCode">
             <image class="good-image" :src="parsePic(decodeURIComponent(logo))" mode="aspectFill" />
             <view class="good-message">
@@ -238,8 +235,8 @@
 
         .good-name {
             font-size: 25rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
+            
+            
             color: #333333;
             text-overflow: -o-ellipsis-lastline;
             overflow: hidden;
@@ -255,7 +252,7 @@
 
         .good-cumulative {
             font-size: 23rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #88878C;
 
@@ -276,8 +273,8 @@
 
         .tag {
             font-size: 28rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
+            
+            
             color: #959699;
             width: 33.33%;
             text-align: center;
@@ -285,7 +282,7 @@
 
         .selectTag {
             font-size: 31rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #333333;
         }
@@ -314,7 +311,7 @@
 
         .coupon-name {
             font-size: 27rpx;
-            font-family: PingFang SC;
+            
             font-weight: bold;
             color: #333333;
             margin-right: 17rpx;
@@ -326,8 +323,8 @@
             background: #EA424A;
             border-radius: 3rpx;
             font-size: 21rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
+            
+            
             color: #FFFFFF;
             width: 88rpx;
         }
@@ -361,7 +358,7 @@
                 width: 100%;
                 height: 53rpx;
                 font-size: 23rpx;
-                font-family: PingFang SC;
+                
                 font-weight: bold;
                 color: #333333;
             }
@@ -375,8 +372,8 @@
 
     .couponItem-message {
         font-size: 20rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
+        
+        
         color: #88878C;
         margin-top: 16rpx;
     }
@@ -385,8 +382,8 @@
         display: flex;
         align-items: center;
         font-size: 21rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
+        
+        
         color: #333333;
         margin-top: 20rpx;
 

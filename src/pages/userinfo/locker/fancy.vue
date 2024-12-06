@@ -180,8 +180,8 @@
 		display: flex;
 		align-items: center;
 		font-size: 25rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #333333;
 	}
 	.locker-logo{
@@ -192,8 +192,8 @@
 	.locker-left-num{
 		margin-top: 18rpx;
 		font-size: 23rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #949494;
 	}
 	.locker-left-num text{
@@ -207,7 +207,7 @@
 		text-align: center;
 		line-height: 50rpx;
 		font-size: 25rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #FFFFFF;
 	}
@@ -230,8 +230,8 @@
 			display: flex;
 			align-items: center;
 			font-size: 21rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #959695;
 		}
 		.order-logo{
@@ -259,20 +259,20 @@
 		}
 		.order-info-title{
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}
 		.order-info-freight{
 			font-size: 21rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #959695;
 			margin:15rpx 0 46rpx 0;
 		}
 		.order-info-num{
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}
@@ -292,8 +292,8 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 25rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #333333;
 			margin-left: 28rpx;
 		}

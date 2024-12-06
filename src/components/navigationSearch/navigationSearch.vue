@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-08-10 11:07:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-10-17 16:34:08
+ * @LastEditTime: 2024-01-30 16:56:09
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -11,9 +11,7 @@
 	<view class="navigation-header">
 		<statusbar/>
 		<view class="tab-header">
-			<view class="icon-back" @click="onClickBack">
-				<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
-			</view>
+			<view class="icon-back" @click="onClickBack"></view>
 			<view class="header-title">{{navigatetoTitle}}</view>
 			<view class="icon-search" @click="onClickSearch"></view>
 		</view>
@@ -75,23 +73,22 @@
 			align-items: center;
 			justify-content: center;
 		}
-		.icon-back{
-			width: 80rpx;
-			height: 88rpx;
+		.icon-back {
+			width: 56rpx;
+			height:56rpx;
 			position: absolute;
-			left: 0;
-			top: 0;
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			left: 12rpx;
+			top: 50%;
+			margin-top: -28rpx;
+			background: url(@/static/index/back_b.png) no-repeat center / 100% 100%;
 		}
 		.header-title{
 			height:88rpx;
 			line-height: 88rpx;
-			font-size: 34rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
+			font-size: 18px;
+			
 			font-weight: 600;
-			color: #000000;
+			color: #333;
 		}
 		.icon-search{
 			width: 42rpx;

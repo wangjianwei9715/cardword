@@ -10,7 +10,7 @@
 				<view class="icon-right"></view>
 			</view>
 		</view>
-		<view class="about-bottom">
+		<view class="about-bottom" @click="onClickBeta">
 			<view class="about-tip">Hangzhou card world Technology Co., Ltd</view>
 			<view class="about-tip">ka-world.com</view>
 		</view>
@@ -27,11 +27,12 @@
 			// {id:1,name:'给我们评分',url:''},
 			{id:2,name:'公司信息',url:'/pages/userinfo/corporate_info'},
 			{id:3,name:'隐私政策',url:'/pages/userinfo/user_privacy'},
-		
+			{id:4,name:'卡世界社区行为规范',url:'/pages/userinfo/user_codeConduct'},
 		]
 		version = ''
 		app = app;
 		debugNum = 0;
+		betaNum = 0;
 		onLoad(query:any) {
 			this.version = app.version
 		}
@@ -53,6 +54,27 @@
 					title:'debug模式'+(app.updateDebug == 'on' ? '开启' : '关闭'),
 					icon:'none'
 				})
+			}
+		}
+		onClickBeta(){
+			if(this.betaNum<9){
+				this.betaNum++;
+			}else{
+				this.betaNum = 0;
+				app.appBeta = app.appBeta=='' ? 'on' : ''; 
+				uni.setStorageSync("appBeta", app.appBeta);
+				uni.removeStorageSync("token");
+				app.token = {accessToken:'',refreshToken:''};
+				uni.removeStorageSync('ksjUserId');
+				// #ifdef H5
+				uni.showToast({
+					title:'beta模式'+(app.appBeta == 'on' ? '开启' : '关闭'),
+					icon:'none'
+				})
+				// #endif
+				// #ifdef APP-PLUS
+				plus.runtime.restart();
+				// #endif
 			}
 		}
 	}
@@ -86,7 +108,7 @@
 			width: 100%;
 			text-align: center;
 			font-size: 28rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			
 			font-weight: 600;
 			color: #14151A;
 		}
@@ -105,7 +127,7 @@
 			border-bottom: 1px solid #F1F1F4;
 			.name{
 				font-size: 24rpx;
-				font-family: PingFangSC-Medium, PingFang SC;
+				
 				font-weight: 600;
 				color: #14151A;
 			}
@@ -120,8 +142,8 @@
 			width: 100%;
 			text-align: center;
 			font-size: 20rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #AAAABB;
 			line-height: 28rpx;
 			margin-top: 12rpx;

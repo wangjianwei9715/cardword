@@ -175,6 +175,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for RequestChatOn
+         * @function getTypeUrl
+         * @memberof message.RequestChatOn
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        RequestChatOn.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.RequestChatOn";
+        };
+
         return RequestChatOn;
     })();
 
@@ -335,6 +350,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for RequestChatOff
+         * @function getTypeUrl
+         * @memberof message.RequestChatOff
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        RequestChatOff.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.RequestChatOff";
+        };
+
         return RequestChatOff;
     })();
 
@@ -452,15 +482,18 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.bucketId = reader.int64();
-                    break;
-                case 2:
-                    message.picUrl = reader.string();
-                    break;
-                case 3:
-                    message.content = reader.string();
-                    break;
+                case 1: {
+                        message.bucketId = reader.int64();
+                        break;
+                    }
+                case 2: {
+                        message.picUrl = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.content = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -579,6 +612,21 @@ $root.message = (function() {
          */
         SendChatMessage.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for SendChatMessage
+         * @function getTypeUrl
+         * @memberof message.SendChatMessage
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        SendChatMessage.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.SendChatMessage";
         };
 
         return SendChatMessage;
@@ -731,24 +779,30 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.msgId = reader.int64();
-                    break;
-                case 2:
-                    message.isMy = reader.bool();
-                    break;
-                case 3:
-                    message.read = reader.bool();
-                    break;
-                case 4:
-                    message.sendTime = reader.int64();
-                    break;
-                case 5:
-                    message.picUrl = reader.string();
-                    break;
-                case 6:
-                    message.content = reader.string();
-                    break;
+                case 1: {
+                        message.msgId = reader.int64();
+                        break;
+                    }
+                case 2: {
+                        message.isMy = reader.bool();
+                        break;
+                    }
+                case 3: {
+                        message.read = reader.bool();
+                        break;
+                    }
+                case 4: {
+                        message.sendTime = reader.int64();
+                        break;
+                    }
+                case 5: {
+                        message.picUrl = reader.string();
+                        break;
+                    }
+                case 6: {
+                        message.content = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -907,6 +961,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for ChatMessage
+         * @function getTypeUrl
+         * @memberof message.ChatMessage
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ChatMessage.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.ChatMessage";
+        };
+
         return ChatMessage;
     })();
 
@@ -1037,20 +1106,24 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.bucketId = reader.int64();
-                    break;
-                case 2:
-                    message.good = $root.message.BucketInfo.Good.decode(reader, reader.uint32());
-                    break;
-                case 3:
-                    message.talker = $root.message.BucketInfo.Talker.decode(reader, reader.uint32());
-                    break;
-                case 4:
-                    if (!(message.msgList && message.msgList.length))
-                        message.msgList = [];
-                    message.msgList.push($root.message.ChatMessage.decode(reader, reader.uint32()));
-                    break;
+                case 1: {
+                        message.bucketId = reader.int64();
+                        break;
+                    }
+                case 2: {
+                        message.good = $root.message.BucketInfo.Good.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 3: {
+                        message.talker = $root.message.BucketInfo.Talker.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 4: {
+                        if (!(message.msgList && message.msgList.length))
+                            message.msgList = [];
+                        message.msgList.push($root.message.ChatMessage.decode(reader, reader.uint32()));
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1207,6 +1280,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for BucketInfo
+         * @function getTypeUrl
+         * @memberof message.BucketInfo
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BucketInfo.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BucketInfo";
+        };
+
         BucketInfo.Good = (function() {
 
             /**
@@ -1354,24 +1442,30 @@ $root.message = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.state = reader.uint32();
-                        break;
-                    case 2:
-                        message.code = reader.string();
-                        break;
-                    case 3:
-                        message.title = reader.string();
-                        break;
-                    case 4:
-                        message.pic = reader.string();
-                        break;
-                    case 5:
-                        message.price = reader.string();
-                        break;
-                    case 6:
-                        message.leftSec = reader.uint32();
-                        break;
+                    case 1: {
+                            message.state = reader.uint32();
+                            break;
+                        }
+                    case 2: {
+                            message.code = reader.string();
+                            break;
+                        }
+                    case 3: {
+                            message.title = reader.string();
+                            break;
+                        }
+                    case 4: {
+                            message.pic = reader.string();
+                            break;
+                        }
+                    case 5: {
+                            message.price = reader.string();
+                            break;
+                        }
+                    case 6: {
+                            message.leftSec = reader.uint32();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -1502,6 +1596,21 @@ $root.message = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for Good
+             * @function getTypeUrl
+             * @memberof message.BucketInfo.Good
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            Good.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/message.BucketInfo.Good";
+            };
+
             return Good;
         })();
 
@@ -1619,15 +1728,18 @@ $root.message = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.userId = reader.int64();
-                        break;
-                    case 2:
-                        message.name = reader.string();
-                        break;
-                    case 3:
-                        message.avatar = reader.string();
-                        break;
+                    case 1: {
+                            message.userId = reader.int64();
+                            break;
+                        }
+                    case 2: {
+                            message.name = reader.string();
+                            break;
+                        }
+                    case 3: {
+                            message.avatar = reader.string();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -1748,6 +1860,21 @@ $root.message = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for Talker
+             * @function getTypeUrl
+             * @memberof message.BucketInfo.Talker
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            Talker.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/message.BucketInfo.Talker";
+            };
+
             return Talker;
         })();
 
@@ -1857,12 +1984,14 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.bucketId = reader.int64();
-                    break;
-                case 2:
-                    message.msg = $root.message.ChatMessage.decode(reader, reader.uint32());
-                    break;
+                case 1: {
+                        message.bucketId = reader.int64();
+                        break;
+                    }
+                case 2: {
+                        message.msg = $root.message.ChatMessage.decode(reader, reader.uint32());
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1980,6 +2109,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for PushChatMessage
+         * @function getTypeUrl
+         * @memberof message.PushChatMessage
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        PushChatMessage.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.PushChatMessage";
+        };
+
         return PushChatMessage;
     })();
 
@@ -2086,12 +2230,14 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.code = reader.int32();
-                    break;
-                case 2:
-                    message.msg = reader.string();
-                    break;
+                case 1: {
+                        message.code = reader.int32();
+                        break;
+                    }
+                case 2: {
+                        message.msg = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2157,6 +2303,12 @@ $root.message = (function() {
                 return object;
             var message = new $root.message.BackSendMessage();
             switch (object.code) {
+            default:
+                if (typeof object.code === "number") {
+                    message.code = object.code;
+                    break;
+                }
+                break;
             case "RC_OK":
             case 0:
                 message.code = 0;
@@ -2201,7 +2353,7 @@ $root.message = (function() {
                 object.msg = "";
             }
             if (message.code != null && message.hasOwnProperty("code"))
-                object.code = options.enums === String ? $root.message.BackSendMessage.RetCode[message.code] : message.code;
+                object.code = options.enums === String ? $root.message.BackSendMessage.RetCode[message.code] === undefined ? message.code : $root.message.BackSendMessage.RetCode[message.code] : message.code;
             if (message.msg != null && message.hasOwnProperty("msg"))
                 object.msg = message.msg;
             return object;
@@ -2216,6 +2368,21 @@ $root.message = (function() {
          */
         BackSendMessage.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BackSendMessage
+         * @function getTypeUrl
+         * @memberof message.BackSendMessage
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BackSendMessage.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BackSendMessage";
         };
 
         /**
@@ -2333,9 +2500,10 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.goodCode = reader.string();
-                    break;
+                case 1: {
+                        message.goodCode = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2423,6 +2591,21 @@ $root.message = (function() {
          */
         RequestBidOn.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for RequestBidOn
+         * @function getTypeUrl
+         * @memberof message.RequestBidOn
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        RequestBidOn.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.RequestBidOn";
         };
 
         return RequestBidOn;
@@ -2585,6 +2768,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for RequestBidOff
+         * @function getTypeUrl
+         * @memberof message.RequestBidOff
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        RequestBidOff.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.RequestBidOff";
+        };
+
         return RequestBidOff;
     })();
 
@@ -2693,14 +2891,16 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.goodCode = reader.string();
-                    break;
-                case 2:
-                    if (!(message.list && message.list.length))
-                        message.list = [];
-                    message.list.push($root.message.PushGoodBidList.UserBid.decode(reader, reader.uint32()));
-                    break;
+                case 1: {
+                        message.goodCode = reader.string();
+                        break;
+                    }
+                case 2: {
+                        if (!(message.list && message.list.length))
+                            message.list = [];
+                        message.list.push($root.message.PushGoodBidList.UserBid.decode(reader, reader.uint32()));
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2814,6 +3014,21 @@ $root.message = (function() {
          */
         PushGoodBidList.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for PushGoodBidList
+         * @function getTypeUrl
+         * @memberof message.PushGoodBidList
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        PushGoodBidList.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.PushGoodBidList";
         };
 
         PushGoodBidList.UserBid = (function() {
@@ -2952,21 +3167,26 @@ $root.message = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.userId = reader.int64();
-                        break;
-                    case 2:
-                        message.name = reader.string();
-                        break;
-                    case 3:
-                        message.avatar = reader.string();
-                        break;
-                    case 4:
-                        message.bidTime = reader.int64();
-                        break;
-                    case 5:
-                        message.price = reader.string();
-                        break;
+                    case 1: {
+                            message.userId = reader.int64();
+                            break;
+                        }
+                    case 2: {
+                            message.name = reader.string();
+                            break;
+                        }
+                    case 3: {
+                            message.avatar = reader.string();
+                            break;
+                        }
+                    case 4: {
+                            message.bidTime = reader.int64();
+                            break;
+                        }
+                    case 5: {
+                            message.price = reader.string();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -3117,6 +3337,21 @@ $root.message = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for UserBid
+             * @function getTypeUrl
+             * @memberof message.PushGoodBidList.UserBid
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            UserBid.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/message.PushGoodBidList.UserBid";
+            };
+
             return UserBid;
         })();
 
@@ -3215,9 +3450,10 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.time = reader.int64();
-                    break;
+                case 1: {
+                        message.time = reader.int64();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -3319,6 +3555,21 @@ $root.message = (function() {
          */
         HeartBeat.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for HeartBeat
+         * @function getTypeUrl
+         * @memberof message.HeartBeat
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        HeartBeat.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.HeartBeat";
         };
 
         return HeartBeat;
@@ -3438,15 +3689,18 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.roomId = reader.int64();
-                    break;
-                case 2:
-                    message.uid = reader.string();
-                    break;
-                case 3:
-                    message.token = reader.string();
-                    break;
+                case 1: {
+                        message.roomId = reader.int64();
+                        break;
+                    }
+                case 2: {
+                        message.uid = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.token = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -3567,6 +3821,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for LoginBroadCastRoom1001
+         * @function getTypeUrl
+         * @memberof message.LoginBroadCastRoom1001
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        LoginBroadCastRoom1001.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.LoginBroadCastRoom1001";
+        };
+
         return LoginBroadCastRoom1001;
     })();
 
@@ -3662,9 +3931,10 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.roomId = reader.int64();
-                    break;
+                case 1: {
+                        message.roomId = reader.int64();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -3768,6 +4038,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for LogoutBroadCastRoom1001
+         * @function getTypeUrl
+         * @memberof message.LogoutBroadCastRoom1001
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        LogoutBroadCastRoom1001.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.LogoutBroadCastRoom1001";
+        };
+
         return LogoutBroadCastRoom1001;
     })();
 
@@ -3863,9 +4148,10 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.time = reader.int64();
-                    break;
+                case 1: {
+                        message.time = reader.int64();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -3967,6 +4253,21 @@ $root.message = (function() {
          */
         BackHeartBeat.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BackHeartBeat
+         * @function getTypeUrl
+         * @memberof message.BackHeartBeat
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BackHeartBeat.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BackHeartBeat";
         };
 
         return BackHeartBeat;
@@ -4108,21 +4409,26 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.code = reader.int32();
-                    break;
-                case 2:
-                    message.msg = reader.string();
-                    break;
-                case 3:
-                    message.point = reader.double();
-                    break;
-                case 4:
-                    message.applyLianmai = reader.bool();
-                    break;
-                case 5:
-                    message.gm = reader.bool();
-                    break;
+                case 1: {
+                        message.code = reader.int32();
+                        break;
+                    }
+                case 2: {
+                        message.msg = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.point = reader.double();
+                        break;
+                    }
+                case 4: {
+                        message.applyLianmai = reader.bool();
+                        break;
+                    }
+                case 5: {
+                        message.gm = reader.bool();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -4196,6 +4502,12 @@ $root.message = (function() {
                 return object;
             var message = new $root.message.BackLoginBroadCastRoom1001();
             switch (object.code) {
+            default:
+                if (typeof object.code === "number") {
+                    message.code = object.code;
+                    break;
+                }
+                break;
             case "RC_OK":
             case 0:
                 message.code = 0;
@@ -4245,7 +4557,7 @@ $root.message = (function() {
                 object.gm = false;
             }
             if (message.code != null && message.hasOwnProperty("code"))
-                object.code = options.enums === String ? $root.message.BackLoginBroadCastRoom1001.RetCode[message.code] : message.code;
+                object.code = options.enums === String ? $root.message.BackLoginBroadCastRoom1001.RetCode[message.code] === undefined ? message.code : $root.message.BackLoginBroadCastRoom1001.RetCode[message.code] : message.code;
             if (message.msg != null && message.hasOwnProperty("msg"))
                 object.msg = message.msg;
             if (message.point != null && message.hasOwnProperty("point"))
@@ -4266,6 +4578,21 @@ $root.message = (function() {
          */
         BackLoginBroadCastRoom1001.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BackLoginBroadCastRoom1001
+         * @function getTypeUrl
+         * @memberof message.BackLoginBroadCastRoom1001
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BackLoginBroadCastRoom1001.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BackLoginBroadCastRoom1001";
         };
 
         /**
@@ -4383,11 +4710,12 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    if (!(message.list && message.list.length))
-                        message.list = [];
-                    message.list.push(reader.string());
-                    break;
+                case 1: {
+                        if (!(message.list && message.list.length))
+                            message.list = [];
+                        message.list.push(reader.string());
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -4489,6 +4817,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for Message
+         * @function getTypeUrl
+         * @memberof message.Message
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        Message.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.Message";
+        };
+
         return Message;
     })();
 
@@ -4584,9 +4927,10 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.point = reader.double();
-                    break;
+                case 1: {
+                        message.point = reader.double();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -4674,6 +5018,21 @@ $root.message = (function() {
          */
         SendMyPoint.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for SendMyPoint
+         * @function getTypeUrl
+         * @memberof message.SendMyPoint
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        SendMyPoint.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.SendMyPoint";
         };
 
         return SendMyPoint;
@@ -4771,9 +5130,10 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.why = reader.string();
-                    break;
+                case 1: {
+                        message.why = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -4861,6 +5221,21 @@ $root.message = (function() {
          */
         KickOut.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for KickOut
+         * @function getTypeUrl
+         * @memberof message.KickOut
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        KickOut.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.KickOut";
         };
 
         return KickOut;
@@ -5013,18 +5388,22 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.Stx = reader.int32();
-                    break;
-                case 2:
-                    message.DestNodeType = reader.int32();
-                    break;
-                case 3:
-                    message.Ckx = reader.int32();
-                    break;
-                case 4:
-                    message.Id = reader.uint32();
-                    break;
+                case 1: {
+                        message.Stx = reader.int32();
+                        break;
+                    }
+                case 2: {
+                        message.DestNodeType = reader.int32();
+                        break;
+                    }
+                case 3: {
+                        message.Ckx = reader.int32();
+                        break;
+                    }
+                case 4: {
+                        message.Id = reader.uint32();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -5099,6 +5478,12 @@ $root.message = (function() {
             if (object.Stx != null)
                 message.Stx = object.Stx | 0;
             switch (object.DestNodeType) {
+            default:
+                if (typeof object.DestNodeType === "number") {
+                    message.DestNodeType = object.DestNodeType;
+                    break;
+                }
+                break;
             case "NONE":
             case 0:
                 message.DestNodeType = 0;
@@ -5153,7 +5538,7 @@ $root.message = (function() {
             if (message.Stx != null && message.hasOwnProperty("Stx"))
                 object.Stx = message.Stx;
             if (message.DestNodeType != null && message.hasOwnProperty("DestNodeType"))
-                object.DestNodeType = options.enums === String ? $root.message.NODE[message.DestNodeType] : message.DestNodeType;
+                object.DestNodeType = options.enums === String ? $root.message.NODE[message.DestNodeType] === undefined ? message.DestNodeType : $root.message.NODE[message.DestNodeType] : message.DestNodeType;
             if (message.Ckx != null && message.hasOwnProperty("Ckx"))
                 object.Ckx = message.Ckx;
             if (message.Id != null && message.hasOwnProperty("Id"))
@@ -5170,6 +5555,21 @@ $root.message = (function() {
          */
         Ipacket.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for Ipacket
+         * @function getTypeUrl
+         * @memberof message.Ipacket
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        Ipacket.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.Ipacket";
         };
 
         return Ipacket;
@@ -5333,27 +5733,34 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.ClientId = reader.uint32();
-                    break;
-                case 2:
-                    message.Key = reader.string();
-                    break;
-                case 3:
-                    message.AccountId = reader.int64();
-                    break;
-                case 4:
-                    message.fromNode = reader.int32();
-                    break;
-                case 5:
-                    message.toNode = reader.int32();
-                    break;
-                case 6:
-                    message.CallId = reader.int64();
-                    break;
-                case 7:
-                    message.SocketId = reader.uint32();
-                    break;
+                case 1: {
+                        message.ClientId = reader.uint32();
+                        break;
+                    }
+                case 2: {
+                        message.Key = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.AccountId = reader.int64();
+                        break;
+                    }
+                case 4: {
+                        message.fromNode = reader.int32();
+                        break;
+                    }
+                case 5: {
+                        message.toNode = reader.int32();
+                        break;
+                    }
+                case 6: {
+                        message.CallId = reader.int64();
+                        break;
+                    }
+                case 7: {
+                        message.SocketId = reader.uint32();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -5520,6 +5927,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for RpcHead
+         * @function getTypeUrl
+         * @memberof message.RpcHead
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        RpcHead.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.RpcHead";
+        };
+
         return RpcHead;
     })();
 
@@ -5648,18 +6070,22 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.FuncName = reader.string();
-                    break;
-                case 2:
-                    message.ArgLen = reader.int32();
-                    break;
-                case 3:
-                    message.RpcHead = $root.message.RpcHead.decode(reader, reader.uint32());
-                    break;
-                case 4:
-                    message.RpcBody = reader.bytes();
-                    break;
+                case 1: {
+                        message.FuncName = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.ArgLen = reader.int32();
+                        break;
+                    }
+                case 3: {
+                        message.RpcHead = $root.message.RpcHead.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 4: {
+                        message.RpcBody = reader.bytes();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -5736,7 +6162,7 @@ $root.message = (function() {
             if (object.RpcBody != null)
                 if (typeof object.RpcBody === "string")
                     $util.base64.decode(object.RpcBody, message.RpcBody = $util.newBuffer($util.base64.length(object.RpcBody)), 0);
-                else if (object.RpcBody.length)
+                else if (object.RpcBody.length >= 0)
                     message.RpcBody = object.RpcBody;
             return message;
         };
@@ -5786,6 +6212,21 @@ $root.message = (function() {
          */
         RpcPacket.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for RpcPacket
+         * @function getTypeUrl
+         * @memberof message.RpcPacket
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        RpcPacket.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.RpcPacket";
         };
 
         return RpcPacket;
@@ -5883,9 +6324,10 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.num = reader.uint32();
-                    break;
+                case 1: {
+                        message.num = reader.uint32();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -5973,6 +6415,21 @@ $root.message = (function() {
          */
         RequestLike.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for RequestLike
+         * @function getTypeUrl
+         * @memberof message.RequestLike
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        RequestLike.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.RequestLike";
         };
 
         return RequestLike;
@@ -6092,15 +6549,18 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.giftTpId = reader.int64();
-                    break;
-                case 2:
-                    message.num = reader.uint32();
-                    break;
-                case 3:
-                    message.target = reader.int64();
-                    break;
+                case 1: {
+                        message.giftTpId = reader.int64();
+                        break;
+                    }
+                case 2: {
+                        message.num = reader.uint32();
+                        break;
+                    }
+                case 3: {
+                        message.target = reader.int64();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -6235,6 +6695,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for RequestSendGift
+         * @function getTypeUrl
+         * @memberof message.RequestSendGift
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        RequestSendGift.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.RequestSendGift";
+        };
+
         return RequestSendGift;
     })();
 
@@ -6341,12 +6816,14 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.giftTpId = reader.int64();
-                    break;
-                case 2:
-                    message.delayMinute = reader.uint32();
-                    break;
+                case 1: {
+                        message.giftTpId = reader.int64();
+                        break;
+                    }
+                case 2: {
+                        message.delayMinute = reader.uint32();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -6459,6 +6936,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for RequestSendHongbao
+         * @function getTypeUrl
+         * @memberof message.RequestSendHongbao
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        RequestSendHongbao.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.RequestSendHongbao";
+        };
+
         return RequestSendHongbao;
     })();
 
@@ -6554,9 +7046,10 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.hongbaoId = reader.int64();
-                    break;
+                case 1: {
+                        message.hongbaoId = reader.int64();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -6660,6 +7153,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for RequestGrabHongbao
+         * @function getTypeUrl
+         * @memberof message.RequestGrabHongbao
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        RequestGrabHongbao.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.RequestGrabHongbao";
+        };
+
         return RequestGrabHongbao;
     })();
 
@@ -6755,9 +7263,10 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.content = reader.string();
-                    break;
+                case 1: {
+                        message.content = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -6845,6 +7354,21 @@ $root.message = (function() {
          */
         RequestSendChatMessage.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for RequestSendChatMessage
+         * @function getTypeUrl
+         * @memberof message.RequestSendChatMessage
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        RequestSendChatMessage.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.RequestSendChatMessage";
         };
 
         return RequestSendChatMessage;
@@ -7008,27 +7532,34 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.tp = reader.uint32();
-                    break;
-                case 2:
-                    message.goodCode = reader.string();
-                    break;
-                case 3:
-                    message.amount = reader.double();
-                    break;
-                case 4:
-                    message.minUseAmount = reader.double();
-                    break;
-                case 5:
-                    message.num = reader.uint32();
-                    break;
-                case 6:
-                    message.lifeMinute = reader.uint32();
-                    break;
-                case 7:
-                    message.delayMinute = reader.uint32();
-                    break;
+                case 1: {
+                        message.tp = reader.uint32();
+                        break;
+                    }
+                case 2: {
+                        message.goodCode = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.amount = reader.double();
+                        break;
+                    }
+                case 4: {
+                        message.minUseAmount = reader.double();
+                        break;
+                    }
+                case 5: {
+                        message.num = reader.uint32();
+                        break;
+                    }
+                case 6: {
+                        message.lifeMinute = reader.uint32();
+                        break;
+                    }
+                case 7: {
+                        message.delayMinute = reader.uint32();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -7167,6 +7698,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for RequestSendMerchantCoupon
+         * @function getTypeUrl
+         * @memberof message.RequestSendMerchantCoupon
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        RequestSendMerchantCoupon.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.RequestSendMerchantCoupon";
+        };
+
         return RequestSendMerchantCoupon;
     })();
 
@@ -7262,9 +7808,10 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.id = reader.int64();
-                    break;
+                case 1: {
+                        message.id = reader.int64();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -7366,6 +7913,21 @@ $root.message = (function() {
          */
         RequestGetMerchantCoupon.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for RequestGetMerchantCoupon
+         * @function getTypeUrl
+         * @memberof message.RequestGetMerchantCoupon
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        RequestGetMerchantCoupon.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.RequestGetMerchantCoupon";
         };
 
         return RequestGetMerchantCoupon;
@@ -7528,6 +8090,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for RequestSwitchLianmaiAllow
+         * @function getTypeUrl
+         * @memberof message.RequestSwitchLianmaiAllow
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        RequestSwitchLianmaiAllow.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.RequestSwitchLianmaiAllow";
+        };
+
         return RequestSwitchLianmaiAllow;
     })();
 
@@ -7686,6 +8263,21 @@ $root.message = (function() {
          */
         RequestApplyLianmai.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for RequestApplyLianmai
+         * @function getTypeUrl
+         * @memberof message.RequestApplyLianmai
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        RequestApplyLianmai.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.RequestApplyLianmai";
         };
 
         return RequestApplyLianmai;
@@ -7848,6 +8440,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for ActorRequestLianmaiData
+         * @function getTypeUrl
+         * @memberof message.ActorRequestLianmaiData
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ActorRequestLianmaiData.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.ActorRequestLianmaiData";
+        };
+
         return ActorRequestLianmaiData;
     })();
 
@@ -7943,9 +8550,10 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.uid = reader.string();
-                    break;
+                case 1: {
+                        message.uid = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -8033,6 +8641,21 @@ $root.message = (function() {
          */
         ActorAgreeLianmaiApply.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ActorAgreeLianmaiApply
+         * @function getTypeUrl
+         * @memberof message.ActorAgreeLianmaiApply
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ActorAgreeLianmaiApply.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.ActorAgreeLianmaiApply";
         };
 
         return ActorAgreeLianmaiApply;
@@ -8195,6 +8818,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for ActorTerminateLianmai
+         * @function getTypeUrl
+         * @memberof message.ActorTerminateLianmai
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ActorTerminateLianmai.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.ActorTerminateLianmai";
+        };
+
         return ActorTerminateLianmai;
     })();
 
@@ -8355,6 +8993,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for SelfTerminateLianmai
+         * @function getTypeUrl
+         * @memberof message.SelfTerminateLianmai
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        SelfTerminateLianmai.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.SelfTerminateLianmai";
+        };
+
         return SelfTerminateLianmai;
     })();
 
@@ -8461,12 +9114,14 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.uid = reader.string();
-                    break;
-                case 2:
-                    message.name = reader.string();
-                    break;
+                case 1: {
+                        message.uid = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.name = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -8563,6 +9218,21 @@ $root.message = (function() {
          */
         GmChatBid.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for GmChatBid
+         * @function getTypeUrl
+         * @memberof message.GmChatBid
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        GmChatBid.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.GmChatBid";
         };
 
         return GmChatBid;
@@ -8671,12 +9341,14 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.uid = reader.string();
-                    break;
-                case 2:
-                    message.name = reader.string();
-                    break;
+                case 1: {
+                        message.uid = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.name = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -8775,6 +9447,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for GmKickOutRoom
+         * @function getTypeUrl
+         * @memberof message.GmKickOutRoom
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        GmKickOutRoom.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.GmKickOutRoom";
+        };
+
         return GmKickOutRoom;
     })();
 
@@ -8870,9 +9557,10 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.msg = reader.string();
-                    break;
+                case 1: {
+                        message.msg = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -8960,6 +9648,21 @@ $root.message = (function() {
          */
         BackLike.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BackLike
+         * @function getTypeUrl
+         * @memberof message.BackLike
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BackLike.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BackLike";
         };
 
         return BackLike;
@@ -9070,14 +9773,16 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    if (!(message.list && message.list.length))
-                        message.list = [];
-                    message.list.push($root.message.BroadCastLike.UserLike.decode(reader, reader.uint32()));
-                    break;
-                case 2:
-                    message.finalLikeNum = reader.uint32();
-                    break;
+                case 1: {
+                        if (!(message.list && message.list.length))
+                            message.list = [];
+                        message.list.push($root.message.BroadCastLike.UserLike.decode(reader, reader.uint32()));
+                        break;
+                    }
+                case 2: {
+                        message.finalLikeNum = reader.uint32();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -9191,6 +9896,21 @@ $root.message = (function() {
          */
         BroadCastLike.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BroadCastLike
+         * @function getTypeUrl
+         * @memberof message.BroadCastLike
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BroadCastLike.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BroadCastLike";
         };
 
         BroadCastLike.UserLike = (function() {
@@ -9307,15 +10027,18 @@ $root.message = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.tp = reader.string();
-                        break;
-                    case 2:
-                        message.num = reader.uint32();
-                        break;
-                    case 3:
-                        message.avatar = reader.string();
-                        break;
+                    case 1: {
+                            message.tp = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            message.num = reader.uint32();
+                            break;
+                        }
+                    case 3: {
+                            message.avatar = reader.string();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -9422,6 +10145,21 @@ $root.message = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for UserLike
+             * @function getTypeUrl
+             * @memberof message.BroadCastLike.UserLike
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            UserLike.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/message.BroadCastLike.UserLike";
+            };
+
             return UserLike;
         })();
 
@@ -9522,11 +10260,12 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    if (!(message.list && message.list.length))
-                        message.list = [];
-                    message.list.push($root.message.BroadCastBilibili_Send.Bilibili_Send.decode(reader, reader.uint32()));
-                    break;
+                case 1: {
+                        if (!(message.list && message.list.length))
+                            message.list = [];
+                        message.list.push($root.message.BroadCastBilibili_Send.Bilibili_Send.decode(reader, reader.uint32()));
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -9631,6 +10370,21 @@ $root.message = (function() {
          */
         BroadCastBilibili_Send.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BroadCastBilibili_Send
+         * @function getTypeUrl
+         * @memberof message.BroadCastBilibili_Send
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BroadCastBilibili_Send.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BroadCastBilibili_Send";
         };
 
         BroadCastBilibili_Send.Bilibili_Send = (function() {
@@ -9791,27 +10545,34 @@ $root.message = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.sender = reader.string();
-                        break;
-                    case 2:
-                        message.senderAvatar = reader.string();
-                        break;
-                    case 3:
-                        message.name = reader.string();
-                        break;
-                    case 4:
-                        message.logo = reader.string();
-                        break;
-                    case 5:
-                        message.texiao = reader.string();
-                        break;
-                    case 6:
-                        message.num = reader.uint32();
-                        break;
-                    case 7:
-                        message.continuityNum = reader.uint32();
-                        break;
+                    case 1: {
+                            message.sender = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            message.senderAvatar = reader.string();
+                            break;
+                        }
+                    case 3: {
+                            message.name = reader.string();
+                            break;
+                        }
+                    case 4: {
+                            message.logo = reader.string();
+                            break;
+                        }
+                    case 5: {
+                            message.texiao = reader.string();
+                            break;
+                        }
+                    case 6: {
+                            message.num = reader.uint32();
+                            break;
+                        }
+                    case 7: {
+                            message.continuityNum = reader.uint32();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -9950,6 +10711,21 @@ $root.message = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for Bilibili_Send
+             * @function getTypeUrl
+             * @memberof message.BroadCastBilibili_Send.Bilibili_Send
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            Bilibili_Send.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/message.BroadCastBilibili_Send.Bilibili_Send";
+            };
+
             return Bilibili_Send;
         })();
 
@@ -10048,9 +10824,10 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.msg = reader.string();
-                    break;
+                case 1: {
+                        message.msg = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -10138,6 +10915,21 @@ $root.message = (function() {
          */
         BackSendGift.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BackSendGift
+         * @function getTypeUrl
+         * @memberof message.BackSendGift
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BackSendGift.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BackSendGift";
         };
 
         return BackSendGift;
@@ -10237,11 +11029,12 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    if (!(message.list && message.list.length))
-                        message.list = [];
-                    message.list.push($root.message.SendGiftUpdated.GiftUpdated.decode(reader, reader.uint32()));
-                    break;
+                case 1: {
+                        if (!(message.list && message.list.length))
+                            message.list = [];
+                        message.list.push($root.message.SendGiftUpdated.GiftUpdated.decode(reader, reader.uint32()));
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -10346,6 +11139,21 @@ $root.message = (function() {
          */
         SendGiftUpdated.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for SendGiftUpdated
+         * @function getTypeUrl
+         * @memberof message.SendGiftUpdated
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        SendGiftUpdated.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.SendGiftUpdated";
         };
 
         SendGiftUpdated.GiftUpdated = (function() {
@@ -10462,15 +11270,18 @@ $root.message = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.id = reader.int64();
-                        break;
-                    case 2:
-                        message.num = reader.uint32();
-                        break;
-                    case 3:
-                        message.sec = reader.int32();
-                        break;
+                    case 1: {
+                            message.id = reader.int64();
+                            break;
+                        }
+                    case 2: {
+                            message.num = reader.uint32();
+                            break;
+                        }
+                    case 3: {
+                            message.sec = reader.int32();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -10591,6 +11402,21 @@ $root.message = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for GiftUpdated
+             * @function getTypeUrl
+             * @memberof message.SendGiftUpdated.GiftUpdated
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            GiftUpdated.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/message.SendGiftUpdated.GiftUpdated";
+            };
+
             return GiftUpdated;
         })();
 
@@ -10689,9 +11515,10 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.msg = reader.string();
-                    break;
+                case 1: {
+                        message.msg = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -10779,6 +11606,21 @@ $root.message = (function() {
          */
         BackSendHongbao.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BackSendHongbao
+         * @function getTypeUrl
+         * @memberof message.BackSendHongbao
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BackSendHongbao.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BackSendHongbao";
         };
 
         return BackSendHongbao;
@@ -10896,11 +11738,12 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    if (!(message.list && message.list.length))
-                        message.list = [];
-                    message.list.push($root.message.BroadCastHongbao.Hongbao.decode(reader, reader.uint32()));
-                    break;
+                case 1: {
+                        if (!(message.list && message.list.length))
+                            message.list = [];
+                        message.list.push($root.message.BroadCastHongbao.Hongbao.decode(reader, reader.uint32()));
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -11005,6 +11848,21 @@ $root.message = (function() {
          */
         BroadCastHongbao.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BroadCastHongbao
+         * @function getTypeUrl
+         * @memberof message.BroadCastHongbao
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BroadCastHongbao.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BroadCastHongbao";
         };
 
         BroadCastHongbao.Hongbao = (function() {
@@ -11165,27 +12023,34 @@ $root.message = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.id = reader.int64();
-                        break;
-                    case 2:
-                        message.state = reader.int32();
-                        break;
-                    case 3:
-                        message.sender = reader.string();
-                        break;
-                    case 4:
-                        message.senderAvatar = reader.string();
-                        break;
-                    case 5:
-                        message.point = reader.double();
-                        break;
-                    case 6:
-                        message.startTime = reader.int64();
-                        break;
-                    case 7:
-                        message.leftNum = reader.uint32();
-                        break;
+                    case 1: {
+                            message.id = reader.int64();
+                            break;
+                        }
+                    case 2: {
+                            message.state = reader.int32();
+                            break;
+                        }
+                    case 3: {
+                            message.sender = reader.string();
+                            break;
+                        }
+                    case 4: {
+                            message.senderAvatar = reader.string();
+                            break;
+                        }
+                    case 5: {
+                            message.point = reader.double();
+                            break;
+                        }
+                    case 6: {
+                            message.startTime = reader.int64();
+                            break;
+                        }
+                    case 7: {
+                            message.leftNum = reader.uint32();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -11274,6 +12139,12 @@ $root.message = (function() {
                     else if (typeof object.id === "object")
                         message.id = new $util.LongBits(object.id.low >>> 0, object.id.high >>> 0).toNumber();
                 switch (object.state) {
+                default:
+                    if (typeof object.state === "number") {
+                        message.state = object.state;
+                        break;
+                    }
+                    break;
                 case "RC_COUNTDOWN":
                 case 0:
                     message.state = 0;
@@ -11347,7 +12218,7 @@ $root.message = (function() {
                     else
                         object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low >>> 0, message.id.high >>> 0).toNumber() : message.id;
                 if (message.state != null && message.hasOwnProperty("state"))
-                    object.state = options.enums === String ? $root.message.HongbaoState[message.state] : message.state;
+                    object.state = options.enums === String ? $root.message.HongbaoState[message.state] === undefined ? message.state : $root.message.HongbaoState[message.state] : message.state;
                 if (message.sender != null && message.hasOwnProperty("sender"))
                     object.sender = message.sender;
                 if (message.senderAvatar != null && message.hasOwnProperty("senderAvatar"))
@@ -11373,6 +12244,21 @@ $root.message = (function() {
              */
             Hongbao.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for Hongbao
+             * @function getTypeUrl
+             * @memberof message.BroadCastHongbao.Hongbao
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            Hongbao.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/message.BroadCastHongbao.Hongbao";
             };
 
             return Hongbao;
@@ -11475,11 +12361,12 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    if (!(message.list && message.list.length))
-                        message.list = [];
-                    message.list.push($root.message.BroadCastHongbaoUpdated.HongbaoUpdated.decode(reader, reader.uint32()));
-                    break;
+                case 1: {
+                        if (!(message.list && message.list.length))
+                            message.list = [];
+                        message.list.push($root.message.BroadCastHongbaoUpdated.HongbaoUpdated.decode(reader, reader.uint32()));
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -11584,6 +12471,21 @@ $root.message = (function() {
          */
         BroadCastHongbaoUpdated.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BroadCastHongbaoUpdated
+         * @function getTypeUrl
+         * @memberof message.BroadCastHongbaoUpdated
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BroadCastHongbaoUpdated.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BroadCastHongbaoUpdated";
         };
 
         BroadCastHongbaoUpdated.HongbaoUpdated = (function() {
@@ -11700,15 +12602,18 @@ $root.message = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.id = reader.int64();
-                        break;
-                    case 2:
-                        message.newState = reader.int32();
-                        break;
-                    case 3:
-                        message.leftNum = reader.uint32();
-                        break;
+                    case 1: {
+                            message.id = reader.int64();
+                            break;
+                        }
+                    case 2: {
+                            message.newState = reader.int32();
+                            break;
+                        }
+                    case 3: {
+                            message.leftNum = reader.uint32();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -11785,6 +12690,12 @@ $root.message = (function() {
                     else if (typeof object.id === "object")
                         message.id = new $util.LongBits(object.id.low >>> 0, object.id.high >>> 0).toNumber();
                 switch (object.newState) {
+                default:
+                    if (typeof object.newState === "number") {
+                        message.newState = object.newState;
+                        break;
+                    }
+                    break;
                 case "RC_COUNTDOWN":
                 case 0:
                     message.newState = 0;
@@ -11835,7 +12746,7 @@ $root.message = (function() {
                     else
                         object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low >>> 0, message.id.high >>> 0).toNumber() : message.id;
                 if (message.newState != null && message.hasOwnProperty("newState"))
-                    object.newState = options.enums === String ? $root.message.HongbaoState[message.newState] : message.newState;
+                    object.newState = options.enums === String ? $root.message.HongbaoState[message.newState] === undefined ? message.newState : $root.message.HongbaoState[message.newState] : message.newState;
                 if (message.leftNum != null && message.hasOwnProperty("leftNum"))
                     object.leftNum = message.leftNum;
                 return object;
@@ -11850,6 +12761,21 @@ $root.message = (function() {
              */
             HongbaoUpdated.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for HongbaoUpdated
+             * @function getTypeUrl
+             * @memberof message.BroadCastHongbaoUpdated.HongbaoUpdated
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            HongbaoUpdated.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/message.BroadCastHongbaoUpdated.HongbaoUpdated";
             };
 
             return HongbaoUpdated;
@@ -11961,12 +12887,14 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.point = reader.double();
-                    break;
-                case 2:
-                    message.msg = reader.string();
-                    break;
+                case 1: {
+                        message.point = reader.double();
+                        break;
+                    }
+                case 2: {
+                        message.msg = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -12065,6 +12993,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for BackGrabHongbao
+         * @function getTypeUrl
+         * @memberof message.BackGrabHongbao
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BackGrabHongbao.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BackGrabHongbao";
+        };
+
         return BackGrabHongbao;
     })();
 
@@ -12160,9 +13103,10 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.msg = reader.string();
-                    break;
+                case 1: {
+                        message.msg = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -12250,6 +13194,21 @@ $root.message = (function() {
          */
         BackSendChatMessage.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BackSendChatMessage
+         * @function getTypeUrl
+         * @memberof message.BackSendChatMessage
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BackSendChatMessage.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BackSendChatMessage";
         };
 
         return BackSendChatMessage;
@@ -12349,11 +13308,12 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    if (!(message.list && message.list.length))
-                        message.list = [];
-                    message.list.push($root.message.BroadCastChatMessage.Chat.decode(reader, reader.uint32()));
-                    break;
+                case 1: {
+                        if (!(message.list && message.list.length))
+                            message.list = [];
+                        message.list.push($root.message.BroadCastChatMessage.Chat.decode(reader, reader.uint32()));
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -12460,6 +13420,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for BroadCastChatMessage
+         * @function getTypeUrl
+         * @memberof message.BroadCastChatMessage
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BroadCastChatMessage.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BroadCastChatMessage";
+        };
+
         BroadCastChatMessage.Chat = (function() {
 
             /**
@@ -12471,6 +13446,10 @@ $root.message = (function() {
              * @property {string|null} [senderAvatar] Chat senderAvatar
              * @property {string|null} [content] Chat content
              * @property {string|null} [action] Chat action
+             * @property {number|Long|null} [medalId] Chat medalId
+             * @property {string|null} [medalName] Chat medalName
+             * @property {string|null} [medalPic] Chat medalPic
+             * @property {number|Long|null} [userId] Chat userId
              */
 
             /**
@@ -12529,6 +13508,38 @@ $root.message = (function() {
             Chat.prototype.action = "";
 
             /**
+             * Chat medalId.
+             * @member {number|Long} medalId
+             * @memberof message.BroadCastChatMessage.Chat
+             * @instance
+             */
+            Chat.prototype.medalId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+            /**
+             * Chat medalName.
+             * @member {string} medalName
+             * @memberof message.BroadCastChatMessage.Chat
+             * @instance
+             */
+            Chat.prototype.medalName = "";
+
+            /**
+             * Chat medalPic.
+             * @member {string} medalPic
+             * @memberof message.BroadCastChatMessage.Chat
+             * @instance
+             */
+            Chat.prototype.medalPic = "";
+
+            /**
+             * Chat userId.
+             * @member {number|Long} userId
+             * @memberof message.BroadCastChatMessage.Chat
+             * @instance
+             */
+            Chat.prototype.userId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+            /**
              * Creates a new Chat instance using the specified properties.
              * @function create
              * @memberof message.BroadCastChatMessage.Chat
@@ -12562,6 +13573,14 @@ $root.message = (function() {
                     writer.uint32(/* id 4, wireType 2 =*/34).string(message.content);
                 if (message.action != null && Object.hasOwnProperty.call(message, "action"))
                     writer.uint32(/* id 5, wireType 2 =*/42).string(message.action);
+                if (message.medalId != null && Object.hasOwnProperty.call(message, "medalId"))
+                    writer.uint32(/* id 6, wireType 0 =*/48).int64(message.medalId);
+                if (message.medalName != null && Object.hasOwnProperty.call(message, "medalName"))
+                    writer.uint32(/* id 7, wireType 2 =*/58).string(message.medalName);
+                if (message.medalPic != null && Object.hasOwnProperty.call(message, "medalPic"))
+                    writer.uint32(/* id 8, wireType 2 =*/66).string(message.medalPic);
+                if (message.userId != null && Object.hasOwnProperty.call(message, "userId"))
+                    writer.uint32(/* id 9, wireType 0 =*/72).int64(message.userId);
                 return writer;
             };
 
@@ -12596,21 +13615,42 @@ $root.message = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.uid = reader.string();
-                        break;
-                    case 2:
-                        message.sender = reader.string();
-                        break;
-                    case 3:
-                        message.senderAvatar = reader.string();
-                        break;
-                    case 4:
-                        message.content = reader.string();
-                        break;
-                    case 5:
-                        message.action = reader.string();
-                        break;
+                    case 1: {
+                            message.uid = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            message.sender = reader.string();
+                            break;
+                        }
+                    case 3: {
+                            message.senderAvatar = reader.string();
+                            break;
+                        }
+                    case 4: {
+                            message.content = reader.string();
+                            break;
+                        }
+                    case 5: {
+                            message.action = reader.string();
+                            break;
+                        }
+                    case 6: {
+                            message.medalId = reader.int64();
+                            break;
+                        }
+                    case 7: {
+                            message.medalName = reader.string();
+                            break;
+                        }
+                    case 8: {
+                            message.medalPic = reader.string();
+                            break;
+                        }
+                    case 9: {
+                            message.userId = reader.int64();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -12661,6 +13701,18 @@ $root.message = (function() {
                 if (message.action != null && message.hasOwnProperty("action"))
                     if (!$util.isString(message.action))
                         return "action: string expected";
+                if (message.medalId != null && message.hasOwnProperty("medalId"))
+                    if (!$util.isInteger(message.medalId) && !(message.medalId && $util.isInteger(message.medalId.low) && $util.isInteger(message.medalId.high)))
+                        return "medalId: integer|Long expected";
+                if (message.medalName != null && message.hasOwnProperty("medalName"))
+                    if (!$util.isString(message.medalName))
+                        return "medalName: string expected";
+                if (message.medalPic != null && message.hasOwnProperty("medalPic"))
+                    if (!$util.isString(message.medalPic))
+                        return "medalPic: string expected";
+                if (message.userId != null && message.hasOwnProperty("userId"))
+                    if (!$util.isInteger(message.userId) && !(message.userId && $util.isInteger(message.userId.low) && $util.isInteger(message.userId.high)))
+                        return "userId: integer|Long expected";
                 return null;
             };
 
@@ -12686,6 +13738,28 @@ $root.message = (function() {
                     message.content = String(object.content);
                 if (object.action != null)
                     message.action = String(object.action);
+                if (object.medalId != null)
+                    if ($util.Long)
+                        (message.medalId = $util.Long.fromValue(object.medalId)).unsigned = false;
+                    else if (typeof object.medalId === "string")
+                        message.medalId = parseInt(object.medalId, 10);
+                    else if (typeof object.medalId === "number")
+                        message.medalId = object.medalId;
+                    else if (typeof object.medalId === "object")
+                        message.medalId = new $util.LongBits(object.medalId.low >>> 0, object.medalId.high >>> 0).toNumber();
+                if (object.medalName != null)
+                    message.medalName = String(object.medalName);
+                if (object.medalPic != null)
+                    message.medalPic = String(object.medalPic);
+                if (object.userId != null)
+                    if ($util.Long)
+                        (message.userId = $util.Long.fromValue(object.userId)).unsigned = false;
+                    else if (typeof object.userId === "string")
+                        message.userId = parseInt(object.userId, 10);
+                    else if (typeof object.userId === "number")
+                        message.userId = object.userId;
+                    else if (typeof object.userId === "object")
+                        message.userId = new $util.LongBits(object.userId.low >>> 0, object.userId.high >>> 0).toNumber();
                 return message;
             };
 
@@ -12708,6 +13782,18 @@ $root.message = (function() {
                     object.senderAvatar = "";
                     object.content = "";
                     object.action = "";
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, false);
+                        object.medalId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    } else
+                        object.medalId = options.longs === String ? "0" : 0;
+                    object.medalName = "";
+                    object.medalPic = "";
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, false);
+                        object.userId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    } else
+                        object.userId = options.longs === String ? "0" : 0;
                 }
                 if (message.uid != null && message.hasOwnProperty("uid"))
                     object.uid = message.uid;
@@ -12719,6 +13805,20 @@ $root.message = (function() {
                     object.content = message.content;
                 if (message.action != null && message.hasOwnProperty("action"))
                     object.action = message.action;
+                if (message.medalId != null && message.hasOwnProperty("medalId"))
+                    if (typeof message.medalId === "number")
+                        object.medalId = options.longs === String ? String(message.medalId) : message.medalId;
+                    else
+                        object.medalId = options.longs === String ? $util.Long.prototype.toString.call(message.medalId) : options.longs === Number ? new $util.LongBits(message.medalId.low >>> 0, message.medalId.high >>> 0).toNumber() : message.medalId;
+                if (message.medalName != null && message.hasOwnProperty("medalName"))
+                    object.medalName = message.medalName;
+                if (message.medalPic != null && message.hasOwnProperty("medalPic"))
+                    object.medalPic = message.medalPic;
+                if (message.userId != null && message.hasOwnProperty("userId"))
+                    if (typeof message.userId === "number")
+                        object.userId = options.longs === String ? String(message.userId) : message.userId;
+                    else
+                        object.userId = options.longs === String ? $util.Long.prototype.toString.call(message.userId) : options.longs === Number ? new $util.LongBits(message.userId.low >>> 0, message.userId.high >>> 0).toNumber() : message.userId;
                 return object;
             };
 
@@ -12731,6 +13831,21 @@ $root.message = (function() {
              */
             Chat.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for Chat
+             * @function getTypeUrl
+             * @memberof message.BroadCastChatMessage.Chat
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            Chat.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/message.BroadCastChatMessage.Chat";
             };
 
             return Chat;
@@ -12842,12 +13957,14 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.success = reader.bool();
-                    break;
-                case 2:
-                    message.msg = reader.string();
-                    break;
+                case 1: {
+                        message.success = reader.bool();
+                        break;
+                    }
+                case 2: {
+                        message.msg = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -12944,6 +14061,21 @@ $root.message = (function() {
          */
         BackSendMerchantCoupon.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BackSendMerchantCoupon
+         * @function getTypeUrl
+         * @memberof message.BackSendMerchantCoupon
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BackSendMerchantCoupon.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BackSendMerchantCoupon";
         };
 
         return BackSendMerchantCoupon;
@@ -13043,11 +14175,12 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    if (!(message.list && message.list.length))
-                        message.list = [];
-                    message.list.push($root.message.BroadCastMerchantCoupon.Coupon.decode(reader, reader.uint32()));
-                    break;
+                case 1: {
+                        if (!(message.list && message.list.length))
+                            message.list = [];
+                        message.list.push($root.message.BroadCastMerchantCoupon.Coupon.decode(reader, reader.uint32()));
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -13152,6 +14285,21 @@ $root.message = (function() {
          */
         BroadCastMerchantCoupon.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BroadCastMerchantCoupon
+         * @function getTypeUrl
+         * @memberof message.BroadCastMerchantCoupon
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BroadCastMerchantCoupon.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BroadCastMerchantCoupon";
         };
 
         BroadCastMerchantCoupon.Coupon = (function() {
@@ -13268,15 +14416,18 @@ $root.message = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.id = reader.int64();
-                        break;
-                    case 2:
-                        message.disappear = reader.bool();
-                        break;
-                    case 3:
-                        message.startTime = reader.int64();
-                        break;
+                    case 1: {
+                            message.id = reader.int64();
+                            break;
+                        }
+                    case 2: {
+                            message.disappear = reader.bool();
+                            break;
+                        }
+                    case 3: {
+                            message.startTime = reader.int64();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -13411,6 +14562,21 @@ $root.message = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for Coupon
+             * @function getTypeUrl
+             * @memberof message.BroadCastMerchantCoupon.Coupon
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            Coupon.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/message.BroadCastMerchantCoupon.Coupon";
+            };
+
             return Coupon;
         })();
 
@@ -13542,18 +14708,22 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.success = reader.bool();
-                    break;
-                case 2:
-                    message.msg = reader.string();
-                    break;
-                case 3:
-                    message.disappear = reader.bool();
-                    break;
-                case 4:
-                    message.coupon = $root.message.BackGetMerchantCoupon.Coupon.decode(reader, reader.uint32());
-                    break;
+                case 1: {
+                        message.success = reader.bool();
+                        break;
+                    }
+                case 2: {
+                        message.msg = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.disappear = reader.bool();
+                        break;
+                    }
+                case 4: {
+                        message.coupon = $root.message.BackGetMerchantCoupon.Coupon.decode(reader, reader.uint32());
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -13671,6 +14841,21 @@ $root.message = (function() {
          */
         BackGetMerchantCoupon.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BackGetMerchantCoupon
+         * @function getTypeUrl
+         * @memberof message.BackGetMerchantCoupon
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BackGetMerchantCoupon.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BackGetMerchantCoupon";
         };
 
         BackGetMerchantCoupon.Coupon = (function() {
@@ -13809,21 +14994,26 @@ $root.message = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 4:
-                        message.tp = reader.uint32();
-                        break;
-                    case 5:
-                        message.goodCode = reader.string();
-                        break;
-                    case 6:
-                        message.amount = reader.double();
-                        break;
-                    case 7:
-                        message.minUseAmount = reader.double();
-                        break;
-                    case 8:
-                        message.durExp = reader.string();
-                        break;
+                    case 4: {
+                            message.tp = reader.uint32();
+                            break;
+                        }
+                    case 5: {
+                            message.goodCode = reader.string();
+                            break;
+                        }
+                    case 6: {
+                            message.amount = reader.double();
+                            break;
+                        }
+                    case 7: {
+                            message.minUseAmount = reader.double();
+                            break;
+                        }
+                    case 8: {
+                            message.durExp = reader.string();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -13946,6 +15136,21 @@ $root.message = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for Coupon
+             * @function getTypeUrl
+             * @memberof message.BackGetMerchantCoupon.Coupon
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            Coupon.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/message.BackGetMerchantCoupon.Coupon";
+            };
+
             return Coupon;
         })();
 
@@ -14044,9 +15249,10 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.allowed = reader.bool();
-                    break;
+                case 1: {
+                        message.allowed = reader.bool();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -14134,6 +15340,21 @@ $root.message = (function() {
          */
         BroadCastLianmaiAllowed.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BroadCastLianmaiAllowed
+         * @function getTypeUrl
+         * @memberof message.BroadCastLianmaiAllowed
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BroadCastLianmaiAllowed.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BroadCastLianmaiAllowed";
         };
 
         return BroadCastLianmaiAllowed;
@@ -14253,15 +15474,18 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.uid = reader.string();
-                    break;
-                case 2:
-                    message.sender = reader.string();
-                    break;
-                case 3:
-                    message.senderAvatar = reader.string();
-                    break;
+                case 1: {
+                        message.uid = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.sender = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.senderAvatar = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -14366,6 +15590,21 @@ $root.message = (function() {
          */
         SendLianmaiApply.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for SendLianmaiApply
+         * @function getTypeUrl
+         * @memberof message.SendLianmaiApply
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        SendLianmaiApply.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.SendLianmaiApply";
         };
 
         return SendLianmaiApply;
@@ -14474,12 +15713,14 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.success = reader.bool();
-                    break;
-                case 2:
-                    message.msg = reader.string();
-                    break;
+                case 1: {
+                        message.success = reader.bool();
+                        break;
+                    }
+                case 2: {
+                        message.msg = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -14576,6 +15817,21 @@ $root.message = (function() {
          */
         BackApplyLianmai.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BackApplyLianmai
+         * @function getTypeUrl
+         * @memberof message.BackApplyLianmai
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BackApplyLianmai.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BackApplyLianmai";
         };
 
         return BackApplyLianmai;
@@ -14706,18 +15962,22 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.uid = reader.string();
-                    break;
-                case 2:
-                    message.name = reader.string();
-                    break;
-                case 3:
-                    message.avatar = reader.string();
-                    break;
-                case 4:
-                    message.streamId = reader.string();
-                    break;
+                case 1: {
+                        message.uid = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.name = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.avatar = reader.string();
+                        break;
+                    }
+                case 4: {
+                        message.streamId = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -14830,6 +16090,21 @@ $root.message = (function() {
          */
         BroadCastLianmaiOn.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BroadCastLianmaiOn
+         * @function getTypeUrl
+         * @memberof message.BroadCastLianmaiOn
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BroadCastLianmaiOn.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BroadCastLianmaiOn";
         };
 
         return BroadCastLianmaiOn;
@@ -14992,6 +16267,21 @@ $root.message = (function() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        /**
+         * Gets the default type url for BroadCastLianmaiOff
+         * @function getTypeUrl
+         * @memberof message.BroadCastLianmaiOff
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BroadCastLianmaiOff.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BroadCastLianmaiOff";
+        };
+
         return BroadCastLianmaiOff;
     })();
 
@@ -15100,14 +16390,16 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.allowed = reader.bool();
-                    break;
-                case 2:
-                    if (!(message.list && message.list.length))
-                        message.list = [];
-                    message.list.push($root.message.BackActorLianmaiData.Lianmai.decode(reader, reader.uint32()));
-                    break;
+                case 1: {
+                        message.allowed = reader.bool();
+                        break;
+                    }
+                case 2: {
+                        if (!(message.list && message.list.length))
+                            message.list = [];
+                        message.list.push($root.message.BackActorLianmaiData.Lianmai.decode(reader, reader.uint32()));
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -15221,6 +16513,21 @@ $root.message = (function() {
          */
         BackActorLianmaiData.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BackActorLianmaiData
+         * @function getTypeUrl
+         * @memberof message.BackActorLianmaiData
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BackActorLianmaiData.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BackActorLianmaiData";
         };
 
         BackActorLianmaiData.Lianmai = (function() {
@@ -15359,21 +16666,26 @@ $root.message = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.tp = reader.int32();
-                        break;
-                    case 2:
-                        message.uid = reader.string();
-                        break;
-                    case 3:
-                        message.name = reader.string();
-                        break;
-                    case 4:
-                        message.avatar = reader.string();
-                        break;
-                    case 5:
-                        message.sec = reader.uint32();
-                        break;
+                    case 1: {
+                            message.tp = reader.int32();
+                            break;
+                        }
+                    case 2: {
+                            message.uid = reader.string();
+                            break;
+                        }
+                    case 3: {
+                            message.name = reader.string();
+                            break;
+                        }
+                    case 4: {
+                            message.avatar = reader.string();
+                            break;
+                        }
+                    case 5: {
+                            message.sec = reader.uint32();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -15496,6 +16808,21 @@ $root.message = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for Lianmai
+             * @function getTypeUrl
+             * @memberof message.BackActorLianmaiData.Lianmai
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            Lianmai.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/message.BackActorLianmaiData.Lianmai";
+            };
+
             return Lianmai;
         })();
 
@@ -15605,12 +16932,14 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.success = reader.bool();
-                    break;
-                case 2:
-                    message.msg = reader.string();
-                    break;
+                case 1: {
+                        message.success = reader.bool();
+                        break;
+                    }
+                case 2: {
+                        message.msg = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -15707,6 +17036,21 @@ $root.message = (function() {
          */
         BackActorAgreeLianmaiApply.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BackActorAgreeLianmaiApply
+         * @function getTypeUrl
+         * @memberof message.BackActorAgreeLianmaiApply
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BackActorAgreeLianmaiApply.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BackActorAgreeLianmaiApply";
         };
 
         return BackActorAgreeLianmaiApply;
@@ -15815,12 +17159,14 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.success = reader.bool();
-                    break;
-                case 2:
-                    message.msg = reader.string();
-                    break;
+                case 1: {
+                        message.success = reader.bool();
+                        break;
+                    }
+                case 2: {
+                        message.msg = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -15917,6 +17263,21 @@ $root.message = (function() {
          */
         BackTerminateLianmai.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BackTerminateLianmai
+         * @function getTypeUrl
+         * @memberof message.BackTerminateLianmai
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BackTerminateLianmai.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BackTerminateLianmai";
         };
 
         return BackTerminateLianmai;
@@ -16025,12 +17386,14 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.success = reader.bool();
-                    break;
-                case 2:
-                    message.msg = reader.string();
-                    break;
+                case 1: {
+                        message.success = reader.bool();
+                        break;
+                    }
+                case 2: {
+                        message.msg = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -16127,6 +17490,21 @@ $root.message = (function() {
          */
         BackGmChatBid.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BackGmChatBid
+         * @function getTypeUrl
+         * @memberof message.BackGmChatBid
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BackGmChatBid.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BackGmChatBid";
         };
 
         return BackGmChatBid;
@@ -16235,12 +17613,14 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.success = reader.bool();
-                    break;
-                case 2:
-                    message.msg = reader.string();
-                    break;
+                case 1: {
+                        message.success = reader.bool();
+                        break;
+                    }
+                case 2: {
+                        message.msg = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -16337,6 +17717,21 @@ $root.message = (function() {
          */
         BackGmKickOutRoom.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for BackGmKickOutRoom
+         * @function getTypeUrl
+         * @memberof message.BackGmKickOutRoom
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        BackGmKickOutRoom.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.BackGmKickOutRoom";
         };
 
         return BackGmKickOutRoom;
@@ -16463,12 +17858,14 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.state = reader.int32();
-                    break;
-                case 2:
-                    message.online = reader.uint32();
-                    break;
+                case 1: {
+                        message.state = reader.int32();
+                        break;
+                    }
+                case 2: {
+                        message.online = reader.uint32();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -16533,6 +17930,12 @@ $root.message = (function() {
                 return object;
             var message = new $root.message.SendRoomData();
             switch (object.state) {
+            default:
+                if (typeof object.state === "number") {
+                    message.state = object.state;
+                    break;
+                }
+                break;
             case "BD_STATE_WAIT1":
             case 0:
                 message.state = 0;
@@ -16573,7 +17976,7 @@ $root.message = (function() {
                 object.online = 0;
             }
             if (message.state != null && message.hasOwnProperty("state"))
-                object.state = options.enums === String ? $root.message.RoomState[message.state] : message.state;
+                object.state = options.enums === String ? $root.message.RoomState[message.state] === undefined ? message.state : $root.message.RoomState[message.state] : message.state;
             if (message.online != null && message.hasOwnProperty("online"))
                 object.online = message.online;
             return object;
@@ -16588,6 +17991,21 @@ $root.message = (function() {
          */
         SendRoomData.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for SendRoomData
+         * @function getTypeUrl
+         * @memberof message.SendRoomData
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        SendRoomData.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/message.SendRoomData";
         };
 
         return SendRoomData;

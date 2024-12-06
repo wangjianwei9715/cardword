@@ -55,9 +55,7 @@
 		onShow(){
 			// #ifndef MP-WEIXIN
 			if(app.token.accessToken == ''){
-				uni.navigateTo({
-					url:'/pages/login/login'
-				})
+				app.login.arouseLogin()
 				return;
 			}
 			this.pageIndex=1;
@@ -180,14 +178,14 @@
 				.desc-title{
 					width: 100%;
 					font-size: 28rpx;
-					font-family: PingFangSC-Medium, PingFang SC;
+					
 					font-weight: 600;
 				}
 				.desc-message{
 					width: 100%;
 					font-size: 24rpx;
-					font-family: PingFangSC-Regular, PingFang SC;
-					font-weight: 400;
+					
+					
 					color: #767880;
 				}
 			}
@@ -202,8 +200,8 @@
 			.time{
 				width: 100%;
 				font-size: 24rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
-				font-weight: 400;
+				
+				
 				color: #AAAABB;
 				margin-bottom: 6rpx;
 				text-align: end;
@@ -218,8 +216,8 @@
 				align-items: center;
 				justify-content: center;
 				font-size: 20rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
-				font-weight: 400;
+				
+				
 				color: #FFFFFF;
 			}
 		}
@@ -230,8 +228,8 @@
 	}
 	.desc-message /deep/ p{
 		font-size: 24rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #767880;
 	}
 	.desc-message /deep/ image{

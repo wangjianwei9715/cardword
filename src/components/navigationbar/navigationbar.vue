@@ -1,129 +1,150 @@
 <template>
-	<view style="width: 100%;">
-		<view class="status-bar" :style="'height:'+statusBarHeight+'px'"/>
-		<view v-if="isShow" class="self-nav" :style="'top:'+statusBarHeight+'px'">
-			<button v-if="isShowBack" @click="onClickNavigateBack" class="btn-back" :style="'color:'+titleColor+';'">&#xe582;</button>
-			<view class="title" :style="'color:'+titleColor+';'">{{title}}</view>
-			<button v-if="isShowRightBtn" class="right-text" :style="'color:'+rightColor+';font-size:'+rightFont+'px;'"
-				@click="onClickRightBtn()">{{rightText}}
-			</button>
+	<view>
+		<view class="header-banner" :style="{ backgroundColor: backgroundColor,borderBottom:borderBottom }">
+			<view class="content" :style="'height:' + statusBarHeight + 'px'"></view>
+			<view class="tab-header">
+				<view class="icon-back" :class="{'icon-back-white':backColor!='#000'}" v-show="showBack" @click="onClickBack"></view>
+				<view class="header-title" :style="{color:backColor}">{{ title }}</view>
+				<view class="header-icon" v-if="custom">
+					<slot name="right"></slot>
+				</view>
+				<view class="icon-share" v-else-if='shareData' @click="onClickShare"></view>
+				<view class='right-text' v-else @click="onClickRightText">{{ rightText }}</view>
+			</view>
+			<slot name="bottom"></slot>
 		</view>
-		<view class="status-bar-empty"  :style="'padding-top:'+statusBarHeight+'rpx'"></view>
-		<view v-if="isShow" class="nav-empty"/>
+		<view :style="{ height: 88 + 'rpx', paddingTop: statusBarHeight + 'px' }"></view>
+		<share v-if='shareData' :operationShow="operationShow" :shareData="shareData" @operacancel="onClickShareCancel">
+		</share>
 	</view>
 </template>
 
 <script lang="ts">
-	import { Component, Prop,Vue } from "vue-property-decorator";
-	import BaseComponent from "@/base/BaseComponent.vue";
-	import { app } from "@/app";
-	@Component({})
-	export default class navigationbar extends BaseComponent {
-		@Prop({ default: '#3C3C3C' })
-		titleColor!: string;
-		@Prop({ default: '' })
-		title!: string;
-		@Prop({ default: '' })
-		rightText!: string;
-		@Prop({ default: true })
-		isShowBack!: boolean;
-		@Prop({ default: true })
-		isShow!: boolean;
-		@Prop({ default: false })
-		isShowRightBtn!: boolean;
-		@Prop({ default: '#3C3C3C' })
-		rightColor!: string;
-		@Prop({ default: '22' })
-		rightFont!: string;
-		
-		statusBarHeight = app.statusBarHeight;
-		created(){//在实例创建完成后被立即调用
-		}
-		mounted(){//挂载到实例上去之后调用
-			
-		}
-		destroyed(){
-			
-		}
-		onClickNavigateBack(){
-			uni.navigateBack({})
-		}
-		onClickRightBtn(){
-			this.$emit("navclick");
-		}
-		
+import { Component, Prop, Vue } from "vue-property-decorator";
+import BaseComponent from "@/base/BaseComponent.vue";
+import { app } from "@/app";
+@Component({})
+export default class navigationbar extends BaseComponent {
+	@Prop({ default: '' })
+	title!: string;
+	@Prop({ default: false })
+	custom?: Boolean;
+	@Prop({ default: true })
+	showBack?: Boolean;
+	@Prop({ default: false })
+	customBack?: Boolean;
+	@Prop({ default: '' })
+	shareData?: any;
+	@Prop({ default: '' })
+	rightText?: string;
+	@Prop({ default: '#ffffff' })
+	backgroundColor?: string;
+	@Prop({ default: '1px solid #F4F3F2' })
+	borderBottom?:string
+	@Prop({ default: '#000' })
+	backColor?:string
+	operationShow = false;
+	statusBarHeight = app.statusBarHeight;
+	created() {//在实例创建完成后被立即调用
 	}
+	mounted() {//挂载到实例上去之后调用
+
+	}
+	destroyed() {
+
+	}
+	onClickBack() {
+		if(this.customBack){
+			this.$emit("back")
+			return;
+		}
+		app.platform.pageBack()
+	}
+	// 分享
+	onClickShare() {
+		if (!this.operationShow) {
+			this.operationShow = true
+		}
+	}
+	onClickShareCancel() {
+		this.operationShow = false
+	}
+	onClickRightText() {
+		this.$emit('onClickRightText')
+	}
+}
 </script>
 
-<style>
-	.status-bar{
+<style lang="scss">
+.header-banner {
+	width: 100%;
+	background: #fff;
+	position: fixed;
+	left: 0;
+	top: 0;
+	box-sizing: border-box;
+	z-index: 20;
+	border-bottom: 1px solid #F4F3F2;
+
+	.tab-header {
 		width: 100%;
-		position:fixed;
+		height: 88rpx;
+		display: flex;
+		box-sizing: border-box;
+		padding: 0 12rpx 0rpx 12rpx;
+		position: relative;
+		z-index: 10;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.icon-back {
+		width: 56rpx;
+		height:56rpx;
+		position: absolute;
+		left: 12rpx;
+		top: 50%;
+		margin-top: -28rpx;
+		background: url(@/static/index/back_b.png) no-repeat center / 100% 100%;
+	}
+	.icon-back-white{
+		background: url(@/static/index/back_w.png) no-repeat center / 100% 100% !important;
+	}
+	.header-title {
+		height: 88rpx;
+		line-height: 88rpx;
+		font-size: 18px;
+		
+		font-weight: 600;
+		color: #333;
+	}
+
+	.icon-share {
+		width: 38rpx;
+		height: 37rpx;
+		position: absolute;
+		right: 32rpx;
+		top: 50%;
+		margin-top: -19rpx;
+		background: url(../../static/goods/v2/icon_share.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+
+	.right-text {
+		font-size: 28rpx;
+		
+		
+		color: #333333;
+		position: absolute;
+		right: 32rpx;
+	}
+
+	.header-icon {
+		height: 88rpx;
+		display: flex;
+		align-items: center;
+		position: absolute;
+		right: 40rpx;
 		top: 0;
-		z-index: 99;
 	}
-	.status-bar-empty{
-		width: 100%;
-		height:auto;
-		position:relative;
-		z-index: 0;
-		display: flex;
-		align-items: center;
-	}
-	.nav-empty{
-		width: 100%;
-		height:88rpx;
-		position:relative;
-		z-index: 0;
-		display: flex;
-		align-items: center;
-	}
-	.self-nav{
-		width: 100%;
-		height:88rpx;
-		position:fixed;
-		z-index: 99;
-		display: flex;
-		align-items: center;
-		background:#fff;
-	}
-	.btn-back {
-		height: 40px;
-		background:rgba(0, 0, 0, 0);
-		position: absolute;
-		left: 0;
-		padding: 0 8px;
-		box-sizing: border-box;
-
-		font-family: uniicons;
-		font-size: 23px;
-		font-weight: normal;
-		font-style: normal;
-		line-height: 40px;
-		color: #3C3C3C;
-	}
-	.title{
-		height: 40px;
-		font-size: 16px;
-		color: #3C3C3C;
-		line-height: 40px;
-		margin: auto;
-		font-family: HYQiHei;
-		font-weight: bold;
-	}
-	.right-text{
-		height: 40px;
-		background:rgba(0, 0, 0, 0);
-		position: absolute;
-		right:0;
-		padding: 0 8px;
-		box-sizing: border-box;
-
-		font-family: HYQiHei;
-		font-weight: bold;
-		font-style: normal;
-		font-size: 22px;
-		color: #3C3C3C;
-		line-height: 40px;
-	}
-</style>
+}</style>

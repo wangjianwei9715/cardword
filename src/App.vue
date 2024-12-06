@@ -13,6 +13,8 @@
 		liveCountDownV2,
 		getCountDownTime,
 		calculate,
+		formatNumber,
+		getUrlData
 	} from "./tools/util";
 	import { SocketServer } from "@/net/SocketServer";
 	import * as proto from "./net/proto";
@@ -27,6 +29,7 @@
 			getCountDownTime,
 			calculate,
 			ZegoExpressEngine,
+			formatNumber,
 			destroyServe: () => {
 				app.sever.isNetOK() && app.sever.close();
 				app.sever = new SocketServer();
@@ -34,9 +37,9 @@
 		},
 		onLaunch() {
 			// #ifdef APP-PLUS
-			// setTimeout(() => {
-			// 	plus.navigator.closeSplashscreen();
-			// }, 2400);
+			setTimeout(() => {
+				plus.navigator.closeSplashscreen();
+			}, 2400);
 			// #endif
 			console.log("App Launch");
 			//#ifdef APP-PLUS
@@ -44,14 +47,22 @@
 			// plus.webview.prefetchURL(app.liveWebView); //预载直播控件webview
 			// plus.screen.lockOrientation('landscape-primary');
 			//#endif
+			app.appBeta = uni.getStorageSync('appBeta');
+			if(app.appBeta=='on') {
+				app.localTest=true;
+				app.bussinessApiDomain = app.appBetaDomain;
+				app.funcApiDomain = app.appBetaDomain;
+			};
+			uni.getStorageSync("GUIDE_DATA") && (app.guide = uni.getStorageSync("GUIDE_DATA"));
+			
 			if (process.env.NODE_ENV === "development") {
-				//   console.log("开发环境");
-				// app.localTest = true;  
-				// app.bussinessApiDomain = `http://192.168.8.63:8701${app.requestVersion}`;
-				// app.bussinessApiDomain = `https://server.ssltest.ka-world.com${app.requestVersion}`;
-				// app.funcApiDomain = "https://functest.ssl.ka-world.com/api/v2/";
+				//   console.log("开发环境"); 
+				// app.bussinessApiDomain = `http://192.168.7.8:8701${app.requestVersion}`;
+				// app.dataApiDomain = `http://192.168.7.8:8701${app.requestVersion}`; 
+				// app.launch_url = ['http://service.s777.ka-world.com']
+				// app.funcApiDomain = "http://functest.ssl.ka-world.com/api/v2/";
 				// 正式服测试环境 
-				// app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
+				// app.bussinessApiDomain=`http://server.beta_bigstone.ka-world.com${app.requestVersion}`;
 			}
 			uni.setStorageSync("openAppTime", Math.round(+new Date() / 1000)); //存储打开app时间
 			if(!uni.getStorageSync("webViewVersion") || uni.getStorageSync("webViewVersion")!=app.webViewVersion){
@@ -70,6 +81,9 @@
 			// #endif
 			if (loginToken) {
 				app.token = JSON.parse(loginToken);
+				app.user.getAppDataUserId().then((res:any)=>{
+					app.data.userId = res;
+				});
 			}
 			uni.$on("refreshToken", () => {
 				if (app.refreshIng) return;
@@ -112,9 +126,8 @@
 					console.log(e);
 				}
 				app.data = {};
-				uni.navigateTo({
-					url: `/pages/login/login?${query || ""}`,
-				});
+				const params =getUrlData(query[0]=="?"?query:"?"+query)
+				app.login.arouseLogin(params.redirect || "", Boolean(params.return || false))
 			});
 			// #ifdef APP-PLUS
 			// #endif
@@ -215,6 +228,8 @@
 		},
 		onShow() {
 			console.log("App Show");
+			// 登录记录
+			app.platform.loginRecord()
 			// #ifdef APP-PLUS
 			const nowTimeStamp = Math.round(+new Date() / 1000);
 			const refreshThreshold = 2 * 60 * 60; //刷新App阈值
@@ -231,27 +246,31 @@
 					let index = args.indexOf("=") + 1;
 					let goodCode = args.substring(index);
 					plus.runtime.arguments = "";
-					app.navigateTo.goGoodsDetails(goodCode)
+					app.navigateTo.goGoodsDetails(goodCode,"&referer=ThirdParties")
 					return
 				}
-				if(args.indexOf("=>")!=-1){
-					const pages = getCurrentPages();
-					let [jumpType,url]=args.split("=>")
-					if(!url) return
-					if(pages.length){
-						const currentRoute:any=pages[pages.length-1].route
-						if(url&&url.indexOf(currentRoute)!=-1) jumpType='redirectTo'
-					}
-					if(url.indexOf('/pages/live/zgPlayBack')!=-1){
-						app.platform.comeFromOpenPlayBack(url)
+				let params:any=getUrlData(args)
+				if (Object.keys(params).length){
+					//跳转
+					if(params.routerUrl){
+						let jumpType="navigateTo"
+						const pages = getCurrentPages();
+						params.routerUrl=decodeURIComponent(params.routerUrl)
+						if(params.routerUrl.indexOf('/pages/live/zgPlayBack')!=-1){
+							app.platform.comeFromOpenPlayBack(params.routerUrl)
+							return
+						}
+						if(pages.length){
+							const currentRoute:any=pages[pages.length-1].route
+							if(params.routerUrl&&params.routerUrl.indexOf(currentRoute)!=-1) jumpType='redirectTo'
+						}
+						//@ts-ignore
+						uni[jumpType]({
+							url:params.routerUrl
+						})
+						plus.runtime.arguments = "";
 						return
 					}
-					//@ts-ignore
-					uni[jumpType]({
-						url
-					})
-					plus.runtime.arguments = "";
-					return
 				}
 				plus.runtime.arguments = "";
 			}, 500);
@@ -297,7 +316,10 @@
 		font-family: "DIN";
 		src: url("~@/common/DIN/DINAlternateBold.ttf");
 	}
-
+	@font-face {
+		font-family: "DINCondensed";
+		src: url("~@/common/DIN/DINCondensedBold.ttf");
+	}
 	@font-face {
 		font-family: "eryaxindahei";
 		src: url("~@/common/Tao/CountDownNum.ttf");
@@ -320,14 +342,23 @@
 		font-family: "ArialBold";
 		src: url("~@/common/Tao/Futura.ttf");
 	}
+	@font-face {
+		font-family: "HYLiLiangHeiJ";
+		src: url("~@/common/Tao/HYLiLiangHeiJ.ttf");
+	}
 	// #endif
 	.content {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		width: 750rpx;
+		box-sizing: border-box;
 	}
-
+	.uni-page-head__title{
+		font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji, BlinkMacSystemFont, Helvetica Neue, Arial, PingFang SC, PingFang TC, PingFang HK, Microsoft Yahei, Microsoft JhengHei !important;
+		font-weight: 600 !important;
+	}
 	[type="search"]::-webkit-search-decoration {
 		display: none;
 	}

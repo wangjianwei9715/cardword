@@ -108,15 +108,15 @@ export default class ClassName extends BaseComponent {
 .address-desc {
     width: 100%;
     font-size: 29rpx;
-    font-family: PingFang SC;
+    
     font-weight: 600;
     color: #333333;
 }
 .address-name {
     width: 100%;
     font-size: 25rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
+    
+    
     color: #959695;
     line-height: 36rpx;
 }
@@ -124,7 +124,7 @@ export default class ClassName extends BaseComponent {
     height: 100rpx;
     line-height: 100rpx;
     font-size: 28rpx;
-    font-family: HYQiHei;
+    
     font-weight: bold;
     color: #3b3b3b;
 }

@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 16:19:36
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-04 11:32:44
- * @FilePath: \card-world\src\pages\mall\pay.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-10-12 15:03:32
+ * @FilePath: \jichao_app_2\src\pages\mall\pay.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -22,7 +22,7 @@
             <view class="dotRight"></view>
         </view>
         <view class="publickBlock goodsContainer">
-            <image class="goodsImg" mode="aspectFill" :src="$parsePic(decodeURIComponent(goodsDetail.logo))"></image>
+            <image class="goodsImg" mode="aspectFill" :src="$parsePic(goodsDetail.logo)"></image>
             <view class="goodsRightInfo">
                 <view class="goodsName">{{ goodsDetail.name }}</view>
                 <view class="goodsPrice">
@@ -164,7 +164,7 @@ export default class ClassName extends BaseNode {
             title: ""
         })
         this.showPayMent = false
-        app.http.Post(`point/good/toBuy/${this.ID}`, { deliveryId: this.addressData.id, channel }, (res: any) => {
+        app.http.Pay(`point/good/toBuy/${this.ID}`, { deliveryId: this.addressData.id, channel }, (res: any) => {
             this.orderCode = res.orderCode
             uni.hideLoading()
 
@@ -181,7 +181,7 @@ export default class ClassName extends BaseNode {
                 })
             } else {
                 //订单创建成功跳转支付宝支付
-                app.payment.paymentAlipay(res.sdk, res.alipay.orderInfo, res.orderCode, () => {
+                app.payment.paymentAlipay(res.h5CashierAddress, res.alipay.orderInfo,() => {
                     this.toOrderDetail()
                 });
             }
@@ -253,16 +253,16 @@ page {
 
         &_lineone {
             font-size: 29rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
+            
+            
             color: #333333;
         }
 
         &_linetwo {
             font-size: 25rpx;
             color: #999999;
-            font-family: PingFang SC;
-            font-weight: 400;
+            
+            
         }
     }
 
@@ -295,14 +295,14 @@ page {
 
         .goodsName {
             font-size: 25rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
+            
+            
             color: #333333;
         }
 
         .goodsPrice {
             font-size: 29rpx;
-            font-family: PingFang SC;
+            
             font-weight: 600;
             color: #333333;
 
@@ -321,7 +321,7 @@ page {
     &-title {
         width: 100%;
         font-size: 28rpx;
-        font-family: PingFangSC-Medium, PingFang SC;
+        
         font-weight: 600;
         color: #14151A;
         margin-bottom: 20rpx;
@@ -329,9 +329,7 @@ page {
 
     &-desc {
         font-size: 24rpx;
-        font-family: PingFangSC-Regular,
-            PingFang SC;
-        font-weight: 400;
+        
         color: #7D8288;
         line-height: 40rpx;
     }
@@ -347,16 +345,16 @@ page {
     height: 94rpx;
     padding: 0 30rpx;
     font-size: 25rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
+    
+    
     color: #333333;
 }
 
 .buyReadContainer {
     padding: 36rpx 30rpx 30rpx 30rpx;
     font-size: 25rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
+    
+    
     color: #333333;
 
     .buyReadTop {
@@ -366,8 +364,8 @@ page {
 
         text {
             font-size: 25rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
+            
+            
             color: #333333;
             margin-left: 8rpx;
         }
@@ -375,8 +373,8 @@ page {
 
     .readContent {
         font-size: 25rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
+        
+        
         color: #333333;
         margin-top: 22rpx;
 
@@ -422,29 +420,29 @@ page {
 
             .moneySymbol {
                 font-size: 25rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 600;
                 color: #333333;
             }
 
             .all {
                 font-size: 25rpx;
-                font-family: PingFang SC;
-                font-weight: 400;
+                
+                
                 color: #949494;
                 margin-right: 18rpx;
             }
 
             .price {
                 font-size: 50rpx;
-                font-family: PingFang SC;
+                
                 font-weight: 600;
                 color: #333333;
             }
 
             // .price {
             //     font-size: 33rpx;
-            //     font-family: PingFang SC;
+            //     
             //     font-weight: 600;
             //     color: #333333;
             //     margin-bottom: 10rpx;
@@ -453,8 +451,8 @@ page {
 
             // .myPoint {
             //     font-size: 23rpx;
-            //     font-family: PingFang SC;
-            //     font-weight: 400;
+            //     
+            //     
             //     color: #949494
             // }
         }
@@ -465,7 +463,7 @@ page {
             background: #FA1545;
             border-radius: 3rpx;
             font-size: 33rpx;
-            font-family: PingFang SC;
+            
             font-weight: 600;
             letter-spacing: 4rpx;
             color: #FFFFFF;

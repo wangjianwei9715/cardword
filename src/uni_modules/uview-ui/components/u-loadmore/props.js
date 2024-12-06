@@ -89,6 +89,10 @@ export default {
         dashed: {
             type: Boolean,
             default: uni.$u.props.loadmore.dashed
+        },
+        lineLength:{
+            type:[String,Number],
+            default:"140rpx"
         }
     }
 }

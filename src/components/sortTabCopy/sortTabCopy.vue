@@ -146,8 +146,8 @@ export default class ClassName extends BaseComponent {
     align-items: center;
     box-sizing: border-box;
     font-size: 26rpx;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
+    
+    
     color: #333333;
     z-index: 92323;
   }
@@ -206,8 +206,8 @@ export default class ClassName extends BaseComponent {
       display: flex;
       align-items: center;
       font-size: 24rpx;
-      font-family: PingFangSC-Medium, PingFang SC;
-      font-weight: 500;
+      
+      font-weight: 600;
       color: #14151a;
     }
     &-index:last-child {
@@ -219,7 +219,7 @@ export default class ClassName extends BaseComponent {
     opacity: 1;
   }
   .classify-short {
-    height:170rpx;
+    height:90rpx;
     opacity: 1;
   }
   .classify-opt {

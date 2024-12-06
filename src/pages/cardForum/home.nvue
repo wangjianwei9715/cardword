@@ -1,0 +1,1186 @@
+<!--
+ * @Author: lsj a1353474135@163.com
+ * @Date: 2023-08-25 14:42:10
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2024-07-15 16:01:43
+ * @FilePath: \card-world\src\pages\cardForum\home.nvue
+ * @Description: 不使用index抽象索引
+-->
+<template>
+    <div class="content cardForumContainer">
+        <swiper :duration="300" :style="{ height: app.platform.systemInfo.screenHeight + 'px' }" v-if="initFinish"
+            class="swiperContainer" :current="tabs.index" @change="swiperChange" @transition="swiperTransition"
+            @animationfinish="dx = 0">
+            <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
+                <image src="@/static/cardForum/showKaBack.jpg" class="showKaBack" v-if="tabIndex === CFTT.SHOW.index">
+                </image>
+                <!-- <div style="background-color: #ffffff;" class="showKaBack" v-if="tabIndex === CFTT.COLUMN.index">
+                </div> -->
+                <div class="waterContainer" :style="{ height: scrollViewHeight + 'px', top: fixedTopHeight + 'px' }">
+                    <!-- 骨架 -->
+                    <cardSkeleton :loading="!tab.firstReqEnd" v-if="!tab.firstReqEnd" />
+                    <!-- #ifndef APP-NVUE -->
+                    <scroll-view scroll-y="true" :style="{ height: scrollViewHeight + 'px' }"
+                        @scrolltolower="loadmoreData(tabIndex)">
+                        <!-- show卡板块热门话题 -->
+                        <view class="hotTopicWrap" v-if="tab.tag === CFTT.SHOW.tag && tab.firstReqEnd">
+                            <image src="@/static/cardForum/hotCard.png" class="hotTopicWrap_img"></image>
+                            <view class="hotTopicRow">
+                                <image src="@/static/cardForum/star.png" class="star"></image>
+                                <text class="hotTopicRow_title">热门话题</text>
+                                <div class="flex1"></div>
+                                <text class="hotTopicRow_all"
+                                    @click="pageJump('/pages/cardForum/topics/list')">全部</text>
+                                <u-icon size="24rpx" color="#ffffff" name="arrow-right"></u-icon>
+                            </view>
+                            <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
+                                <view class="scrollTopicWarp">
+                                    <view class="faker_topicItem"></view>
+                                    <view class="topicItem" v-for="item in hotTopics"
+                                        @click="pageJump(`/pages/cardForum/topics/detailPage?id=${item.id}`)">
+                                        <view class="topicItem_imageWap">
+                                            <image mode="aspectFill" class="topicItem_img"
+                                                :src="parsePic(decodeURIComponent(item.pic))"></image>
+                                            <text class="topiceActCorner" v-if="item.activity">活动</text>
+                                        </view>
+                                        <text class="topicItem_title">{{ item.name }}</text>
+                                        <text class="topicItem_dt">{{ item.totalUseNum }}篇动态</text>
+
+                                    </view>
+                                </view>
+                            </scroll-view>
+                        </view>
+                        <!-- show卡板块广告 -->
+                        <view class="adWrap" v-if="tab.tag === CFTT.SHOW.tag && topicAcList && topicAcList.length">
+                            <image src="@/static/cardForum/acCard.png" class="adWrap_img"></image>
+                            <swiper class="adWrap_swiper" :autoplay="true" :circular="true">
+                                <swiper-item v-for="(item, index) in topicAcList" :key="index"
+                                    style="position: relative;width: 730rpx;height:160rpx"
+                                    @click="onClickShowKaSwiper(item)">
+                                    <image :src="parsePic(decodeURIComponent(item.pic))" class="swiperPic"
+                                        mode="aspectFill"></image>
+                                </swiper-item>
+                            </swiper>
+                        </view>
+                        <!-- 推荐板块广告 -->
+                        <div class="adWrap" v-if="tab.tag === CFTT.ALL.tag && addList && addList.length">
+                            <swiper class="adWrap_swiper" :autoplay="true" :circular="true">
+                                <swiper-item v-for="(item, index) in addList" :key="index"
+                                    @click="onClickAdd($event, item)" style="position: relative;">
+                                    <image :src="parsePic(decodeURIComponent(item.pic))" class="swiperPic"
+                                        mode="aspectFill"></image>
+                                </swiper-item>
+                            </swiper>
+                        </div>
+                        <!-- 类目专栏 -->
+                        <template v-if="tab.tag === CFTT.COLUMN.tag">
+                            <view class="columnScrollLine"></view>
+                            <scroll-view scroll-x="true" :show-scrollbar="false" class="columnScroll">
+                                <view class="uni-flex" style="flex-direction: row;">
+                                    <view class="columnItem flexCenter" @click="onClickColumn($event, columnItem)"
+                                        :class="{ columnItem_select: columnItem.name === column.select }"
+                                        :style="{ marginLeft: columnIndex == 0 ? '33rpx' : '0rpx' }"
+                                        v-for="(columnItem, columnIndex) in column.list" :key="columnIndex">
+                                        <text class="columnItem_text"
+                                            :class="{ columnItem_text_select: columnItem.name === column.select }">{{
+            columnItem.name }}</text>
+                                    </view>
+                                </view>
+                            </scroll-view>
+                            <columnList v-model="tab.list" style="width: 750rpx;"></columnList>
+                        </template>
+                        <!-- 瀑布流组件 -->
+                        <waterfalls style="width:750rpx;padding-top: 10rpx;"
+                            v-if="tab.list.length && tab.tag !== CFTT.COLUMN.tag" v-model="tab.list" :add-time="50"
+                            column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40"
+                            :isFetchEnd="tab.isFetchEnd" :forumGuide="forumGuide"
+                            @firstData="$event => firstData = $event">
+                        </waterfalls>
+                        <empty v-if="tab.firstReqEnd && !tab.list.length"></empty>
+                    </scroll-view>
+                    <!-- #endif -->
+                    <!-- #ifdef APP-NVUE -->
+                    <waterfalls :needExposure="true" column-count="2" :forumGuide="forumGuide"
+                        v-if="tab.firstReqEnd && tab.tag !== CFTT.COLUMN.tag" :ref="`waterfalls${tabIndex}`"
+                        :height="scrollViewHeight + 'px'" :value="tab.list" @loadmore="loadmoreData(tabIndex)"
+                        @refresh="refreshData(tabIndex)" @firstData="$event => firstData = $event"
+                        style="padding-top: 10rpx;" :isFetchEnd="tab.isFetchEnd">
+                        <template v-slot:header>
+                            <header style="align-items: center;" v-if="tab.tag == CFTT.SHOW.tag && tab.firstReqEnd">
+                                <div class="hotTopicWrap">
+                                    <image src="@/static/cardForum/hotCard.png" class="hotTopicWrap_img"></image>
+                                    <div class="hotTopicRow">
+                                        <image src="@/static/cardForum/star.png" class="star"></image>
+                                        <text class="hotTopicRow_title">热门话题</text>
+                                        <div class="flex1"></div>
+                                        <text class="hotTopicRow_all"
+                                            @click="pageJump('/pages/cardForum/topics/list')">全部</text>
+                                        <u-icon size="24rpx" color="#ffffff" name="arrow-right"></u-icon>
+                                    </div>
+                                    <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
+                                        <view class="faker_topicItem"></view>
+                                        <view class="topicItem" v-for="item in hotTopics"
+                                            @click="pageJump(`/pages/cardForum/topics/detailPage?id=${item.id}`)">
+                                            <view class="topicItem_imageWap">
+                                                <image mode="aspectFill" class="topicItem_img"
+                                                    :src="parsePic(decodeURIComponent(item.pic))"></image>
+                                                <text class="topiceActCorner" v-if="item.activity">活动</text>
+                                            </view>
+                                            <text class="topicItem_title">{{ item.name }}</text>
+                                            <text class="topicItem_dt">{{ item.totalUseNum }}篇动态</text>
+                                        </view>
+                                    </scroll-view>
+                                </div>
+                                <div class="adWrap"
+                                    v-if="tab.tag === CFTT.SHOW.tag && topicAcList && topicAcList.length">
+                                    <image src="@/static/cardForum/acCard.png" class="adWrap_img"></image>
+                                    <swiper class="adWrap_swiper" :autoplay="true" :circular="true">
+                                        <swiper-item v-for="(item, index) in topicAcList" :key="index"
+                                            style="position: relative;" @click="onClickShowKaSwiper(item)">
+                                            <image :src="parsePic(decodeURIComponent(item.pic))" class="swiperPic"
+                                                mode="aspectFill"></image>
+                                        </swiper-item>
+                                    </swiper>
+                                </div>
+                            </header>
+                            <header class="ac" v-if="tab.tag === CFTT.ALL.tag && tab.firstReqEnd && addList.length">
+                                <div class="adWrap">
+                                    <swiper class="adWrap_swiper" :autoplay="true" :circular="true">
+                                        <swiper-item v-for="(item, index) in addList" :key="index"
+                                            style="position: relative;" @click="onClickAdd($event, item)">
+                                            <image :src="parsePic(decodeURIComponent(item.pic))" class="swiperPic"
+                                                mode="aspectFill"></image>
+                                        </swiper-item>
+                                    </swiper>
+                                </div>
+                            </header>
+                        </template>
+                    </waterfalls>
+                    <!-- 专栏 -->
+                    <list v-if="tab.tag === CFTT.COLUMN.tag" :height="scrollViewHeight + 'px'" :show-scrollbar="false"
+                        @loadmore="loadmoreData(tabIndex)">
+                        <refresh display="show" @refresh="refreshData(tabIndex)"
+                            :display="columnRefreshing ? 'show' : 'hide'" class="refresh">
+                            <u-loading-icon mode="semicircle"></u-loading-icon>
+                        </refresh>
+                        <cell ref="goTop">
+                        </cell>
+                        <cell>
+                            <view class="columnScrollLine"></view>
+                            <scroll-view scroll-x="true" :show-scrollbar="false" class="columnScroll">
+                                <view class="columnItem flexCenter" @click="onClickColumn($event, columnItem)"
+                                    :class="{ columnItem_select: columnItem.name === column.select }"
+                                    :style="{ marginLeft: columnIndex == 0 ? '33rpx' : '0rpx' }"
+                                    v-for="(columnItem, columnIndex) in column.list" :key="columnIndex">
+                                    <text class="columnItem_text"
+                                        :class="{ columnItem_text_select: columnItem.name === column.select }">{{
+            columnItem.name }}</text>
+                                </view>
+                            </scroll-view>
+                        </cell>
+                        <cell v-if="tab.list.length && tab.firstReqEnd">
+                            <div>
+                                <columnList v-model="tab.list"></columnList>
+                            </div>
+                        </cell>
+                        <cell v-if="!tab.list.length && tab.firstReqEnd">
+                            <empty></empty>
+                        </cell>
+                        <cell v-if="tab.list.length">
+                            <div>
+                                <u-loadmore :line="true" loadingIcon="semicircle" lineLength="20rpx"
+                                    :status="tab.isFetchEnd ? 'nomore' : 'loading'" nomore-text="没有更多了"
+                                    fontSize="24rpx" />
+                            </div>
+                        </cell>
+
+                    </list>
+                    <!-- #endif -->
+
+                </div>
+
+            </swiper-item>
+        </swiper>
+        <div class="fixedTop" id="fixedTop"
+            :style="{ backgroundColor: `rgba(255,255,255,${isShowKa ? 0 : navOpacity})` }">
+            <div class="navBar" id="navBar" ref="navBar">
+                <div :style="{ height: app.statusBarHeight + 'px' }"></div>
+                <div class="nav">
+                    <div class="navSearchWrap" :class="{ navSearchWrap_showka: isShowKa }"
+                        @click="pageJump('/pages/cardForum/search')">
+                        <input class="navInput" type="text" placeholder="搜你想搜..." disabled
+                            @click="pageJump('/pages/cardForum/search')" />
+                        <div class="nav_search flexCenter" :class="{ nav_search_showka: isShowKa }"
+                            :style="{ backgroundColor: `rgba(250, 21, 69, ${isShowKa ? 0 : navOpacity})` }">
+                            <text class="nav_search_text flexCenter">搜索</text>
+                        </div>
+                    </div>
+                    <div class="camera" @click.stop="actionSheet = true">
+                        <image v-if="!isShowKa" src="@/static/cardForum/camera.png" class="camera_img"></image>
+                        <image v-if="isShowKa" src="@/static/cardForum/showKa_camera.png" class="camera_img">
+                        </image>
+                        <text class="camera_txt" :style="{ color: isShowKa ? '#ffffff' : '#333333' }">发布</text>
+                    </div>
+                </div>
+            </div>
+            <u-tabs style="width: 750rpx;height:" customType="showKa" :duration="300" lineWidth="49rpx"
+                lineHeight="6rpx" :itemStyle="{ marginTop: '-10rpx', height: '74rpx' }"
+                :activeStyle="{ color: '#333333', fontSize: '27rpx', transform: 'scale(1.22)', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
+                :inactiveStyle="{ color: '#959695', fontSize: '27rpx', transform: 'scale(1)', fontFamily: 'PingFang SC' }"
+                class="tabs" id="tabs" :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs">
+                <template v-slot:showKa>
+                    <image class="showKaImage" v-if="!isShowKa" src="/static/cardForum/showKa.png"></image>
+                    <image class="showKaImage" v-else src="/static/cardForum/showKa_select.png"></image>
+                </template>
+            </u-tabs>
+        </div>
+        <div class="showKaBottom" ref="showKaBottom" v-if="isShowKa">
+            <div class="showKaTabBar">
+                <div class="tabBarItem" v-for="(tab, tabIndex) in CardForumTabbar" :key="tabIndex"
+                    @click="app.navigateTo.switchTab(tabIndex)">
+                    <image class="showKaTabBar_image" :src="tab.iconPath"></image>
+                    <text class="tabBarText">{{ tab.text }}</text>
+                </div>
+            </div>
+            <div :style="{ height: bottomSafeArea + 'px' }"></div>
+        </div>
+        <u-action-sheet :actions="ActionsList" cancelText="取消" :show="actionSheet" @select="onSelectAction"
+            @close="actionSheet = false"></u-action-sheet>
+        <guide v-if="forumGuide" :tabs="tabs" :firstData="firstData" @over="guideOver" />
+    </div>
+</template>
+<script>
+// #ifdef APP-NVUE
+const animation = uni.requireNativePlugin('animation')
+// #endif
+import waterfalls from "./components/waterfalls.vue"
+import cardSkeleton from "./components/cardSkeleton.vue"
+import empty from "@/components/empty/empty.vue"
+import guide from "./components/guide.vue"
+import columnList from "./components/columnList.vue"
+import { CardForumTagMap, CardForumTabbar, ActionsList } from "./func/data.js"
+import { goTopicsAct } from "./func/index.js"
+import { Md5 } from "js-md5"
+const app = getApp().globalData.app;
+const parsePic = getApp().globalData.parsePic;
+const CFTT = {}
+const tabsList = Object.keys(CardForumTagMap).map((key, index) => {
+    CFTT[key] = { ...CardForumTagMap[key], index }
+    return CardForumTagMap[key]
+})
+const defaultTagObj = {
+    queryParams: {
+        fetchFrom: 1,
+        fetchSize: 10,
+        sequence: 0,
+    },
+    isFetchEnd: false,
+    firstReqEnd: false,
+    retry: 0,
+    list: []
+}
+export default {
+    components: {
+        waterfalls,
+        cardSkeleton,
+        empty,
+        guide,
+        columnList
+    },
+    data() {
+        return {
+            app,
+            parsePic,
+            CFTT,
+            CardForumTabbar,
+            ActionsList,
+            actionSheet: false,
+            firstReqEnd: false,
+            initFinish: false,
+            searchText: "",
+            navHeight: 0,
+            tabsHeight: 0,
+            scrollViewHeight: 0,
+            fixedTopHeight: 0,
+            hotTopics: [],
+            dx: 0,
+            tabs: {
+                index: CFTT.ALL.index,
+                list: []
+            },
+            column: {
+                select: "",
+                list: []
+            },
+            trTimmer: null,
+            bottomSafeArea: 0,
+            topicAcList: [
+            ],
+            loadmoreTimer: null,
+            forumGuide: app.guide.cardCircle,
+            firstData: {},
+            addList: [],
+            columnRefreshing: false,
+            ratingQuery: {
+                pageIndex: 1,
+                pageSize: 5,
+                totalPage: 0
+            },
+            ratingList: []
+        }
+    },
+    async onLoad() {
+        uni.$on("loginSuccess", this.loginSuccess)
+        try {
+            await this.initTab()
+            if (!app.viewerId) {
+                await app.user.setViewerId()
+                this.reqNewData(true)
+                return
+            }
+        } catch (err) {
+
+        }
+    },
+    beforeDestroy() {
+        uni.$off("loginSuccess", this.loginSuccess)
+    },
+    onShow() {
+        this.$nextTick(() => {
+            setTimeout(async () => {
+                this.fixedTopHeight = await this.getDomHeight("#fixedTop")
+                // #ifdef APP-NVUE
+                this.bottomSafeArea = plus.navigator.getSafeAreaInsets().deviceBottom
+                this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight - plus.navigator.getSafeAreaInsets().deviceBottom - 52
+                // #endif
+                // #ifdef H5
+                this.scrollViewHeight = 666
+                // #endif
+            }, 100)
+            if (uni.getStorageSync('showKace')) {
+                this.switchTag(CFTT.ALBUM.index)
+                uni.removeStorageSync('showKace');
+            }
+            this.getFollowDot()
+        })
+        if (this.isShowKa) {
+            uni.hideTabBar({ animation: false })
+        } else {
+            uni.showTabBar({ animation: false })
+        }
+
+        if (app.guide.cardCircle) {
+            uni.hideTabBar()
+            app.guide.cardCircle = false;
+            app.platform.finishGuideData(2)
+        }
+    },
+    computed: {
+        current() {
+            return this.tabs.list[this.tabs.index]
+        },
+        isShowKa() {
+            return this.current.tag === CFTT.SHOW.tag
+        },
+        navOpacity() {
+            if (this.tabs.index === (CFTT.SHOW.index - 1)) {
+                return (app.platform.systemInfo.screenWidth - this.dx) / app.platform.systemInfo.screenWidth
+            }
+            if (this.isShowKa) {
+                if (this.dx <= app.platform.systemInfo.screenWidth && this.dx >= app.platform.systemInfo.screenWidth - 30) return 0
+                return (Math.abs(this.dx)) / app.platform.systemInfo.screenWidth
+            }
+            if (this.tabs.index === (CFTT.SHOW.index + 1) && this.dx < 0) {
+                if (this.dx == -app.platform.systemInfo.screenWidth) return 1
+                return (app.platform.systemInfo.screenWidth - Math.abs(this.dx)) / app.platform.systemInfo.screenWidth
+            } else {
+                return 1
+            }
+        }
+    },
+    watch: {
+        "current.tag": {
+            immediate: true,
+            handler(tag) {
+                if (!tag || !this.current) return
+                if (this.current?.list && this.current.list.length === 0) {
+                    if (!app.viewerId) return
+                    this.reqNewData(true)
+                }
+                //推荐
+                if (tag === CFTT.ALL.tag) {
+                    this.reqAddList()
+                }
+                //栏目
+                if (tag === CFTT.COLUMN.tag) {
+                    this.reqsSecialColumnList()
+                }
+                //关注
+                if (tag === CFTT.FOLLOW.tag) {
+                    this.setFollowBadge(0)
+                }
+                //Show卡
+                if (tag === CFTT.SHOW.tag) {
+                    this.reqTopicAc()
+                    uni.hideTabBar({
+                        animation: false,
+                        success: () => {
+                            //#ifdef APP-NVUE
+                            plus.navigator.setStatusBarStyle("light");
+                            //#endif
+                        }
+                    })
+                    if (!this.hotTopics.length) this.getTopicsList()
+                } else {
+                    // #ifdef APP-NVUE
+                    const ref = this.$refs['showKaBottom']
+                    const duration = 0
+                    animation.transition(ref, { styles: { opacity: `0` }, duration })
+                    // #endif
+                    uni.showTabBar({ animation: false })
+                    // #ifdef APP-NVUE
+                    plus.navigator.setStatusBarStyle("dark");
+                    // #endif
+                }
+            }
+        },
+        "column.select": function (val) {
+            this.refreshData(CFTT.COLUMN.index, false)
+        },
+        actionSheet: function (val) {
+            if (this.current.tag != CardForumTagMap.SHOW.tag) {
+                if (val) {
+                    uni.hideTabBar({ animation: false })
+                    return
+                }
+                setTimeout(() => {
+                    uni.showTabBar({ animation: false })
+                }, val ? 0 : 300)
+            }
+        }
+    },
+    methods: {
+        async initTab() {
+            tabsList.forEach((item, index) => {
+                const deepData = JSON.parse(JSON.stringify(defaultTagObj))
+                this.$set(this.tabs.list, index, { ...deepData, ...item })
+            })
+            this.initFinish = true
+            return
+        },
+        async loginSuccess() {
+            await app.user.setViewerId()
+            this.reqNewData(true)
+            this.getFollowDot()
+        },
+        guideOver() {
+            this.forumGuide = false;
+            uni.showTabBar({ animation: false })
+        },
+
+        pageJump(url) {
+            uni.navigateTo({
+                url
+            })
+        },
+        getDomHeight(dom) {
+            return new Promise((re, rj) => {
+                uni.createSelectorQuery()
+                    .select(dom)
+                    .boundingClientRect((rect) => {
+                        if (rect) {
+                            re && re(rect.height)
+                        }
+                    })
+                    .exec();
+            })
+        },
+        setFollowBadge(opacity) {
+            if (this.tabs[CFTT.FOLLOW.index]) this.tabs[CFTT.FOLLOW.index].badge.bgColor = `rgba(255, 0, 61,${opacity})`
+        },
+        switchTag(index) {
+            if (this.tabs.index != index) this.tabs.index = index;
+        },
+        swiperChange(event) {
+            this.tabs.index = event.detail.current
+        },
+        swiperTransition(event) {
+            this.dx = event.detail.dx
+        },
+        tabClick(event) {
+            if (event.index == this.tabs.index) {
+                //#ifdef APP-NVUE
+                if (this.current.tag !== CFTT.COLUMN.tag) this.$refs[`waterfalls${this.tabs.index}`][0].goTop()
+                if (this.current.tag === CFTT.COLUMN.tag) {
+                    const dom = weex.requireModule('dom')
+                    dom.scrollToElement(this.$refs.goTop[0], {
+                        animated: true
+                    })
+                }
+                //#endif
+                return
+            }
+            this.tabs.index = event.index
+        },
+        onSelectAction(item) {
+            setTimeout(() => {
+                uni.showTabBar({ animation: false })
+            }, 300)
+            if (app.token.accessToken == '') {
+                app.login.arouseLogin()
+                return;
+            }
+            this.pageJump(item.url)
+        },
+        refreshData(index, onPull = true) {
+            if (onPull && this.current.tag == CFTT.COLUMN.tag) {
+                this.columnRefreshing = true
+            }
+            setTimeout(() => {
+                this.current.queryParams.fetchFrom = 1
+                this.current.queryParams.sequence = 0
+                this.reqNewData(true, (() => {
+                    if (onPull) {
+                        setTimeout(() => {
+                            if (this.current.tag === CFTT.COLUMN.tag) {
+                                this.columnRefreshing = false
+                                return
+                            }
+                            this.$refs['waterfalls' + index][0] && this.$refs['waterfalls' + index][0].hideRefresh()
+                        }, 200);
+                    }
+                }))
+            }, onPull ? 1000 : 0)
+        },
+        loadmoreData(index) {
+            this.loadmoreTimer && clearTimeout(this.loadmoreTimer)
+            this.loadmoreTimer = setTimeout(() => {
+                if (!this.current.isFetchEnd) {
+                    this.current.queryParams.fetchFrom += this.current.queryParams.fetchSize
+                    this.current.queryParams.sequence += 1
+                    this.reqNewData()
+                }
+            }, 300)
+        },
+        onClickShowKaSwiper(item) {
+            goTopicsAct(item.id)
+        },
+        onClickAdd(event, item) {
+            app.navigateTo.navigateToAD(item.target)
+        },
+        onClickPushTopic(event, item) {
+            // #ifdef APP-NVUE
+            event.stopPropagation();
+            // #endif
+            this.pageJump(`/pages/cardForum/topics/detailPage?id=${item.id}`)
+        },
+        onClickColumn(event, item) {
+            this.column.select = item.name === this.column.select ? "" : item.name
+        },
+        getFollowDot() {
+            if (!app.token.accessToken) {
+                this.setFollowBadge(0)
+                return
+            }
+            app.http.Get(`dataApi/cardCircle/me/infor`, {}, (res) => {
+                if (this.current.tag == CFTT.FOLLOW.tag) {
+                    this.setFollowBadge(0)
+                    return
+                }
+                this.setFollowBadge(res.data.isFollow ? 1 : 0)
+            })
+        },
+        getTopicsList() {
+            app.http.Get("dataApi/cardCircle/topic/list", { fetchFrom: 1, fetchSize: 15, od: "issue_72:asc", hidePre: 1 }, (res) => {
+                this.hotTopics = res.list || []
+            })
+        },
+        reqRatingList() {
+            app.http.Get(`dataApi/cardCircle/card/rating/list`, this.ratingQuery, (res) => {
+                if (this.ratingQuery.pageIndex == 1) this.ratingList = []
+                const list = (res.list || []).map((item) => {
+                    item.score = this.getScore(item.score)
+                    return item
+                })
+                this.ratingList.push(...list)
+                this.ratingQuery.totalPage=res.totalPage
+            })
+        },
+        reqTopicAc() {
+            app.http.Get(`dataApi/cardCircle/topic/banner/list`, {}, (res) => {
+                this.topicAcList = res.list || []
+            })
+        },
+        reqAddList() {
+            app.http.Get("dataApi/cardCircle/addList", {}, (res) => {
+                this.addList = res.list || []
+            })
+        },
+        reqsSecialColumnList() {
+            app.http.Get(`dataApi/cardCircle/specialColumn`, {}, (res) => {
+                this.column.list = res.list || []
+            })
+        },
+        getScore(score) {
+            if (!score) return "0.0"
+            if ((score + '').split(".").length > 1) return score
+            return score + '.0'
+        },
+        reqNewData(isRefresh = false, cb) {
+            if (this.current.tag == CFTT.FOLLOW.tag && !app.token.accessToken) {
+                app.login.arouseLogin()
+                return
+            }
+            let query = {
+                tag: this.current.tag,
+                sequence: this.current.queryParams.sequence //滚动序列 从0开始
+            }
+            //去请求非roll接口的类型
+            if (!this.current.roll) {
+                query = {
+                    ...this.current.queryParams,
+                    ...query
+                }
+                if (isRefresh) {
+                    delete query.scrollId
+                    delete query.st
+                    delete query.sn
+                    query.flush = 1
+                }
+                if (query.scrollId && query.st) {
+                    query.sn = Md5.hashStr(`${query.st}_${query.scrollId}_scrollSearchTujian`)
+                }
+            }
+            if (this.current.tag === CFTT.COLUMN.tag) {
+                query.scName = this.column.select
+            }
+            //存在自定义url优先使用
+            const url = `dataApi/${this.current.url ?? (this.current.roll ? "cardCircle/roll" : "cardCircle/list")}`
+            if (this.current.tag === CFTT.ALL.tag && isRefresh) {
+                this.ratingQuery.pageIndex = 1
+                this.reqRatingList()
+            }
+            app.http.GetWithCrypto(url, query, (res) => {
+                let list = res.list || []
+                // #ifdef APP-NVUE
+                list = (res.list || []).map((item) => {
+                    //nvue瀑布流下parsePic，有时需要手动更新视图才会显示图片,直接对原数据parsePic
+                    item.cover = this.parsePic(decodeURIComponent(item.cover))
+                    return item
+                })
+                // #endif
+                if (this.ratingList.length > 0 && this.current.tag === CFTT.ALL.tag) {
+                    if (this.ratingList.length > query.sequence) {
+                        list.splice(2, 0, { ...this.ratingList[query.sequence], isRatingCard: true })
+                        console.log(list);
+                        if (this.ratingList.length - query.sequence == 1 && this.ratingQuery.totalPage>this.ratingQuery.pageIndex) {
+                            this.ratingQuery.pageIndex + 1
+                            this.reqRatingList()
+                        }
+                    }
+                }
+                this.current.isFetchEnd = res.isFetchEnd
+                if (res.scrollId) this.current.queryParams.scrollId = res.scrollId
+                if (res.st) this.current.queryParams.st = res.st
+                if (isRefresh) this.current.list = []
+                this.current.list.push(...list)
+                this.current.firstReqEnd = true
+                this.current.retry = 0
+                cb && cb()
+            }, (err) => {
+                this.current.firstReqEnd = true
+                uni.showToast({
+                    title: err,
+                    icon: 'none'
+                })
+                this.columnRefreshing = false
+                if (this.current.retry < 1) {
+                    this.refreshData(this.tabs.index, false)
+                    this.current.retry += 1
+                }
+            })
+        }
+    }
+}
+</script>
+<style scoped lang="scss">
+$show-lines: 1;
+
+// #ifndef APP-NVUE 
+page {
+    background-color: #f2f2f2;
+}
+
+// #endif 
+.flex1 {
+    flex: 1;
+}
+
+.content {
+    flex-direction: column;
+}
+
+.ac {
+    align-items: center;
+}
+
+.cardForumContainer {
+    display: flex;
+    width: 750rpx;
+    flex-direction: column;
+    align-items: center;
+}
+
+.waterContainer {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.swiperContainer {
+    width: 750rpx;
+    position: fixed;
+    top: 0;
+}
+
+.showKaBack {
+    width: 750rpx;
+    height: 1980rpx;
+    position: absolute;
+    top: 0;
+}
+
+.swiperItem {
+    align-items: center;
+    position: absolute;
+}
+
+.fixedTop {
+    position: fixed;
+    top: 0;
+    background-color: #fff;
+    padding-bottom: 8rpx;
+    z-index: 99;
+}
+
+.navBar {
+    width: 750rpx;
+    // position: fixed;
+    // top: 0;
+    // z-index: 999;
+    // background-color: #fff;
+
+}
+
+.nav {
+    // box-sizing: border-box;
+    // padding: 20rpx 35rpx;
+    padding: 0rpx 33rpx 0 20rpx;
+    height: 104rpx;
+    // padding-top: 16rpx;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    // height: 88rpx;
+    justify-content: space-between;
+}
+
+.nav_search {
+    width: 98rpx;
+    height: 49rpx;
+    background: #FA1545;
+    border-radius: 5rpx;
+
+}
+
+.nav_search_showka {
+    // background-color: rgba(250, 21, 69, 0);
+    border-left: 3rpx solid #ffffff;
+    border-radius: 0rpx;
+}
+
+.nav_search_text {
+    font-size: 25rpx;
+
+    font-weight: bold;
+    line-height: 49rpx;
+    color: #FFFFFF;
+}
+
+.camera {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 78rpx;
+}
+
+.camera_img {
+    width: 53rpx;
+    height: 40rpx;
+    position: relative;
+    top: 7rpx;
+}
+
+.camera_txt {
+    font-size: 19rpx;
+
+    font-weight: 600;
+    color: #333333;
+    position: relative;
+    // top: 4rpx;
+}
+
+.navSearchWrap {
+    width: 614rpx;
+    height: 73rpx;
+    border: 3rpx solid #333333;
+    border-radius: 5rpx;
+    // box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10rpx;
+    align-items: center;
+    flex-direction: row;
+}
+
+.navSearchWrap_showka {
+    border: 3rpx solid #ffffff;
+}
+
+.navInput {
+    color: #000;
+    // width: 400rpx;
+    flex: 1;
+    // background-color: red;
+    font-size: 25rpx;
+
+
+    padding: 0 10rpx;
+    // color: #C0C0C0;
+}
+
+.flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hotTopicWrap {
+    width: 740rpx;
+    // padding: 0 20rpx;
+    height: 303rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hotTopicWrap_img {
+    position: absolute;
+    width: 740rpx;
+
+    height: 303rpx;
+    top: 0;
+    left: 0;
+}
+
+.hotTopicRow {
+    flex-direction: row;
+    // justify-content: space-between;
+    align-items: center;
+    // #ifndef APP-NVUE
+    box-sizing: border-box;
+    // #endif
+    width: 740rpx;
+    padding: 0 38rpx;
+    margin-top: 31rpx;
+}
+
+.star {
+    width: 28rpx;
+    height: 26rpx;
+    margin-right: 10rpx;
+}
+
+.hotTopicRow_title {
+    font-size: 27rpx;
+
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.hotTopicRow_all {
+    font-size: 21rpx;
+
+
+    color: #FFFFFF;
+    margin-right: 14rpx;
+}
+
+.hotTopicScroll {
+    width: 710rpx;
+    flex-direction: row;
+    display: flex;
+    margin-top: 32rpx;
+    // flex-wrap: nowrap;
+
+}
+
+.columnScrollLine {
+    width: 750rpx;
+    height: 1rpx;
+    background-color: #f7f8fc;
+}
+
+.columnScroll {
+    width: 750rpx;
+    flex-direction: row;
+    display: flex;
+    flex-wrap: nowrap;
+    background-color: #ffffff;
+
+    // #ifndef APP-NVUE
+    // border-top: 1rpx solid #f7f8fc;
+    white-space: nowrap;
+    box-sizing: border-box;
+
+    // #endif
+    //#ifdef APP-NVUE
+    // border-width: 1rpx;
+    // border-top-style: solid;
+    // border-top-width: 1rpx;
+    // border-top-color: #f7f8fc;
+    // border-bottom-color: rgba(247, 248, 252, .0);
+    // border-bottom-width: 0;
+    //#endif
+    padding-top: 16rpx;
+    padding-bottom: 28rpx;
+
+}
+
+// .columnScrollWrap {
+//     flex-direction: row;
+//     display: flex;
+//     // width: 750rpx;
+//     flex-wrap: nowrap;
+//     // #ifndef APP-NVUE
+//     white-space: nowrap;
+//     box-sizing: border-box;
+//     // #endif
+//     // padding: 0;
+//     // padding-left: 33rpx;
+//     // padding-top: 16rpx;
+//     padding-bottom: 28rpx;
+//     border-top: 1rpx solid #f7f8fc;
+//     background-color: #fff;
+// }
+
+.columnItem {
+    // padding: 10rpx;
+    padding-left: 18rpx;
+    padding-right: 18rpx;
+    height: 52rpx;
+    background-color: #f2f2f2;
+    margin-right: 30rpx;
+    border-radius: 3rpx;
+
+    //#ifndef APP-NVUE
+    transition: background-color 0.2s;
+    //#endif
+    //#ifdef APP-NVUE
+    transition-property: background-color;
+    transition-duration: 0.1s;
+    transition-timing-function: linear;
+    //#endif
+}
+
+.columnItem_select {
+    background-color: #fb374e;
+
+}
+
+.columnItem_text {
+    font-size: 25rpx;
+
+
+    color: #959695;
+}
+
+.columnItem_text_select {
+    font-size: 25rpx;
+
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.scrollTopicWarp {
+    flex-direction: row;
+    display: flex;
+    width: 710rpx;
+    flex-wrap: nowrap;
+    // #ifndef APP-NVUE
+    white-space: nowrap;
+    // #endif
+}
+
+.faker_topicItem {
+    width: 10rpx;
+    opacity: 0;
+}
+
+.topiceActCorner {
+    width: 52rpx;
+    height: 23rpx;
+    background: #FA1545;
+    border-radius: 1rpx;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 17rpx;
+
+
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 23rpx;
+
+}
+
+.topicItem {
+    width: 130rpx;
+    height: 200rpx;
+    // background-color: #ffffff;
+    margin-right: 30rpx;
+    // border-radius: 1rpx;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.topicItem_imageWap {
+    position: relative;
+    width: 101rpx;
+    height: 101rpx;
+    border-radius: 5rpx;
+}
+
+.topicItem_img {
+    width: 101rpx;
+    height: 101rpx;
+    border-radius: 1rpx;
+    border-radius: 5rpx;
+}
+
+.topicItem_title {
+    font-size: 21rpx;
+
+    font-weight: bold;
+    color: #FFFFFF;
+    text-align: center;
+    width: 130rpx;
+    margin-top: 10rpx;
+    // #ifdef APP-NVUE
+    lines: 1;
+    text-overflow: ellipsis;
+    // #endif
+
+}
+
+.topicItem_dt {
+    width: 101rpx;
+    text-align: center;
+    font-size: 19rpx;
+
+
+    color: #C0C0C0;
+    margin-top: 6rpx;
+}
+
+.adWrap {
+    width: 740rpx;
+    height: 168rpx;
+    margin-bottom: 8rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 5rpx;
+}
+
+.adWrap_swiper {
+    width: 730rpx;
+    height: 160rpx;
+}
+
+.adWrap_img {
+    position: absolute;
+    width: 740rpx;
+    height: 168rpx;
+    top: 0;
+    left: 0;
+    border-radius: 5rpx;
+}
+
+.swiperPic {
+    width: 730rpx;
+    height: 160rpx;
+    border-radius: 5rpx;
+    // position: absolute;
+    // left: 0;
+    // top:0;
+}
+
+.showKaImage {
+    width: 153rpx;
+    height: 35rpx;
+}
+
+.showKaBottom {
+    position: fixed;
+    bottom: 0;
+    background-color: #000000;
+    width: 750rpx;
+}
+
+.showKaTabBar {
+    width: 750rpx;
+    height: 52px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    // justify-content: space-evenly;
+    align-items: center;
+}
+
+.tabBarItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    //#ifndef APP-NVUE
+    vertical-align: text-top;
+    //#endif
+}
+
+.showKaTabBar_image {
+    width: 20px;
+    height: 20px;
+    // margin-top: 5px;
+    margin-bottom: 3px
+}
+
+.tabBarText {
+    color: #ffffff;
+    font-size: 10px;
+}
+
+.refresh {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 750rpx;
+    height: 80rpx;
+    background-color: rgba(0, 0, 0, 0)
+}
+</style>

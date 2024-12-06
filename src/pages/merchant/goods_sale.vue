@@ -3,12 +3,17 @@
  * @Author: wjw
  * @Date: 2022-12-16 16:23:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-02-07 10:41:22
+ * @LastEditTime: 2024-07-19 10:56:23
  * Copyright: 2022 .
  * @Descripttion: 
 -->
 <template>
-    <view class="content">
+    <view class="content" style="width: 100%;">
+        <navigationbar title="在售管理" :custom="true">
+			<template slot="right">
+				<view class="extract-btn" @click="onClickDyBroadcast()">边播边拆</view>
+			</template>
+		</navigationbar>
         <view class="goods-item" v-for="(item,index) in listData" :key="index">
             <view class="item-header">
                 <view class="item-time">上架时间 {{$u.timeFormat(item.active_at,'yyyy-mm-dd hh:MM')}}</view>
@@ -31,12 +36,32 @@
                 <view class="item-rank">权重：{{item.rank}}位</view>
                 <view class="item-btn-box">
                     <view class="item-btn btn-details" @click="goGoodsDetails(item.goodCode)">详情</view>
-                    <view class="item-btn btn-extract" @click="onClickShowUpWeight(item)">提权</view>
+                    <view class="item-btn btn-extract" @click="onClickShowAd(item.goodCode,item.rank)">广告推广</view>
+                    <view class="item-btn btn-extract" @click="onClickShowUpWeight(item.goodCode)">提权</view>
                 </view>
             </view>
         </view>
 
         <upWeight :show.sync="showUpWeight" :equitycard="equitycard" :short_description="short_description" :monthly_cards="monthly_cards" :goodCode="goodCode" @equitycardUse="refresh"/>
+        <advertising :show.sync="adPopup.show" :goodCode="adPopup.goodCode" :rank="adPopup.rank" :slogan="adPopup.slogan" />
+
+        <u-popup :show="showAdSlogan.show" mode="bottom" @close="showAdSlogan.show=false">
+            <view class="popup-content">
+                <view class="tipsTitle">广告推广</view>
+        
+                <view class="slogan-box">
+                    <view class="slogan-title">广告标语：</view>
+                    <u--input class="slogan-input" v-model="showAdSlogan.slogan" />
+                </view>
+                <view class="slogan-box" @click="sloganCheck=!sloganCheck">
+                    <view class="bottom-gm-gx" :class="{ 'bottom-gm-check': sloganCheck }"></view>设为默认
+                </view>
+                <view class="slogan-box btn-box">
+                    <view class="btn" @click="showAdSlogan.show=false">取消</view>
+                    <view class="btn con-btn" @click="onClickConfirmSlogan">确认</view>
+                </view>
+            </view>
+		</u-popup>
     </view>
 </template>
 
@@ -45,6 +70,7 @@
     import { Component } from "vue-property-decorator";
     import BaseNode from "../../base/BaseNode.vue";
     import upWeight from "./components/upWeight.vue"
+    import advertising from "./components/advertising.vue"
     const ListInitParams = {
         pageIndex: 1,
         pageSize: 10,
@@ -53,7 +79,8 @@
     }
     @Component({
         components:{
-            upWeight
+            upWeight,
+            advertising
         }
     })
     export default class ClassName extends BaseNode {
@@ -66,6 +93,19 @@
         short_description = '';
         goodCode = '';
         showUpWeight = false;
+        adPopup = {
+            show:false,
+            goodCode:"",
+            rank:0,
+            slogan:""
+        }
+        showAdSlogan = {
+            show:false,
+            goodCode:"",
+            rank:0,
+            slogan:""
+        }
+        sloganCheck=false;
         onLoad(query: any) {
             this.reqNewData()
         }
@@ -90,9 +130,9 @@
                 if (cb) cb();
             });
         }
-        onClickShowUpWeight(item:any){
-            app.http.Get('me/shop/equitycard/list',{pageIndex:1,pageSize:10},(res:any)=>{
-                this.goodCode = item.goodCode;
+        onClickShowUpWeight(goodCode:string){
+            app.http.Get('me/shop/equitycard/list',{goodCode,pageIndex:1,pageSize:10},(res:any)=>{
+                this.goodCode = goodCode;
                 this.short_description = res.short_description;
                 this.monthly_cards = res.monthly_cards
                 this.equitycard = res.list.map((x:any)=>{
@@ -100,6 +140,31 @@
                 })
                 this.showUpWeight = true
             })
+        }
+        onClickShowAd(goodCode="",rank=0){
+            this.showAdSlogan = {
+                show:true,
+                goodCode,
+                rank,
+                slogan:uni.getStorageSync("adSlogan") || ""
+            }
+        }
+        onClickDyBroadcast(){
+            uni.navigateTo({
+                url:"/pages/merchant/dyBroadcast"
+            })
+        }
+        onClickConfirmSlogan(){
+            const { goodCode, slogan,rank } = this.showAdSlogan
+            if(this.sloganCheck) uni.setStorageSync("adSlogan",slogan);
+            this.showAdSlogan.show=false;
+            this.sloganCheck=false;
+            this.adPopup = {
+                show:true,
+                goodCode,
+                rank,
+                slogan
+            }
         }
     }
 </script>
@@ -129,13 +194,13 @@
         justify-content: space-between;
         .item-time{
             font-size: 23rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
+            
+            
             color: #88878C;
         }
         .item-status{
             font-size: 23rpx;
-            font-family: PingFang SC;
+            
             font-weight: 600;
             color: #333333;
         }
@@ -161,8 +226,8 @@
             width: 100%;
             font-size: 25rpx;
             height:68rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
+            
+            
             color: #333333;
             line-height: 32rpx;
         }
@@ -173,35 +238,29 @@
             justify-content: space-between;
         }
         .item-price{
-            font-size: 18rpx;
-            font-family: Impact !important;
+            font-size: 22rpx;
             font-weight: 600;
             color: #333333;
-            height: 40rpx;
             display: flex;
             align-items: flex-end;
-
+            font-family: Impact !important;
             text.text-price {
-                font-size: 33rpx;
-                font-family: Impact !important;
-                font-weight: 400;
+                font-size: 28rpx;
                 color: #333333;
-                line-height: 38rpx;
-                margin-right: 10rpx;
-                letter-spacing:-2rpx;
+                margin-right: 4rpx;
+                letter-spacing:3rpx;
             }
 
             text:last-child {
-                font-size: 23rpx;
-                font-family: PingFangSC-Regular;
-                font-weight: 500;
-                color: #959695;
+                font-size: 20rpx;
+                font-weight: 600;
+                color: #999999;
             }
         }
         .item-num{
             font-size: 23rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
+            
+            
             color: #959695;
         }
     }
@@ -213,8 +272,8 @@
         justify-content: space-between;
         .item-rank{
             font-size: 20rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
+            
+            
             color: #383838;
         }
         .item-btn-box{
@@ -231,8 +290,8 @@
             align-items: center;
             justify-content: center;
             font-size: 25rpx;
-            font-family: PingFang SC;
-            font-weight: 500;
+            
+            font-weight: 600;
             line-height: 52rpx;
         }
         .btn-details{
@@ -240,9 +299,128 @@
             color:#333333
         }
         .btn-extract{
-            background: #E6374C;
+            background: #FA1545;
             margin-left: 28rpx;
             color:#FFFFFF
+        }
+    }
+    .extract-btn{
+        width: 138rpx;
+        height: 52rpx;
+        border-radius: 3rpx;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25rpx;
+        
+        font-weight: 600;
+        line-height: 52rpx;
+        background: #FA1545;
+        color:#FFFFFF
+    }
+    @mixin lineBox {
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+    }
+
+    @mixin font($size) {
+        font-size: $size;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .popup-content {
+        @include lineBox;
+        width: 750rpx;
+        flex-direction: column;
+        align-items: center;
+        padding:40rpx;
+
+        .title {
+            @include font(42rpx)
+        }
+        .tipsTitle{
+            @include font(32rpx);
+            margin-bottom: 40rpx;
+            font-weight: 500
+        }
+        .slogan-box{
+            @include lineBox;
+            flex-wrap: wrap;
+            margin-bottom: 20rpx;
+            font-size: 20rpx;
+            .slogan-title{
+                width: 100%;
+                @include font(24rpx);
+                
+            }
+            .slogan-input{
+                height:64rpx;
+                box-sizing: border-box;
+                @include font(28rpx);
+                margin-top: 10rpx;
+                font-weight:400;
+            }
+        }
+        .image {
+            width: 292rpx;
+            height: 235rpx;
+            transform: scale(1.2);
+            margin: 76rpx 0 100rpx 0
+        }
+
+        .btn {
+            @include font(36rpx);
+            width: 196rpx;
+            height: 80rpx;
+            border:0.8px solid #959695;
+            border-radius: 3rpx;
+            text-align: center;
+            line-height: 80rpx;
+            margin-top:30rpx;
+        }
+        .con-btn{
+            width: 450rpx;
+            border:0.8px solid #FA1545;
+            background: #FA1545;
+            color:#fff;
+        }
+        .tips {
+            @include lineBox;
+            font-size: 24rpx;
+            
+            
+            color: #E6E6E6;
+            justify-content: center;
+            align-items: center;
+            .icon {
+                width: 24rpx;
+                height: 24rpx;
+                margin-right: 10rpx;
+            }
+        }
+        .btn-box{
+            justify-content: space-between;
+        }
+        .tips-btn{
+            font-size: 28rpx;
+            margin-top: 20rpx;
+        }
+        .bottom-gm-gx {
+            width: 30rpx;
+            height: 30rpx;
+            background: url(@/static/userinfo/weixuan@2x.png) no-repeat center;
+            background-size: 100% 100%;
+            margin-right: 10rpx;
+        }
+        .bottom-gm-check {
+            width: 30rpx;
+            height: 30rpx;
+            background: url(@/static/userinfo/pay_gou.png) no-repeat center;
+            background-size: 100% 100%;
+            margin-right: 10rpx;
         }
     }
 </style>

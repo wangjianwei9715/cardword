@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-09 11:07:08
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-10 15:49:18
+ * @LastEditTime: 2023-10-12 15:04:11
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -110,10 +110,10 @@
 				channel:channelData.channel,
 				deliveryId:this.addressData.id
 			}
-			app.http.Post(`me/cabinet/card/topay/${this.fancyData.id}`,params,(res:any)=>{
+			app.http.Pay(`me/cabinet/card/topay/${this.fancyData.id}`,params,(res:any)=>{
 				const order = res.orderCode;
 				if (res.alipay.orderInfo != "") {
-					app.payment.paymentAlipay(res.pay_type, res.alipay.orderInfo,order,()=>{
+					app.payment.paymentAlipay(res.h5CashierAddress, res.alipay.orderInfo,()=>{
 						this.redirectToOrder(order)
 					});
 				}
@@ -167,24 +167,24 @@
 	}
 	.money-total {
 		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		
+		
 		color: #88878C;
 		line-height: 28rpx;
 	}
 	.money-price {
 		height:40rpx;
 		font-size: 29rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 500;
+		
+		font-weight: 600;
 		color: $btn-red;
 		line-height: 40rpx;
 		margin-left: 12rpx;
 	}
 	.money-price text{
 		font-size: 42rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 500;
+		
+		font-weight: 600;
 	}
 	.btn-payment {
 		width:428rpx;
@@ -195,7 +195,7 @@
 		height: $btn-height;
 		line-height: $btn-height;
 		font-size: 33rpx;
-		font-family: PingFang SC;
+		
 		font-weight: 600;
 		color: #FFFFFF;
 		border-radius:$btn-radius;
@@ -223,7 +223,7 @@
 		}
 		.order-info-title{
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}
@@ -232,8 +232,8 @@
 			display: flex;
 			align-items: center;
 			font-size: 21rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #959695;
 			margin-top: 15rpx;
 			margin-bottom: 40rpx;
@@ -245,7 +245,7 @@
 		}
 		.order-info-num{
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}
@@ -267,8 +267,8 @@
 			display: flex;
 			align-items: center;
 			font-size: 21rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #FFFFFF;
 		}
 		.pay-info-total{
@@ -284,19 +284,19 @@
 		}
 		.pay-info-name{
 			font-size: 21rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #959695;
 		}
 		.pay-info-desc{
 			font-size: 21rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #333333;
 		}
 		.pay-info-price{
 			font-size: 25rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #333333;
 		}

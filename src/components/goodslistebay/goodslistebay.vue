@@ -70,8 +70,8 @@
 		&-title{
 			width: 100%;
 			font-size: 28rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #14151A;
 			margin-bottom: 12rpx;
 			word-break:break-all;
@@ -95,8 +95,8 @@
 			text-align: center;
 			line-height: 20rpx;
 			font-size: 16rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: 500;
+			
+			font-weight: 600;
 			color: #FFFFFF;
 		}
 		&-plan-now{
@@ -140,8 +140,8 @@
 		background:url(../../static/goods/paimai@2x.png) no-repeat center;
 		background-size: 100% 100%;
 		font-size: 20rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #FFFFFF;
 		text-align: center;
 		line-height: 38rpx;
@@ -152,8 +152,8 @@
 		background:url(../../static/goods/yikou@2x.png) no-repeat center;
 		background-size: 100% 100%;
 		font-size: 20rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
+		
+		
 		color: #FFFFFF;
 		text-align: center;
 		line-height: 38rpx;

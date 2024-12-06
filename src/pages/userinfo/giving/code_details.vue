@@ -129,8 +129,8 @@ import { Md5 } from "ts-md5";
 		width: 100%;
 		height:80rpx;
 		font-size: 28rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #333333;
 		line-height: 40rpx;
 		display: -webkit-box;
@@ -149,21 +149,21 @@ import { Md5 } from "ts-md5";
 	.details-header-info-price{
 		height:30rpx;
 		font-size: 18rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #333333;
 	}
 	.details-header-info-price text{
 		font-size: 28rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #333333;
 	}
 	.details-header-info-code{
 		height:30rpx;
 		font-size: 24rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #88878C;
 	}
 
@@ -178,7 +178,7 @@ import { Md5 } from "ts-md5";
 	.details-card-title{
 		width: 100%;
 		font-size: 26rpx;
-		font-family: Source Han Sans CN;
+		
 		font-weight: bold;
 		color: #333333;
 		margin-bottom: 20rpx;
@@ -190,8 +190,8 @@ import { Md5 } from "ts-md5";
 		border-radius: 5rpx;
 		padding:25rpx 28rpx;
 		font-size: 26rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #333333;
 		line-height: 40rpx;
 	}
@@ -217,8 +217,8 @@ import { Md5 } from "ts-md5";
 		align-items: center;
 		justify-content: space-between;
 		font-size: 26rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #333333;
 	}
 	.details-desc-index-line{
@@ -227,8 +227,8 @@ import { Md5 } from "ts-md5";
 		align-items: center;
 		justify-content: space-between;
 		font-size: 26rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #333333;
 	}
 	.details-desc-avatar{
@@ -259,8 +259,8 @@ import { Md5 } from "ts-md5";
 		align-items: center;
 		justify-content: center;
 		font-size: 36rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
+		
+		
 		color: #333333;
 		border-radius: 5rpx;
 		border:1px solid #333333;

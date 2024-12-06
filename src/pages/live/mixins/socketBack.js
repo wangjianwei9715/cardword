@@ -91,12 +91,10 @@ export default {
                 // if (res.confirm) {
                 //     // this.leaveRoom()
                 //     uni.switchTab({
-                //         url: "/pages/index/index"
+                //         url: "/pages/index/index_v3"
                 //     });
                 // }
-                uni.switchTab({
-                    url: "/pages/index/index"
-                });
+                app.navigateTo.switchTab(0)
             })
         },
         BackSendMerchantCoupon(res) {

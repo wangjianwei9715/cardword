@@ -1,87 +1,64 @@
 <template name="goodslist">
 	<view class="goodsContent">
-		<!-- 首页轮播 -->
-		<view class="index-swiper" v-if="indexSwiper&&topAddList!=''">
-			<swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="5000" :duration="500"
-				:circular="true" :indicator-active-color="'#fff'" :indicator-color="'rgba(170, 170, 170, .75)'">
-				<swiper-item v-for="(item,index) in topAddList" :key="index">
-					<muqian-lazyLoad class="swiper-image" :src="decodeURIComponent(item.pic)"
-						@click="onClickTopJumpUrl(item.target)" borderRadius="5rpx"></muqian-lazyLoad>
-				</swiper-item>
-			</swiper>
-		</view>
-		<view class="goodslist-index-show" v-for="(item,index) in goodsList" :key="index">
-			<view class="goodslist-index">
-				<muqian-lazyLoad v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
-				<view class="goodslist-index-box" @click="onClickJumpUrl(item.goodCode)">
-					<view class="goodslist-pic">
-						<muqian-lazyLoad v-if="item.pic!=''" class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(item.pic))" borderRadius="5rpx 5rpx 0 0"></muqian-lazyLoad>
-					</view>
-					<view class="goodslist-title u-line-2 goodslist-padding">
-						<view v-if="item.saleMode==1&&item.state==1" class="goodslist-remainder">剩余随机</view>
-						{{item.title}}
-					</view>
-					<view class="goodslist-priceMsg uni-flex goodslist-padding">
-						<view class="goodslist-priceMsg-left">
-							￥<text class="price-text">{{item.price}}</text><text>{{goodsManaager.hasLowestPrice(item)?' 起':''}}</text>
-						</view>
-						<view v-if="item.state==0 || item.state == -1" class="goodslist-priceMsg-right">
-							{{dateFormatMSHMS(item.startAt)}}开售
-						</view>
-						<view v-else :id="item.goodCode" class="goodslist-priceMsg-right goodslist-plan-desc">
-							{{goodsManaager.listPlan(item,'str')}}
-						</view>
-					</view>
-					<view class="goodslist-padding">
-						<view class="goodslist-progress" :class="{'goodslist-progress-select':goodsManaager.ifSelectType(item)}">
-							<view class="progressMask"
-								:style="{width:(100-goodsManaager.listPlan(item,'num'))+'%'}"></view>
-						</view>
-					</view>
+		<view class="goods-container" v-for="(item,index) in goodsList" :key="index">
+			<view class="goods-content">
+				<view class="goods-pic-box" @click="onClickJumpUrl(item.goodCode)"> 
+					<muqian-lazyLoad v-if="item.pic!=''" class="goods-pic" :src="getGoodsImg(decodeURIComponent(item.pic))" borderRadius="5rpx 5rpx 0 0" ></muqian-lazyLoad>
 				</view>
-				<view class="goodslist-bottom goodslist-padding" @click="onClickSellerShop(item)">
-					<view class="bottom-left" :class="{'bottom-left-shu':item.merchantName}">{{getGoodsPintuan(item.pintuan_type)}}</view>
-					<view class="bottom-right" v-show="item.merchantName">
-						<merchantAvatar :level="item.merchantLevel" :src="decodeURIComponent(item.merchantLogo)"/>
-						<view class="bussName">{{item.merchantName}}</view>
-						<view class="cores"></view>
+				<view class="goods-index">
+					<view class="goods-progress" :style="progressStyle(item.pintuan_type)">
+						<view class="progressMask" :style="{width:(100-goodsManaager.listPlan(item,'num'))+'%'}"></view>
+					</view>
+					<view class="goods-header u-line-2" @click="onClickJumpUrl(item.goodCode)">
+						<view class="cardicon" :style="cardiconStyle">
+							<text class="icon-text" :style="{color:gameplayType[item.pintuan_type].color}">{{goodsData(item).typeName1}}</text>
+							<text class="icon-text">{{goodsData(item).typeName2}}</text>
+						</view>
+						<text class="title-text u-line-2" :style="{'text-indent': isAndroid? '86rpx' :'74rpx'}">{{item.title}}</text>
+					</view>
+					
+					<view class="goods-priceMsg" @click="onClickJumpUrl(item.goodCode)">
+						<view class="goods-priceMsg-left">
+							<text class="price-icon">￥</text>
+							<text class="price-text">{{ filterPrice(item.price).integer }}</text>
+							<text class="decimal"
+								v-if="filterPrice(item.price).decimal">{{ filterPrice(item.price).decimal }}</text>
+							<text class="lowest">{{goodsManaager.hasLowestPrice(item)?'起':''}}</text>
+						</view>
+						<text v-if="[0,-1].includes(item.state)" class="goods-priceMsg-right">
+							{{$u.timeFormat(item.startAt)}}开售
+						</text>
+						<text v-else :id="item.goodCode" class="goods-priceMsg-right">
+							{{goodsManaager.listPlan(item,'str')}}
+						</text>
+					</view>
+					<view class="goods-merchant" @click="onClickSellerShop(item)" v-if="item.merchantName">
+						<merchantAvatar width="30rpx" height="30rpx" :level="item.merchantLevel" :src="decodeURIComponent(item.merchantLogo)"/>
+						<text class="bussName">{{item.merchantName}}</text>
 					</view>
 				</view>
 			</view>
+		</view>
+		<empty v-show="empty"/>
+		<view class="loadmore">
+			<u-loadmore v-show="nomore&&goodsList.length>0" :line="true" status="nomore" lineLength="20rpx"/>
 		</view>
 	</view>
 </template>
 
 <script lang="ts">
-	import {
-		Component,
-		Prop,
-		Vue
-	} from "vue-property-decorator";
+	import { Component, Prop, Vue } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
-	import {
-		dateFormatMSHMS
-	} from "@/tools/util"
-	import {
-		getGoodsImg
-	} from "../../tools/util";
-	import {
-		app
-	} from "@/app";
-	import {
-		getGoodsPintuan
-	} from '@/tools/switchUtil';
-	import {
-		Md5
-	} from "ts-md5";
+	import { getGoodsImg,filterPrice } from "@/tools/util";
+	import { gameplayType } from "@/tools/DataExchange"
+	import { app } from "@/app";
 	@Component({})
 	export default class ClassName extends BaseComponent {
-		getGoodsPintuan = getGoodsPintuan;
 		goodsManaager = app.goods;
 		@Prop({ default: [] })
 		goodsList: any;
 		@Prop({ default: '' })
-		topAddList ? : any;
+		indexAddList ? : any;
 		@Prop({ default: false })
 		indexSwiper ? : any;
 		@Prop({ default: false })
@@ -90,15 +67,58 @@
 		presell: any;
 		@Prop({ default: false })
 		mini: any;
-		dateFormatMSHMS = dateFormatMSHMS;
+		@Prop({ default: false })
+		empty?: any;
+		@Prop({ default: false })
+		nomore?: any;
+		@Prop({ default: "" })
+		progressColor?: string;
 		getGoodsImg = getGoodsImg;
+		filterPrice = filterPrice;
 		screenHeight = uni.getSystemInfoSync().windowHeight
 		showPlan: any = []
-		valid = true
+		valid = true;
+		gameplayType = gameplayType;
+		isAndroid = false;
 		created() { //在实例创建完成后被立即调用
-			
+			if (uni.getSystemInfoSync().platform === "android") {  
+				this.isAndroid = true;
+			}
 		}
 		mounted() { //挂载到实例上去之后调用
+		}
+		public get progressBg() : any {
+			if(this.progressColor=="") return {}
+			return {
+				background:this.progressColor
+			}
+		}
+		public get cardiconStyle() : any {
+			if(this.isAndroid){
+				return {
+					padding:'0 6rpx',
+					height:'26rpx',
+				}
+			}else{
+				return {
+					width:'66rpx'
+				}
+			}
+		}
+		goodsData(item){
+			const { pintuan_type, saleMode, state } = item;
+			const remainingRandom = saleMode==1&&state==1;
+			const name = gameplayType[item.pintuan_type].name
+			return {
+				typeName1: remainingRandom ? '剩余' : (name.slice(0,2) || ''),
+				typeName2: remainingRandom ? '随机' : (name.slice(2) || '')
+			}
+		}
+		progressStyle(type){
+			const { progressLeft, progressRight } = gameplayType[type]
+			return {
+				'background': `linear-gradient(to right,${progressLeft},${progressRight})`
+			}
 		}
 		onClickJumpUrl(id: any) {
 			this.$emit("send", id);
@@ -107,363 +127,201 @@
 			if(!item.merchantName) return;
 			this.goMerchantPage(item.merchantAlias)
 		}
-		onClickTopJumpUrl(url: any) {
-			if (url.goodCode != '') {
-				app.navigateTo.goGoodsDetails(url.goodCode)
-				return;
-			} else if (url.url != '') {
-				uni.navigateTo({
-					url: '/pages/act/outLink/outLink?url=' + decodeURIComponent(url.url)
-				})
-				return;
-			} else if (url.page != '') {
-				if (decodeURIComponent(url.page) == '社群') {
-					uni.$emit('showPaySuccess')
-					return;
-				}
-				uni.navigateTo({
-					url: decodeURIComponent(url.page)
-				})
-				return;
-			}
+		onClickTopJumpUrl(target: any) {
+			app.navigateTo.navigateToAD(target)
 		}
 	}
 </script>
 
 <style lang="scss">
-	.goodsContent {
+	@mixin flexCenter{
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		justify-content: center;
+		// #ifndef APP-NVUE
+		box-sizing: border-box;
+		align-content: baseline;
+		// #endif
+	}
+	@mixin linePadding{
+		width: 357rpx;
+		padding-left: 20rpx;
+		padding-right: 20rpx;
+	}
+	.goodsContent{
 		width: 100%;
 		box-sizing: border-box;
-		padding: 6rpx 20rpx;
-		background: $content-bg;
+		padding:0 13rpx;
 		display: flex;
+		justify-content: space-between;
 		flex-wrap: wrap;
+	}
+	.goods-container{
+		width: 357rpx;
+		margin-top: 12rpx;
+	}
+	.goods-content{
+		width: 357rpx;
+		background: #FFFFFF;
+		border-radius: 5rpx;
+		overflow: hidden;
+		padding:0;
+		@include flexCenter;
+		flex-wrap: wrap;
+	}
+	.goods-pic-box{
+		width: 357rpx;
+		height: 277rpx;
+		border-top-left-radius: 5rpx;
+		border-top-right-radius: 5rpx;
+	}
+	.goods-pic{
+		width: 357rpx;
+		height: 277rpx;
+	}
+	.goods-index{
+		width: 357rpx;
+		background: #FFFFFF;
+		padding-top: 2rpx;
+		@include flexCenter;
+		flex-wrap: wrap;
+		padding-bottom: 16rpx
+	}
+	.goods-header{
+		@include linePadding;
+		height:75rpx;
+		position: relative;
+		// #ifndef APP-NVUE
+		box-sizing: border-box;
+		// #endif
+		margin-top: 14rpx;
+	}
+	.richtext{
+		width: 317rpx;
+		height: 72rpx;
+		line-height:34rpx;
+		lines:2;
+		text-overflow: ellipsis;
+		word-wrap:anywhere;
+		font-weight: 300;
+	}
+	.cardicon{
+		height:21rpx;
+		margin-right: 10rpx;
+		position: absolute;
+		border:1rpx solid #e8e8e8;
+		border-radius: 5rpx;
+		@include flexCenter;
+		left:20rpx;
+		top:8rpx;
+		font-weight: 600;
+	}
+	.icon-text{
+		height:30rpx;
+		line-height:30rpx;
+		font-size: 14rpx;
+		color: #333;
+		@include flexCenter;
+	}
+	.hide-text{
+		font-size: 24rpx;
+		background:rgba(0,0,0,0);
+		color:rgba(0,0,0,0)
+	}
+	.title-text{
+		font-size: 24rpx;
+		font-weight: 300;
+		line-height: 34rpx;
+		color: #333333;
+	}
+	.goods-priceMsg{
+		flex:1;
+		height: 33rpx;
+		@include flexCenter;
+		position: relative;
+		align-items: flex-end;
+		padding-left: 16rpx;
+		padding-right: 16rpx;
 		justify-content: space-between;
 	}
-	.goodslist-padding{
-		box-sizing: border-box;
-		padding:0 16rpx
+	.goods-priceMsg-left{
+		height: 40rpx;
+		margin-bottom: -4rpx;
+		@include flexCenter;
+		align-items: flex-end;
 	}
-	.goodslist {
-		&-index {
-			width: 349rpx;
-			height:500rpx;
-			background: #FFFFFF;
-			border-radius: 5rpx;
-			box-sizing: border-box;
-			position: relative;
-			padding:0;
-			margin-bottom: 14rpx;
-			overflow: hidden;
-		}
-		&-index-box{
-			height:430rpx;
-			margin-bottom: 14rpx;
-		}
-		&-pic {
-			width: 349rpx;
-			height: 268rpx;
-			margin: 0 auto;
-			overflow: hidden;
-			position: relative;
-			display: flex;
-			border-top-left-radius: 5rpx;
-			border-top-right-radius: 5rpx;
-		}
-		&-pic-image {
-			width: 349rpx;
-			height: 268rpx;
-		}
-		&-title {
-			height: 75rpx;
-			font-size: 25rpx;
-			font-family: PingFangSC-Light;
-			font-weight: 400;
-			color: #333333;
-			margin-top: 10rpx;
-			display: -webkit-box;
-			line-height: 38rpx;
-		}
-		&-remainder{
-			width: 87rpx;
-			text-align: center;
-			height: 27rpx;
-			background: #754DE2;
-			opacity: 0.88;
-			border-radius: 3rpx;
-			box-sizing: border-box;
-			display: inline-block;
-			font-size: 19rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
-			color: #FFFEFE;
-			line-height: 27rpx;
-			margin-right: 6rpx;
-			overflow: hidden;
-			margin-bottom: -2rpx;
-		}
-		&-progress {
-			background: linear-gradient(90deg, #FFB6C5 0%, #FA1545 100%);
-			width: 100%;
-			height: 8rpx;
-			position: relative;
-			display: flex;
-			justify-content: flex-end;
-			.progressMask {
-				height: inherit;
-				background-color: #F6F7FB;
-				width: 30%;
-			}
-		}
-
-		&-progress-select {
-			background: linear-gradient(90deg, #CFC1F3 0%, #7048DD 100%);
-			background-size: 100% 100%;
-		}
-
-		&-priceMsg {
-			justify-content: space-between;
-			// vertical-align: bottom;
-			height: 40rpx;
-			display: flex;
-			align-items: flex-end;
-			position: relative;
-			margin-bottom: 11rpx;
-			margin-top: 16rpx;
-			align-items: flex-end;
-
-			.goodslist-priceMsg-left {
-				font-size: 21rpx;
-				font-family: ArialBold !important;
-				font-weight: 600;
-				color: #333333;
-				height: 40rpx;
-				display: flex;
-				align-items: flex-end;
-
-				text.price-text {
-					font-size: 31rpx;
-					font-family: ArialBold !important;
-					font-weight: 400;
-					color: #333333;
-					line-height: 38rpx;
-					margin-right: 10rpx;
-					letter-spacing:-2rpx;
-				}
-
-				text:last-child {
-					font-size: 23rpx;
-					font-family: PingFangSC-Regular;
-					font-weight: 500;
-					color: #959695;
-				}
-			}
-
-			.goodslist-priceMsg-right {
-				height: 40rpx;
-				display: flex;
-				align-items: flex-end;
-				font-size: 23rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
-				color: #959695;
-			}
-		}
-
-		&-bottom {
-			justify-content: space-between;
-			align-items: center;
-			display: flex;
-			width: 100%;
-			padding-bottom: 8rpx;
-
-			.bottom-left {
-				width: 102rpx;
-				font-size: 23rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
-				color: #959695;
-				position: relative;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-			}
-			.bottom-left-shu::after{
-				content: '';
-				width: 1rpx;
-				height:20rpx;
-				position: absolute;
-				right:0;
-				top:50%;
-				margin-top: -10rpx;
-				background:#DADADA;
-			}
-			.bottom-right {
-				width: 200rpx;
-				display: flex;
-				align-items: center;
-				.bussName {
-					width: 146rpx;
-					position: relative;
-					font-size: 23rpx;
-					font-family: PingFangSC-Regular;
-					font-weight: 400;
-					color: #333;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
-				}
-
-				.cores {
-					display: block;
-					width: 11rpx;
-					height: 17rpx;
-					background-image: url('../../static/goods/v2/icon_right_new.png');
-					background-size: 100% 100%;
-					position: relative;
-				}
-			}
-		}
-
-		&-plan-content {
-			// width: 112rpx;
-			height: 40rpx;
-			background: #F9D0CC;
-			overflow: hidden;
-			position: relative;
-			border-radius: 8rpx;
-
-		}
-
-		&-plan-num {
-			position: absolute;
-			left: 0;
-			top: 0;
-			width: 112rpx;
-			height: 40rpx;
-			line-height: 40rpx;
-			font-size: 22rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: bold;
-			color: #fff;
-			text-align: center;
-		}
-
-		&-plan-now {
-			height: 40rpx;
-			background: #FB4E3E;
-		}
-
-		&-bottom {
-			// width: 100%;
-			// display: flex;
-			// align-items: flex-end;
-			// justify-content: space-between;
-			// position: absolute;
-			// bottom: 0;
-			// left: 0;
-		}
-
-		&-bottom-right {
-			width: 300rpx;
-			// display: flex;
-			// flex-wrap: wrap;
-			// justify-content: flex-end;
-		}
-
-		&-bottom-right-time {
-			width: 300rpx;
-			display: flex;
-			flex-wrap: wrap;
-			box-sizing: border-box;
-			padding-right: 20rpx;
-			color: #AAAAAA;
-			font-size: 30rpx;
-			justify-content: flex-end;
-		}
-
-		&-price-content {
-			font-size: 26rpx;
-			font-family: Microsoft YaHei;
-			font-weight: normal;
-			color: #14151A;
-			margin-top: -10rpx;
-		}
-
-		&-price {
-			font-size: 36rpx;
-		}
-
-		&-tips-list {
-			width: 100%;
-			box-sizing: border-box;
-			display: flex;
-			flex-wrap: wrap;
-		}
-
-		&-tips {
-			text-align: center;
-			line-height: 34rpx;
-			margin-right: 17rpx;
-			height: 34rpx;
-			background: #FFFFFF;
-			border: 1rpx solid #FB4E3E;
-			border-radius: 3rpx;
-			font-size: 20rpx;
-			font-family: Microsoft YaHei;
-			font-weight: 400;
-			color: #FB4E3E;
-			padding: 0 11rpx;
-			width: fit-content;
-			margin-left: 1rpx;
-			display: block;
-		}
+	.price-icon{
+		font-size: 28rpx;
+		font-weight: 600;
+		color: #333333;
 	}
-
-	.plan-baifen {
-		font-weight: 0;
-		font-size: 18rpx;
-		font-family: Microsoft YaHei;
+	.price-text {
+		font-size: 28rpx;
+		font-weight: 600;
 	}
-
-	.select-team {
-		width: 112rpx;
-		height: 32rpx;
+	.decimal{
+		font-size: 20rpx;
+		margin-bottom: 3rpx;
+		font-weight: 600;
+	}
+	.lowest {
+		font-size: 20rpx;
+		color: #C0C0C0;
+		margin-left: 6rpx;
+		margin-bottom: 3rpx;
+	}
+	.goods-priceMsg-right{
+		align-items: flex-end;
+		font-size: 22rpx;
+		color: #C0C0C0;
+		margin-bottom: -2rpx;
+	}
+	.goods-progress {
+		background: linear-gradient(to right,#FFBAC9,#FA1545);
+		width: 357rpx;
+		height: 6rpx;
+		@include flexCenter;
+		justify-content: flex-end;
+	}
+	.progressMask {
+		height: 6rpx;
+		background-color: #fff;
+	}
+	.goods-merchant {
+		@include linePadding;
+		height:50rpx;
+		@include flexCenter;
+		position: relative;
+		justify-content: flex-start;
+		background:#fff;
+		border-bottom-left-radius: 5rpx;
+		border-bottom-right-radius: 5rpx;
+		padding-top: 20rpx;
+	}
+	.bussName {
+		width: 246rpx;
+		font-size: 22rpx;
+		color: #9FA4B0;
+		lines:1;
+		text-overflow: ellipsis;
+	}
+	.merchant-logo{
+		width: 30rpx;
+		height:30rpx;
+		margin-right: 10rpx;
+		border-radius: 50%;
+	}
+	.avatar-level{
 		position: absolute;
-		left: 0;
-		top: 0;
+		bottom:0rpx;
+		left:36rpx;
 		z-index: 1;
-		box-sizing: border-box;
+		width: 21rpx;
+		height:17rpx;
 	}
-
-	.price-qi {
-		font-size: 20rpx !important;
-		color: #ACAEB7 !important;
-	}
-
-	// 活动轮播
-	.index-swiper {
-		width: 349rpx;
-		height: 500rpx;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.swiper {
-		width: 349rpx;
-		height: 500rpx;
-		box-sizing: border-box;
-		display: flex;
-		align-items: flex-start;
-		justify-content: center;
-		border-radius: 5rpx;
-	}
-
-	.swiper-image {
-		width: 349rpx;
-		height: 500rpx;
-		box-sizing: border-box;
-		border-radius: 5rpx;
+	.loadmore{
+		width:750rpx;
+		margin-top:20rpx;
 	}
 </style>

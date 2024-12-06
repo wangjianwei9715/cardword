@@ -1,0 +1,119 @@
+<template>
+	<view class="content">
+		<view class="input-box" v-if="focus" :style="{ transform: `translateY(-${textareaData.height}px)` }">
+			<textarea class="input" v-model="textareaData.val" :placeholder="replyName != '' ? '回复' + replyName : '说点什么...'"
+				:adjust-position="false" :show-confirm-bar="false" :auto-blur="true" @blur="onBlur" @focus="getHeight"
+				@keyboardheightchange="getHeight" />
+			<text class="btn" @click="onClickChatConfirm">发送</text>
+		</view>
+	</view>
+</template>
+<script>
+const app = getApp().globalData.app;
+const textareaData = {
+	val: '',
+	height: 0,
+}
+export default {
+	props: {
+		replyName: {
+			type: String,
+			default: ''
+		},
+		focus: {
+			type: Boolean,
+			default: true
+		}
+	},
+	watch: {
+	},
+	mounted() {
+	},
+	data() {
+		return {
+			textareaData: { ...textareaData }
+		};
+	},
+	methods: {
+		onClickChatConfirm(event) {
+			console.log(666666666666666666666666666);
+			// #ifdef APP-NVUE
+			event.stopPropagation();
+			// #endif
+			app.platform.hasLoginToken(() => {
+				console.log("准备发送");
+				uni.$u.throttle(() => {
+					console.log("成功发送");
+					uni.hideKeyboard()
+					if (this.textareaData.val == '') return;
+					this.$emit('chatConfirm', this.textareaData.val)
+					this.textareaData = { ...textareaData }
+				}, 1000)
+			})
+		},
+		onBlur() {
+			this.textareaData = { ...textareaData }
+			// this.$emit('blur')
+		},
+		getHeight(event) {
+			this.textareaData.height = event.detail.height;
+			if (event.detail.height <= 0) {
+				this.focus = false
+			}
+		}
+	}
+};
+</script>
+
+<style lang="scss">
+.content {
+	width: 750rpx;
+}
+
+.input-box {
+	width: 750rpx;
+	height: 130rpx;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	background: #fff;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	padding-left: 40rpx;
+	padding-right: 40rpx;
+	transition-property: transform;
+	transition-duration: 0.25s;
+	transition-delay: 0s;
+	justify-content: space-between;
+	transition-timing-function: linear;
+}
+
+.input {
+	width: 520rpx;
+	height: 90rpx;
+	background: #EFEFEF;
+	border-radius: 3rpx;
+	font-size: 25rpx;
+	
+	
+	color: #88878C;
+	padding-left: 20rpx;
+	padding-right: 20rpx;
+	padding-top: 10rpx;
+	padding-bottom: 10rpx;
+}
+
+.btn {
+	width: 140rpx;
+	height: 60rpx;
+	text-align: center;
+	line-height: 60rpx;
+	font-size: 30rpx;
+	
+	
+	background-image: linear-gradient(to bottom, #ef3333, #eb6141);
+	border-radius: 40rpx;
+	color: #fff
+}
+</style>

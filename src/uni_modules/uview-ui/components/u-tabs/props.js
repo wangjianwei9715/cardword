@@ -35,6 +35,11 @@ export default {
             type: [String, Number],
             default: uni.$u.props.tabs.lineHeight
         },
+        // 滑块定位
+        lineBottom:{
+            type: [String, Number],
+            default: ""
+        },
         // 滑块背景显示大小，当滑块背景设置为图片时使用
         lineBgSize: {
             type: String,
@@ -64,6 +69,10 @@ export default {
         customType:{
             type:String,
             default:""
+        },
+        picNameIndex:{
+            type:Number|String,
+            default:-1
         }
     }
 }

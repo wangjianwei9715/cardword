@@ -4,22 +4,23 @@
 			<statusbar />
 			<view class="header-top">
 				<view class="header-back" @click="onClickBack">
-					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
+					<view class="icon-back"></view>
 				</view>
 				<view class="header-search">
 					<view class="search-icon"></view>
-					<input class="search-input" type="text" v-model="searchText" placeholder="搜索" confirm-type="search"
+					<input class="search-input" type="text" v-model="listParams.q" placeholder="搜索" confirm-type="search"
 						@confirm="onInputSearch" />
 				</view>
+				<view class="icon-kf" @click="onClickHeliService"></view>
 			</view>
 			<view class="header-tab">
-				<tabc :tabc="orderTab" :tabsCheck="orderTabCheck" @tabsClick="onClickListTabs"></tabc>
+				<u-tabs :itemStyle="{width:'125rpx',height:'90rpx',lineHeight:'80rpx',padding:0,background:'#fff'}" :activeStyle="activeStyle" :inactiveStyle="inactiveStyle" lineColor="#FA1545" lineHeight="2" :lineBottom="0" :list="orderTab" :current="orderTabCheck" @click="onClickListTabs"></u-tabs>
 			</view>
 		</view>
 
 		<view class="order-list">
 			<statusbar />
-			<orderlist :orderList="orderList" @send="onClickOrder" @operate="onClickOperate" />
+			<orderlist :orderList="orderList" @send="onClickOrder" @operate="onClickOperate" @onFinish="onCodeFinish"/>
 		</view>
 		<empty v-show="showEmpty" />
 		<payment :showPayMent="showPayMent" :payChannel="payChannel" :payPrice="payItem.price"
@@ -28,48 +29,56 @@
 </template>
 
 <script lang="ts">
-	import {
-		app
-	} from "@/app";
-	import {
-		Component
-	} from "vue-property-decorator";
+	import { app } from "@/app";
+	import { Component } from "vue-property-decorator";
 	import BaseNode from "../../base/BaseNode.vue";
+	//@ts-ignore
+	import { KwwConfusion } from "@/net/kwwConfusion.js"
+	const OperateMap:{[x:string]:any} = {
+		"receive_good":{
+			content:'是否确认已经收货？',
+			url:'me/order/buyer/receive_good',
+			toast:'收货成功'
+		},
+		"cancel":{
+			content:'是否取消支付该订单？',
+			url:'me/order/buyer/cancel',
+			toast:'取消成功'
+		},
+		"buy_delete_order":{
+			content:'是否删除该订单？',
+			url:'me/order/buyer/delete_order',
+			toast:'删除成功'
+		},
+	}
 	@Component({})
 	export default class ClassName extends BaseNode {
-		searchText = "";
-		orderTab = [{
-				id: 0,
-				name: "全部"
-			},
-			{
-				id: 1,
-				name: "待支付"
-			},
-			{
-				id: 2,
-				name: "已付款"
-			},
-			{
-				id: 3,
-				name: "待发货"
-			},
-			{
-				id: 4,
-				name: "待收货"
-			},
-			{
-				id: 5,
-				name: "已完成"
-			},
+		activeStyle={
+			"font-size": "28rpx",
+			"font-weight": 500,
+			"color":" #333333",
+		}
+		inactiveStyle={
+			"font-size": "24rpx",
+			"font-weight": 400,
+			"color":" #999999",
+		}
+		orderTab = [
+			{ id: 0, name: "全部" },
+			{ id: 1, name: "待支付" },
+			{ id: 2, name: "已付款" },
+			{ id: 3, name: "待发货" },
+			{ id: 4, name: "待收货" },
+			{ id: 5, name: "已完成" }, 
 		];
 		orderTabCheck = 0;
-		currentPage = 1;
-		pageSize = 20;
-		noMoreData = false;
-		orderList: {
-			[x: string]: any
-		} = [];
+		listParams = {
+			q:'',
+			pageIndex:1,
+			pageSize:20,
+			noMoreData:false
+		}
+		orderList: { [x: string]: any } = [];
 		showPayMent = false;
 		countTime = 0;
 		payItem = {
@@ -82,7 +91,7 @@
 		payChannel: any = [];
 		onLoad(query: any) {
 			if (query.type) {
-				this.orderTabCheck = query.type;
+				this.orderTabCheck = Number(query.type);
 			}
 			this.againReqNewData();
 		}
@@ -93,8 +102,8 @@
 		}
 		//   下拉刷新
 		onPullDownRefresh() {
-			this.currentPage = 1;
-			this.noMoreData = false;
+			this.listParams.pageIndex = 1;
+			this.listParams.noMoreData = false;
 			this.reqNewData(() => {
 				uni.stopPullDownRefresh();
 			});
@@ -115,211 +124,151 @@
 		}
 		reqNewData(cb ? : Function) {
 			// 获取更多商品
-			if (this.noMoreData) {
-				return;
-			}
-			let params: {
-				[x: string]: any
-			} = {
+			const { q, noMoreData, ...rest } = this.listParams;
+			if (noMoreData) return;
+
+			const params = {
 				tp: this.orderTabCheck,
-				pageIndex: this.currentPage,
-				pageSize: this.pageSize,
-			};
-			if (this.searchText != "") {
-				params.q = encodeURIComponent(this.searchText);
+				...rest,
+				q:encodeURIComponent(q)
 			}
 			app.http.Get("me/order/buyer/orderList", params, (data: any) => {
-				if (this.currentPage == 1) this.orderList = [];
+				if (rest.pageIndex == 1) this.orderList = [];
 				if (data.list) {
 					this.showEmpty = false;
 					this.orderList = this.orderList.concat(data.list);
 				}
-				if (!data.list && this.currentPage == 1) {
+				if (!data.list && rest.pageIndex == 1) {
 					this.showEmpty = true;
 				}
-				if (!data.list || data.list.length < this.pageSize) {
-					this.noMoreData = true;
+				if (!data.list || data.list.length < rest.pageSize) {
+					this.listParams.noMoreData = true;
 				}
-				this.currentPage++;
+				this.listParams.pageIndex++;
 				if (cb) cb();
 			});
 		}
 		againReqNewData() {
-			this.currentPage = 1;
+			this.listParams.pageIndex = 1;
 			this.orderList = [];
-			this.noMoreData = false;
+			this.listParams.noMoreData = false;
 			this.reqNewData();
 		}
-
 		onInputSearch() {
+			const { q } = this.listParams;
+			let hideGoods = /[0-9]{12}/g
+			if(hideGoods.test(q)){
+				const code:any = q.match(hideGoods);
+				app.navigateTo.goOrderDetails(code)
+				return;
+			}
 			this.againReqNewData();
 		}
 		onClickOrder(code: any) {
-			uni.navigateTo({
-				url: "/pages/userinfo/order_details?code=" + code,
-			});
+			app.navigateTo.goOrderDetails(code)
 		}
-		onClickOperate(item: any, cmd: any) {
-			let code = item.code;
-			let params: {
-				[x: string]: any
-			};
+		onClickOperate(item: any, cmd: any, leftSec:number) {
+			const { code:orderCode, zitiWuliuExplain="", good, num=0, price=0 } = item;
 			if (cmd == "view") {
-				uni.navigateTo({
-					url: "/pages/userinfo/order_details?code=" + code,
-				});
+				this.onClickOrder(orderCode)
 			} else if (cmd.indexOf("wuliu") != -1) {
 				let wuliucode = cmd.slice(6);
 				uni.navigateTo({
-					url: `/pages/userinfo/order_logistics?code=${wuliucode}&zitiWuliuExplain=${item.zitiWuliuExplain || ""}`,
+					url: `/pages/userinfo/order_logistics?code=${wuliucode}&zitiWuliuExplain=${zitiWuliuExplain}`,
 				});
 			}
 			if (cmd == "toPay") {
-				this.payChannel = item.good.payChannel;
-				this.countTime = item.leftSec;
-				this.payItem.num = Number(item.num);
-				this.payItem.code = code;
-				this.payItem.price = item.price;
+				this.payChannel = good.payChannel;
+				this.countTime = leftSec;
+				this.payItem = {
+					num:Number(num),
+					code:orderCode,
+					price
+				}
 				this.showPayMent = true;
 			}
 			if (cmd == "appraise") {
 				uni.navigateTo({
-					url: "/pages/userinfo/orderevaluate?code=" +
-						code +
-						"&data=" +
-						decodeURIComponent(JSON.stringify(item.good)),
+					url:`/pages/userinfo/orderevaluate?code=${orderCode}&data=${decodeURIComponent(JSON.stringify(good))}`
 				});
 			}
 			if (cmd == "resultCard") {
-				let random = item.good.state > 0 ? true : false;
 				uni.navigateTo({
-					url: "/pages/userinfo/goods_result_list?chooseIds=1&code=" +
-						item.good.goodCode +
-						"&order=" +
-						item.code +
-						"&random=" +
-						random,
+					url:`/pages/goods/goods_result_list_new?chooseIds=1&code=${good.goodCode}`
 				});
 			}
-			if (cmd == "receive_good") {
+			if (["receive_good","cancel","buy_delete_order"].includes(cmd)) {
+				const data = OperateMap[cmd];
 				uni.showModal({
 					title: "提示",
-					content: "是否确认已经收货？",
+					content: data.content,
 					success: (res) => {
 						if (res.confirm) {
-							params = {
-								code: code,
-							};
-							app.http.Post("me/order/buyer/receive_good", params, (res: any) => {
-								uni.showToast({
-									title: "收货成功",
-									icon: "none",
-								});
+							app.http.Post(data.url, {code:orderCode}, (res: any) => {
+								uni.showToast({ title: data.toast, icon: "none", });
 								this.againReqNewData();
 							});
-						} else if (res.cancel) {}
-					},
-				});
-			}
-			if (cmd == "cancel") {
-				uni.showModal({
-					title: "提示",
-					content: "是否取消支付该订单？",
-					success: (res) => {
-						if (res.confirm) {
-							params = {
-								code: code,
-							};
-							app.http.Post("me/order/buyer/cancel", params, (res: any) => {
-								uni.showToast({
-									title: "取消成功",
-									icon: "none",
-								});
-								this.againReqNewData();
-							});
-						} else if (res.cancel) {}
-					},
-				});
-			}
-
-			if (cmd == "buy_delete_order") {
-				uni.showModal({
-					title: "提示",
-					content: "是否删除该订单？",
-					success: (res) => {
-						if (res.confirm) {
-							params = {
-								code: code,
-							};
-							app.http.Post("me/order/buyer/delete_order", params, (res: any) => {
-								uni.showToast({
-									title: "删除成功",
-									icon: "none",
-								});
-								this.againReqNewData();
-							});
-						} else if (res.cancel) {}
+						}
 					},
 				});
 			}
 		}
 		onClickBack() {
-			uni.navigateBack({
-				delta: 1,
-			});
+			app.navigateTo.navigateBack()
 		}
-
-		onClickListTabs(id: number) {
+		onClickListTabs({id}:any) {
 			if (id == this.orderTabCheck) {
 				return;
 			}
 			this.orderTabCheck = id;
 			this.againReqNewData();
 		}
-
+		onCodeFinish(item:any){
+			this.listParams.pageIndex = 1;
+			this.listParams.noMoreData = false;
+			this.reqNewData(() => {
+				uni.stopPullDownRefresh();
+			});
+		}
 		// 取消支付
 		onClickCancelPay() {
 			this.showPayMent = false;
 			this.againReqNewData();
 		}
-		onClickPayGoods(data: any) {
+		async onClickPayGoods({channelId="",channel}: any) {
 			// 1：支付宝 2：微信
-			if (data == "") {
-				return;
-			}
-			uni.showLoading({
-				title: "加载中",
-			});
+			if (channel == "")  return;
+			const userId = await app.user.getAppDataUserId();
+			uni.showLoading({ title: "加载中" });
 			let params: any = {
-				channelId: data.channelId ? data.channelId : "",
-				channel: data.channel,
+				channelId,
+				channel,
 				delivery: 0,
 				num: this.payItem.num,
 			};
+			const hash = KwwConfusion.toPayForGoodOrder(userId,this.payItem.code)
 			if (uni.getSystemInfoSync().platform === "android") {
 				params.nativeSdk = "qmf_android";
 			}
-			app.http.Post("order/topay/" + this.payItem.code, params, (res: any) => {
+			app.http.Pay("order/topay/" + this.payItem.code, {...params,...hash}, (res: any) => {
 				//data.channel=='alipay' (before)
-				if (data.channel == "alipay_h5" || data.channel == "alipay") {
-					if (res.appPayRequest) {
-						app.payment.paymentAlipayQmfSdk(JSON.stringify(res.appPayRequest));
-						this.onClickCancelPay();
-					} else if (res.alipay.orderInfo != "") {
-						this.clickToPay = true;
-						uni.hideLoading();
-						app.payment.paymentAlipay(res.pay_type, res.alipay.orderInfo);
-						this.onClickCancelPay();
-					}
+				if (['alipay','alipay_h5'].includes(channel)) {
+					this.clickToPay = true;
+					uni.hideLoading();
+					app.payment.paymentAlipay(res.h5CashierAddress, res.alipay.orderInfo);
+					this.onClickCancelPay();
 				} else {
 					if (res.wechat) {
 						this.clickToPay = true;
 						uni.hideLoading();
-						app.payment.paymentWxpay(res.pay_type, res.wechat);
+						app.payment.paymentWxpay(res.wechat);
 						this.onClickCancelPay();
 					}
 				}
 			});
+		}
+		onClickHeliService(){
+			app.platform.heliService({agentExten:''})
 		}
 	}
 </script>
@@ -328,7 +277,13 @@
 	page {
 		background: $content-bg;
 	}
-
+	/deep/.u-tabs__wrapper__nav__line{
+		border-radius: 0 !important;
+		bottom:14rpx !important
+	}
+	.content{
+		width: 100%;
+	}
 	.header-banner {
 		width: 100%;
 		background: #fff;
@@ -341,7 +296,7 @@
 
 	.header-top {
 		width: 100%;
-		height: 88rpx;
+		height: 98rpx;
 		display: flex;
 		box-sizing: border-box;
 		padding: 0 32rpx 0 0;
@@ -351,17 +306,20 @@
 	}
 
 	.header-search {
-		width: 626rpx;
-		height: 64rpx;
-		background: #f5f5f8;
+		width:566rpx;
+		height: 68rpx;
+		background: #F6F7FB;
 		border-radius: 4rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		position: relative;
-		border-radius: 29rpx;
 	}
-
+	.icon-kf{
+		width: 32rpx;
+		height:32rpx;
+		background: url(@/static/goods/detail/kf.png) no-repeat center / 100% 100%;
+	}
 	.header-back {
 		width: 80rpx;
 		height: 88rpx;
@@ -369,42 +327,41 @@
 		align-items: center;
 		justify-content: center;
 	}
-
+	.icon-back {
+		width: 56rpx;
+		height:56rpx;
+		background: url(@/static/index/back_b.png) no-repeat center / 100% 100%;
+	}
 	.header-tab {
 		width: 100%;
-		height: 90rpx;
 		margin-top: -10rpx;
 		box-sizing: border-box;
-		border-bottom: 1px solid #f1f1f4;
 	}
 
 	.order-list {
 		width: 100%;
 		box-sizing: border-box;
-		padding: 196rpx 14rpx 14rpx 14rpx;
+		padding: 190rpx 16rpx 16rpx 16rpx;
 	}
 
 	.search-input {
 		width: 626rpx;
 		height: 64rpx;
-		background: #f5f5f8;
+		background: #F6F7FB;
 		border-radius: 4rpx;
 		font-size: 24rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 500;
-		color: #14151a;
-		padding-left: 76rpx;
-		border-radius: 29rpx;
+		color: #B2B2B2;
+		padding-left: 68rpx;
 	}
 
 	.search-icon {
 		width: 28rpx;
-		height: 28rpx;
-		background: url(../../static/index/sousuo@2x.png) no-repeat center;
+		height: 30rpx;
+		background: url(@/static/goods/detail/search_b.png) no-repeat center;
 		background-size: 100% 100%;
 		position: absolute;
 		left: 28rpx;
 		top: 50%;
-		margin-top: -14rpx;
+		margin-top: -15rpx;
 	}
 </style>

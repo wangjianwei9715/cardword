@@ -1,0 +1,277 @@
+<template>
+    <div>
+
+    </div>
+</template>
+<script>
+const app = getApp().globalData.app
+export default {
+    name: '',
+    components: {
+
+    },
+    mixins: [],
+    props: {
+
+    },
+    data() {
+        return {
+            aLiSDKModule: uni.requireNativePlugin('AliCloud-NirvanaPns'),
+            carrierName: '',
+        }
+    },
+    computed: {
+
+    },
+    watch: {
+
+    },
+    async onLoad() {
+        if (plus.os.name == "iOS") {
+            this.aLiSDKModule.setAuthSDKInfo("mOHAMWavse5aJ2IvXw3YSl4Z0Kj4vvHX1eM6UWDdQdnSuW4f0Q/3Vt5KEjj9vs5FAbpKpFoNlGrf93yaXMGbO0azmnpRFDSL/8wCO4d8t7c3AxPKLS2qjZI7c73am1fu0+M3Q7a/7lb8sGOtW4PvMsidpNs/w2u3jjj8+/AOpqmfOj4nby/AFApsbl8PsBwd7kZp23CCO3NgfBvfcZmotdEVzTSu5oM9+rGotBMk92E2j62JJ+BQWDbsur8/IuNFWdD/CQX1fZE=")
+        } else {
+            this.aLiSDKModule.closeAuthPageReturnBack(true)
+            this.aLiSDKModule.setAuthSDKInfo("DTbJO26aiDtb5oCtLhJ9VP2+YPsqEdDd3DOtFJqNAJ6pDAB+pZEKAicDUDavDnLFkwz+tAO34raLraxpTpuVWf8AFaCtr7dG1KYZjx6qo27quEzlW1gly8w0zEP8tIv9WRHwn3o8YRXrjzcllbNciKKdGm0gwdramyQ+ekcAqGvfvpGkTBmjR5Ld8CdEv9/fr+1DdHOCuqt/EAi/CUr1w5AiBSSm0iEIdnZz00plWzcMuOFNeROfoqtSu2q+B8OJMT2NRMAxrFQxZr5XNXHzcplHWzODaZUBGw0IRmCRNcYVG5LCTJ3LkQ==")
+        }
+        await this.checkEnvAvailable(2)
+        await this.getCurrentCarrierName()
+        setTimeout(() => {
+            this.aLiSDKModule.getLoginToken(5000, {
+                uiConfig: {
+                    globalFontName: "PingFangSC-Regular",
+                    setNavHidden: 'true',
+                    setLogoHidden: "false",
+                    autoHideLoginLoading: "false",
+                    setLogoUi: {
+                        imgPath: "/static/userinfo/logo_new.jpg",
+                        imageUrl:"/static/userinfo/logo_new.jpg",
+                        // imgPath:"https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2023.08.28/act/forumDraw/0/1693188928777mfkul4b8jl.jpg",
+                        top: "201",
+                        width: "88",
+                        height: "88"
+                    },
+                    setSloganUi: {
+                        text: `${this.carrierName}提供认证服务`,
+                        textColor: "#999999",
+                        textSize: "12",
+                        top: "430",
+                    },
+                    setBackgroundUi:{
+
+                    },
+                    setNumberUi: {
+                        textColor: "#333333",
+                        textSize: "24",
+                        top: "400",
+                    },
+
+                    setLoginBtnUi: {
+                        text: "一键登录",
+                        textColor: "#FFFFFF",
+                        textSize: "16",
+                        imgPath: "/static/userinfo/loginBack.jpg",
+                        color: "#fa1545",
+                        top: "481",
+                        width: "289",
+                        height: "44",
+                    },
+                    setSwitchUi: {
+                        text: "其他号码登录",
+                        textColor: "#263858",
+                        textSize: "12",
+                        top: "606",
+                    },
+                    //check box相关设置
+                    setCheckBoxUi: {
+                        defaultChecked: "false", //check box默认是否勾选，不设置则默认不勾选，需要用户手动勾选（true：默认勾选，false：默认不勾选）
+                        unCheckedImgPath: "/static/userinfo/weixuan@2x.jpg", //check box未选中时的图片，必须同时设置 checkedImgPath 有效，该属性才会生效
+                        checkedImgPath: "/static/userinfo/check.jpg", //check box选中时的图片，必须同时设置 unCheckedImgPath 有效，该属性才会生效
+                        width: "11", //控件宽高，注意后面不要加单位（Android默认为dp，iOS默认为pt）
+                        checkBoxPostion: "VerticalCenter",//iOS专用，checkbox的位置，只有两种top或者VerticalCenter，分别对应顶部对齐和垂直居中对齐，填写其他值不生效，默认顶部对齐
+                    },
+                    setAppPrivacyOne: {
+                        title: "《隐私协议》", //协议标题
+                        url: "http://share01.ka-world.com/share/h5/#/pages/cardForum/detail?code=dtoAxh3qi6WW" //协议链接
+                    },
+                    setPrivacyUi: {
+                        beforeText: "登录即自动注册，并同意", //协议整体文案前缀
+                        endText: "", //协议整体文案后缀
+                        baseColor: "#999999", //协议文案非协议部分颜色
+                        protocolColor: "#263858", //协议文案协议富文本颜色
+                        textSize: "10", //协议文字大小，小于12不生效，注意后面不要加单位（Android默认为sp，iOS默认为pt）
+                        vendorPrivacyPrefix: "《", //供应商协议前缀
+                        vendorPrivacySuffix: "》", //供应商协议后缀
+                        conectTexts: "['和','、','、']", //协议名称之间连接字符串数组，默认 ["和","、","、"] ，即第一个为"和"，其他为"、"，按顺序读取，为空则取默认
+                        operatorIndex: "1", //运营商协议指定显示顺序，默认0，即第1个协议显示，最大值可为3，即第4个协议显示
+                        bottom: "20", //距离父容器底部偏移，注意后面不要加单位（Android默认为dp，iOS默认为pt）
+                        // top: "400", //距离父容器顶部偏移，注意后面不要加单位（Android默认为dp，iOS默认为pt），优先级低于bottom
+                        marginLR: "18", //协议栏左右距离（包含checkbox），注意后面不要加单位（Android默认为dp，iOS默认为pt）
+                        alignment: "0", //协议栏对齐方式（包括隐私文字）（0：左对齐，1：中间对齐，2：右对齐），默认为左对齐
+                        expandAuthPageCheckedScope: true,//checkBox是否扩大按钮可交互范围至"协议前缀部分文案(默认:我已阅读并同意)"区域，默认NO IOS专用
+                    },
+                },
+                widgets: [{
+                    widgetId: "wechatLogin",
+                    type: "Button",
+                    alignment: "1",
+                    textContent: "微信登录",
+                    backgroundImage: "/static/userinfo/wechatBack.jpg",
+                    textSize: "16",
+                    textColor: "#333333",
+                    backgroundColor: "#EE6A50",
+                    top: "541",
+                    left: "50",
+                    width: "289",
+                    height: "44",
+                },
+                {
+                    widgetId: "wechatLoginIcon", //控件id
+                    type: "Image", //控件类型，Image，图片，不可以点击
+                    imgPath: "/static/userinfo/weixin.jpg", //图片资源路径
+                    mode: "0", //图片缩放或裁剪模式，默认为0（scaleToFill: 0、aspectFit: 1、aspectFill: 2）
+                    // backgroundColor: "#EE6A50", //控件背景色
+                    left: "127.5", //距离父容器左侧偏移，注意后面不要加单位（Android默认为dp，iOS默认为pt）
+                    top: "554.5", //距离父容器顶部偏移，注意后面不要加单位（Android默认为dp，iOS默认为pt）
+                    width: "22", //控件宽度，注意后面不要加单位（Android默认为dp，iOS默认为pt）
+                    height: "17.5", //控件高度，注意后面不要加单位（Android默认为dp，iOS默认为pt）
+                },
+                {
+                    widgetId: "pageBack", //控件id
+                    type: "Button", //控件类型，Image，图片，不可以点击
+                    backgroundImage: "/static/index/v3/icon_back.jpg", //图片资源路径
+                    mode: "0", //图片缩放或裁剪模式，默认为0（scaleToFill: 0、aspectFit: 1、aspectFill: 2）
+                    // backgroundColor: "#EE6A50", //控件背景色
+                    left: "17.5", //距离父容器左侧偏移，注意后面不要加单位（Android默认为dp，iOS默认为pt）
+                    top: "57", //距离父容器顶部偏移，注意后面不要加单位（Android默认为dp，iOS默认为pt）
+                    width: "10", //控件宽度，注意后面不要加单位（Android默认为dp，iOS默认为pt）
+                    height: "18", //控件高度，注意后面不要加单位（Android默认为dp，iOS默认为pt）
+                }
+                ]
+            }, (tokenResult) => {
+                console.log(tokenResult);
+                if ("600001" == tokenResult.resultCode) {
+                    console.log("授权页拉起成功")
+                } else if ("600000" == tokenResult.resultCode) {
+
+                    console.log("获取Token成功，接下来拿着结果里面的Token去服务端换取手机号码，SDK服务到此结束")
+                    console.log("token", tokenResult.token);
+                    uni.hideLoading()
+                    // app.http.Post("login/verify",{accessToken:tokenResult.token},(res)=>{
+                    //     console.log("ooooooooooooooooooo登录成功");
+                    //     console.log("登录成功的信息=>",res);
+                    //     this.aLiSDKModule.quitLoginPage()
+                    //     app.platform.pageBack()
+                    // },(err)=>{
+                    //     console.log("错误信息=>",err);
+                    // })
+                    //手动关闭授权页
+                    // this.aLiSDKModule.quitLoginPage()
+                } else {
+                    //其他失败情况，手动关闭授权页
+                    this.aLiSDKModule.quitLoginPage()
+                }
+            },
+                clickResult => {
+                    switch (clickResult.resultCode) {
+                        case "700000":
+                            console.log("用户点击返回按钮")
+                            break
+                        case "700001":
+                            console.log("用户切换其他登录方式")
+                            break
+                        case "700002":
+                            //通过isChecked字段可以得到checkbox是否勾选，未勾选可以用自定义Toast进行提示
+                            console.log("用户点击登录按钮", clickResult)
+                            if (!clickResult.result.isChecked) {
+                                uni.showToast({ title: '请先阅读并同意协议！', icon: 'none', duration: 2000 })
+                                return
+                            }
+                            uni.showLoading({
+                                title: ""
+                            })
+                            break
+                        case "700003":
+                            console.log("用户点击checkBox")
+                            break
+                        case "700004":
+                            console.log("用户点击协议")
+                            break
+                        case "700010":
+                            //调用userControlAuthPageCancel后方可使用
+                            console.log("用户点击返回按钮，Android专用");
+                            break
+                        case "700011":
+                            //调用userControlAuthPageCancel后方可使用
+                            console.log("用户使用物理返回键，Android专用");
+                            break
+                    }
+                },
+                customUiResult => {
+                    //这里回调的是自定义控件的点击事件，通过 customUiResult.widgetId 来识别自定义控件，然后做一些自己的处理
+                    console.log("自定义的控件点击=>", customUiResult);
+                    switch (customUiResult.widgetId) {
+                        case "pageBack":
+                            this.aLiSDKModule.quitLoginPage()
+                            app.platform.pageBack()
+                        case "wechatLogin": 
+                            break;
+                    }
+                })
+        }, 1)
+    },
+    methods: {
+        checkEnvAvailable(authType) {
+            return new Promise((re, rj) => {
+                this.aLiSDKModule.checkEnvAvailable(authType, result => {
+                    if (result.resultCode != "600000") {
+                        rj()
+                        uni.showModal({
+                            title: "提示",
+                            content: result.msg,
+                            showCancel: false,
+                            success: (res) => {
+                                if (res.confirm) {
+                                    app.platform.pageBack()
+                                }
+                            }
+                        })
+                    } else {
+                        console.log(result);
+                        re()
+                    }
+                })
+            })
+        },
+        getCurrentCarrierName() {
+            return new Promise((re, rj) => {
+                this.aLiSDKModule.getCurrentCarrierName(carrierName => {
+                    console.log("当前运营商为：" + carrierName)
+                    const nameMap = {
+                        "CMCC": "中国移动",
+                        "CUCC": "中国联通",
+                        "CTCC": "中国电信"
+                    }
+                    if (!nameMap[carrierName]) {
+                        rj()
+                        uni.showModal({
+                            title: "提示",
+                            content: "未知运营商",
+                            showCancel: false,
+                            success: (res) => {
+                                if (res.confirm) {
+                                    app.platform.pageBack()
+                                }
+                            }
+                        })
+                        return
+                    }
+                    this.carrierName = nameMap[carrierName]
+                    re()
+                })
+            })
+        },
+    }
+};
+</script>
+<style lang='' scoped>
+</style>

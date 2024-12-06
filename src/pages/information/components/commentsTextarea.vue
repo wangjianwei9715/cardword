@@ -91,8 +91,8 @@
 			background: #EFEFEF;
 			border-radius: 3rpx;
 			font-size: 25rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #88878C;
 			box-sizing: border-box;
 			padding:10rpx 20rpx;
@@ -103,8 +103,8 @@
 			text-align: center;
 			line-height: 60rpx;
 			font-size: 30rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			background-image: linear-gradient(to bottom, #ef3333, #eb6141);
 			border-radius: 40rpx;
 			color:#fff

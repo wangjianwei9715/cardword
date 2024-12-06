@@ -1,8 +1,8 @@
 /*
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-10-13 10:13:22
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-12-09 11:24:00
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-06-05 15:43:08
  * @FilePath: \jichao_app_2\src\net\nuveRequest.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -61,12 +61,16 @@ const request = (url, params = {}, method = 'GET') => {
 					// 	});
 					// 	return
 					// }
+					if (res.data.msg=="状态异常"&&findUrl.indexOf("brodcast/third/1001/user/logout/")!=-1){
+						return
+					}
 					if (!noneTips.includes(res.data.msg)) {
 						uni.showToast({
 							title: res.data.msg,
 							icon: 'none'
 						})
 					}
+					
 					reject(res.data.msg)
 					return
 				}

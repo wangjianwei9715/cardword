@@ -126,8 +126,8 @@
 			left:40rpx;
 			top:0;
 			font-size: 33rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
+			
+			
 			color: #FFFFFF;
 			.avatar-bg{
 				width: 46rpx;
@@ -147,7 +147,7 @@
 		}
 		.navigation-title{
 			font-size: 46rpx;
-			font-family: PingFang SC;
+			
 			font-weight: 600;
 			color: #FFFFFF;
 			line-height: 97rpx;
@@ -169,7 +169,7 @@
 			padding-top: 10rpx;
 			.back-tips{
 				font-size: 28rpx;
-				font-family: Avenir;
+				
 				font-weight: normal;
 				color: #FFFFFF;
 				margin-right: 19rpx;
@@ -177,7 +177,7 @@
 			}
 			.back-text{
 				font-size: 36rpx;
-				font-family: PingFang SC;
+				
 				font-weight: 600;
 				color: #FFFFFF;
 				margin-left: 19rpx;
@@ -226,8 +226,8 @@
 						width: 50%;
 						height:65rpx;
 						font-size: 27rpx;
-						font-family: PingFang SC;
-						font-weight: 400;
+						
+						
 						color: #E3E1DF;
 						text-align: center;
 						line-height: 65rpx;
@@ -240,7 +240,7 @@
 				.info-title{
 					width: 366rpx;
 					font-size: 29rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 600;
 					line-height: 40rpx;
 					color: #FFFFFF;
@@ -268,8 +268,8 @@
 						justify-content: center;
 						padding:0 14rpx;
 						font-size: 27rpx;
-						font-family: PingFang SC;
-						font-weight: 400;
+						
+						
 						color: #EAEAEA;
 					}
 					.info-num{
@@ -289,7 +289,7 @@
 					text-align: left;
 					line-height: 77rpx;
 					font-size: 29rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 600;
 					color: #333333;
 					box-sizing: border-box;
@@ -345,7 +345,7 @@
 					align-items: center;
 					justify-content: center;
 					font-size: 23rpx;
-					font-family: PingFang SC;
+					
 					font-weight: 600;
 					color: #FFFFFF;		
 					box-sizing: border-box;				

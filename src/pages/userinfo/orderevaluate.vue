@@ -189,7 +189,7 @@
 	.index-texta{
 		width: 100%;
 		font-size: 26rpx;
-		font-family: HYQiHei;
+		
 		font-weight: normal;
 		color: #7B7B7B;
 		line-height: 40rpx;
@@ -204,7 +204,7 @@
 		left:80rpx;
 		bottom:30rpx;
 		font-size: 30rpx;
-		font-family: HYQiHei;
+		
 		font-weight: bold;
 		color: #FFFFFF;
 		border-radius: 40rpx;
@@ -221,7 +221,7 @@
 		height:100rpx;
 		line-height: 100rpx;
 		font-size: 30rpx;
-		font-family: HYQiHei;
+		
 		font-weight: bold;
 		color: #3B3B3B;
 		margin-right: 30rpx;
@@ -244,7 +244,7 @@
 		height:100rpx;
 		line-height: 100rpx;
 		font-size: 26rpx;
-		font-family: HYQiHei;
+		
 		font-weight: normal;
 		color: #7B7B7B;
 		padding-left:10rpx
